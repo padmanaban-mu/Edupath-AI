@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Fundamentals — EduPath AI</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../../css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-blue: #2d6cdf;
+            --dark-blue: #1a3a6d;
+            --bg-light: #f8faff;
+            --white: #ffffff;
+            --text-main: #333;
+            --text-muted: #7f8c8d;
+            --success-green: #10b981;
+            --border-color: #e2e8f0;
+            --transition: all 0.3s ease;
+            --slate-500: #64748b;
+        }
+
+        body {
+            background: var(--bg-light);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* --- Sidebar CSS --- */
+        .sidebar {
+            width: 260px;
+            background: var(--dark-blue);
+            color: white;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition);
+            position: fixed;
+            height: 100vh;
+            z-index: 1000;
+            box-sizing: border-box;
+        }
+
+        .sidebar.collapsed {
+            width: 80px;
+        }
+
+        .sidebar.collapsed .nav-menu span,
+        .sidebar.collapsed .logo span,
+        .sidebar.collapsed .user-info {
+            display: none;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 50px;
+            text-align: center;
+        }
+
+        .logo span {
+            color: var(--primary-blue);
+        }
+
+        .nav-menu {
+            list-style: none;
+            flex-grow: 1;
+            padding: 0;
+        }
+
+        .nav-menu li {
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .nav-menu li a {
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            width: 100%;
+        }
+
+        .nav-menu li:hover,
+        .nav-menu li.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--primary-blue);
+        }
+
+        .sidebar-footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 20px;
+            margin-top: auto;
+        }
+
+        .profile-card {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        /* --- Main Content --- */
+        .main-content {
+            margin-left: 260px;
+            padding: 25px 40px;
+            transition: 0.3s ease;
+            width: calc(100% - 260px);
+        }
+
+        .main-content.expanded {
+            margin-left: 80px;
+            width: calc(100% - 80px);
+        }
+
+        /* --- Module Accordion Styles --- */
+        .explore-header {
+            margin-bottom: 30px;
+        }
+
+        .explore-header h1 {
+            font-size: 1.5rem;
+            color: var(--dark-blue);
+            margin-bottom: 8px;
+        }
+
+        .section-box {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+
+        .section-header {
+            padding: 18px 25px;
+            background: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .section-header h3 {
+            font-size: 0.95rem;
+            margin: 0;
+            color: var(--dark-blue);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-header i.toggle-icon {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            transition: 0.3s;
+        }
+
+        .section-header.active i.toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        .section-content {
+            display: none;
+            background: #fff;
+        }
+
+        .activity-row {
+            padding: 12px 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #f8fafc;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+
+        .activity-row:hover {
+            background: #fcfdfe;
+        }
+
+        .activity-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.85rem;
+            color: #4b5563;
+            font-weight: 500;
+        }
+
+        .fa-link {
+            color: #06b6d4;
+        }
+
+        .fa-list-alt {
+            color: #ec4899;
+        }
+
+        .course-progress {
+            margin: 20px auto;
+            width: 60%;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            margin-bottom: 6px;
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 10px;
+            background: #e2e8f0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        #progressBar {
+            height: 100%;
+            width: 0%;
+            background: #10b981;
+            transition: 0.4s;
+        }
+
+        .mcq-container {
+            max-width: 700px;
+            margin: auto;
+        }
+
+        .mcq-question {
+            margin-bottom: 20px;
+        }
+
+        .mcq-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .mcq-options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        .mcq-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .mcq-option:hover {
+            background: #f1f5f9;
+            border-color: #94a3b8;
+        }
+
+        .mcq-option input {
+            display: none;
+        }
+
+        .option-letter {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 1px solid #cbd5e1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .mcq-option input:checked+.option-letter {
+            background: #2563eb;
+            color: white;
+            border-color: #2563eb;
+        }
+
+        .mcq-option:has(input:checked) {
+            background: #eaf1ff;
+            border: 2px solid #2563eb;
+        }
+
+        .quiz-submit {
+            margin-top: 20px;
+            padding: 10px 18px;
+            border: none;
+            background: #2d6cdf;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .section-box.locked {
+            filter: grayscale(1);
+            opacity: 0.7;
+            pointer-events: none;
+            position: relative;
+        }
+
+        .section-box.locked::after {
+            content: "\f023";
+            font-family: "Font Awesome 5 Free";
+            font-weight: 900;
+            position: absolute;
+            top: 20px;
+            right: 50px;
+            color: var(--text-muted);
+            font-size: 1.2rem;
+        }
+
+        .status-btn {
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            border: 1px solid var(--border-color);
+            background: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-btn.done {
+            color: var(--success-green);
+            border-color: #d1fae5;
+            background: #ecfdf5;
+        }
+
+        .status-btn.todo {
+            color: var(--text-muted);
+        }
+
+        .status-btn.todo:hover {
+            background: var(--primary-blue);
+            color: white;
+            border-color: var(--primary-blue);
+        }
+
+        .video-embed {
+            padding: 20px 25px;
+            background: #f8fafc;
+            border-bottom: 1px solid #f1f5f9;
+            display: none;
+        }
+
+        .quiz-box {
+            display: none;
+            padding: 20px;
+            background: #f8fafc;
+            margin: 15px 0;
+            border-radius: 10px;
+        }
+
+        .top-nav {
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 30px;
+        }
+
+        .search-bar {
+            background: white; 
+            padding: 8px 20px; 
+            border-radius: 25px; 
+            width: 40%; 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            border: 1px solid #e2e8f0;
+        }
+
+        .toggle-btn {
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: var(--dark-blue);
+        }
+    </style>
+</head>
+
+<body>
+<div class="dashboard-container">
+    <aside class="sidebar" id="sidebar">
+        <div class="logo">EduPath <span>AI</span></div>
+        <ul class="nav-menu">
+            <li><a href="../../dashboard.html"><i class="fas fa-th-large"></i> <span>Overview</span></a></li>
+            <li><a href="../../roadmap.html"><i class="fas fa-map-signs"></i> <span>My Roadmap</span></a></li>
+            <li class="active"><a href="../../domain.html"><i class="fas fa-compass"></i> <span>Explore Domain</span></a></li>
+            <li><a href="#"><i class="fas fa-robot"></i> <span>AI ChatBot</span></a></li>
+            <li><a href="../../profile.html"><i class="fas fa-cog"></i> <span>Profile Settings</span></a></li>
+            <li><a href="../../index.html"><i class="fas fa-sign-out-alt"></i> <span>Log out</span></a></li>
+        </ul>
+        <div class="sidebar-footer">
+            <div class="profile-card">
+                <div class="avatar">U</div>
+                <div class="user-info">
+                    <p class="name" style="margin:0; font-size:0.9rem;">User Name</p>
+                    <p class="status" style="margin:0; font-size:0.7rem; opacity:0.7;">Pro Member</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main-content" id="main-content">
+        <header class="top-nav">
+            <div class="toggle-btn" id="sidebarToggle"><i class="fas fa-bars"></i></div>
+            <div class="search-bar">
+                <i class="fas fa-search" style="color: var(--slate-500);"></i>
+                <input type="text" placeholder="Search Data topics..." style="border: none; outline: none; width: 100%;">
+            </div>
+            <div class="user-profile"><i class="far fa-bell" style="color:var(--text-muted)"></i></div>
+        </header>
+
+        <div class="course-progress">
+            <div class="progress-label">
+                <span>Course Progress</span>
+                <span id="progressText">0%</span>
+            </div>
+            <div class="progress-container">
+                <div id="progressBar"></div>
+            </div>
+        </div>
+
+        <div class="explore-header">
+            <h1>📊 Data Fundamentals</h1>
+            <p style="color: var(--slate-500); font-size: 0.9rem;">The non-programming track for data literacy.</p>
+        </div>
+
+        <!-- MODULE 1 -->
+        <div class="section-box" id="module-box-1">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h3>Module 1: Introduction to Data</h3>
+                <i class="fas fa-chevron-down toggle-icon"></i>
+            </div>
+            <div class="section-content">
+                <div class="activity-row" onclick="toggleVideo(this, 'vplayer-1')">
+                    <div class="activity-info"><i class="fas fa-link"></i> <span>What is Data? - VIDEO</span></div>
+                    <button id="vbtn-1" class="status-btn todo">To do</button>
+                </div>
+                <div class="video-embed" id="video-1">
+                    <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;">
+                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/szX7SjP_Kxs?enablejsapi=1" id="vplayer-1" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                </div>
+                <div class="activity-row" onclick="showQuiz(1)">
+                    <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Intro Quiz</span></div>
+                    <button id="qbtn-1" class="status-btn todo">To do</button>
+                </div>
+                <div class="quiz-box" id="quiz-1">
+                    <form id="quizForm-1">
+                        <div class="mcq-container">
+                            <div class="mcq-question">
+                                <div class="mcq-title">1. What is the definition of data in the simplest terms?</div>
+                                <div class="mcq-options">
+                                    <label class="mcq-option"><input type="radio" name="q1" value="A"><div class="option-letter">A</div><span>A collection of facts and info</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="B"><div class="option-letter">B</div><span>A computer program</span></label>
+                                </div>
+                            </div>
+                            <div class="mcq-question">
+                                <div class="mcq-title">2. Which of these is structured data?</div>
+                                <div class="mcq-options">
+                                    <label class="mcq-option"><input type="radio" name="q2" value="A"><div class="option-letter">A</div><span>An Excel table</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="B"><div class="option-letter">B</div><span>A voice recording</span></label>
+                                </div>
+                            </div>
+                            <div class="mcq-question">
+                                <div class="mcq-title">3. JSON files are usually considered:</div>
+                                <div class="mcq-options">
+                                    <label class="mcq-option"><input type="radio" name="q3" value="A"><div class="option-letter">A</div><span>Semi-structured</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="B"><div class="option-letter">B</div><span>Unstructured</span></label>
+                                </div>
+                            </div>
+                            <div class="mcq-question">
+                                <div class="mcq-title">4. Video files are examples of:</div>
+                                <div class="mcq-options">
+                                    <label class="mcq-option"><input type="radio" name="q4" value="A"><div class="option-letter">A</div><span>Unstructured data</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="B"><div class="option-letter">B</div><span>Structured data</span></label>
+                                </div>
+                            </div>
+                            <div class="mcq-question">
+                                <div class="mcq-title">5. Primary goal of data analysis?</div>
+                                <div class="mcq-options">
+                                    <label class="mcq-option"><input type="radio" name="q5" value="A"><div class="option-letter">A</div><span>Extraction of insights</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="B"><div class="option-letter">B</div><span>Deleting old files</span></label>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" onclick="submitQuiz(1)" class="quiz-submit">Submit Quiz</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODULE 2 -->
+        <div class="section-box locked" id="module-box-2">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h3>Module 2: Data Lifecycle</h3>
+                <i class="fas fa-chevron-down toggle-icon"></i>
+            </div>
+            <div class="section-content">
+                <div class="activity-row" onclick="toggleVideo(this, 'vplayer-2')">
+                    <div class="activity-info"><i class="fas fa-link"></i> <span>The Data Lifecycle - VIDEO</span></div>
+                    <button id="vbtn-2" class="status-btn todo">To do</button>
+                </div>
+                <div class="video-embed" id="video-2">
+                    <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;">
+                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/h8fTInSgPAs?enablejsapi=1" id="vplayer-2" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                </div>
+                <div class="activity-row" onclick="showQuiz(2)">
+                    <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Lifecycle Quiz</span></div>
+                    <button id="qbtn-2" class="status-btn todo">To do</button>
+                </div>
+                <div class="quiz-box" id="quiz-2">
+                    <form id="quizForm-2">
+                        <div class="mcq-container">
+                            <div class="mcq-question">
+                                <div class="mcq-title">1. First step in the data lifecycle?</div>
+                                <div class="mcq-options">
+                                    <label class="mcq-option"><input type="radio" name="q1" value="A"><div class="option-letter">A</div><span>Data Collection</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="B"><div class="option-letter">B</div><span>Data ARCHIVAL</span></label>
+                                </div>
+                            </div>
+                            <div class="mcq-question">
+                                <div class="mcq-title">2. Where is data stored for long-term use?</div>
+                                <div class="mcq-options">
+                                    <label class="mcq-option"><input type="radio" name="q2" value="A"><div class="option-letter">A</div><span>Data Warehouse</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="B"><div class="option-letter">B</div><span>Computer RAM</span></label>
+                                </div>
+                            </div>
+                            <div class="mcq-question">
+                                <div class="mcq-title">3. What follows data cleaning?</div>
+                                <div class="mcq-options">
+                                    <label class="mcq-option"><input type="radio" name="q3" value="A"><div class="option-letter">A</div><span>Data Analysis</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="B"><div class="option-letter">B</div><span>Data Collection</span></label>
+                                </div>
+                            </div>
+                            <div class="mcq-question">
+                                <div class="mcq-title">4. Data visualization is for:</div>
+                                <div class="mcq-options">
+                                    <label class="mcq-option"><input type="radio" name="q4" value="A"><div class="option-letter">A</div><span>Communicating findings</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="B"><div class="option-letter">B</div><span>Hiding errors</span></label>
+                                </div>
+                            </div>
+                            <div class="mcq-question">
+                                <div class="mcq-title">5. Final stage of data?</div>
+                                <div class="mcq-options">
+                                    <label class="mcq-option"><input type="radio" name="q5" value="A"><div class="option-letter">A</div><span>Archive or Deletion</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="B"><div class="option-letter">B</div><span>Initial collection</span></label>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" onclick="submitQuiz(2)" class="quiz-submit">Submit Quiz</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODULE 3 -->
+        <div class="section-box locked" id="module-box-3">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h3>Module 3: Data Quality</h3>
+                <i class="fas fa-chevron-down toggle-icon"></i>
+            </div>
+            <div class="section-content">
+                <div class="activity-row" onclick="toggleVideo(this, 'vplayer-3')">
+                    <div class="activity-info"><i class="fas fa-link"></i> <span>Data Quality & Cleaning - VIDEO</span></div>
+                    <button id="vbtn-3" class="status-btn todo">To do</button>
+                </div>
+                <div class="video-embed" id="video-3">
+                    <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;">
+                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/t_mXST0p6dM?enablejsapi=1" id="vplayer-3" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                </div>
+                <div class="activity-row" onclick="showQuiz(3)">
+                    <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Quality Quiz</span></div>
+                    <button id="qbtn-3" class="status-btn todo">To do</button>
+                </div>
+                <div class="quiz-box" id="quiz-3">
+                    <form id="quizForm-3">
+                        <div class="mcq-container">
+                            <div class="mcq-question">
+                                <div class="mcq-title">1. What is "dirty data"?</div>
+                                <div class="mcq-options">
+                                    <label class="mcq-option"><input type="radio" name="q1" value="A"><div class="option-letter">A</div><span>Inaccurate/Incomplete data</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="B"><div class="option-letter">B</div><span>Temporary data</span></label>
+                                </div>
+                            </div>
+                            <div class="mcq-question">
+                                <div class="mcq-title">2. A common cleaning task?</div>
+                                <div class="mcq-options">
+                                    <label class="mcq-option"><input type="radio" name="q2" value="A"><div class="option-letter">A</div><span>Removing duplicates</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="B"><div class="option-letter">B</div><span>Increasing file size</span></label>
+                                </div>
+                            </div>
+                            <div class="mcq-question">
+                                <div class="mcq-title">3. Missing values should be:</div>
+                                <div class="mcq-options">
+                                    <label class="mcq-option"><input type="radio" name="q3" value="A"><div class="option-letter">A</div><span>Handled (removed or filled)</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="B"><div class="option-letter">B</div><span>Ignored completely</span></label>
+                                </div>
+                            </div>
+                            <div class="mcq-question">
+                                <div class="mcq-title">4. Data validation ensures:</div>
+                                <div class="mcq-options">
+                                    <label class="mcq-option"><input type="radio" name="q4" value="A"><div class="option-letter">A</div><span>Accuracy/Completeness</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="B"><div class="option-letter">B</div><span>Fancy formatting</span></label>
+                                </div>
+                            </div>
+                            <div class="mcq-question">
+                                <div class="mcq-title">5. Tool used for cleaning?</div>
+                                <div class="mcq-options">
+                                    <label class="mcq-option"><input type="radio" name="q5" value="A"><div class="option-letter">A</div><span>Excel / OpenRefine</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="B"><div class="option-letter">B</div><span>Paint</span></label>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" onclick="submitQuiz(3)" class="quiz-submit">Submit Quiz</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODULE 4 -->
+        <div class="section-box locked" id="module-box-4">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h3>Module 4: Statistics Basics</h3>
+                <i class="fas fa-chevron-down toggle-icon"></i>
+            </div>
+            <div class="section-content">
+                <div class="activity-row" onclick="toggleVideo(this, 'vplayer-4')">
+                    <div class="activity-info"><i class="fas fa-link"></i> <span>Descriptive Statistics - VIDEO</span></div>
+                    <button id="vbtn-4" class="status-btn todo">To do</button>
+                </div>
+                <div class="video-embed" id="video-4">
+                    <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;">
+                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/J7k7_7P_LqM?enablejsapi=1" id="vplayer-4" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                </div>
+                <div class="activity-row" onclick="showQuiz(4)">
+                    <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Stats Quiz</span></div>
+                    <button id="qbtn-4" class="status-btn todo">To do</button>
+                </div>
+                <div class="quiz-box" id="quiz-4">
+                    <form id="quizForm-4">
+                        <div class="mcq-container">
+                            <div class="mcq-question">
+                                <div class="mcq-title">1. The 'Mean' is also known as:</div>
+                                <div class="mcq-options">
+                                    <label class="mcq-option"><input type="radio" name="q1" value="A"><div class="option-letter">A</div><span>Average</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="B"><div class="option-letter">B</div><span>Total</span></label>
+                                </div>
+                            </div>
+                            <div class="mcq-question">
+                                <div class="mcq-title">2. 'Median' is the:</div>
+                                <div class="mcq-options">
+                                    <label class="mcq-option"><input type="radio" name="q2" value="A"><div class="option-letter">A</div><span>Middle value</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="B"><div class="option-letter">B</div><span>Lowest value</span></label>
+                                </div>
+                            </div>
+                            <div class="mcq-question">
+                                <div class="mcq-title">3. 'Mode' refers to:</div>
+                                <div class="mcq-options">
+                                    <label class="mcq-option"><input type="radio" name="q3" value="A"><div class="option-letter">A</div><span>Most frequent value</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="B"><div class="option-letter">B</div><span>Unique value</span></label>
+                                </div>
+                            </div>
+                            <div class="mcq-question">
+                                <div class="mcq-title">4. Difference between Max and Min?</div>
+                                <div class="mcq-options">
+                                    <label class="mcq-option"><input type="radio" name="q4" value="A"><div class="option-letter">A</div><span>Range</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="B"><div class="option-letter">B</div><span>Sum</span></label>
+                                </div>
+                            </div>
+                            <div class="mcq-question">
+                                <div class="mcq-title">5. Standard Deviation measures:</div>
+                                <div class="mcq-options">
+                                    <label class="mcq-option"><input type="radio" name="q5" value="A"><div class="option-letter">A</div><span>Data spread</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="B"><div class="option-letter">B</div><span>Data color</span></label>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" onclick="submitQuiz(4)" class="quiz-submit">Submit Quiz</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODULE 5 -->
+        <div class="section-box locked" id="module-box-5">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h3>Module 5: Data Visualization</h3>
+                <i class="fas fa-chevron-down toggle-icon"></i>
+            </div>
+            <div class="section-content">
+                <div class="activity-row" onclick="toggleVideo(this, 'vplayer-5')">
+                    <div class="activity-info"><i class="fas fa-link"></i> <span>Visualization Principles - VIDEO</span></div>
+                    <button id="vbtn-5" class="status-btn todo">To do</button>
+                </div>
+                <div class="video-embed" id="video-5">
+                    <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;">
+                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/L0pC7zS2Q-U?enablejsapi=1" id="vplayer-5" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                </div>
+                <div class="activity-row" onclick="showQuiz(5)">
+                    <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Viz Quiz</span></div>
+                    <button id="qbtn-5" class="status-btn todo">To do</button>
+                </div>
+                <div class="quiz-box" id="quiz-5">
+                    <form id="quizForm-5">
+                        <div class="mcq-container">
+                            <div class="mcq-question">
+                                <div class="mcq-title">1. Best chart for trends over time?</div>
+                                <div class="mcq-options">
+                                    <label class="mcq-option"><input type="radio" name="q1" value="A"><div class="option-letter">A</div><span>Line Chart</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="B"><div class="option-letter">B</div><span>Pie Chart</span></label>
+                                </div>
+                            </div>
+                            <div class="mcq-question">
+                                <div class="mcq-title">2. Best for comparing categories?</div>
+                                <div class="mcq-options">
+                                    <label class="mcq-option"><input type="radio" name="q2" value="A"><div class="option-letter">A</div><span>Bar Chart</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="B"><div class="option-letter">B</div><span>Line Chart</span></label>
+                                </div>
+                            </div>
+                            <div class="mcq-question">
+                                <div class="mcq-title">3. Pie charts show:</div>
+                                <div class="mcq-options">
+                                    <label class="mcq-option"><input type="radio" name="q3" value="A"><div class="option-letter">A</div><span>Parts of a whole</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="B"><div class="option-letter">B</div><span>Time trends</span></label>
+                                </div>
+                            </div>
+                            <div class="mcq-question">
+                                <div class="mcq-title">4. Scatter plots show:</div>
+                                <div class="mcq-options">
+                                    <label class="mcq-option"><input type="radio" name="q4" value="A"><div class="option-letter">A</div><span>Correlation</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="B"><div class="option-letter">B</div><span>Total count</span></label>
+                                </div>
+                            </div>
+                            <div class="mcq-question">
+                                <div class="mcq-title">5. Avoid "chart junk" to:</div>
+                                <div class="mcq-options">
+                                    <label class="mcq-option"><input type="radio" name="q5" value="A"><div class="option-letter">A</div><span>Keep focus on data</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="B"><div class="option-letter">B</div><span>Make it colorful</span></label>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" onclick="submitQuiz(5)" class="quiz-submit">Submit Quiz</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODULE 6 -->
+        <div class="section-box locked" id="module-box-6">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h3>Module 6: Ethics & Privacy</h3>
+                <i class="fas fa-chevron-down toggle-icon"></i>
+            </div>
+            <div class="section-content">
+                <div class="activity-row" onclick="toggleVideo(this, 'vplayer-6')">
+                    <div class="activity-info"><i class="fas fa-link"></i> <span>Data Ethics & Privacy - VIDEO</span></div>
+                    <button id="vbtn-6" class="status-btn todo">To do</button>
+                </div>
+                <div class="video-embed" id="video-6">
+                    <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;">
+                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/2AFgpQTfVnQ?enablejsapi=1" id="vplayer-6" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                </div>
+                <div class="activity-row" onclick="showQuiz(6)">
+                    <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Ethics Quiz</span></div>
+                    <button id="qbtn-6" class="status-btn todo">To do</button>
+                </div>
+                <div class="quiz-box" id="quiz-6">
+                    <form id="quizForm-6">
+                        <div class="mcq-container">
+                            <div class="mcq-question">
+                                <div class="mcq-title">1. What is PII?</div>
+                                <div class="mcq-options">
+                                    <label class="mcq-option"><input type="radio" name="q1" value="A"><div class="option-letter">A</div><span>Personally Identifiable Info</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="B"><div class="option-letter">B</div><span>Public Internal Index</span></label>
+                                </div>
+                            </div>
+                            <div class="mcq-question">
+                                <div class="mcq-title">2. GDPR is a regulation on:</div>
+                                <div class="mcq-options">
+                                    <label class="mcq-option"><input type="radio" name="q2" value="A"><div class="option-letter">A</div><span>Data Protection</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="B"><div class="option-letter">B</div><span>Data Speed</span></label>
+                                </div>
+                            </div>
+                            <div class="mcq-question">
+                                <div class="mcq-title">3. Data masking helps:</div>
+                                <div class="mcq-options">
+                                    <label class="mcq-option"><input type="radio" name="q3" value="A"><div class="option-letter">A</div><span>Protect sensitive info</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="B"><div class="option-letter">B</div><span>Make data visible to all</span></label>
+                                </div>
+                            </div>
+                            <div class="mcq-question">
+                                <div class="mcq-title">4. Ethics requires:</div>
+                                <div class="mcq-options">
+                                    <label class="mcq-option"><input type="radio" name="q4" value="A"><div class="option-letter">A</div><span>Informed consent</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="B"><div class="option-letter">B</div><span>Forced collection</span></label>
+                                </div>
+                            </div>
+                            <div class="mcq-question">
+                                <div class="mcq-title">5. A data breach leads to:</div>
+                                <div class="mcq-options">
+                                    <label class="mcq-option"><input type="radio" name="q5" value="A"><div class="option-letter">A</div><span>Legal and reputational risk</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="B"><div class="option-letter">B</div><span>Better data quality</span></label>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" onclick="submitQuiz(6)" class="quiz-submit">Submit Quiz</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODULE 7 -->
+        <div class="section-box locked" id="module-box-7">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h3>Module 7: Big Data & Cloud</h3>
+                <i class="fas fa-chevron-down toggle-icon"></i>
+            </div>
+            <div class="section-content">
+                <div class="activity-row" onclick="toggleVideo(this, 'vplayer-7')">
+                    <div class="activity-info"><i class="fas fa-link"></i> <span>Big Data & Cloud - VIDEO</span></div>
+                    <button id="vbtn-7" class="status-btn todo">To do</button>
+                </div>
+                <div class="video-embed" id="video-7">
+                    <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;">
+                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/0_P_9_v_0_88?enablejsapi=1" id="vplayer-7" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                </div>
+                <div class="activity-row" onclick="showQuiz(7)">
+                    <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Big Data Quiz</span></div>
+                    <button id="qbtn-7" class="status-btn todo">To do</button>
+                </div>
+                <div class="quiz-box" id="quiz-7">
+                    <form id="quizForm-7">
+                        <div class="mcq-container">
+                            <div class="mcq-question">
+                                <div class="mcq-title">1. One of the 3 V's of Big Data?</div>
+                                <div class="mcq-options">
+                                    <label class="mcq-option"><input type="radio" name="q1" value="A"><div class="option-letter">A</div><span>Volume</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="B"><div class="option-letter">B</div><span>Vacuum</span></label>
+                                </div>
+                            </div>
+                            <div class="mcq-question">
+                                <div class="mcq-title">2. Cloud storage benefit?</div>
+                                <div class="mcq-options">
+                                    <label class="mcq-option"><input type="radio" name="q2" value="A"><div class="option-letter">A</div><span>Scalability</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="B"><div class="option-letter">B</div><span>Low security</span></label>
+                                </div>
+                            </div>
+                            <div class="mcq-question">
+                                <div class="mcq-title">3. Example of Cloud provider?</div>
+                                <div class="mcq-options">
+                                    <label class="mcq-option"><input type="radio" name="q3" value="A"><div class="option-letter">A</div><span>AWS / Google Cloud</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="B"><div class="option-letter">B</div><span>Paint 3D</span></label>
+                                </div>
+                            </div>
+                            <div class="mcq-question">
+                                <div class="mcq-title">4. Data Lake vs Warehouse?</div>
+                                <div class="mcq-options">
+                                    <label class="mcq-option"><input type="radio" name="q4" value="A"><div class="option-letter">A</div><span>Lake stores RAW, Warehouse STRUCTURED</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="B"><div class="option-letter">B</div><span>No difference</span></label>
+                                </div>
+                            </div>
+                            <div class="mcq-question">
+                                <div class="mcq-title">5. Real-time processing:</div>
+                                <div class="mcq-options">
+                                    <label class="mcq-option"><input type="radio" name="q5" value="A"><div class="option-letter">A</div><span>Processes data as it arrives</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="B"><div class="option-letter">B</div><span>Waits for weeks</span></label>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" onclick="submitQuiz(7)" class="quiz-submit">Submit Quiz</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODULE 8 -->
+        <div class="section-box locked" id="module-box-8">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h3>Module 8: Decision Making</h3>
+                <i class="fas fa-chevron-down toggle-icon"></i>
+            </div>
+            <div class="section-content">
+                <div class="activity-row" onclick="toggleVideo(this, 'vplayer-8')">
+                    <div class="activity-info"><i class="fas fa-link"></i> <span>Data-Driven Decision Making - VIDEO</span></div>
+                    <button id="vbtn-8" class="status-btn todo">To do</button>
+                </div>
+                <div class="video-embed" id="video-8">
+                    <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;">
+                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/_V8eKsto3Ug?enablejsapi=1" id="vplayer-8" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                </div>
+                <div class="activity-row" onclick="showQuiz(8)">
+                    <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Decision Quiz</span></div>
+                    <button id="qbtn-8" class="status-btn todo">To do</button>
+                </div>
+                <div class="quiz-box" id="quiz-8">
+                    <form id="quizForm-8">
+                        <div class="mcq-container">
+                            <div class="mcq-question">
+                                <div class="mcq-title">1. What is a KPI?</div>
+                                <div class="mcq-options">
+                                    <label class="mcq-option"><input type="radio" name="q1" value="A"><div class="option-letter">A</div><span>Key Performance Indicator</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="B"><div class="option-letter">B</div><span>Kind People Info</span></label>
+                                </div>
+                            </div>
+                            <div class="mcq-question">
+                                <div class="mcq-title">2. Predictive analytics uses:</div>
+                                <div class="mcq-options">
+                                    <label class="mcq-option"><input type="radio" name="q2" value="A"><div class="option-letter">A</div><span>Historical data</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="B"><div class="option-letter">B</div><span>Random guessing</span></label>
+                                </div>
+                            </div>
+                            <div class="mcq-question">
+                                <div class="mcq-title">3. Data-driven culture means:</div>
+                                <div class="mcq-options">
+                                    <label class="mcq-option"><input type="radio" name="q3" value="A"><div class="option-letter">A</div><span>Decisions based on facts</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="B"><div class="option-letter">B</div><span>Decisions based on luck</span></label>
+                                </div>
+                            </div>
+                            <div class="mcq-question">
+                                <div class="mcq-title">4. Dashboard purpose?</div>
+                                <div class="mcq-options">
+                                    <label class="mcq-option"><input type="radio" name="q4" value="A"><div class="option-letter">A</div><span>Monitor performance at a glance</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="B"><div class="option-letter">B</div><span>Play games</span></label>
+                                </div>
+                            </div>
+                            <div class="mcq-question">
+                                <div class="mcq-title">5. Feedback loop uses:</div>
+                                <div class="mcq-options">
+                                    <label class="mcq-option"><input type="radio" name="q5" value="A"><div class="option-letter">A</div><span>Results to refine process</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="B"><div class="option-letter">B</div><span>Old data to repeat errors</span></label>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" onclick="submitQuiz(8)" class="quiz-submit">Submit Quiz</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </main>
+</div>
+<script src="js/dashboard.js"></script>
+<script src="https://www.youtube.com/iframe_api"></script>
+<script>
+    const totalModules = 8;
+    const quizAnswers = {
+        1: { q1: 'A', q2: 'A', q3: 'A', q4: 'A', q5: 'A' },
+        2: { q1: 'A', q2: 'A', q3: 'A', q4: 'A', q5: 'A' },
+        3: { q1: 'A', q2: 'A', q3: 'A', q4: 'A', q5: 'A' },
+        4: { q1: 'A', q2: 'A', q3: 'A', q4: 'A', q5: 'A' },
+        5: { q1: 'A', q2: 'A', q3: 'A', q4: 'A', q5: 'A' },
+        6: { q1: 'A', q2: 'A', q3: 'A', q4: 'A', q5: 'A' },
+        7: { q1: 'A', q2: 'A', q3: 'A', q4: 'A', q5: 'A' },
+        8: { q1: 'A', q2: 'A', q3: 'A', q4: 'A', q5: 'A' }
+    };
+
+    document.addEventListener("DOMContentLoaded", () => {
+        // Toggle Sidebar
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('main-content');
+        
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('collapsed');
+            mainContent.classList.toggle('expanded');
+        });
+
+        // Module unlocking logic
+        for (let i = 2; i <= totalModules; i++) {
+            if (localStorage.getItem("df_module" + (i - 1) + "_unlocked") === "true") {
+                const moduleBox = document.getElementById("module-box-" + i);
+                if (moduleBox) moduleBox.classList.remove("locked");
+            }
+        }
+
+        // Restore button states
+        const buttons = document.querySelectorAll('.status-btn');
+        buttons.forEach(btn => {
+            if (btn.id && localStorage.getItem("df_" + btn.id) === "done") {
+                applyDoneState(btn);
+            }
+        });
+
+        updateProgress();
+    });
+
+    function toggleSection(header) {
+        const content = header.nextElementSibling;
+        const icon = header.querySelector('.toggle-icon');
+        const isOpen = content.style.display === 'block';
+        
+        content.style.display = isOpen ? 'none' : 'block';
+        header.classList.toggle('active', !isOpen);
+    }
+
+    function toggleVideo(row, playerId) {
+        const embed = row.nextElementSibling;
+        const isOpen = embed.style.display === 'block';
+        embed.style.display = isOpen ? 'none' : 'block';
+    }
+
+    function showQuiz(moduleNum) {
+        const quizBox = document.getElementById("quiz-" + moduleNum);
+        const isOpen = quizBox.style.display === 'block';
+        quizBox.style.display = isOpen ? 'none' : 'block';
+    }
+
+    function submitQuiz(moduleNum) {
+        const form = document.getElementById("quizForm-" + moduleNum);
+        const answers = quizAnswers[moduleNum];
+        let score = 0;
+        let total = 5;
+
+        for (let q in answers) {
+            const selected = form.querySelector(`input[name="${q}"]:checked`);
+            if (selected && selected.value === answers[q]) {
+                score++;
+            }
+        }
+
+        const scorePercent = (score / total) * 100;
+        alert(`You scored ${score}/${total} (${scorePercent}%)`);
+
+        if (score >= 4) {
+            const qbtn = document.getElementById("qbtn-" + moduleNum);
+            markAsDone("qbtn-" + moduleNum);
+            
+            if (moduleNum < totalModules) {
+                localStorage.setItem("df_module" + moduleNum + "_unlocked", "true");
+                const nextModule = document.getElementById("module-box-" + (moduleNum + 1));
+                if (nextModule) nextModule.classList.remove("locked");
+            }
+        } else {
+            alert("You need at least 4/5 to unlock the next module.");
+        }
+        updateProgress();
+    }
+
+    function markAsDone(btnId) {
+        const btn = document.getElementById(btnId);
+        if (btn) {
+            applyDoneState(btn);
+            localStorage.setItem("df_" + btnId, "done");
+            updateProgress();
+        }
+    }
+
+    function applyDoneState(btn) {
+        btn.classList.remove('todo');
+        btn.classList.add('done');
+        btn.innerHTML = 'Done <i class="fas fa-check"></i>';
+    }
+
+    function updateProgress() {
+        const totalItems = totalModules * 2; // video + quiz
+        let doneItems = 0;
+        
+        for (let i = 1; i <= totalModules; i++) {
+            if (localStorage.getItem("df_vbtn-" + i) === "done") doneItems++;
+            if (localStorage.getItem("df_qbtn-" + i) === "done") doneItems++;
+        }
+
+        const progress = Math.round((doneItems / totalItems) * 100);
+        const bar = document.getElementById("progressBar");
+        const text = document.getElementById("progressText");
+        if (bar) bar.style.width = progress + "%";
+        if (text) text.innerText = progress + "%";
+    }
+
+    let players = {};
+    function onYouTubeIframeAPIReady() {
+        const iframes = document.querySelectorAll('iframe[id^="vplayer-"]');
+        iframes.forEach(iframe => {
+            const id = iframe.id;
+            players[id] = new YT.Player(id, {
+                events: {
+                    'onStateChange': (event) => {
+                        if (event.data === YT.PlayerState.ENDED) {
+                            const btnId = id.replace('vplayer-', 'vbtn-');
+                            markAsDone(btnId);
+                        }
+                    }
+                }
+            });
+        });
+    }
+</script>
+</body>
+
+</html>

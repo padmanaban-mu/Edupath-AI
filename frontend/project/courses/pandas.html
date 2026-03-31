@@ -1,0 +1,2057 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pandas Mastery — EduPath AI</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-blue: #2d6cdf;
+            --dark-blue: #1a3a6d;
+            --bg-light: #f8faff;
+            --white: #ffffff;
+            --text-main: #333;
+            --text-muted: #7f8c8d;
+            --success-green: #10b981;
+            --border-color: #e2e8f0;
+            --transition: all 0.3s ease;
+            --slate-500: #64748b;
+        }
+
+        body {
+            background: var(--bg-light);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+
+        /* --- Sidebar CSS (Synced with domain.html) --- */
+        .sidebar {
+            width: 260px;
+            background: var(--dark-blue);
+            color: white;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition);
+            position: fixed;
+            height: 100vh;
+            z-index: 1000;
+            box-sizing: border-box;
+        }
+
+        .sidebar.collapsed {
+            width: 80px;
+        }
+
+        .sidebar.collapsed .nav-menu span,
+        .sidebar.collapsed .logo span,
+        .sidebar.collapsed .user-info {
+            display: none;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 50px;
+            text-align: center;
+        }
+
+        .logo span {
+            color: var(--primary-blue);
+        }
+
+        .nav-menu {
+            list-style: none;
+            flex-grow: 1;
+            padding: 0;
+        }
+
+        .nav-menu li {
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .nav-menu li a {
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            width: 100%;
+        }
+
+        .nav-menu li:hover,
+        .nav-menu li.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--primary-blue);
+        }
+
+        .sidebar-footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 20px;
+            margin-top: auto;
+        }
+
+        .profile-card {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        /* --- Main Content --- */
+        .main-content {
+            margin-left: 260px;
+            padding: 25px 40px;
+            transition: 0.3s ease;
+            width: calc(100% - 260px);
+        }
+
+        .main-content.expanded {
+            margin-left: 80px;
+            width: calc(100% - 80px);
+        }
+
+        /* --- Module Accordion Styles --- */
+        .explore-header {
+            margin-bottom: 30px;
+        }
+
+        .explore-header h1 {
+            font-size: 1.5rem;
+            color: var(--dark-blue);
+            margin-bottom: 8px;
+        }
+
+        .section-box {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .section-header {
+            padding: 18px 25px;
+            background: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .section-header h3 {
+            font-size: 0.95rem;
+            margin: 0;
+            color: var(--dark-blue);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-header i.toggle-icon {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            transition: 0.3s;
+        }
+
+        .section-header.active i.toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        .section-content {
+            display: none;
+            background: #fff;
+        }
+
+        .activity-row {
+            padding: 12px 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #f8fafc;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+
+        .activity-row:hover {
+            background: #fcfdfe;
+        }
+
+        .activity-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.85rem;
+            color: #4b5563;
+            font-weight: 500;
+        }
+
+        .fa-link {
+            color: #06b6d4;
+        }
+
+        .fa-list-alt {
+            color: #ec4899;
+        }
+
+        .fa-code {
+            color: #8b5cf6;
+        }
+
+        .course-progress {
+            margin: 20px auto;
+            width: 60%;
+        }
+
+        .mcq-option.correct {
+            border: 2px solid #22c55e !important;
+        }
+
+        .mcq-option.wrong {
+            border: 2px solid #ef4444 !important;
+        }
+
+        .quiz-result {
+            margin-top: 20px;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            margin-bottom: 6px;
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 10px;
+            background: #e2e8f0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        #progressBar {
+            height: 100%;
+            width: 0%;
+            background: #10b981;
+            transition: 0.4s;
+        }
+
+        .mcq-container {
+            max-width: 700px;
+            margin: auto;
+        }
+
+        .mcq-question {
+            margin-bottom: 20px;
+        }
+
+        .mcq-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .mcq-options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        .mcq-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .mcq-option:hover {
+            background: #f1f5f9;
+            border-color: #94a3b8;
+        }
+
+        .mcq-option input {
+            display: none;
+        }
+
+        .option-letter {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 1px solid #cbd5e1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .mcq-option input:checked+.option-letter {
+            background: #2563eb;
+            color: white;
+            border-color: #2563eb;
+        }
+
+        .mcq-option:has(input:checked) {
+            background: #eaf1ff;
+            border: 2px solid #2563eb;
+        }
+
+        .quiz-submit {
+            margin-top: 20px;
+            padding: 10px 18px;
+            border: none;
+            background: #2d6cdf;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .section-box.locked {
+            filter: grayscale(1);
+            opacity: 0.7;
+            pointer-events: none;
+            position: relative;
+        }
+
+        .section-box.locked::after {
+            content: "\f023";
+            font-family: "Font Awesome 5 Free";
+            font-weight: 900;
+            position: absolute;
+            top: 20px;
+            right: 50px;
+            color: var(--text-muted);
+            font-size: 1.2rem;
+        }
+
+        .status-btn {
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            border: 1px solid var(--border-color);
+            background: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-btn.done {
+            color: var(--success-green);
+            border-color: #d1fae5;
+            background: #ecfdf5;
+        }
+
+        .status-btn.todo {
+            color: var(--text-muted);
+        }
+
+        .status-btn.todo:hover {
+            background: var(--primary-blue);
+            color: white;
+            border-color: var(--primary-blue);
+        }
+
+        .video-embed {
+            padding: 20px 25px;
+            background: #f8fafc;
+            border-bottom: 1px solid #f1f5f9;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar" id="sidebar">
+            <div class="logo">EduPath <span>AI</span></div>
+            <ul class="nav-menu">
+                <li><a href="../dashboard.html"><i class="fas fa-th-large"></i> <span>Overview</span></a></li>
+                <li><a href="../roadmap.html"><i class="fas fa-map-signs"></i> <span>My Roadmap</span></a></li>
+                <li class="active"><a href="../domain.html"><i class="fas fa-compass"></i> <span>Explore
+                            Domain</span></a></li>
+                <li><a href="#"><i class="fas fa-robot"></i> <span>AI ChatBot</span></a></li>
+                <li><a href="../profile.html"><i class="fas fa-cog"></i> <span>Profile Settings</span></a></li>
+                <li><a href="../index.html"><i class="fas fa-sign-out-alt"></i> <span>Log out</span></a></li>
+            </ul>
+            <div class="sidebar-footer">
+                <div class="profile-card">
+                    <div class="avatar">P</div>
+                    <div class="user-info">
+                        <p class="name" style="margin: 0; font-size: 0.9rem;">User Name</p>
+                        <p class="status" style="margin: 0; font-size: 0.7rem; opacity: 0.7;">Pro Member</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content" id="main-content">
+            <header class="top-nav"
+                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+                <div class="toggle-btn" id="sidebarToggle" style="cursor: pointer;"><i class="fas fa-bars"></i></div>
+                <div class="search-bar"
+                    style="background: white; padding: 8px 20px; border-radius: 25px; width: 40%; display: flex; align-items: center; gap: 10px; border: 1px solid #e2e8f0;">
+                    <i class="fas fa-search" style="color: var(--slate-500);"></i>
+                    <input type="text" id="moduleSearch" placeholder="Search Pandas modules..."
+                        style="border: none; outline: none; width: 100%;">
+                </div>
+                <div class="user-profile"><i class="far fa-bell" style="color:var(--text-muted)"></i></div>
+            </header>
+
+            <div class="course-progress">
+                <div class="progress-label">
+                    <span>Course Progress</span>
+                    <span id="progressText">0%</span>
+                </div>
+                <div class="progress-container">
+                    <div id="progressBar"></div>
+                </div>
+            </div>
+
+            <div class="explore-header">
+                <h1>🐼 Pandas Mastery</h1>
+                <p style="color: var(--slate-500); font-size: 0.9rem;">The Ultimate Data Manipulation Guide</p>
+            </div>
+
+            <!-- MODULE 1 -->
+            <div class="section-box">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h3>Module 1: Introduction to Pandas & Series</h3>
+                    <i class="fas fa-chevron-down toggle-icon"></i>
+                </div>
+                <div class="section-content">
+                    <div class="activity-row" onclick="toggleVideo(this)">
+                        <div class="activity-info"><i class="fas fa-link"></i> <span>What is Pandas? Intro to Series -
+                                VIDEO</span></div>
+                        <button id="vbtn-1" class="status-btn todo">To do</button>
+                    </div>
+                    <div class="video-embed">
+                        <iframe width="100%" height="400" src="https://www.youtube.com/embed/zmdjNSmRXF4?enablejsapi=1"
+                            id="vplayer-1" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                    <div class="activity-row" onclick="showQuiz(1)">
+                        <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Series Basics - QUIZ</span>
+                        </div>
+                        <button id="qbtn-1" class="status-btn todo">To do</button>
+                    </div>
+                    <div class="quiz-box" id="quiz-module1"
+                        style="display:none;padding:20px;background:#f8fafc;margin:15px 0;border-radius:10px;">
+                        <form id="quizForm1">
+                            <div class="mcq-container">
+                                <div class="mcq-question">
+                                    <div class="mcq-title">1. What is the main data structure for 1D data in Pandas?
+                                    </div>
+                                    <div class="mcq-options">
+                                        <label class="mcq-option"><input type="radio" name="q1" value="A">
+                                            <div class="option-letter">A</div><span>DataFrame</span>
+                                        </label>
+                                        <label class="mcq-option"><input type="radio" name="q1" value="B">
+                                            <div class="option-letter">B</div><span>Series</span>
+                                        </label>
+                                        <label class="mcq-option"><input type="radio" name="q1" value="C">
+                                            <div class="option-letter">C</div><span>Array</span>
+                                        </label>
+                                        <label class="mcq-option"><input type="radio" name="q1" value="D">
+                                            <div class="option-letter">D</div><span>List</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="mcq-question">
+                                    <div class="mcq-title">2. How do you import Pandas?</div>
+                                    <div class="mcq-options">
+                                        <label class="mcq-option"><input type="radio" name="q2" value="A">
+                                            <div class="option-letter">A</div><span>import pandas</span>
+                                        </label>
+                                        <label class="mcq-option"><input type="radio" name="q2" value="B">
+                                            <div class="option-letter">B</div><span>import pandas as pd</span>
+                                        </label>
+                                        <label class="mcq-option"><input type="radio" name="q2" value="C">
+                                            <div class="option-letter">C</div><span>import pd</span>
+                                        </label>
+                                        <label class="mcq-option"><input type="radio" name="q2" value="D">
+                                            <div class="option-letter">D</div><span>using pandas</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="mcq-question">
+                                    <div class="mcq-title">3. What does "pd.Series([1, 2, 3])" create?</div>
+                                    <div class="mcq-options">
+                                        <label class="mcq-option"><input type="radio" name="q3" value="A">
+                                            <div class="option-letter">A</div><span>A list</span>
+                                        </label>
+                                        <label class="mcq-option"><input type="radio" name="q3" value="B">
+                                            <div class="option-letter">B</div><span>A Pandas Series</span>
+                                        </label>
+                                        <label class="mcq-option"><input type="radio" name="q3" value="C">
+                                            <div class="option-letter">C</div><span>A DataFrame</span>
+                                        </label>
+                                        <label class="mcq-option"><input type="radio" name="q3" value="D">
+                                            <div class="option-letter">D</div><span>An Error</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="mcq-question">
+                                    <div class="mcq-title">4. Series indices are ____ by default.</div>
+                                    <div class="mcq-options">
+                                        <label class="mcq-option"><input type="radio" name="q4" value="A">
+                                            <div class="option-letter">A</div><span>Strings</span>
+                                        </label>
+                                        <label class="mcq-option"><input type="radio" name="q4" value="B">
+                                            <div class="option-letter">B</div><span>Integers starting at 0</span>
+                                        </label>
+                                        <label class="mcq-option"><input type="radio" name="q4" value="C">
+                                            <div class="option-letter">C</div><span>Random numbers</span>
+                                        </label>
+                                        <label class="mcq-option"><input type="radio" name="q4" value="D">
+                                            <div class="option-letter">D</div><span>Booleans</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="mcq-question">
+                                    <div class="mcq-title">5. Pandas is built on top of which library?</div>
+                                    <div class="mcq-options">
+                                        <label class="mcq-option"><input type="radio" name="q5" value="A">
+                                            <div class="option-letter">A</div><span>Matplotlib</span>
+                                        </label>
+                                        <label class="mcq-option"><input type="radio" name="q5" value="B">
+                                            <div class="option-letter">B</div><span>NumPy</span>
+                                        </label>
+                                        <label class="mcq-option"><input type="radio" name="q5" value="C">
+                                            <div class="option-letter">C</div><span>SciPy</span>
+                                        </label>
+                                        <label class="mcq-option"><input type="radio" name="q5" value="D">
+                                            <div class="option-letter">D</div><span>TensorFlow</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" onclick="submitQuiz(1)" class="quiz-submit">Submit Quiz</button>
+                        </form>
+                    </div>
+                    <div class="activity-row">
+                        <div class="activity-info"><i class="fas fa-code"></i> <span>Creating your first Series -
+                                PROGRAM</span></div>
+                        <button class="status-btn todo">To do</button>
+                    </div>
+                </div>
+            </div>
+
+    <!-- MODULE 2 -->
+    <div class="section-box locked" id="module-box-2">
+        <div class="section-header" onclick="toggleSection(this)">
+            <h3>Module 2: DataFrames Basics</h3>
+            <i class="fas fa-chevron-down toggle-icon"></i>
+        </div>
+        <div class="section-content">
+            <div class="activity-row" onclick="toggleVideo(this)">
+                <div class="activity-info"><i class="fas fa-link"></i> <span>Creating DataFrames from dicts & lists -
+                        VIDEO</span></div>
+                <button id="vbtn-2" class="status-btn todo">To do</button>
+            </div>
+            <div class="video-embed">
+                <iframe width="100%" height="400" src="https://www.youtube.com/embed/F6kmIpWWEdU?enablejsapi=1"
+                    id="vplayer-2" frameborder="0" allowfullscreen></iframe>
+            </div>
+            <div class="activity-row" onclick="showQuiz(2)">
+                <div class="activity-info"><i class="fas fa-list-alt"></i> <span>DataFrame Core Concepts - QUIZ</span>
+                </div>
+                <button id="qbtn-2" class="status-btn todo">To do</button>
+            </div>
+            <div class="quiz-box" id="quiz-module2"
+                style="display:none;padding:20px;background:#f8fafc;margin:15px 0;border-radius:10px;">
+                <form id="quizForm2">
+                    <div class="mcq-container">
+                        <div class="mcq-question">
+                            <div class="mcq-title">1. A DataFrame is a ____ data structure.</div>
+                            <div class="mcq-options">
+                                <label class="mcq-option"><input type="radio" name="q1" value="A">
+                                    <div class="option-letter">A</div><span>1D</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q1" value="B">
+                                    <div class="option-letter">B</div><span>2D</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q1" value="C">
+                                    <div class="option-letter">C</div><span>3D</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q1" value="D">
+                                    <div class="option-letter">D</div><span>4D</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mcq-question">
+                            <div class="mcq-title">2. Which attribute gives the shape (rows, cols) of a DataFrame?</div>
+                            <div class="mcq-options">
+                                <label class="mcq-option"><input type="radio" name="q2" value="A">
+                                    <div class="option-letter">A</div><span>.size</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q2" value="B">
+                                    <div class="option-letter">B</div><span>.shape</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q2" value="C">
+                                    <div class="option-letter">C</div><span>.len</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q2" value="D">
+                                    <div class="option-letter">D</div><span>.dim</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mcq-question">
+                            <div class="mcq-title">3. How do you view the first 5 rows of a DataFrame?</div>
+                            <div class="mcq-options">
+                                <label class="mcq-option"><input type="radio" name="q3" value="A">
+                                    <div class="option-letter">A</div><span>df.first(5)</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q3" value="B">
+                                    <div class="option-letter">B</div><span>df.head()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q3" value="C">
+                                    <div class="option-letter">C</div><span>df.show()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q3" value="D">
+                                    <div class="option-letter">D</div><span>df.top()</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mcq-question">
+                            <div class="mcq-title">4. Each column in a DataFrame is actually a:</div>
+                            <div class="mcq-options">
+                                <label class="mcq-option"><input type="radio" name="q4" value="A">
+                                    <div class="option-letter">A</div><span>List</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q4" value="B">
+                                    <div class="option-letter">B</div><span>Series</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q4" value="C">
+                                    <div class="option-letter">C</div><span>Dictionary</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q4" value="D">
+                                    <div class="option-letter">D</div><span>Array</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mcq-question">
+                            <div class="mcq-title">5. "df.info()" provides:</div>
+                            <div class="mcq-options">
+                                <label class="mcq-option"><input type="radio" name="q5" value="A">
+                                    <div class="option-letter">A</div><span>Statistical summary</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q5" value="B">
+                                    <div class="option-letter">B</div><span>Metatadata (types, non-null counts)</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q5" value="C">
+                                    <div class="option-letter">C</div><span>The first 10 rows</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q5" value="D">
+                                    <div class="option-letter">D</div><span>Column names only</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" onclick="submitQuiz(2)" class="quiz-submit">Submit Quiz</button>
+                </form>
+            </div>
+            <div class="activity-row">
+                <div class="activity-info"><i class="fas fa-code"></i> <span>Creating your first DataFrame -
+                        PROGRAM</span></div>
+                <button class="status-btn todo">To do</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODULE 3 -->
+    <div class="section-box locked" id="module-box-3">
+        <div class="section-header" onclick="toggleSection(this)">
+            <h3>Module 3: Reading Data (CSV, Excel, etc.)</h3>
+            <i class="fas fa-chevron-down toggle-icon"></i>
+        </div>
+        <div class="section-content">
+            <div class="activity-row" onclick="toggleVideo(this)">
+                <div class="activity-info"><i class="fas fa-link"></i> <span>Loading CSV & Excel files - VIDEO</span>
+                </div>
+                <button id="vbtn-3" class="status-btn todo">To do</button>
+            </div>
+            <div class="video-embed">
+                <iframe width="100%" height="400" src="https://www.youtube.com/embed/zmdjNSmRXF4?enablejsapi=1"
+                    id="vplayer-3" frameborder="0" allowfullscreen></iframe>
+            </div>
+            <div class="activity-row" onclick="showQuiz(3)">
+                <div class="activity-info"><i class="fas fa-list-alt"></i> <span>File IO - QUIZ</span></div>
+                <button id="qbtn-3" class="status-btn todo">To do</button>
+            </div>
+            <div class="quiz-box" id="quiz-module3"
+                style="display:none;padding:20px;background:#f8fafc;margin:15px 0;border-radius:10px;">
+                <form id="quizForm3">
+                    <div class="mcq-container">
+                        <div class="mcq-question">
+                            <div class="mcq-title">1. Which function reads a CSV file?</div>
+                            <div class="mcq-options">
+                                <label class="mcq-option"><input type="radio" name="q1" value="A">
+                                    <div class="option-letter">A</div><span>pd.read_file()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q1" value="B">
+                                    <div class="option-letter">B</div><span>pd.read_csv()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q1" value="C">
+                                    <div class="option-letter">C</div><span>pd.open_csv()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q1" value="D">
+                                    <div class="option-letter">D</div><span>pd.load_csv()</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mcq-question">
+                            <div class="mcq-title">2. To read an Excel file, we use:</div>
+                            <div class="mcq-options">
+                                <label class="mcq-option"><input type="radio" name="q2" value="A">
+                                    <div class="option-letter">A</div><span>pd.read_excel()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q2" value="B">
+                                    <div class="option-letter">B</div><span>pd.read_sheet()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q2" value="C">
+                                    <div class="option-letter">C</div><span>pd.from_excel()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q2" value="D">
+                                    <div class="option-letter">D</div><span>pd.open_xl()</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mcq-question">
+                            <div class="mcq-title">3. How do you save a DataFrame to a CSV?</div>
+                            <div class="mcq-options">
+                                <label class="mcq-option"><input type="radio" name="q3" value="A">
+                                    <div class="option-letter">A</div><span>df.save_csv()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q3" value="B">
+                                    <div class="option-letter">B</div><span>df.to_csv()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q3" value="C">
+                                    <div class="option-letter">C</div><span>df.write_csv()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q3" value="D">
+                                    <div class="option-letter">D</div><span>df.export_csv()</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mcq-question">
+                            <div class="mcq-title">4. Which parameter in `read_csv` specifies the delimiter?</div>
+                            <div class="mcq-options">
+                                <label class="mcq-option"><input type="radio" name="q4" value="A">
+                                    <div class="option-letter">A</div><span>delim</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q4" value="B">
+                                    <div class="option-letter">B</div><span>sep</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q4" value="C">
+                                    <div class="option-letter">C</div><span>split</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q4" value="D">
+                                    <div class="option-letter">D</div><span>div</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mcq-question">
+                            <div class="mcq-title">5. What happens if the file doesn't exist?</div>
+                            <div class="mcq-options">
+                                <label class="mcq-option"><input type="radio" name="q5" value="A">
+                                    <div class="option-letter">A</div><span>Returns None</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q5" value="B">
+                                    <div class="option-letter">B</div><span>FileNotFoundError</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q5" value="C">
+                                    <div class="option-letter">C</div><span>Creates empty file</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q5" value="D">
+                                    <div class="option-letter">D</div><span>Hang indefinitely</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" onclick="submitQuiz(3)" class="quiz-submit">Submit Quiz</button>
+                </form>
+            </div>
+            <div class="activity-row">
+                <div class="activity-info"><i class="fas fa-code"></i> <span>Reading a sample CSV - PROGRAM</span></div>
+                <button class="status-btn todo">To do</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODULE 4 -->
+    <div class="section-box locked" id="module-box-4">
+        <div class="section-header" onclick="toggleSection(this)">
+            <h3>Module 4: Selection and Indexing</h3>
+            <i class="fas fa-chevron-down toggle-icon"></i>
+        </div>
+        <div class="section-content">
+            <div class="activity-row" onclick="toggleVideo(this)">
+                <div class="activity-info"><i class="fas fa-link"></i> <span>Accessing rows/cols with loc & iloc -
+                        VIDEO</span></div>
+                <button id="vbtn-4" class="status-btn todo">To do</button>
+            </div>
+            <div class="video-embed">
+                <iframe width="100%" height="400" src="https://www.youtube.com/embed/zmdjNSmRXF4?enablejsapi=1"
+                    id="vplayer-4" frameborder="0" allowfullscreen></iframe>
+            </div>
+            <div class="activity-row" onclick="showQuiz(4)">
+                <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Indexing Logic - QUIZ</span></div>
+                <button id="qbtn-4" class="status-btn todo">To do</button>
+            </div>
+            <div class="quiz-box" id="quiz-module4"
+                style="display:none;padding:20px;background:#f8fafc;margin:15px 0;border-radius:10px;">
+                <form id="quizForm4">
+                    <div class="mcq-container">
+                        <div class="mcq-question">
+                            <div class="mcq-title">1. `df.loc` uses ___ for selection.</div>
+                            <div class="mcq-options">
+                                <label class="mcq-option"><input type="radio" name="q1" value="A">
+                                    <div class="option-letter">A</div><span>Integer indices</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q1" value="B">
+                                    <div class="option-letter">B</div><span>Label names</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q1" value="C">
+                                    <div class="option-letter">C</div><span>Random values</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q1" value="D">
+                                    <div class="option-letter">D</div><span>Colors</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mcq-question">
+                            <div class="mcq-title">2. `df.iloc` uses ___ for selection.</div>
+                            <div class="mcq-options">
+                                <label class="mcq-option"><input type="radio" name="q2" value="A">
+                                    <div class="option-letter">A</div><span>Label names</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q2" value="B">
+                                    <div class="option-letter">B</div><span>Integer positions</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q2" value="C">
+                                    <div class="option-letter">C</div><span>Strings</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q2" value="D">
+                                    <div class="option-letter">D</div><span>Booleans</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mcq-question">
+                            <div class="mcq-title">3. To select a column named 'Age', we use:</div>
+                            <div class="mcq-options">
+                                <label class="mcq-option"><input type="radio" name="q3" value="A">
+                                    <div class="option-letter">A</div><span>df['Age']</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q3" value="B">
+                                    <div class="option-letter">B</div><span>df.Age</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q3" value="C">
+                                    <div class="option-letter">C</div><span>Both A & B</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q3" value="D">
+                                    <div class="option-letter">D</div><span>Neither</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mcq-question">
+                            <div class="mcq-title">4. How to select the first 3 rows using iloc?</div>
+                            <div class="mcq-options">
+                                <label class="mcq-option"><input type="radio" name="q4" value="A">
+                                    <div class="option-letter">A</div><span>df.iloc[0:3]</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q4" value="B">
+                                    <div class="option-letter">B</div><span>df.iloc[1:3]</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q4" value="C">
+                                    <div class="option-letter">C</div><span>df.iloc[:2]</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q4" value="D">
+                                    <div class="option-letter">D</div><span>df.iloc[3]</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mcq-question">
+                            <div class="mcq-title">5. Axis 0 represents ____ in Pandas.</div>
+                            <div class="mcq-options">
+                                <label class="mcq-option"><input type="radio" name="q5" value="A">
+                                    <div class="option-letter">A</div><span>Columns</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q5" value="B">
+                                    <div class="option-letter">B</div><span>Rows</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q5" value="C">
+                                    <div class="option-letter">C</div><span>Cells</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q5" value="D">
+                                    <div class="option-letter">D</div><span>Blocks</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" onclick="submitQuiz(4)" class="quiz-submit">Submit Quiz</button>
+                </form>
+            </div>
+            <div class="activity-row">
+                <div class="activity-info"><i class="fas fa-code"></i> <span>Custom Indexing Exercise - PROGRAM</span>
+                </div>
+                <button class="status-btn todo">To do</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODULE 5 -->
+    <div class="section-box locked" id="module-box-5">
+        <div class="section-header" onclick="toggleSection(this)">
+            <h3>Module 5: Numerical Operations & Mapping</h3>
+            <i class="fas fa-chevron-down toggle-icon"></i>
+        </div>
+        <div class="section-content">
+            <div class="activity-row" onclick="toggleVideo(this)">
+                <div class="activity-info"><i class="fas fa-link"></i> <span>Arithmetic on Series & map/apply -
+                        VIDEO</span></div>
+                <button id="vbtn-5" class="status-btn todo">To do</button>
+            </div>
+            <div class="video-embed">
+                <iframe width="100%" height="400" src="https://www.youtube.com/embed/P_q0tkYqvSk?enablejsapi=1"
+                    id="vplayer-5" frameborder="0" allowfullscreen></iframe>
+            </div>
+            <div class="activity-row" onclick="showQuiz(5)">
+                <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Ops & Mapping - QUIZ</span></div>
+                <button id="qbtn-5" class="status-btn todo">To do</button>
+            </div>
+            <div class="quiz-box" id="quiz-module5"
+                style="display:none;padding:20px;background:#f8fafc;margin:15px 0;border-radius:10px;">
+                <form id="quizForm5">
+                    <div class="mcq-container">
+                        <div class="mcq-question">
+                            <div class="mcq-title">1. What does `df['A'] + 10` do?</div>
+                            <div class="mcq-options">
+                                <label class="mcq-option"><input type="radio" name="q1" value="A">
+                                    <div class="option-letter">A</div><span>Adds 10 to first row</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q1" value="B">
+                                    <div class="option-letter">B</div><span>Adds 10 to every cell in column A</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q1" value="C">
+                                    <div class="option-letter">C</div><span>Creates 10 new rows</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q1" value="D">
+                                    <div class="option-letter">D</div><span>Errors Out</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mcq-question">
+                            <div class="mcq-title">2. Function to apply a function to every element in a Series:</div>
+                            <div class="mcq-options">
+                                <label class="mcq-option"><input type="radio" name="q2" value="A">
+                                    <div class="option-letter">A</div><span>.map()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q2" value="B">
+                                    <div class="option-letter">B</div><span>.apply()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q2" value="C">
+                                    <div class="option-letter">C</div><span>Both A & B</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q2" value="D">
+                                    <div class="option-letter">D</div><span>.run()</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mcq-question">
+                            <div class="mcq-title">3. `df.apply(np.sqrt)` applies square root to:</div>
+                            <div class="mcq-options">
+                                <label class="mcq-option"><input type="radio" name="q3" value="A">
+                                    <div class="option-letter">A</div><span>Rows only</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q3" value="B">
+                                    <div class="option-letter">B</div><span>Columns only</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q3" value="C">
+                                    <div class="option-letter">C</div><span>Entire DataFrame elements</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q3" value="D">
+                                    <div class="option-letter">D</div><span>Index only</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mcq-question">
+                            <div class="mcq-title">4. How to drop a column named 'temp'?</div>
+                            <div class="mcq-options">
+                                <label class="mcq-option"><input type="radio" name="q4" value="A">
+                                    <div class="option-letter">A</div><span>df.remove('temp')</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q4" value="B">
+                                    <div class="option-letter">B</div><span>df.drop('temp', axis=1)</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q4" value="C">
+                                    <div class="option-letter">C</div><span>df.delete('temp')</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q4" value="D">
+                                    <div class="option-letter">D</div><span>df.cut('temp')</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mcq-question">
+                            <div class="mcq-title">5. What does `inplace=True` do?</div>
+                            <div class="mcq-options">
+                                <label class="mcq-option"><input type="radio" name="q5" value="A">
+                                    <div class="option-letter">A</div><span>Creates a copy</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q5" value="B">
+                                    <div class="option-letter">B</div><span>Modifies original object</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q5" value="C">
+                                    <div class="option-letter">C</div><span>Saves to disk</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q5" value="D">
+                                    <div class="option-letter">D</div><span>Does nothing</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" onclick="submitQuiz(5)" class="quiz-submit">Submit Quiz</button>
+                </form>
+            </div>
+            <div class="activity-row">
+                <div class="activity-info"><i class="fas fa-code"></i> <span>Mapping Values Challenge - PROGRAM</span>
+                </div>
+                <button class="status-btn todo">To do</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODULE 6 -->
+    <div class="section-box locked" id="module-box-6">
+        <div class="section-header" onclick="toggleSection(this)">
+            <h3>Module 6: Handling Missing Data</h3>
+            <i class="fas fa-chevron-down toggle-icon"></i>
+        </div>
+        <div class="section-content">
+            <div class="activity-row" onclick="toggleVideo(this)">
+                <div class="activity-info"><i class="fas fa-link"></i> <span>Intro to NaN, isnull, fillna, dropna -
+                        VIDEO</span></div>
+                <button id="vbtn-6" class="status-btn todo">To do</button>
+            </div>
+            <div class="video-embed">
+                <iframe width="100%" height="400" src="https://www.youtube.com/embed/zmdjNSmRXF4?enablejsapi=1"
+                    id="vplayer-6" frameborder="0" allowfullscreen></iframe>
+            </div>
+            <div class="activity-row" onclick="showQuiz(6)">
+                <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Missing Data - QUIZ</span></div>
+                <button id="qbtn-6" class="status-btn todo">To do</button>
+            </div>
+            <div class="quiz-box" id="quiz-module6"
+                style="display:none;padding:20px;background:#f8fafc;margin:15px 0;border-radius:10px;">
+                <form id="quizForm6">
+                    <div class="mcq-container">
+                        <div class="mcq-question">
+                            <div class="mcq-title">1. How does Pandas represent missing values?</div>
+                            <div class="mcq-options">
+                                <label class="mcq-option"><input type="radio" name="q1" value="A">
+                                    <div class="option-letter">A</div><span>NULL</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q1" value="B">
+                                    <div class="option-letter">B</div><span>NaN</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q1" value="C">
+                                    <div class="option-letter">C</div><span>None</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q1" value="D">
+                                    <div class="option-letter">D</div><span>Empty string</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mcq-question">
+                            <div class="mcq-title">2. Function to check for missing values?</div>
+                            <div class="mcq-options">
+                                <label class="mcq-option"><input type="radio" name="q2" value="A">
+                                    <div class="option-letter">A</div><span>df.check_null()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q2" value="B">
+                                    <div class="option-letter">B</div><span>df.isnull()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q2" value="C">
+                                    <div class="option-letter">C</div><span>df.has_nan()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q2" value="D">
+                                    <div class="option-letter">D</div><span>df.empty()</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mcq-question">
+                            <div class="mcq-title">3. How to remove rows with any missing value?</div>
+                            <div class="mcq-options">
+                                <label class="mcq-option"><input type="radio" name="q3" value="A">
+                                    <div class="option-letter">A</div><span>df.dropna()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q3" value="B">
+                                    <div class="option-letter">B</div><span>df.remove_nan()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q3" value="C">
+                                    <div class="option-letter">C</div><span>df.fill_null()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q3" value="D">
+                                    <div class="option-letter">D</div><span>df.clear()</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mcq-question">
+                            <div class="mcq-title">4. How to fill missing values with 0?</div>
+                            <div class="mcq-options">
+                                <label class="mcq-option"><input type="radio" name="q4" value="A">
+                                    <div class="option-letter">A</div><span>df.zero_fill()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q4" value="B">
+                                    <div class="option-letter">B</div><span>df.fillna(0)</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q4" value="C">
+                                    <div class="option-letter">C</div><span>df.replace(0)</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q4" value="D">
+                                    <div class="option-letter">D</div><span>df.add(0)</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mcq-question">
+                            <div class="mcq-title">5. Which method can interpolate missing values?</div>
+                            <div class="mcq-options">
+                                <label class="mcq-option"><input type="radio" name="q5" value="A">
+                                    <div class="option-letter">A</div><span>df.infer()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q5" value="B">
+                                    <div class="option-letter">B</div><span>df.interpolate()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q5" value="C">
+                                    <div class="option-letter">C</div><span>df.guess()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q5" value="D">
+                                    <div class="option-letter">D</div><span>df.predict()</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" onclick="submitQuiz(6)" class="quiz-submit">Submit Quiz</button>
+                </form>
+            </div>
+            <div class="activity-row">
+                <div class="activity-info"><i class="fas fa-code"></i> <span>Cleaning a Dataset - PROGRAM</span></div>
+                <button class="status-btn todo">To do</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODULE 7 -->
+    <div class="section-box locked" id="module-box-7">
+        <div class="section-header" onclick="toggleSection(this)">
+            <h3>Module 7: GroupBy & Aggregations</h3>
+            <i class="fas fa-chevron-down toggle-icon"></i>
+        </div>
+        <div class="section-content">
+            <div class="activity-row" onclick="toggleVideo(this)">
+                <div class="activity-info"><i class="fas fa-link"></i> <span>Split-Apply-Combine Pattern - VIDEO</span>
+                </div>
+                <button id="vbtn-7" class="status-btn todo">To do</button>
+            </div>
+            <div class="video-embed">
+                <iframe width="100%" height="400" src="https://www.youtube.com/embed/Wb2Tp35dZ-I?enablejsapi=1"
+                    id="vplayer-7" frameborder="0" allowfullscreen></iframe>
+            </div>
+            <div class="activity-row" onclick="showQuiz(7)">
+                <div class="activity-info"><i class="fas fa-list-alt"></i> <span>GroupBy Logic - QUIZ</span></div>
+                <button id="qbtn-7" class="status-btn todo">To do</button>
+            </div>
+            <div class="quiz-box" id="quiz-module7"
+                style="display:none;padding:20px;background:#f8fafc;margin:15px 0;border-radius:10px;">
+                <form id="quizForm7">
+                    <div class="mcq-container">
+                        <div class="mcq-question">
+                            <div class="mcq-title">1. What is the first step in GroupBy?</div>
+                            <div class="mcq-options">
+                                <label class="mcq-option"><input type="radio" name="q1" value="A">
+                                    <div class="option-letter">A</div><span>Combine</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q1" value="B">
+                                    <div class="option-letter">B</div><span>Split</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q1" value="C">
+                                    <div class="option-letter">C</div><span>Apply</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q1" value="D">
+                                    <div class="option-letter">D</div><span>Pivot</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mcq-question">
+                            <div class="mcq-title">2. How to group by 'Category' and find mean?</div>
+                            <div class="mcq-options">
+                                <label class="mcq-option"><input type="radio" name="q2" value="A">
+                                    <div class="option-letter">A</div><span>df.group('Category').mean()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q2" value="B">
+                                    <div class="option-letter">B</div><span>df.groupby('Category').mean()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q2" value="C">
+                                    <div class="option-letter">C</div><span>df.mean('Category')</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q2" value="D">
+                                    <div class="option-letter">D</div><span>df.agg('Category', 'mean')</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mcq-question">
+                            <div class="mcq-title">3. To apply multiple functions at once, use:</div>
+                            <div class="mcq-options">
+                                <label class="mcq-option"><input type="radio" name="q3" value="A">
+                                    <div class="option-letter">A</div><span>.sum()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q3" value="B">
+                                    <div class="option-letter">B</div><span>.agg()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q3" value="C">
+                                    <div class="option-letter">C</div><span>.all()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q3" value="D">
+                                    <div class="option-letter">D</div><span>.run()</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mcq-question">
+                            <div class="mcq-title">4. Result of groupby is usually indexed by:</div>
+                            <div class="mcq-options">
+                                <label class="mcq-option"><input type="radio" name="q4" value="A">
+                                    <div class="option-letter">A</div><span>The group key(s)</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q4" value="B">
+                                    <div class="option-letter">B</div><span>Integers</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q4" value="C">
+                                    <div class="option-letter">C</div><span>Original index</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q4" value="D">
+                                    <div class="option-letter">D</div><span>Random hashes</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mcq-question">
+                            <div class="mcq-title">5. Function for pivot tables?</div>
+                            <div class="mcq-options">
+                                <label class="mcq-option"><input type="radio" name="q5" value="A">
+                                    <div class="option-letter">A</div><span>df.pivot()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q5" value="B">
+                                    <div class="option-letter">B</div><span>df.pivot_table()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q5" value="C">
+                                    <div class="option-letter">C</div><span>Both A & B</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q5" value="D">
+                                    <div class="option-letter">D</div><span>df.cross_tab()</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" onclick="submitQuiz(7)" class="quiz-submit">Submit Quiz</button>
+                </form>
+            </div>
+            <div class="activity-row">
+                <div class="activity-info"><i class="fas fa-code"></i> <span>Sales Aggregation Task - PROGRAM</span>
+                </div>
+                <button class="status-btn todo">To do</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODULE 8 -->
+    <div class="section-box locked" id="module-box-8">
+        <div class="section-header" onclick="toggleSection(this)">
+            <h3>Module 8: Concatenation & Merging</h3>
+            <i class="fas fa-chevron-down toggle-icon"></i>
+        </div>
+        <div class="section-content">
+            <div class="activity-row" onclick="toggleVideo(this)">
+                <div class="activity-info"><i class="fas fa-link"></i> <span>Joining DataFrames together - VIDEO</span>
+                </div>
+                <button id="vbtn-8" class="status-btn todo">To do</button>
+            </div>
+            <div class="video-embed">
+                <iframe width="100%" height="400" src="https://www.youtube.com/embed/zmdjNSmRXF4?enablejsapi=1"
+                    id="vplayer-8" frameborder="0" allowfullscreen></iframe>
+            </div>
+            <div class="activity-row" onclick="showQuiz(8)">
+                <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Joins & Concats - QUIZ</span></div>
+                <button id="qbtn-8" class="status-btn todo">To do</button>
+            </div>
+            <div class="quiz-box" id="quiz-module8"
+                style="display:none;padding:20px;background:#f8fafc;margin:15px 0;border-radius:10px;">
+                <form id="quizForm8">
+                    <div class="mcq-container">
+                        <div class="mcq-question">
+                            <div class="mcq-title">1. Function to stack DataFrames on top of each other?</div>
+                            <div class="mcq-options">
+                                <label class="mcq-option"><input type="radio" name="q1" value="A">
+                                    <div class="option-letter">A</div><span>pd.join()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q1" value="B">
+                                    <div class="option-letter">B</div><span>pd.concat()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q1" value="C">
+                                    <div class="option-letter">C</div><span>pd.merge()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q1" value="D">
+                                    <div class="option-letter">D</div><span>pd.append()</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mcq-question">
+                            <div class="mcq-title">2. Function for SQL-style joins?</div>
+                            <div class="mcq-options">
+                                <label class="mcq-option"><input type="radio" name="q2" value="A">
+                                    <div class="option-letter">A</div><span>pd.concat()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q2" value="B">
+                                    <div class="option-letter">B</div><span>pd.merge()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q2" value="C">
+                                    <div class="option-letter">C</div><span>pd.blend()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q2" value="D">
+                                    <div class="option-letter">D</div><span>pd.link()</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mcq-question">
+                            <div class="mcq-title">3. To join on indices, we use:</div>
+                            <div class="mcq-options">
+                                <label class="mcq-option"><input type="radio" name="q3" value="A">
+                                    <div class="option-letter">A</div><span>.merge()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q3" value="B">
+                                    <div class="option-letter">B</div><span>.join()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q3" value="C">
+                                    <div class="option-letter">C</div><span>.concat()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q3" value="D">
+                                    <div class="option-letter">D</div><span>.add()</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mcq-question">
+                            <div class="mcq-title">4. 'how' parameter in merge can be:</div>
+                            <div class="mcq-options">
+                                <label class="mcq-option"><input type="radio" name="q4" value="A">
+                                    <div class="option-letter">A</div><span>'inner'</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q4" value="B">
+                                    <div class="option-letter">B</div><span>'outer'</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q4" value="C">
+                                    <div class="option-letter">C</div><span>'left' or 'right'</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q4" value="D">
+                                    <div class="option-letter">D</div><span>All of the above</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mcq-question">
+                            <div class="mcq-title">5. To concatenate horizontally, set axis equal to:</div>
+                            <div class="mcq-options">
+                                <label class="mcq-option"><input type="radio" name="q5" value="A">
+                                    <div class="option-letter">A</div><span>0</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q5" value="B">
+                                    <div class="option-letter">B</div><span>1</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q5" value="C">
+                                    <div class="option-letter">C</div><span>-1</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q5" value="D">
+                                    <div class="option-letter">D</div><span>'cols'</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" onclick="submitQuiz(8)" class="quiz-submit">Submit Quiz</button>
+                </form>
+            </div>
+            <div class="activity-row">
+                <div class="activity-info"><i class="fas fa-code"></i> <span>Table Merging Exercise - PROGRAM</span>
+                </div>
+                <button class="status-btn todo">To do</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODULE 9 -->
+    <div class="section-box locked" id="module-box-9">
+        <div class="section-header" onclick="toggleSection(this)">
+            <h3>Module 9: Time Series Data</h3>
+            <i class="fas fa-chevron-down toggle-icon"></i>
+        </div>
+        <div class="section-content">
+            <div class="activity-row" onclick="toggleVideo(this)">
+                <div class="activity-info"><i class="fas fa-link"></i> <span>Working with Datetime objects -
+                        VIDEO</span></div>
+                <button id="vbtn-9" class="status-btn todo">To do</button>
+            </div>
+            <div class="video-embed">
+                <iframe width="100%" height="400" src="https://www.youtube.com/embed/zmdjNSmRXF4?enablejsapi=1"
+                    id="vplayer-9" frameborder="0" allowfullscreen></iframe>
+            </div>
+            <div class="activity-row" onclick="showQuiz(9)">
+                <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Time Series - QUIZ</span></div>
+                <button id="qbtn-9" class="status-btn todo">To do</button>
+            </div>
+            <div class="quiz-box" id="quiz-module9"
+                style="display:none;padding:20px;background:#f8fafc;margin:15px 0;border-radius:10px;">
+                <form id="quizForm9">
+                    <div class="mcq-container">
+                        <div class="mcq-question">
+                            <div class="mcq-title">1. Function to convert strings to datetime?</div>
+                            <div class="mcq-options">
+                                <label class="mcq-option"><input type="radio" name="q1" value="A">
+                                    <div class="option-letter">A</div><span>pd.to_datetime()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q1" value="B">
+                                    <div class="option-letter">B</div><span>pd.make_time()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q1" value="C">
+                                    <div class="option-letter">C</div><span>pd.dt()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q1" value="D">
+                                    <div class="option-letter">D</div><span>pd.parse()</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mcq-question">
+                            <div class="mcq-title">2. Frequency 'D' stands for:</div>
+                            <div class="mcq-options">
+                                <label class="mcq-option"><input type="radio" name="q2" value="A">
+                                    <div class="option-letter">A</div><span>Decade</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q2" value="B">
+                                    <div class="option-letter">B</div><span>Day</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q2" value="C">
+                                    <div class="option-letter">C</div><span>Domain</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q2" value="D">
+                                    <div class="option-letter">D</div><span>Distance</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mcq-question">
+                            <div class="mcq-title">3. How to extract the year from a datetime Series 's'?</div>
+                            <div class="mcq-options">
+                                <label class="mcq-option"><input type="radio" name="q3" value="A">
+                                    <div class="option-letter">A</div><span>s.year</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q3" value="B">
+                                    <div class="option-letter">B</div><span>s.dt.year</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q3" value="C">
+                                    <div class="option-letter">C</div><span>s.time.year</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q3" value="D">
+                                    <div class="option-letter">D</div><span>s.get_year()</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mcq-question">
+                            <div class="mcq-title">4. Method to change frequency (e.g., Daily to Monthly)?</div>
+                            <div class="mcq-options">
+                                <label class="mcq-option"><input type="radio" name="q4" value="A">
+                                    <div class="option-letter">A</div><span>.resample()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q4" value="B">
+                                    <div class="option-letter">B</div><span>.retime()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q4" value="C">
+                                    <div class="option-letter">C</div><span>.change()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q4" value="D">
+                                    <div class="option-letter">D</div><span>.shift()</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mcq-question">
+                            <div class="mcq-title">5. What does `.shift(1)` do?</div>
+                            <div class="mcq-options">
+                                <label class="mcq-option"><input type="radio" name="q5" value="A">
+                                    <div class="option-letter">A</div><span>Deletes 1st row</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q5" value="B">
+                                    <div class="option-letter">B</div><span>Moves data down by 1 row</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q5" value="C">
+                                    <div class="option-letter">C</div><span>Adds 1 to every cell</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q5" value="D">
+                                    <div class="option-letter">D</div><span>Rotates the columns</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" onclick="submitQuiz(9)" class="quiz-submit">Submit Quiz</button>
+                </form>
+            </div>
+            <div class="activity-row">
+                <div class="activity-info"><i class="fas fa-code"></i> <span>Stock Price Analysis - PROGRAM</span></div>
+                <button class="status-btn todo">To do</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODULE 10 -->
+    <div class="section-box locked" id="module-box-10">
+        <div class="section-header" onclick="toggleSection(this)">
+            <h3>Module 10: Multi-indexing</h3>
+            <i class="fas fa-chevron-down toggle-icon"></i>
+        </div>
+        <div class="section-content">
+            <div class="activity-row" onclick="toggleVideo(this)">
+                <div class="activity-info"><i class="fas fa-link"></i> <span>Hierarchical Indexing explained -
+                        VIDEO</span></div>
+                <button id="vbtn-10" class="status-btn todo">To do</button>
+            </div>
+            <div class="video-embed">
+                <iframe width="100%" height="400" src="https://www.youtube.com/embed/tcRGa2soc-c?enablejsapi=1"
+                    id="vplayer-10" frameborder="0" allowfullscreen></iframe>
+            </div>
+            <div class="activity-row" onclick="showQuiz(10)">
+                <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Multi-Index - QUIZ</span></div>
+                <button id="qbtn-10" class="status-btn todo">To do</button>
+            </div>
+            <div class="quiz-box" id="quiz-module10"
+                style="display:none;padding:20px;background:#f8fafc;margin:15px 0;border-radius:10px;">
+                <form id="quizForm10">
+                    <div class="mcq-container">
+                        <div class="mcq-question">
+                            <div class="mcq-title">1. Multi-indexing allows ____ of indices.</div>
+                            <div class="mcq-options">
+                                <label class="mcq-option"><input type="radio" name="q1" value="A">
+                                    <div class="option-letter">A</div><span>Only 1 level</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q1" value="B">
+                                    <div class="option-letter">B</div><span>Multiple levels (hierarchy)</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q1" value="C">
+                                    <div class="option-letter">C</div><span>Zero levels</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q1" value="D">
+                                    <div class="option-letter">D</div><span>Random levels</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mcq-question">
+                            <div class="mcq-title">2. Function to turn columns into indices?</div>
+                            <div class="mcq-options">
+                                <label class="mcq-option"><input type="radio" name="q2" value="A">
+                                    <div class="option-letter">A</div><span>.set_index()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q2" value="B">
+                                    <div class="option-letter">B</div><span>.make_index()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q2" value="C">
+                                    <div class="option-letter">C</div><span>.index_by()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q2" value="D">
+                                    <div class="option-letter">D</div><span>.move_to_index()</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mcq-question">
+                            <div class="mcq-title">3. What does `.stack()` do?</div>
+                            <div class="mcq-options">
+                                <label class="mcq-option"><input type="radio" name="q3" value="A">
+                                    <div class="option-letter">A</div><span>Pivots columns to rows</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q3" value="B">
+                                    <div class="option-letter">B</div><span>Pivots rows to columns</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q3" value="C">
+                                    <div class="option-letter">C</div><span>Sorts the index</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q3" value="D">
+                                    <div class="option-letter">D</div><span>Deletes duplicates</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mcq-question">
+                            <div class="mcq-title">4. Inverse of `.stack()` is:</div>
+                            <div class="mcq-options">
+                                <label class="mcq-option"><input type="radio" name="q4" value="A">
+                                    <div class="option-letter">A</div><span>.destack()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q4" value="B">
+                                    <div class="option-letter">B</div><span>.unstack()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q4" value="C">
+                                    <div class="option-letter">C</div><span>.flatten()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q4" value="D">
+                                    <div class="option-letter">D</div><span>.expand()</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mcq-question">
+                            <div class="mcq-title">5. Indexing in Multi-Index usually requires:</div>
+                            <div class="mcq-options">
+                                <label class="mcq-option"><input type="radio" name="q5" value="A">
+                                    <div class="option-letter">A</div><span>A tuple of labels</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q5" value="B">
+                                    <div class="option-letter">B</div><span>A single string</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q5" value="C">
+                                    <div class="option-letter">C</div><span>An integer only</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q5" value="D">
+                                    <div class="option-letter">D</div><span>A list of booleans</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" onclick="submitQuiz(10)" class="quiz-submit">Submit Quiz</button>
+                </form>
+            </div>
+            <div class="activity-row">
+                <div class="activity-info"><i class="fas fa-code"></i> <span>Hierarchical Data Task - PROGRAM</span>
+                </div>
+                <button class="status-btn todo">To do</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODULE 11 -->
+    <div class="section-box locked" id="module-box-11">
+        <div class="section-header" onclick="toggleSection(this)">
+            <h3>Module 11: Data Visualization with Pandas</h3>
+            <i class="fas fa-chevron-down toggle-icon"></i>
+        </div>
+        <div class="section-content">
+            <div class="activity-row" onclick="toggleVideo(this)">
+                <div class="activity-info"><i class="fas fa-link"></i> <span>Basic plotting with .plot() - VIDEO</span>
+                </div>
+                <button id="vbtn-11" class="status-btn todo">To do</button>
+            </div>
+            <div class="video-embed">
+                <iframe width="100%" height="400" src="https://www.youtube.com/embed/zmdjNSmRXF4?enablejsapi=1"
+                    id="vplayer-11" frameborder="0" allowfullscreen></iframe>
+            </div>
+            <div class="activity-row" onclick="showQuiz(11)">
+                <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Visualization - QUIZ</span></div>
+                <button id="qbtn-11" class="status-btn todo">To do</button>
+            </div>
+            <div class="quiz-box" id="quiz-module11"
+                style="display:none;padding:20px;background:#f8fafc;margin:15px 0;border-radius:10px;">
+                <form id="quizForm11">
+                    <div class="mcq-container">
+                        <div class="mcq-question">
+                            <div class="mcq-title">1. Which library does Pandas use for plotting by default?</div>
+                            <div class="mcq-options">
+                                <label class="mcq-option"><input type="radio" name="q1" value="A">
+                                    <div class="option-letter">A</div><span>Seaborn</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q1" value="B">
+                                    <div class="option-letter">B</div><span>Matplotlib</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q1" value="C">
+                                    <div class="option-letter">C</div><span>Plotly</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q1" value="D">
+                                    <div class="option-letter">D</div><span>Bokeh</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mcq-question">
+                            <div class="mcq-title">2. Default plot type of `.plot()` is:</div>
+                            <div class="mcq-options">
+                                <label class="mcq-option"><input type="radio" name="q2" value="A">
+                                    <div class="option-letter">A</div><span>Bar</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q2" value="B">
+                                    <div class="option-letter">B</div><span>Line</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q2" value="C">
+                                    <div class="option-letter">C</div><span>Scatter</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q2" value="D">
+                                    <div class="option-letter">D</div><span>Histogram</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mcq-question">
+                            <div class="mcq-title">3. How to create a histogram in Pandas?</div>
+                            <div class="mcq-options">
+                                <label class="mcq-option"><input type="radio" name="q3" value="A">
+                                    <div class="option-letter">A</div><span>df.histogram()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q3" value="B">
+                                    <div class="option-letter">B</div><span>df.plot(kind='hist')</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q3" value="C">
+                                    <div class="option-letter">C</div><span>df.hist_plot()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q3" value="D">
+                                    <div class="option-letter">D</div><span>df.draw_hist()</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mcq-question">
+                            <div class="mcq-title">4. To plot 'x' vs 'y', use:</div>
+                            <div class="mcq-options">
+                                <label class="mcq-option"><input type="radio" name="q4" value="A">
+                                    <div class="option-letter">A</div><span>df.plot(x='x', y='y')</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q4" value="B">
+                                    <div class="option-letter">B</div><span>df.plot('x', 'y')</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q4" value="C">
+                                    <div class="option-letter">C</div><span>df.scatter('x', 'y')</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q4" value="D">
+                                    <div class="option-letter">D</div><span>df.show('x', 'y')</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mcq-question">
+                            <div class="mcq-title">5. Function for box plots?</div>
+                            <div class="mcq-options">
+                                <label class="mcq-option"><input type="radio" name="q5" value="A">
+                                    <div class="option-letter">A</div><span>df.box()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q5" value="B">
+                                    <div class="option-letter">B</div><span>df.boxplot()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q5" value="C">
+                                    <div class="option-letter">C</div><span>df.plot(kind='box')</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q5" value="D">
+                                    <div class="option-letter">D</div><span>Both B & C</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" onclick="submitQuiz(11)" class="quiz-submit">Submit Quiz</button>
+                </form>
+            </div>
+            <div class="activity-row">
+                <div class="activity-info"><i class="fas fa-code"></i> <span>Graphing Trends Exercise - PROGRAM</span>
+                </div>
+                <button class="status-btn todo">To do</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODULE 12 -->
+    <div class="section-box locked" id="module-box-12">
+        <div class="section-header" onclick="toggleSection(this)">
+            <h3>Module 12: Advanced Operations & Optimization</h3>
+            <i class="fas fa-chevron-down toggle-icon"></i>
+        </div>
+        <div class="section-content">
+            <div class="activity-row" onclick="toggleVideo(this)">
+                <div class="activity-info"><i class="fas fa-link"></i> <span>Performance tips & query() - VIDEO</span>
+                </div>
+                <button id="vbtn-12" class="status-btn todo">To do</button>
+            </div>
+            <div class="video-embed">
+                <iframe width="100%" height="400" src="https://www.youtube.com/embed/zmdjNSmRXF4?enablejsapi=1"
+                    id="vplayer-12" frameborder="0" allowfullscreen></iframe>
+            </div>
+            <div class="activity-row" onclick="showQuiz(12)">
+                <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Adv. Pandas - QUIZ</span></div>
+                <button id="qbtn-12" class="status-btn todo">To do</button>
+            </div>
+            <div class="quiz-box" id="quiz-module12"
+                style="display:none;padding:20px;background:#f8fafc;margin:15px 0;border-radius:10px;">
+                <form id="quizForm12">
+                    <div class="mcq-container">
+                        <div class="mcq-question">
+                            <div class="mcq-title">1. Which method is faster for row-wise iteration?</div>
+                            <div class="mcq-options">
+                                <label class="mcq-option"><input type="radio" name="q1" value="A">
+                                    <div class="option-letter">A</div><span>.iterrows()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q1" value="B">
+                                    <div class="option-letter">B</div><span>.itertuples()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q1" value="C">
+                                    <div class="option-letter">C</div><span>Standard for-loop</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q1" value="D">
+                                    <div class="option-letter">D</div><span>All same speed</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mcq-question">
+                            <div class="mcq-title">2. Function to filter DataFrames using strings?</div>
+                            <div class="mcq-options">
+                                <label class="mcq-option"><input type="radio" name="q2" value="A">
+                                    <div class="option-letter">A</div><span>.filter()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q2" value="B">
+                                    <div class="option-letter">B</div><span>.query()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q2" value="C">
+                                    <div class="option-letter">C</div><span>.select()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q2" value="D">
+                                    <div class="option-letter">D</div><span>.run()</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mcq-question">
+                            <div class="mcq-title">3. To save memory, convert columns with few unique values to:</div>
+                            <div class="mcq-options">
+                                <label class="mcq-option"><input type="radio" name="q3" value="A">
+                                    <div class="option-letter">A</div><span>'object'</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q3" value="B">
+                                    <div class="option-letter">B</div><span>'category'</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q3" value="C">
+                                    <div class="option-letter">C</div><span>'string'</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q3" value="D">
+                                    <div class="option-letter">D</div><span>'float'</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mcq-question">
+                            <div class="mcq-title">4. Function to find duplicated rows?</div>
+                            <div class="mcq-options">
+                                <label class="mcq-option"><input type="radio" name="q4" value="A">
+                                    <div class="option-letter">A</div><span>.duplicated()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q4" value="B">
+                                    <div class="option-letter">B</div><span>.repeats()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q4" value="C">
+                                    <div class="option-letter">C</div><span>.is_copy()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q4" value="D">
+                                    <div class="option-letter">D</div><span>.multi()</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mcq-question">
+                            <div class="mcq-title">5. Method to remove duplicate rows?</div>
+                            <div class="mcq-options">
+                                <label class="mcq-option"><input type="radio" name="q5" value="A">
+                                    <div class="option-letter">A</div><span>.drop_duplicates()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q5" value="B">
+                                    <div class="option-letter">B</div><span>.remove_repeats()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q5" value="C">
+                                    <div class="option-letter">C</div><span>.unique()</span>
+                                </label>
+                                <label class="mcq-option"><input type="radio" name="q5" value="D">
+                                    <div class="option-letter">D</div><span>.kill_copies()</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" onclick="submitQuiz(12)" class="quiz-submit">Submit Quiz</button>
+                </form>
+            </div>
+            <div class="activity-row">
+                <div class="activity-info"><i class="fas fa-code"></i> <span>Memory Optimization Task - PROGRAM</span>
+                </div>
+                <button class="status-btn todo">To do</button>
+            </div>
+        </div>
+
+        </main>
+    </div>
+
+    <!-- YouTube IFrame API -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script src="js/dashboard.js"></script>
+    <script>
+        const totalModules = 12;
+        let players = {};
+
+        function onYouTubeIframeAPIReady() {
+            const iframes = document.querySelectorAll('iframe[id^="vplayer-"]');
+            iframes.forEach(iframe => {
+                const id = iframe.id;
+                players[id] = new YT.Player(id, {
+                    events: { 'onStateChange': (event) => onPlayerStateChange(event, id) }
+                });
+            });
+        }
+
+        function onPlayerStateChange(event, iframeId) {
+            if (event.data === YT.PlayerState.ENDED) {
+                const btnId = iframeId.replace('vplayer-', 'vbtn-');
+                markAsDone(btnId);
+            }
+        }
+
+        function markAsDone(btnId) {
+            const btn = document.getElementById(btnId);
+            if (btn) {
+                btn.classList.remove("todo");
+                btn.classList.add("done");
+                btn.innerHTML = 'Done <i class="fas fa-check"></i>';
+                localStorage.setItem("pandas_" + btnId, "done");
+                updateProgress();
+            }
+        }
+
+        function toggleSection(header) {
+            header.classList.toggle('active');
+            const content = header.nextElementSibling;
+            content.style.display = (content.style.display === 'block') ? 'none' : 'block';
+        }
+
+        function toggleVideo(row) {
+            const video = row.nextElementSibling;
+            video.style.display = (video.style.display === 'block') ? 'none' : 'block';
+        }
+
+        function showQuiz(module) {
+            const quiz = document.getElementById("quiz-module" + module);
+            quiz.style.display = (quiz.style.display === "block") ? "none" : "block";
+        }
+
+        const quizAnswers = {
+            1: { q1: "B", q2: "B", q3: "B", q4: "B", q5: "B" },
+            2: { q1: "B", q2: "B", q3: "B", q4: "B", q5: "B" },
+            3: { q1: "B", q2: "A", q3: "B", q4: "B", q5: "B" },
+            4: { q1: "B", q2: "B", q3: "C", q4: "A", q5: "B" },
+            5: { q1: "B", q2: "C", q3: "C", q4: "B", q5: "B" },
+            6: { q1: "B", q2: "B", q3: "A", q4: "B", q5: "B" },
+            7: { q1: "B", q2: "B", q3: "B", q4: "A", q5: "C" },
+            8: { q1: "B", q2: "B", q3: "B", q4: "D", q5: "B" },
+            9: { q1: "A", q2: "B", q3: "B", q4: "A", q5: "B" },
+            10: { q1: "B", q2: "A", q3: "A", q4: "B", q5: "A" },
+            11: { q1: "B", q2: "B", q3: "B", q4: "A", q5: "D" },
+            12: { q1: "B", q2: "B", q3: "B", q4: "A", q5: "A" }
+        };
+
+        function submitQuiz(module) {
+            let answers = quizAnswers[module];
+            let score = 0;
+            let total = Object.keys(answers).length;
+            for (let q in answers) {
+                let selected = document.querySelector(`#quiz-module${module} input[name="${q}"]:checked`);
+                let options = document.querySelectorAll(`#quiz-module${module} input[name="${q}"]`);
+                options.forEach(opt => opt.parentElement.classList.remove("correct", "wrong"));
+                if (selected) {
+                    if (selected.value === answers[q]) {
+                        score++;
+                        selected.parentElement.classList.add("correct");
+                    } else {
+                        selected.parentElement.classList.add("wrong");
+                        document.querySelector(`#quiz-module${module} input[name="${q}"][value="${answers[q]}"]`).parentElement.classList.add("correct");
+                    }
+                }
+            }
+            if (score >= 3) {
+                markAsDone("qbtn-" + module);
+                if (module < totalModules) {
+                    localStorage.setItem("pandas_module" + module + "_unlocked", "true");
+                    const nextBox = document.getElementById("module-box-" + (module + 1));
+                    if (nextBox) nextBox.classList.remove("locked");
+                }
+            }
+        }
+
+        function updateProgress() {
+            let completed = 0;
+            const btns = document.querySelectorAll('.status-btn');
+            btns.forEach(btn => { if (btn.classList.contains('done')) completed++; });
+            const percent = btns.length > 0 ? Math.floor((completed / btns.length) * 100) : 0;
+            document.getElementById("progressBar").style.width = percent + "%";
+            document.getElementById("progressText").innerText = percent + "%";
+        }
+
+        // Search Functionality
+        document.getElementById('moduleSearch').addEventListener('input', function (e) {
+            const term = e.target.value.toLowerCase();
+            const boxes = document.querySelectorAll('.section-box');
+            boxes.forEach(box => {
+                const text = box.innerText.toLowerCase();
+                box.style.display = text.includes(term) ? 'block' : 'none';
+            });
+        });
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('main-content');
+
+            sidebarToggle.addEventListener('click', () => {
+                sidebar.classList.toggle('collapsed');
+                mainContent.classList.toggle('expanded');
+            });
+
+            for (let i = 2; i <= totalModules; i++) {
+                if (localStorage.getItem("pandas_module" + (i - 1) + "_unlocked") === "true") {
+                    const box = document.getElementById("module-box-" + i);
+                    if (box) box.classList.remove("locked");
+                }
+            }
+            document.querySelectorAll('.status-btn').forEach(btn => {
+                if (btn.id && localStorage.getItem("pandas_" + btn.id) === "done") {
+                    btn.classList.add("done");
+                    btn.innerHTML = 'Done <i class="fas fa-check"></i>';
+                }
+            });
+            updateProgress();
+        });
+    </script>
+</body>
+
+</html>

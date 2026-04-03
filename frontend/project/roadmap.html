@@ -87,18 +87,7 @@
 
         .top-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
         
-        .search-bar {
-            background: white;
-            padding: 8px 18px;
-            border-radius: 25px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
-            width: 35%;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            border: 1px solid #f1f5f9;
-        }
-        .search-bar input { border: none; outline: none; width: 100%; font-size: 0.9rem; }
+     
 
         /* Track Selector UI */
         .track-selector {
@@ -236,6 +225,132 @@
         }
         .nav-btn.prev { left: -20px; }
         .nav-btn.next { right: -20px; }
+    /* --- FLOATING CHAT WIDGET STYLES --- */
+        .chat-widget-wrapper {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 9999;
+            display: none; /* Initially hidden */
+        }
+        
+        .chat-trigger-btn {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(45, 108, 223, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+        }
+
+        .chat-trigger-btn:hover { transform: scale(1.05); }
+
+        .chat-widget-window {
+            width: 380px;
+            height: 520px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            border: 1px solid #e2e8f0;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp { 
+            from { opacity: 0; transform: translateY(20px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+
+        .widget-header {
+            background: var(--primary-blue);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .widget-header h4 { margin: 0; font-size: 1rem; display: flex; align-items: center; gap: 8px; }
+        
+        .header-actions button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.1rem;
+            cursor: pointer;
+            margin-left: 10px;
+            opacity: 0.8;
+            transition: 0.2s;
+        }
+
+        .header-actions button:hover { opacity: 1; }
+
+        .widget-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background: #f8fafc;
+            scroll-behavior: smooth;
+        }
+
+        .w-bot-msg, .w-user-msg {
+            max-width: 85%;
+            padding: 10px 14px;
+            border-radius: 14px;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .w-bot-msg { align-self: flex-start; background: #e2e8f0; color: var(--dark-blue); border-bottom-left-radius: 4px; }
+        .w-user-msg { align-self: flex-end; background: var(--primary-blue); color: white; border-bottom-right-radius: 4px; }
+
+        .widget-input-area {
+            padding: 15px;
+            background: white;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            gap: 10px;
+        }
+
+        .widget-input-area input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid #cbd5e1;
+            border-radius: 25px;
+            outline: none;
+            font-size: 0.9rem;
+        }
+
+        .widget-input-area button {
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+        }
+
+        .widget-typing { display: none; align-self: flex-start; font-size: 0.75rem; color: var(--text-muted); padding: 0 10px; font-style: italic; }
     </style>
 </head>
 <body>
@@ -247,7 +362,7 @@
             <li><a href="dashboard.html"><i class="fas fa-th-large"></i> <span>Overview</span></a></li>
             <li class="active"><a href="roadmap.html"><i class="fas fa-map-signs"></i> <span>My Roadmap</span></a></li>
             <li><a href="domain.html"><i class="fas fa-compass"></i> <span>Explore Domain</span></a></li>
-            <li><a href="chatbot.html"><i class="fas fa-robot"></i> <span>AI ChatBot</span></a></li>
+           <li><a href="chatbot.html"><i class="fas fa-robot"></i> <span>AI ChatBot</span></a></li>
             <li><a href="profile.html"><i class="fas fa-cog"></i> <span>Profile Settings</span></a></li>
             <li style="margin-top: auto;"><a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> <span>Log out</span></a></li>
         </ul>
@@ -265,10 +380,6 @@
     <main class="main-content">
         <header class="top-nav">
             <div class="toggle-btn" id="sidebarToggle"><i class="fas fa-bars"></i></div>
-            <!-- <div class="search-bar">
-                <i class="fas fa-search"></i>
-                <input type="text" placeholder="Search your learning path...">
-            </div> -->
             <div class="notifications">
                 <i class="far fa-bell" style="font-size: 1.2rem; color: var(--text-muted);"></i>
                 <span class="badge">3</span>
@@ -349,6 +460,38 @@
         </div>
     </main>
 </div>
+<div class="chat-widget-wrapper" id="chatWidgetWrapper">
+    <button class="chat-trigger-btn" onclick="toggleChatWindow()">
+        <i class="fas fa-comment-dots"></i>
+    </button>
+    
+    <div class="chat-widget-window" id="chatWidgetWindow">
+        <div class="widget-header">
+            <h4><i class="fas fa-robot"></i> Career Architect</h4>
+            <div class="header-actions">
+                <button onclick="toggleChatWindow()" title="Minimize"><i class="fas fa-minus"></i></button>
+                <button onclick="closeChatWindow()" title="Close"><i class="fas fa-times"></i></button>
+            </div>
+        </div>
+        
+        <div class="widget-messages" id="widgetMessages">
+            <div class="w-bot-msg">Hi! I am EduPath AI. Ready to guide you through your career track. How can I help today?</div>
+        </div>
+        <div id="w-typing" class="widget-typing">AI is typing...</div>
+        <div class="header-actions">
+    <button onclick="window.location.href='chatbot.html'" title="Maximize">
+        <i class="fas fa-expand-alt"></i>
+    </button>
+    <button onclick="toggleChatWindow()" title="Minimize">
+        <i class="fas fa-minus"></i>
+    </button>
+</div>
+        <div class="widget-input-area">
+            <input type="text" id="widgetInput" placeholder="Ask about your roadmap...">
+            <button onclick="sendWidgetMsg()"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+</div>
 <script src="js/courseData.js"></script>
 <script src="js/dashboard.js"></script>
 <script>
@@ -356,58 +499,7 @@
     const API_URL = "http://localhost:3000";
     let currentDomain = 'dataAnalyst'; // Default domain
 
-    // const roadmapData = {
-    //     dataAnalyst: {
-    //         nonProgramming: [
-    //             { id: "df", title: "Data Fundamentals", level: 1, prereq: [], progress: 0, img: "https://cdn-icons-png.flaticon.com/512/9953/9953334.png", color: "#3b82f6" },
-    //             { id: "stats", title: "Statistics", level: 2, prereq: ["df"], progress: 0, img: "https://cdn-icons-png.flaticon.com/512/2103/2103633.png", color: "#8b5cf6" },
-    //             { id: "excel", title: "Excel Analytics", level: 2, prereq: ["df"], progress: 0, img: "https://cdn-icons-png.flaticon.com/512/732/732220.png", color: "#10b981" },
-    //             { id: "eda", title: "Exploratory DA (EDA)", level: 5, prereq: ["stats", "pandas"], progress: 0, img: "https://cdn-icons-png.flaticon.com/512/4245/4245351.png", color: "#f59e0b" },
-    //             { id: "bi", title: "BI Tools (PBI/Tableau)", level: 5, prereq: ["excel", "eda"], progress: 0, img: "https://cdn-icons-png.flaticon.com/512/5956/5956597.png", color: "#ec4899" }
-    //         ],
-    //         programming: [
-    //             { id: "sql_a", title: "SQL Basics and Advanced", level: 3, prereq: ["df"], progress: 0, img: "https://cdn-icons-png.flaticon.com/512/4492/4492311.png", color: "#2563eb" },
-    //             { id: "py_b", title: "Python Basics", level: 4, prereq: ["df"], progress: 0, img: "https://cdn-icons-png.flaticon.com/512/5968/5968350.png", color: "#f59e0b" },
-    //             { id: "numpy", title: "NumPy Arrays", level: 4, prereq: ["df"], progress: 0, img: "https://cdn-icons-png.flaticon.com/512/9135/9135965.png", color: "#ef4444" },
-    //             { id: "pandas", title: "Pandas DataFrames", level: 4, prereq: ["numpy"], progress: 0, img: "https://cdn-icons-png.flaticon.com/512/4862/4862036.png", color: "#10b981" },
-    //             { id: "viz_py", title: "Python Viz", level: 5, prereq: ["pandas"], progress: 0, img: "https://cdn-icons-png.flaticon.com/512/1055/1055644.png", color: "#6366f1" },
-    //             { id: "reg", title: "Regression Models", level: 6, prereq: ["stats", "py_b"], progress: 0, img: "https://cdn-icons-png.flaticon.com/512/2103/2103507.png", color: "#ef4444" }
-    //         ],
-    //         levels: [
-    //             { lv: 1, name: "Data Foundations", icon: "fa-database" },
-    //             { lv: 2, name: "Statistical Analysis", icon: "fa-chart-line" },
-    //             { lv: 3, name: "Database & SQL", icon: "fa-server" },
-    //             { lv: 4, name: "Python Engineering", icon: "fa-brands fa-python" },
-    //             { lv: 5, name: "Visual Analytics", icon: "fa-pie-chart" },
-    //             { lv: 6, name: "Advanced Modeling", icon: "fa-brain" }
-    //         ]
-    //     },
-    //     aiml: {
-    //         nonProgramming: [
-    //             { id: "math_la", title: "Linear Algebra", level: 1, prereq: [], progress: 0, img: "https://cdn-icons-png.flaticon.com/512/3721/3721619.png", color: "#3b82f6" },
-    //             { id: "calc_mv", title: "Multivariable Calculus", level: 1, prereq: ["math_la"], progress: 0, img: "https://cdn-icons-png.flaticon.com/512/2103/2103633.png", color: "#8b5cf6" },
-    //             { id: "prob_inf", title: "Probability & Inference", level: 2, prereq: ["math_la"], progress: 0, img: "https://cdn-icons-png.flaticon.com/512/1611/1611179.png", color: "#10b981" },
-    //             { id: "opt_algo", title: "Optimization Theory", level: 3, prereq: ["calc_mv"], progress: 0, img: "https://cdn-icons-png.flaticon.com/512/2540/2540832.png", color: "#f59e0b" },
-    //             { id: "ethics_ai", title: "AI Ethics & Bias", level: 6, prereq: [], progress: 0, img: "https://cdn-icons-png.flaticon.com/512/1162/1162456.png", color: "#ec4899" }
-    //         ],
-    //         programming: [
-    //             { id: "skl_ml", title: "Scikit-Learn ML", level: 3, prereq: ["math_la"], progress: 0, img: "https://cdn-icons-png.flaticon.com/512/2103/2103507.png", color: "#2563eb" },
-    //             { id: "dl_nn", title: "Neural Networks", level: 4, prereq: ["skl_ml"], progress: 0, img: "https://cdn-icons-png.flaticon.com/512/2103/2103831.png", color: "#f59e0b" },
-    //             { id: "tf_torch", title: "PyTorch/TF", level: 4, prereq: ["dl_nn"], progress: 0, img: "https://cdn-icons-png.flaticon.com/512/5968/5968350.png", color: "#ef4444" },
-    //             { id: "nlp_proc", title: "NLP & Transformers", level: 5, prereq: ["dl_nn"], progress: 0, img: "https://cdn-icons-png.flaticon.com/512/8637/8637099.png", color: "#10b981" },
-    //             { id: "cv_vision", title: "Computer Vision", level: 5, prereq: ["dl_nn"], progress: 0, img: "https://cdn-icons-png.flaticon.com/512/2892/2892305.png", color: "#6366f1" },
-    //             { id: "mlo_ops", title: "MLOps Deployment", level: 6, prereq: ["tf_torch"], progress: 0, img: "https://cdn-icons-png.flaticon.com/512/9135/9135965.png", color: "#ef4444" }
-    //         ],
-    //         levels: [
-    //             { lv: 1, name: "Math Foundations", icon: "fa-square-root-variable" },
-    //             { lv: 2, name: "Statistical Theory", icon: "fa-chart-area" },
-    //             { lv: 3, name: "Classical ML", icon: "fa-microchip" },
-    //             { lv: 4, name: "Deep Learning", icon: "fa-network-wired" },
-    //             { lv: 5, name: "Applied AI", icon: "fa-eye" },
-    //             { lv: 6, name: "Ethics & Ops", icon: "fa-gears" }
-    //         ]
-    //     }
-    // };
+    
 
     // ─── LOAD ROADMAP FROM DB ────────────────────────────────────────────────
 // roadmap.html (Inside <script>)
@@ -421,24 +513,19 @@ async function loadRoadmap() {
         if (response.ok) {
             const data = await response.json();
             
-            // Check if there is actual saved data in the DB
             if (data.hasGeneratedRoadmap && data.roadmapData) {
                 currentDomain = data.selectedDomain || 'dataAnalyst';
-                
-                // Deep merge or direct assignment to the global roadmapData
-                // This replaces the 0% progress with the saved percentages
                 roadmapData.dataAnalyst = data.roadmapData.dataAnalyst;
                 roadmapData.aiml = data.roadmapData.aiml;
 
                 document.getElementById('empty-state').style.display = 'none';
                 document.getElementById('active-content').style.display = 'flex';
                 
-                // Set the active button state
-                document.querySelectorAll('.track-btn').forEach(btn => btn.classList.remove('active'));
-                const activeBtn = document.getElementById(`btn-${currentDomain}`);
-                if (activeBtn) activeBtn.classList.add('active');
-                
                 refreshUI();
+
+                // FIX: Make the floating chat widget visible now that the roadmap exists
+                document.getElementById('chatWidgetWrapper').style.display = 'block'; 
+                fetchHistory();
             }
         }
     } catch (error) {
@@ -569,7 +656,20 @@ async function loadRoadmap() {
         renderLevels();
         updateOverall();
     }
-
+// Ensure marked.js is imported in roadmap.html as well!
+function appendWidgetMsg(text, sender) {
+    const div = document.createElement('div');
+    div.className = (sender === 'user') ? 'w-user-msg' : 'w-bot-msg';
+    
+    if (sender === 'bot' && typeof marked !== 'undefined') {
+        div.innerHTML = marked.parse(text); // Correctly renders bold/lists in widget
+    } else {
+        div.textContent = text;
+    }
+    
+    document.getElementById('widgetMessages').appendChild(div);
+    scrollChat();
+}
     // ─── UPDATE MODULE PROGRESS ──────────────────────────────────────────────
     window.updateProg = async (id) => {
     const active = roadmapData[currentDomain];
@@ -612,7 +712,101 @@ async function loadRoadmap() {
         }, 100);
     }
 };
+function scrollGrid(btn, dist) { btn.parentElement.querySelector('.course-grid').scrollBy({ left: dist, behavior: 'smooth' }); }
 
+    // --- CHAT WIDGET LOGIC ---
+
+   function toggleChatWindow() {
+    const chatWin = document.getElementById('chatWidgetWindow');
+    // If it's hidden, show it; if it's visible, hide it (Minimize)
+    if (chatWin.style.display === 'flex') {
+        chatWin.style.display = 'none';
+    } else {
+        chatWin.style.display = 'flex';
+        scrollChat(); // Auto-scroll to latest message when opened
+    }
+}
+
+    function closeChatWindow() {
+        document.getElementById('chatWidgetWindow').style.display = 'none';
+    }
+
+    window.openChatFromSidebar = () => {
+        const wrapper = document.getElementById('chatWidgetWrapper');
+        if (wrapper.style.display === 'block') {
+            document.getElementById('chatWidgetWindow').style.display = 'flex';
+            scrollChat();
+        } else {
+            window.location.href = 'chatbot.html';
+        }
+    };
+
+    function scrollChat() {
+        const container = document.getElementById('widgetMessages');
+        container.scrollTop = container.scrollHeight;
+    }
+
+    function appendWidgetMsg(text, sender) {
+        const div = document.createElement('div');
+        div.className = (sender === 'user') ? 'w-user-msg' : 'w-bot-msg';
+        div.innerHTML = text;
+        document.getElementById('widgetMessages').appendChild(div);
+        scrollChat();
+    }
+
+    async function fetchHistory() {
+        try {
+            const res = await fetch(`${API_URL}/api/chat-history`, { headers: { 'Authorization': `Bearer ${token}` } });
+            const data = await res.json();
+            if (data.history && data.history.length > 0) {
+                document.getElementById('widgetMessages').innerHTML = '';
+                data.history.forEach(m => appendWidgetMsg(m.text, m.role));
+            }
+        } catch (e) { console.error("History load failed."); }
+    }
+window.sendWidgetMsg = async () => {
+    const input = document.getElementById('widgetInput');
+    const text = input.value.trim();
+    if (!text) return;
+
+    // 1. Display user message immediately in the UI
+    appendWidgetMsg(text, 'user');
+    input.value = '';
+    
+    // 2. Show the typing indicator
+    const typingIndicator = document.getElementById('w-typing');
+    if (typingIndicator) typingIndicator.style.display = 'block';
+
+    try {
+        const res = await fetch(`${API_URL}/api/chat`, {
+            method: 'POST',
+            headers: { 
+                'Authorization': `Bearer ${token}`, 
+                'Content-Type': 'application/json' 
+            },
+            body: JSON.stringify({ userMessage: text })
+        });
+
+        const data = await res.json();
+        
+        // 3. Hide typing indicator
+        if (typingIndicator) typingIndicator.style.display = 'none';
+        
+        if (data.reply) {
+            appendWidgetMsg(data.reply, 'bot');
+        } else {
+            appendWidgetMsg("I couldn't process that. Please try again.", 'bot');
+        }
+    } catch (err) {
+        if (typingIndicator) typingIndicator.style.display = 'none';
+        appendWidgetMsg("Connection error. Is the server running?", 'bot');
+        console.error("Chat Error:", err);
+    }
+};
+
+    document.getElementById("widgetInput").addEventListener("keypress", (e) => {
+        if (e.key === "Enter") { e.preventDefault(); sendWidgetMsg(); }
+    });
     // Sidebar Logic
     const sidebarToggle = document.getElementById('sidebarToggle');
     sidebarToggle.addEventListener('click', () => {
@@ -622,7 +816,13 @@ async function loadRoadmap() {
 
     function scrollGrid(btn, dist) { btn.parentElement.querySelector('.course-grid').scrollBy({ left: dist, behavior: 'smooth' }); }
     
-    window.onload = loadRoadmap;
+   // Replace window.onload = loadRoadmap; with this:
+window.addEventListener('load', () => {
+    loadRoadmap(); // Loads your roadmap and initializes the chat history
+    if (typeof type === 'function'){
+
+     type(); // Triggers your "AI-Guided Roadmap" animation
+}});
 </script>
 </body>
 </html>

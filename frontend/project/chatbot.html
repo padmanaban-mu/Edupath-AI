@@ -5,51 +5,121 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EduPath AI | Career Architect Chat</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="css/dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
         :root {
-            --primary-blue: #3b82f6;
-            --dark-blue: #1e293b;
-            --bg-light: #f8fafc;
+            /* Matched with roadmap.html colors */
+            --primary-blue: #2d6cdf;
+            --dark-blue: #1a3a6d;
+            --bg-light: #f8faff;
             --white: #ffffff;
-            --text-muted: #64748b;
+            --text-main: #333;
+            --text-muted: #7f8c8d;
+            --transition: all 0.3s ease;
             --success-green: #10b981;
         }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-light);
+        * {
             margin: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
         }
 
-        .chat-container {
-            flex: 1;
+        body {
+            background: var(--bg-light);
+            color: var(--text-main);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Sidebar Styles - Identical to Roadmap */
+        .sidebar {
+            width: 260px;
+            background: var(--dark-blue);
+            color: white;
+            padding: 30px 20px;
             display: flex;
             flex-direction: column;
-            max-width: 900px;
-            height: 90vh;
-            margin: 20px auto;
-            background: var(--white);
-            border-radius: 24px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            border: 1px solid #e2e8f0;
-            overflow: hidden;
+            transition: var(--transition);
+            position: fixed;
+            height: 100vh;
+            z-index: 1000;
         }
 
-        .chat-header {
-            background: var(--primary-blue);
-            padding: 25px;
-            color: white;
+        .sidebar.collapsed { width: 80px; }
+        .sidebar.collapsed .nav-menu span, 
+        .sidebar.collapsed .logo span, 
+        .sidebar.collapsed .user-info { display: none; }
+
+        .logo { font-size: 24px; font-weight: 700; margin-bottom: 50px; text-align: center; }
+        .logo span { color: var(--primary-blue); }
+
+        .nav-menu { list-style: none; flex-grow: 1; padding: 0; }
+        .nav-menu li {
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: var(--transition);
             display: flex;
             align-items: center;
             gap: 15px;
         }
 
-        .chat-header i { font-size: 1.5rem; }
+        .nav-menu li a { text-decoration: none; color: inherit; display: flex; align-items: center; gap: 15px; width: 100%; }
+        .nav-menu li:hover, .nav-menu li.active { background: rgba(255, 255, 255, 0.1); color: var(--primary-blue); }
+
+        /* Main Content Layout */
+        .main-content {
+            margin-left: 260px;
+            flex: 1;
+            padding: 25px 40px;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            transition: var(--transition);
+            width: calc(100% - 260px);
+        }
+
+        .main-content.expanded { margin-left: 80px; width: calc(100% - 80px); }
+
+        /* Top Nav / Header Styles imported from roadmap */
+        /* .top-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .toggle-btn { cursor: pointer; font-size: 1.2rem; color: var(--dark-blue); transition: var(--transition); }
+        .toggle-btn:hover { color: var(--primary-blue); }
+        .notifications { position: relative; cursor: pointer; }
+        .badge { position: absolute; top: -5px; right: -8px; background: #ef4444; color: white; border-radius: 50%; padding: 2px 6px; font-size: 0.6rem; font-weight: bold; }
+*/
+        .chat-container {
+            flex: 1; 
+            display: flex;
+            flex-direction: column;
+            max-width: 1000px;
+            width: 100%;
+            margin: 0 auto;
+            background: var(--white);
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+
+        .chat-header {
+            background: var(--white);
+            padding: 20px 25px;
+            color: var(--dark-blue);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .chat-header i { font-size: 1.5rem; color: var(--primary-blue); }
 
         #chat-messages {
             flex: 1;
@@ -59,6 +129,7 @@
             flex-direction: column;
             gap: 20px;
             scroll-behavior: smooth;
+            background: #fdfdfd;
         }
 
         .bot-msg {
@@ -84,93 +155,10 @@
             animation: fadeIn 0.3s ease;
         }
 
-        .options-wrapper {
-            margin-top: 12px;
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .chat-btn {
-            padding: 10px 18px;
-            border-radius: 12px;
-            border: 1px solid var(--primary-blue);
-            background: white;
-            color: var(--primary-blue);
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.2s;
-            font-size: 0.85rem;
-        }
-
-        .chat-btn:hover {
-            background: var(--primary-blue);
-            color: white;
-        }
-
-        /* Form Styles for Checklist */
-        .checklist-form {
-            background: white;
-            border: 1px solid #cbd5e1;
-            border-radius: 12px;
-            padding: 15px;
-            margin-top: 15px;
-        }
-        
-        .checklist-section {
-            margin-bottom: 15px;
-        }
-        
-        .checklist-section h4 {
-            margin: 0 0 10px 0;
-            color: var(--primary-blue);
-            font-size: 0.9rem;
-            text-transform: uppercase;
-        }
-
-        .checkbox-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 10px;
-        }
-
-        .checkbox-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.9rem;
-        }
-
-        .none-option {
-            background: #fffbeb;
-            border: 1px solid #fde68a;
-            padding: 10px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            font-weight: bold;
-            color: #b45309;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .submit-checklist-btn {
-            background: var(--primary-blue);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 10px;
-        }
-
         .chat-footer {
             padding: 20px 30px;
             border-top: 1px solid #e2e8f0;
-            background: #fdfdfd;
-            display: none;
+            background: var(--white);
         }
 
         .input-group {
@@ -185,6 +173,11 @@
             border-radius: 12px;
             outline: none;
             font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--primary-blue);
         }
 
         #finalConfirmBtn {
@@ -195,24 +188,173 @@
             border-radius: 12px;
             font-weight: 700;
             cursor: pointer;
+            transition: var(--transition);
         }
+
+        #finalConfirmBtn:hover {
+            background: var(--dark-blue);
+        }
+
+        /* Checklist Styles */
+        .checklist-form {
+            background: white;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+        
+        .checklist-section h4 {
+            margin: 15px 0 10px 0;
+            color: var(--primary-blue);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .chat-btn {
+            padding: 10px 18px;
+            border-radius: 12px;
+            border: 1px solid var(--primary-blue);
+            background: white;
+            color: var(--primary-blue);
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            margin: 5px;
+        }
+
+        .chat-btn:hover {
+            background: var(--primary-blue);
+            color: white;
+        }
+
+        
+
+        
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
-
-<div class="chat-container">
-    <div class="chat-header">
-        <i class="fas fa-robot"></i>
-        <div>
-            <h3 style="margin: 0;">EduPath AI Architect</h3>
-            <p style="margin: 0; font-size: 0.8rem; opacity: 0.9;">Career Navigator & Learning Hub</p>
+<div class="dashboard-container">
+<aside class="sidebar" id="sidebar">
+    <div class="logo">EduPath <span>AI</span></div>
+    <ul class="nav-menu">
+        <li><a href="dashboard.html"><i class="fas fa-th-large"></i> <span>Overview</span></a></li>
+        <li><a href="roadmap.html"><i class="fas fa-map-signs"></i> <span>My Roadmap</span></a></li>
+        <li><a href="domain.html"><i class="fas fa-compass"></i> <span>Explore Domain</span></a></li>
+        <li class="active"><a href="chatbot.html"><i class="fas fa-robot"></i> <span>AI ChatBot</span></a></li>
+        <li><a href="profile.html"><i class="fas fa-cog"></i> <span>Profile Settings</span></a></li>
+        <li style="margin-top: auto;"><a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> <span>Log out</span></a></li>
+    </ul>
+    <div class="sidebar-footer">
+        <div class="profile-card">
+            <div class="avatar">U</div>
+            <div class="user-info">
+                <p class="name" >User Name</p>
+                <p class="status">Pro Member</p>
+            </div>
         </div>
     </div>
+</aside>
 
-    <div id="chat-messages">
-        <div class="bot-msg">
+<main class="main-content">
+    
+    <header class="top-nav">
+        <div class="toggle-btn" id="sidebarToggle"><i class="fas fa-bars"></i></div>
+        <div class="notifications">
+            <i class="far fa-bell" style="font-size: 1.2rem; color: var(--text-muted);"></i>
+            <span class="badge">3</span>
+        </div>
+    </header>
+
+    <div class="chat-container" id="assessmentContainer">
+        <div class="chat-header">
+            <i class="fas fa-robot"></i>
+            <div>
+                <h3 id="chat-title" style="margin: 0; font-size: 1.1rem; font-weight: 700;">EduPath AI Architect</h3>
+                <p id="chat-subtitle" style="margin: 0; font-size: 0.8rem; color: var(--text-muted);">Career Navigator & Learning Hub</p>
+            </div>
+        </div>
+
+        <div id="chat-messages"></div>
+
+        <div class="chat-footer" id="chat-footer" style="display: none;">
+            <div class="input-group">
+                <input type="text" id="confirmInput" placeholder="Type 'confirm' to sync roadmap...">
+                <button id="finalConfirmBtn">Initialize Path</button>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="js/courseData.js"></script>
+<script src="js/dashboard.js"></script>
+<script>
+    const token = localStorage.getItem('token');
+    const API_URL = "http://localhost:3000";
+    let userSelection = { domain: '' };
+    let userRoadmap = JSON.parse(JSON.stringify(window.roadmapData));
+    let isRoadmapGenerated = false;
+
+    // Sidebar Toggle Logic
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    if (sidebarToggle) {
+        sidebarToggle.addEventListener('click', () => {
+            document.getElementById('sidebar').classList.toggle('collapsed');
+            document.querySelector('.main-content').classList.toggle('expanded');
+        });
+    }
+
+    async function checkExistingPath() {
+        if (!token) {
+            window.location.href = "login.html";
+            return;
+        }
+        try {
+            const response = await fetch(`${API_URL}/get-roadmap`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const data = await response.json();
+
+            if (data.hasGeneratedRoadmap) {
+                isRoadmapGenerated = true;
+                document.getElementById('chat-title').innerText = "Edupath AI";
+                document.getElementById('chat-subtitle').innerText = "Personal Learning Assistant";
+                document.getElementById('chat-footer').style.display = 'block';
+                document.getElementById('confirmInput').placeholder = "Chat with our AI Chatbot...";
+                document.getElementById('finalConfirmBtn').innerText = "Send";
+                
+                document.getElementById('chat-messages').innerHTML = '';
+                await fetchFullHistory();
+            } else {
+                showWelcomeMessage();
+            }
+        } catch (err) {
+            console.error("Initialization error:", err);
+            showWelcomeMessage();
+        }
+    }
+
+    async function fetchFullHistory() {
+        try {
+            const res = await fetch(`${API_URL}/api/chat-history`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const data = await res.json();
+            if (data.history && data.history.length > 0) {
+                data.history.forEach(m => appendMsg(m.text, m.role === 'bot' ? 'bot' : 'user'));
+            } else {
+                appendMsg("Hello! I'm your Career Architect. How can I help with your roadmap today?");
+            }
+        } catch (e) {
+            appendMsg("Could not load chat history.");
+        }
+    }
+
+    function showWelcomeMessage() {
+        appendMsg(`
             Welcome to **EduPath AI**! I am your personal Career Architect.
             <br><br>
             To build your custom learning path, please select a domain:
@@ -220,193 +362,146 @@
                 <button onclick="selectDomain('dataAnalyst', 'Data Analyst')" class="chat-btn">Data Analyst</button>
                 <button onclick="selectDomain('aiml', 'AI/ML Engineer')" class="chat-btn">AI/ML Engineer</button>
             </div>
-        </div>
-    </div>
-
-    <div class="chat-footer" id="chat-footer">
-        <div class="input-group">
-            <input type="text" id="confirmInput" placeholder="Type 'confirm' to sync roadmap...">
-            <button id="finalConfirmBtn">Initialize Path</button>
-        </div>
-    </div>
-</div>
-
-<script src="js/courseData.js"></script>
-<script src="js/courseData.js"></script>
-<script>
-    const token = localStorage.getItem('token');
-    const API_URL = "http://localhost:3000";
-    let userSelection = { domain: '' };
-    
-    // We create a deep copy of the global roadmap data to modify it for this specific user
-    let userRoadmap = JSON.parse(JSON.stringify(window.roadmapData));
+        `);
+    }
 
     function appendMsg(text, type = 'bot') {
         const msgDiv = document.createElement('div');
         msgDiv.className = type === 'bot' ? 'bot-msg' : 'user-msg';
-        msgDiv.innerHTML = text;
+        
+        if (type === 'bot' && typeof marked !== 'undefined') {
+            if (text.includes('checklist-form')) {
+                msgDiv.innerHTML = text;
+            } else {
+                msgDiv.innerHTML = marked.parse(text); 
+            }
+        } else {
+            msgDiv.innerHTML = text;
+        }
+
         const container = document.getElementById('chat-messages');
         container.appendChild(msgDiv);
         container.scrollTop = container.scrollHeight;
     }
 
-    // STEP 1: Select Domain & Generate Checklist
     window.selectDomain = (domainKey, domainName) => {
         appendMsg(domainName, 'user');
         userSelection.domain = domainKey;
-        
         const domainData = userRoadmap[domainKey];
 
         setTimeout(() => {
-            // Generate dynamic checklist from courseData.js
             let formHTML = `
                 <div class="checklist-form">
-                    <p style="margin-top:0;">Please check any courses you have <b>already completed</b>, or select "None" if you are starting fresh:</p>
-                    
-                    <label class="none-option">
+                    <p style="margin-top:0; font-weight:600;">Check courses you have <b>completed</b>:</p>
+                    <label style="display:flex; align-items:center; gap:8px; margin-bottom:15px; color:#b45309; background:#fffbeb; padding:10px; border-radius:8px;">
                         <input type="checkbox" id="check-none" onchange="toggleNone(this)">
-                        NONE (I am a complete beginner)
+                        I am a complete beginner
                     </label>
-
                     <div class="checklist-section">
-                        <h4>Programming Courses</h4>
-                        <div class="checkbox-grid">
-                            ${domainData.programming.map(c => `
-                                <label class="checkbox-item course-cb">
-                                    <input type="checkbox" value="${c.id}" data-title="${c.title}"> ${c.title}
-                                </label>
-                            `).join('')}
+                        <h4>Programming</h4>
+                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px;">
+                            ${domainData.programming.map(c => `<label style="font-size:0.85rem;" class="course-cb"><input type="checkbox" value="${c.id}" data-title="${c.title}"> ${c.title}</label>`).join('')}
                         </div>
                     </div>
-
                     <div class="checklist-section">
-                        <h4>Non-Programming Courses</h4>
-                        <div class="checkbox-grid">
-                            ${domainData.nonProgramming.map(c => `
-                                <label class="checkbox-item course-cb">
-                                    <input type="checkbox" value="${c.id}" data-title="${c.title}"> ${c.title}
-                                </label>
-                            `).join('')}
+                        <h4>Fundamentals</h4>
+                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px;">
+                            ${domainData.nonProgramming.map(c => `<label style="font-size:0.85rem;" class="course-cb"><input type="checkbox" value="${c.id}" data-title="${c.title}"> ${c.title}</label>`).join('')}
                         </div>
                     </div>
-                    <button class="submit-checklist-btn" onclick="processChecklist()">Submit Assessment</button>
+                    <button class="chat-btn" style="width:100%; margin-top:15px; background:var(--primary-blue); color:white;" onclick="processChecklist()">Submit Assessment</button>
                 </div>
             `;
             appendMsg(formHTML);
         }, 600);
     };
 
-    // Logic to disable other checkboxes if "None" is checked
     window.toggleNone = (noneCheckbox) => {
         const allCourseCheckboxes = document.querySelectorAll('.course-cb input');
         allCourseCheckboxes.forEach(cb => {
-            if (noneCheckbox.checked) {
-                cb.checked = false;
-                cb.disabled = true;
-            } else {
-                cb.disabled = false;
-            }
+            if (noneCheckbox.checked) { cb.checked = false; cb.disabled = true; } 
+            else { cb.disabled = false; }
         });
     };
 
-    // STEP 2: Process the Checklist & Smart Suggestions
     window.processChecklist = () => {
         const isNone = document.getElementById('check-none').checked;
         const checkedCourses = Array.from(document.querySelectorAll('.course-cb input:checked'));
-        
-        // Disable the form so they can't submit twice
-        document.querySelector('.submit-checklist-btn').disabled = true;
-        document.querySelector('.submit-checklist-btn').innerText = "Submitted";
 
         if (isNone) {
-            appendMsg("None. I am a beginner.", 'user');
-            setTimeout(() => {
-                appendMsg(`Perfect. I have set up a complete beginner path for you. We will start with the foundational modules. <br><br>Please type <b>'confirm'</b> below to initialize your roadmap.`);
-                document.getElementById('chat-footer').style.display = 'block';
-            }, 800);
+            appendMsg("I am a beginner.", 'user');
         } else if (checkedCourses.length > 0) {
             let userTitles = checkedCourses.map(cb => cb.getAttribute('data-title')).join(', ');
             appendMsg(`I have completed: ${userTitles}`, 'user');
             
-            // Unlock checked courses and find important topics to review
-            let reviewTopics = [];
             let domainData = userRoadmap[userSelection.domain];
             let allDomainCourses = [...domainData.programming, ...domainData.nonProgramming];
 
             checkedCourses.forEach(cb => {
-                let courseId = cb.value;
-                // Find course in our userRoadmap and set progress to 100
-                let courseObj = allDomainCourses.find(c => c.id === courseId);
-                if (courseObj) {
-                    courseObj.progress = 100;
-                    // Pick the first keyTopic to recommend reviewing
-                    if (courseObj.keyTopics && courseObj.keyTopics.length > 0) {
-                        reviewTopics.push(`<b>${courseObj.keyTopics[0]}</b> (from ${courseObj.title})`);
-                    }
-                }
+                let courseObj = allDomainCourses.find(c => c.id === cb.value);
+                if (courseObj) courseObj.progress = 100;
             });
-
-            setTimeout(() => {
-                let botReply = `Got it! I have marked those courses as complete, which will automatically unlock the next level of courses for you (like Pandas or Advanced Stats).<br><br>`;
-                
-                if (reviewTopics.length > 0) {
-                    botReply += `⚠️ <b>AI Recommendation:</b> Even though you know these subjects, before starting the new courses, please ensure you have absolute clarity on these specific topics from our curriculum:<br>
-                    <ul style="margin-top: 5px;"><li>${reviewTopics.join('</li><li>')}</li></ul><br>`;
-                }
-                
-                botReply += `If you are ready, type <b>'confirm'</b> below to initialize your roadmap.`;
-                appendMsg(botReply);
-                document.getElementById('chat-footer').style.display = 'block';
-            }, 800);
-
-        } else {
-            alert("Please select at least one course or check 'None'.");
-            document.querySelector('.submit-checklist-btn').disabled = false;
-            document.querySelector('.submit-checklist-btn').innerText = "Submit Assessment";
         }
+
+        setTimeout(() => {
+            appendMsg(`Assessment received! Type **'confirm'** below to initialize your roadmap.`);
+            document.getElementById('chat-footer').style.display = 'block';
+        }, 800);
     };
 
-    // STEP 3: Save to Database
     document.getElementById('finalConfirmBtn').onclick = async () => {
-        const input = document.getElementById('confirmInput').value.toLowerCase().trim();
-        const btn = document.getElementById('finalConfirmBtn');
-        
-        if (input === 'confirm') {
-            btn.disabled = true;
-            btn.innerText = "Generating...";
+        const inputField = document.getElementById('confirmInput');
+        const userText = inputField.value.trim();
+        if (!userText) return;
 
-            const finalDataToSave = {
-                hasGeneratedRoadmap: true,
-                selectedDomain: userSelection.domain,
-                roadmapData: userRoadmap
-            };
+        if (!isRoadmapGenerated) {
+            if (userText.toLowerCase() === 'confirm') {
+                const btn = document.getElementById('finalConfirmBtn');
+                btn.disabled = true;
+                btn.innerText = "Syncing...";
 
-            try {
-                const response = await fetch(`${API_URL}/save-roadmap`, {
-                    method: 'POST',
-                    headers: { 
-                        'Authorization': `Bearer ${token}`, 
-                        'Content-Type': 'application/json' 
-                    },
-                    body: JSON.stringify(finalDataToSave)
-                });
+                try {
+                    const response = await fetch(`${API_URL}/save-roadmap`, {
+                        method: 'POST',
+                        headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            hasGeneratedRoadmap: true,
+                            selectedDomain: userSelection.domain,
+                            roadmapData: userRoadmap
+                        })
+                    });
 
-                if (response.ok) {
-                    appendMsg("✨ Roadmap synchronized! Redirecting you to your personalized path...", 'bot');
-                    setTimeout(() => window.location.href = "roadmap.html", 1500);
-                } else {
-                    throw new Error("Failed to save");
+                    if (response.ok) {
+                        appendMsg("✨ Roadmap synchronized! Redirecting...", 'bot');
+                        setTimeout(() => window.location.href = "roadmap.html", 1500);
+                    }
+                } catch (err) {
+                    btn.disabled = false;
+                    btn.innerText = "Initialize Path";
+                    appendMsg("❌ Error saving roadmap.", 'bot');
                 }
-            } catch (err) {
-                console.error("Save failed", err);
-                btn.disabled = false;
-                btn.innerText = "Initialize Path";
-                appendMsg("❌ Error saving your roadmap. Please ensure your backend server is running.", 'bot');
+            } else {
+                alert("Please type 'confirm' to proceed.");
             }
         } else {
-            alert("Please type 'confirm' exactly to proceed.");
+            appendMsg(userText, 'user');
+            inputField.value = '';
+            
+            try {
+                const res = await fetch(`${API_URL}/api/chat`, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userMessage: userText })
+                });
+                const data = await res.json();
+                appendMsg(data.reply, 'bot');
+            } catch (err) {
+                appendMsg("AI resting. Please try again.", 'bot');
+            }
         }
     };
+
+    checkExistingPath();
 </script>
 
 </body>

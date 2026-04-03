@@ -21,7 +21,8 @@ const User = mongoose.model('User', new mongoose.Schema({
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     hasGeneratedRoadmap: { type: Boolean, default: false },
-    selectedDomain: { type: String, default: 'dataAnalyst' }, // Tracks if user is in 'aiml' or 'dataAnalyst'
+    // Fix: Changed default from 'dataAnalyst' to an empty string
+    selectedDomain: { type: String, default: '' }, 
     roadmapData: { type: Object, default: null } // Stores the full JSON progress object
 }));
 
@@ -86,12 +87,8 @@ app.get("/get-roadmap", authenticateToken, async (req, res) => {
 });
 
 // POST: Save or update the full roadmap (Called by chatbot and progress clicks)
-// Inside server.js
-// Example Express Route
-// server.js
 app.post('/save-roadmap', authenticateToken, async (req, res) => {
     try {
-        // Change req.user.id to req.userId
         await User.findByIdAndUpdate(
             req.userId, 
             { 
@@ -108,6 +105,7 @@ app.post('/save-roadmap', authenticateToken, async (req, res) => {
         res.status(500).send({ error: "Internal Server Error" });
     }
 });
+
 // POST: Explicitly switch the user's track (Called by switch buttons in roadmap.html)
 app.post("/update-domain", authenticateToken, async (req, res) => {
     try {

@@ -354,16 +354,16 @@
     }
 
     function showWelcomeMessage() {
-        appendMsg(`
-            Welcome to **EduPath AI**! I am your personal Career Architect.
-            <br><br>
-            To build your custom learning path, please select a domain:
-            <div class="options-wrapper">
-                <button onclick="selectDomain('dataAnalyst', 'Data Analyst')" class="chat-btn">Data Analyst</button>
-                <button onclick="selectDomain('aiml', 'AI/ML Engineer')" class="chat-btn">AI/ML Engineer</button>
-            </div>
-        `);
-    }
+    appendMsg(`
+        <p>Welcome to <b>EduPath AI</b>! I am your personal Career Architect.</p>
+        <br>
+        <p>To build your custom learning path, please select a domain:</p>
+        <div class="options-wrapper">
+            <button onclick="selectDomain('dataAnalyst', 'Data Analyst')" class="chat-btn">Data Analyst</button>
+            <button onclick="selectDomain('aiml', 'AI/ML Engineer')" class="chat-btn">AI/ML Engineer</button>
+        </div>
+    `);
+}
 
     function appendMsg(text, type = 'bot') {
         const msgDiv = document.createElement('div');
@@ -373,7 +373,7 @@
             if (text.includes('checklist-form')) {
                 msgDiv.innerHTML = text;
             } else {
-                msgDiv.innerHTML = marked.parse(text); 
+               msgDiv.innerHTML = text;
             }
         } else {
             msgDiv.innerHTML = text;

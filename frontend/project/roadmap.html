@@ -139,7 +139,7 @@
             overflow-x: auto;
         }
 
-        .viz-node { text-align: center; position: relative; min-width: 130px; }
+        .viz-node { text-align: center; position: relative; min-width: 130px; cursor: pointer; }
         
         .viz-image-box { 
             width: 80px; 
@@ -200,6 +200,7 @@
             justify-content: center;
             margin-bottom: 15px;
         }
+
         .card-img-box img { max-width: 65px; max-height: 65px; object-fit: contain; }
 
         .status-tag { font-size: 0.65rem; padding: 4px 10px; border-radius: 20px; font-weight: 700; text-transform: uppercase; }
@@ -225,6 +226,24 @@
         }
         .nav-btn.prev { left: -20px; }
         .nav-btn.next { right: -20px; }
+        
+        /* --- CUSTOM FLOATING TOOLTIP --- */
+        #custom-tooltip {
+            position: fixed;
+            background:      #1a3a6d;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 8px;
+            font-size: 0.68rem;
+            pointer-events: none;
+            z-index: 10000;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            max-width: 250px;
+            line-height: 1.5;
+        }
+
     /* --- FLOATING CHAT WIDGET STYLES --- */
         .chat-widget-wrapper {
             position: fixed;
@@ -386,11 +405,6 @@
             </div>
         </header>
 
-        <!-- <div class="track-selector">
-            <button id="btn-dataAnalyst" onclick="switchTrack('dataAnalyst')" class="track-btn active">Data Analyst Track</button>
-            <button id="btn-aiml" onclick="switchTrack('aiml')" class="track-btn">AI/ML Track</button>
-        </div> -->
-
         <div class="roadmap-container">
             <div id="empty-state" class="roadmap-section-card" style="text-align: center; padding: 100px 20px;">
                 <div style="background: #f0f7ff; width: 90px; height: 90px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 25px;">
@@ -492,6 +506,9 @@
         </div>
     </div>
 </div>
+
+<div id="custom-tooltip"></div>
+
 <script src="js/courseData.js"></script>
 <script src="js/dashboard.js"></script>
 <script>
@@ -499,7 +516,26 @@
     const API_URL = "http://localhost:3000";
     let currentDomain = 'dataAnalyst'; // Default domain
 
-    
+    // --- TOOLTIP LOGIC ---
+    const tooltip = document.getElementById('custom-tooltip');
+
+    window.showTooltip = (event, text) => {
+        if (!text) return;
+        tooltip.innerHTML = text;
+        tooltip.style.opacity = '1';
+        moveTooltip(event);
+    };
+
+    window.moveTooltip = (event) => {
+        let x = event.clientX + 15;
+        let y = event.clientY + 15;
+        tooltip.style.left = x + 'px';
+        tooltip.style.top = y + 'px';
+    };
+
+    window.hideTooltip = () => {
+        tooltip.style.opacity = '0';
+    };
 
     // ─── LOAD ROADMAP FROM DB ────────────────────────────────────────────────
 // roadmap.html (Inside <script>)
@@ -587,14 +623,30 @@ async function loadRoadmap() {
     // ─── RENDER GRIDS ────────────────────────────────────────────────────────
     function renderGrids() {
         const active = roadmapData[currentDomain];
+        const all = [...active.nonProgramming, ...active.programming];
+        
+        const getModuleTitles = (ids) => ids.map(id => {
+            const mod = all.find(m => m.id === id);
+            return mod ? mod.title : id;
+        }).join('<br>• ');
+
         const render = (id, data) => {
             const container = document.getElementById(id);
             if (!container) return;
             container.innerHTML = data.map(m => {
                 const isUnlocked = checkPrerequisites(m.id);
                 const status = m.progress === 100 ? "Complete" : (isUnlocked ? "Available" : "Locked");
+                
+                let tooltipText = '';
+                if (m.prereq.length > 0) {
+                    tooltipText = `Prerequisites needed to unlock:<br>• ${getModuleTitles(m.prereq)}`;
+                } else {
+                    tooltipText = `No prerequisites needed.`;
+                }
+                const safeTooltipText = tooltipText.replace(/'/g, "\\'");
+
                 return `
-                    <div class="part-card ${status === 'Locked' ? 'locked' : ''}" onclick="updateProg('${m.id}')">
+                    <div class="part-card ${status === 'Locked' ? 'locked' : ''}" onclick="updateProg('${m.id}')" onmouseenter="showTooltip(event, '${safeTooltipText}')" onmousemove="moveTooltip(event)" onmouseleave="hideTooltip()">
                         <div class="card-img-box"><img src="${m.img}" alt="${m.title}"></div>
                         <div>
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
@@ -621,8 +673,13 @@ async function loadRoadmap() {
             const lvModules = all.filter(m => m.level === l.lv);
             const isDone = lvModules.length > 0 && lvModules.every(m => m.progress === 100);
             const statusColor = isDone ? "#10b981" : (lvModules.some(m => m.progress > 0) ? "#f59e0b" : "#94a3b8");
+            
+            const includedTitles = lvModules.map(m => m.title).join('<br>• ');
+            const tooltipText = includedTitles ? `<strong>Included Courses:</strong><br>• ${includedTitles}` : `No courses assigned.`;
+            const safeTooltipText = tooltipText.replace(/'/g, "\\'");
+
             return `
-                <div class="viz-node">
+                <div class="viz-node" onmouseenter="showTooltip(event, '${safeTooltipText}')" onmousemove="moveTooltip(event)" onmouseleave="hideTooltip()">
                     <div class="viz-image-box" style="border-color: ${statusColor}; background: ${isDone ? '#ecfdf5' : '#f8fafc'}; transition: all 0.5s ease;">
                         <i class="fas ${l.icon}" style="color: ${statusColor}; font-size: 1.2rem;"></i>
                     </div>

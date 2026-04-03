@@ -1,0 +1,28 @@
+# environment variables
+.env
+.env.*
+
+# node modules (heavy + useless for repo)
+node_modules/
+
+# logs
+logs/
+*.log
+npm-debug.log*
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# editor files
+.vscode/
+.idea/
+
+# build / temp
+dist/
+build/
+.tmp/
+.cache/
+
+# zip files (you already have one)
+*.zip

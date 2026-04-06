@@ -115,6 +115,19 @@ app.get("/profile", authenticateToken, async (req, res) => {
     }
 });
 
+// --- NETWORK RETRY HELPER (Added to fix fetch failed errors) ---
+const sendWithRetry = async (chatSession, message, retries = 3) => {
+    for (let i = 0; i < retries; i++) {
+        try {
+            return await chatSession.sendMessage(message);
+        } catch (error) {
+            console.warn(`[Network] Gemini API fetch failed. Attempt ${i + 1} of ${retries}...`);
+            if (i === retries - 1) throw error; // Throw on final failure
+            await new Promise(res => setTimeout(res, 1500)); // Wait 1.5 seconds before retrying
+        }
+    }
+};
+
 // --- GEMINI AI CHAT ROUTES (With Database Memory) ---
 
 // 1. Fetch Chat History on Page Load
@@ -187,7 +200,9 @@ app.post('/api/chat', authenticateToken, async (req, res) => {
         }));
 
         const chatSession = aiModel.startChat({ history: formattedHistory });
-        const result = await chatSession.sendMessage(userMessage);
+        
+        // Using the new robust retry mechanism to combat 'fetch failed'
+        const result = await sendWithRetry(chatSession, userMessage);
         const responseText = result.response.text();
 
         // Save to MongoDB

@@ -53,12 +53,7 @@
             width: 80px;
         }
 
-        .logo {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 50px;
-            text-align: center;
-        }
+        
 
         .logo span { color: var(--primary-blue); }
 
@@ -159,7 +154,7 @@
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 20px;
-            align-items: start;
+            align-items: stretch;
         }
 .domain-card.hidden {
     display: none;
@@ -184,6 +179,9 @@
             transform: translateY(-5px);
             box-shadow: 0 10px 25px rgba(0,0,0,0.05);
             border-color: var(--primary-blue);
+        }
+        .domain-content {
+            flex-grow: 1; /* This pushes the footer to the bottom */
         }
 
         .domain-icon {
@@ -228,7 +226,10 @@
 
 <div class="dashboard-container">
     <aside class="sidebar" id="sidebar">
-        <div class="logo">EduPath <span>AI</span></div>
+       <div class="logo">
+    <i class="fas fa-brain logo-icon"></i>
+    <div class="logo-text">EduPath <span>AI</span></div>
+</div>
         <ul class="nav-menu">
             <li><a href="dashboard.html"><i class="fas fa-th-large"></i> <span>Overview</span></a></li>
             <li><a href="roadmap.html"><i class="fas fa-map-signs"></i> <span>My Roadmap</span></a></li>
@@ -281,7 +282,8 @@
 
         <div class="domain-grid" id="domainGrid">
     <div class="domain-card" data-category="Development">
-        <div>
+
+     <div class="domain-content">
             <div class="domain-icon" style="background: #e0e7ff; color: #4338ca;"><i class="fas fa-layer-group"></i></div>
             <h3>Full Stack Development</h3>
             <p>Master both frontend and backend. Build scalable web applications from scratch.</p>
@@ -293,9 +295,9 @@
     </div>
 
     <div class="domain-card" data-category="Data Science">
-        <div>
+       <div class="domain-content">
             <div class="domain-icon" style="background: #fef3c7; color: #b45309;"><i class="fas fa-brain"></i></div>
-            <h3>Artificial Intelligence &<br> Machine Learning</h3>
+            <h3>Artificial Intelligence & Machine Learning</h3>
             <p>Dive into Neural Networks, Machine Learning, and Large Language Models.</p>
         </div>
         <div class="domain-footer">
@@ -305,7 +307,7 @@
     </div>
 
     <div class="domain-card" data-category="Data Science">
-        <div>
+       <div class="domain-content">
             <div class="domain-icon" style="background: #e0f2fe; color: #0369a1;"><i class="fas fa-chart-line"></i></div>
             <h3>Data Analyst</h3>
             <p>Clean, process, and visualize data to drive business decisions using SQL and PowerBI.</p>
@@ -317,7 +319,7 @@
     </div>
 
     <div class="domain-card" data-category="Design">
-        <div>
+      <div class="domain-content">
             <div class="domain-icon" style="background: #fce7f3; color: #be185d;"><i class="fas fa-pen-nib"></i></div>
             <h3>UI/UX Design</h3>
             <p>Learn user-centric design principles, wireframing, and high-fidelity prototyping.</p>
@@ -329,7 +331,7 @@
     </div>
 
     <div class="domain-card" data-category="Cybersecurity">
-        <div>
+       <div class="domain-content">
             <div class="domain-icon" style="background: #dcfce7; color: #15803d;"><i class="fas fa-shield-alt"></i></div>
             <h3>Cybersecurity</h3>
             <p>Protect systems from digital attacks. Learn ethical hacking and network security.</p>
@@ -341,7 +343,7 @@
     </div>
 
     <div class="domain-card" data-category="Development">
-        <div>
+      <div class="domain-content">
             <div class="domain-icon" style="background: #ffedd5; color: #c2410c;"><i class="fas fa-mobile-alt"></i></div>
             <h3>Mobile App Dev</h3>
             <p>Create native and cross-platform mobile apps for iOS and Android devices.</p>

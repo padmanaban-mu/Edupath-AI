@@ -55,10 +55,34 @@ body {
 }
 
 .logo {
-    font-size: 24px;
-    font-weight: 700;
-    margin-bottom: 50px;
-    text-align: center;
+   font-size: 24px; 
+    font-weight: 700; 
+    margin-bottom: 50px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    gap: 12px;
+    transition: var(--transition);
+    overflow: hidden;
+}
+.logo-icon { 
+    color: var(--primary-blue); 
+    font-size: 1.8rem; 
+    flex-shrink: 0; /* Prevents the icon from squishing */
+}
+
+.logo-text { 
+    color: white; 
+    white-space: nowrap; /* Keeps the name on one single line */
+}
+
+.logo-text span { 
+    color: var(--primary-blue); 
+}
+
+/* Hide the text when the sidebar is collapsed, keeping the icon perfectly centered */
+.sidebar.collapsed .logo-text { 
+    display: none; 
 }
 
 .logo span { color: var(--primary-blue); }

@@ -11,7 +11,7 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-const JWT_SECRET = 'your_super_secret_key';
+const JWT_SECRET = '2da20021ba5468a6bd0883fde8fb0cc9b51de723ced5dc3d08d663e8518fb28ab0c02158e9a5ac628eb383e3496010cee77db48e51c87c877ce9330ba6cc2b22';
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 // Database Connection

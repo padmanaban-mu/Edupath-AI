@@ -748,22 +748,22 @@ function appendWidgetMsg(text, sender) {
     await saveRoadmap();
 
     // 3. Then Redirect if necessary
-    const redirects = { 
-        //programming
-        "sql_a": "sql.html", 
-        "py_b": "python.html", 
-        "numpy": "numpy.html", 
-        "pandas": "pandas.html", 
-        "viz_py": "data_visualization.html", 
-        //non-programming
-        "df": "data_fundamentals.html",
-        "stats":"statistics.html",
-        "excel": "excel.html",
-        "eda":"eda.html",
-        "bi":"bi_tools.html"
-
-         
-    };
+   // 3. Then Redirect if necessary
+const redirects = {
+    //programming
+    "sql_a": "programming/sql.html",
+    "py_b": "programming/python.html",
+    "numpy": "programming/numpy.html",
+    "pandas": "programming/pandas.html",
+    "viz_py": "programming/data_visualization.html",
+    
+    //non-programming
+    "df": "non-programming/data_fundamentals.html",
+    "stats": "non-programming/statistics.html",
+    "excel": "non-programming/excel.html",
+    "eda": "non-programming/eda.html",
+    "bi": "non-programming/bi_tools.html"
+};
     
     if (redirects[id]) {
         // Small delay to ensure the fetch starts before page change

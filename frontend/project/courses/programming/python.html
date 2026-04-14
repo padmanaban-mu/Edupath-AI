@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -422,20 +422,34 @@
 
         .section-box.locked {
             filter: grayscale(1);
-            opacity: 0.7;
-            pointer-events: none;
+            opacity: 0.8;
             position: relative;
         }
 
-        .section-box.locked::after {
-            content: "\f023";
-            font-family: "Font Awesome 5 Free";
-            font-weight: 900;
-            position: absolute;
-            top: 20px;
-            right: 50px;
-            color: var(--text-muted);
-            font-size: 1.2rem;
+        /* Activities are visible but not clickable when locked */
+        .section-box.locked .section-content .activity-row,
+        .section-box.locked .section-content .video-embed,
+        .section-box.locked .section-content .quiz-box {
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        .restriction-msg {
+            display: none;
+            padding: 12px 20px;
+            background: #f1f5f9;
+            border-radius: 10px;
+            margin: 15px 25px;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.85rem;
+            color: #475569;
+            font-weight: 600;
+            border-left: 4px solid var(--primary-blue);
+        }
+
+        .section-box.locked .restriction-msg {
+            display: flex;
         }
 
         .status-btn {
@@ -480,7 +494,7 @@
 
 <div class="dashboard-container">
     <aside class="sidebar" id="sidebar">
-          <div class="logo">
+        <div class="logo">
     <i class="fas fa-brain logo-icon"></i>
     <div class="logo-text">EduPath <span>AI</span></div>
 </div>
@@ -538,6 +552,7 @@
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
             <div class="section-content">
+                <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Course Syllabus & Objectives</span>
                     </div>
@@ -552,6 +567,7 @@
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
             <div class="section-content">
+                <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this)">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Intro, Installation & First Script -
                             VIDEO </span></div>
@@ -560,7 +576,7 @@
                 <div class="video-embed">
                     <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;"><iframe
                             width="100%" height="100%" src="https://www.youtube.com/embed/kqtD5dpn9C8?enablejsapi=1"
-                            id="vplayer-1" frameborder="0" allowfullscreen></iframe></div>
+                            id="vplayer-1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
                 </div>
                 <div class="activity-row" onclick="showQuiz(1)">
                     <div class="activity-info">
@@ -758,8 +774,7 @@
                     <button class="status-btn todo">To do </button>
                 </div>
                 <div class="activity-row">
-                    <div class="activity-info"><i class="fas fa-code"></i> <span>Hello World & Basic Printing - PROGRAMS
-                        </span></div>
+                    <div class="activity-info"><i class="fas fa-code"></i> <span>PROGRAMS</span></div>
                     <button class="status-btn todo">To do</button>
                 </div>
             </div>
@@ -771,6 +786,7 @@
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
             <div class="section-content">
+                <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this)">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Integers, Floats, Strings, Booleans -
                             VIDEO </span></div>
@@ -780,7 +796,7 @@
                     <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;"><iframe
                             width="100%" height="100%"
                             src="https://www.youtube.com/embed/kqtD5dpn9C8?start=255&enablejsapi=1" id="vplayer-2"
-                            frameborder="0" allowfullscreen></iframe></div>
+                            frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
                 </div>
                 <div class="activity-row" onclick="showQuiz(2)">
                     <div class="activity-info">
@@ -978,7 +994,7 @@
 
                 </div>
                 <div class="activity-row">
-                    <div class="activity-info"><i class="fas fa-code"></i> <span>User Input: Age & Salary - PROGRAMS
+                    <div class="activity-info"><i class="fas fa-code"></i> <span>PROGRAMS
                         </span></div>
                     <button class="status-btn todo">To do </button>
                 </div>
@@ -991,6 +1007,7 @@
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
             <div class="section-content">
+                <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this)">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Arithmetic & Logical Operators - VIDEO
                         </span></div>
@@ -999,7 +1016,7 @@
                 <div class="video-embed">
                     <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;"><iframe
                             width="100%" height="100%" src="https://www.youtube.com/embed/v5MR5JnKcZI?enablejsapi=1"
-                            id="vplayer-3" frameborder="0" allowfullscreen></iframe></div>
+                            id="vplayer-3" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
                 </div>
                 <div class="activity-row" onclick="showQuiz(3)">
                     <div class="activity-info">
@@ -1196,7 +1213,7 @@
 
                 </div>
                 <div class="activity-row">
-                    <div class="activity-info"><i class="fas fa-code"></i> <span>Simple Modulo Calculator - PROGRAMS
+                    <div class="activity-info"><i class="fas fa-code"></i> <span>PROGRAMS
                         </span></div>
                     <button class="status-btn todo">To do </button>
                 </div>
@@ -1209,6 +1226,7 @@
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
             <div class="section-content">
+                <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this)">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>if/else & nested logic - VIDEO </span>
                     </div>
@@ -1217,7 +1235,7 @@
                 <div class="video-embed">
                     <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;"><iframe
                             width="100%" height="100%" src="https://www.youtube.com/embed/DZwmZ8Usvnk?enablejsapi=1"
-                            id="vplayer-4" frameborder="0" allowfullscreen></iframe></div>
+                            id="vplayer-4" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
                 </div>
                 <div class="activity-row" onclick="showQuiz(4)">
                     <div class="activity-info">
@@ -1403,14 +1421,8 @@
 
                     </form>
                 </div>
-
                 <div class="activity-row">
-                    <div class="activity-info"><i class="fas fa-code"></i> <span>Divisibility by 13 Checker -
-                            PROGRAMS</span></div>
-                    <button class="status-btn todo">To do </button>
-                </div>
-                <div class="activity-row">
-                    <div class="activity-info"><i class="fas fa-code"></i> <span>Student Grading System - PROGRAMS
+                    <div class="activity-info"><i class="fas fa-code"></i> <span>PROGRAMS
                         </span></div>
                     <button class="status-btn todo">To do</button>
                 </div>
@@ -1424,6 +1436,7 @@
             </div>
 
             <div class="section-content">
+                <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
 
                 <div class="activity-row" onclick="toggleVideo(this)">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>While Syntax & Termination -
@@ -1434,7 +1447,7 @@
                 <div class="video-embed">
                     <div style="aspect-ratio:16/9;background:#000;border-radius:8px;overflow:hidden;">
                         <iframe width="100%" height="100%" src="https://www.youtube.com/embed/6iF8Xb7Z3wQ?enablejsapi=1"
-                            id="vplayer-5-1" frameborder="0" allowfullscreen></iframe>
+                            id="vplayer-5-1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                     </div>
                 </div>
 
@@ -1446,7 +1459,7 @@
                 <div class="video-embed">
                     <div style="aspect-ratio:16/9;background:#000;border-radius:8px;overflow:hidden;">
                         <iframe width="100%" height="100%" src="https://www.youtube.com/embed/94UHCEmprCY?enablejsapi=1"
-                            id="vplayer-5-2" frameborder="0" allowfullscreen></iframe>
+                            id="vplayer-5-2" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                     </div>
                 </div>
 
@@ -1646,8 +1659,7 @@
                 </div>
 
                 <div class="activity-row">
-                    <div class="activity-info"><i class="fas fa-code"></i> <span>Multiplication Table Generator -
-                            PROGRAMS</span></div>
+                    <div class="activity-info"><i class="fas fa-code"></i> <span>PROGRAMS</span></div>
                     <button class="status-btn todo">To do</button>
                 </div>
 
@@ -1663,6 +1675,7 @@
             </div>
 
             <div class="section-content">
+                <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
 
                 <div class="activity-row" onclick="toggleVideo(this)">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Range Function & Iteration -
@@ -1673,7 +1686,7 @@
                 <div class="video-embed">
                     <div style="aspect-ratio:16/9;background:#000;border-radius:8px;overflow:hidden;">
                         <iframe width="100%" height="100%" src="https://www.youtube.com/embed/KWgYha0clzw?enablejsapi=1"
-                            id="vplayer-6" frameborder="0" allowfullscreen></iframe>
+                            id="vplayer-6" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                     </div>
                 </div>
 
@@ -1877,8 +1890,7 @@ for i in range(3):
 
                 </div>
                 <div class="activity-row">
-                    <div class="activity-info"><i class="fas fa-code"></i> <span>Sum of Even Numbers (1-100) -
-                            PROGRAMS</span></div>
+                    <div class="activity-info"><i class="fas fa-code"></i> <span>PROGRAMS</span></div>
                     <button class="status-btn todo">To do</button>
                 </div>
 
@@ -1894,6 +1906,7 @@ for i in range(3):
             </div>
 
             <div class="section-content">
+                <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
 
                 <div class="activity-row" onclick="toggleVideo(this)">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Indexing & Slicing Lists - VIDEO</span>
@@ -1904,7 +1917,7 @@ for i in range(3):
                 <div class="video-embed">
                     <div style="aspect-ratio:16/9;background:#000;border-radius:8px;overflow:hidden;">
                         <iframe width="100%" height="100%" src="https://www.youtube.com/embed/ohCDWZgNIU0?enablejsapi=1"
-                            id="vplayer-7" frameborder="0" allowfullscreen></iframe>
+                            id="vplayer-7" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                     </div>
                 </div>
 
@@ -2104,7 +2117,7 @@ for i in range(3):
                 </div>
 
                 <div class="activity-row">
-                    <div class="activity-info"><i class="fas fa-code"></i> <span>Shopping List Manager - PROGRAMS</span>
+                    <div class="activity-info"><i class="fas fa-code"></i> <span>PROGRAMS</span>
                     </div>
                     <button class="status-btn todo">To do</button>
                 </div>
@@ -2121,6 +2134,7 @@ for i in range(3):
             </div>
 
             <div class="section-content">
+                <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
 
                 <div class="activity-row" onclick="toggleVideo(this)">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Key-Value & Set Operations -
@@ -2131,7 +2145,7 @@ for i in range(3):
                 <div class="video-embed">
                     <div style="aspect-ratio:16/9;background:#000;border-radius:8px;overflow:hidden;">
                         <iframe width="100%" height="100%" src="https://www.youtube.com/embed/daefaLgNkw0?enablejsapi=1"
-                            id="vplayer-8" frameborder="0" allowfullscreen></iframe>
+                            id="vplayer-8" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                     </div>
                 </div>
                 <div class="activity-row" onclick="showQuiz(8)">
@@ -2325,7 +2339,7 @@ for i in range(3):
 
                 </div>
                 <div class="activity-row">
-                    <div class="activity-info"><i class="fas fa-code"></i> <span>Student ID Database - PROGRAMS</span>
+                    <div class="activity-info"><i class="fas fa-code"></i> <span>PROGRAMS</span>
                     </div>
                     <button class="status-btn todo">To do</button>
                 </div>
@@ -2342,6 +2356,7 @@ for i in range(3):
             </div>
 
             <div class="section-content">
+                <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
 
                 <div class="activity-row" onclick="toggleVideo(this)">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Functions, Arguments & Returns -
@@ -2352,7 +2367,7 @@ for i in range(3):
                 <div class="video-embed">
                     <div style="aspect-ratio:16/9;background:#000;border-radius:8px;overflow:hidden;">
                         <iframe width="100%" height="100%" src="https://www.youtube.com/embed/9Os0o3wzS_I?enablejsapi=1"
-                            id="vplayer-9" frameborder="0" allowfullscreen></iframe>
+                            id="vplayer-9" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                     </div>
                 </div>
 
@@ -2551,7 +2566,7 @@ for i in range(3):
 
                 </div>
                 <div class="activity-row">
-                    <div class="activity-info"><i class="fas fa-code"></i> <span>Income Tax Calculator - PROGRAMS</span>
+                    <div class="activity-info"><i class="fas fa-code"></i> <span>PROGRAMS</span>
                     </div>
                     <button id="pbtn-9" class="status-btn todo">To do</button>
                 </div>
@@ -2568,6 +2583,7 @@ for i in range(3):
             </div>
 
             <div class="section-content">
+                <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
 
                 <div class="activity-row" onclick="toggleVideo(this)">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Read / Write Files - VIDEO</span></div>
@@ -2577,7 +2593,7 @@ for i in range(3):
                 <div class="video-embed">
                     <div style="aspect-ratio:16/9;background:#000;border-radius:8px;overflow:hidden;">
                         <iframe width="100%" height="100%" src="https://www.youtube.com/embed/Uh2ebFW8OYM?enablejsapi=1"
-                            id="vplayer-10" frameborder="0" allowfullscreen></iframe>
+                            id="vplayer-10" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                     </div>
                 </div>
 
@@ -2775,8 +2791,7 @@ for i in range(3):
 
                 </div>
                 <div class="activity-row">
-                    <div class="activity-info"><i class="fas fa-code"></i> <span>Name Counter from File -
-                            PROGRAMS</span></div>
+                    <div class="activity-info"><i class="fas fa-code"></i> <span>PROGRAMS</span></div>
                     <button id="pbtn-10" class="status-btn todo">To do</button>
                 </div>
 
@@ -2792,6 +2807,7 @@ for i in range(3):
             </div>
 
             <div class="section-content">
+                <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
 
                 <div class="activity-row" onclick="toggleVideo(this)">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>try, except, finally - VIDEO</span>
@@ -2801,8 +2817,8 @@ for i in range(3):
 
                 <div class="video-embed">
                     <div style="aspect-ratio:16/9;background:#000;border-radius:8px;overflow:hidden;">
-                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/kqtD5dpn9C8?enablejsapi=1"
-                            id="vplayer-11" frameborder="0" allowfullscreen></iframe>
+                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/NI26dqhs2rk?enablejsapi=1"
+                            id="vplayer-11" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                     </div>
                 </div>
 
@@ -3001,8 +3017,7 @@ for i in range(3):
 
                 </div>
                 <div class="activity-row">
-                    <div class="activity-info"><i class="fas fa-code"></i> <span>Safe Division Handling -
-                            PROGRAMS</span></div>
+                    <div class="activity-info"><i class="fas fa-code"></i> <span>PROGRAMS</span></div>
                     <button id="pbtn-11" class="status-btn todo">To do</button>
                 </div>
 
@@ -3014,27 +3029,23 @@ for i in range(3):
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
             <div class="section-content">
+                <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <!-- Introduction to OOPS -->
                 <div class="activity-row" onclick="toggleVideo(this)">
-                    <div class="activity-info"><i class="fas fa-link"></i> <span>Introduction to OOPS - ENGLISH -
-                            VIDEO</span></div>
+                    <div class="activity-info"><i class="fas fa-link"></i> <span>Introduction to OOPS - VIDEO</span></div>
                     <button id="vbtn-12-intro-en" class="status-btn todo">To do</button>
                 </div>
                 <div class="video-embed">
                     <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;"><iframe
-                            width="100%" height="100%" src="https://www.youtube.com/embed/ZDa-Z5JzLYM?enablejsapi=1"
-                            id="vplayer-12-intro-en" frameborder="0" allowfullscreen></iframe></div>
+                            width="100%" height="100%" src="https://www.youtube.com/embed/JeznW_7WSt8?enablejsapi=1"
+                            id="vplayer-12-intro-en" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
                 </div>
 
-                <div class="activity-row" onclick="toggleVideo(this)">
-                    <div class="activity-info"><i class="fas fa-link"></i> <span>Introduction to OOPS - TAMIL -
-                            VIDEO</span></div>
-                    <button id="vbtn-12-intro-ta" class="status-btn todo">To do</button>
-                </div>
+
                 <div class="video-embed">
                     <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;"><iframe
                             width="100%" height="100%" src="https://www.youtube.com/embed/kqtD5dpn9C8?enablejsapi=1"
-                            id="vplayer-12-intro-ta" frameborder="0" allowfullscreen></iframe></div>
+                            id="vplayer-12-intro-ta" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
                 </div>
 
                 <div class="activity-row" onclick="showQuiz('12_intro')">
@@ -3189,11 +3200,6 @@ for i in range(3):
                         <button type="button" onclick="submitQuiz('12_const')" class="quiz-submit">Submit Quiz</button>
                     </form>
                 </div>
-                <div class="activity-row">
-                    <div class="activity-info"><i class="fas fa-code"></i> <span>Constructor - Fill the code</span>
-                    </div>
-                    <button id="pbtn-12-const" class="status-btn todo">To do</button>
-                </div>
 
                 <!-- this keyword -->
                 <div class="activity-row" onclick="showQuiz('12_this')">
@@ -3277,8 +3283,8 @@ for i in range(3):
                 </div>
                 <div class="video-embed">
                     <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;"><iframe
-                            width="100%" height="100%" src="https://www.youtube.com/embed/kqtD5dpn9C8" frameborder="0"
-                            allowfullscreen></iframe></div>
+                            width="100%" height="100%" src="https://www.youtube.com/embed/ni9kscvE03k?enablejsapi=1"
+                            id="vplayer-12-access" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
                 </div>
                 <div class="activity-row" onclick="showQuiz('12_access')">
                     <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Access modifiers - MCQ</span></div>
@@ -3361,7 +3367,9 @@ for i in range(3):
                 <!-- 4 Pillars sub-header -->
                 <div class="activity-row" style="background: #f1f5f9; cursor: default; margin-top: 10px;">
                     <div class="activity-info" style="color: var(--dark-blue); font-weight: 700;"><i
-                            class="fas fa-columns"></i> <span>4 Pillars of OOPS</span></div>
+                            class="fas fa-columns"></i>
+                        <span>4 Pillars of OOPS</span>
+                    </div>
                 </div>
 
                 <!-- Encapsulation -->
@@ -3373,8 +3381,8 @@ for i in range(3):
                 </div>
                 <div class="video-embed">
                     <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;"><iframe
-                            width="100%" height="100%" src="https://www.youtube.com/embed/kqtD5dpn9C8?enablejsapi=1"
-                            id="vplayer-12-encap" frameborder="0" allowfullscreen></iframe></div>
+                            width="100%" height="100%" src="https://www.youtube.com/embed/ohCDWZgNIU0?enablejsapi=1"
+                            id="vplayer-12-encap" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
                 </div>
                 <div class="activity-row" onclick="showQuiz('12_encap')">
                     <div class="activity-info" style="padding-left: 20px;"><i class="fas fa-list-alt"></i>
@@ -3455,13 +3463,9 @@ for i in range(3):
                         <button type="button" onclick="submitQuiz('12_encap')" class="quiz-submit">Submit Quiz</button>
                     </form>
                 </div>
+
                 <div class="activity-row" style="padding-left: 45px;">
-                    <div class="activity-info"><i class="fas fa-search"></i> <span>Encapsulation - Find the
-                            output</span></div>
-                    <button id="pbtn-12-encap-1" class="status-btn todo">To do</button>
-                </div>
-                <div class="activity-row" style="padding-left: 45px;">
-                    <div class="activity-info"><i class="fas fa-terminal"></i> <span>Encapsulation - Program</span>
+                    <div class="activity-info"><i class="fas fa-terminal"></i> <span>PROGRAMS</span>
                     </div>
                     <button id="pbtn-12-encap-2" class="status-btn todo">To do</button>
                 </div>
@@ -3474,8 +3478,8 @@ for i in range(3):
                 </div>
                 <div class="video-embed">
                     <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;"><iframe
-                            width="100%" height="100%" src="https://www.youtube.com/embed/kqtD5dpn9C8?enablejsapi=1"
-                            id="vplayer-12-inherit" frameborder="0" allowfullscreen></iframe></div>
+                            width="100%" height="100%" src="https://www.youtube.com/embed/48y2125vY1Q?enablejsapi=1"
+                            id="vplayer-12-inherit" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
                 </div>
                 <div class="activity-row" onclick="showQuiz('12_inherit')">
                     <div class="activity-info" style="padding-left: 20px;"><i class="fas fa-list-alt"></i>
@@ -3550,7 +3554,7 @@ for i in range(3):
                     </form>
                 </div>
                 <div class="activity-row" style="padding-left: 45px;">
-                    <div class="activity-info"><i class="fas fa-terminal"></i> <span>Inheritance - Programs</span></div>
+                    <div class="activity-info"><i class="fas fa-terminal"></i> <span>PROGRAMS</span></div>
                     <button id="pbtn-12-inherit" class="status-btn todo">To do</button>
                 </div>
 
@@ -3563,8 +3567,8 @@ for i in range(3):
                 </div>
                 <div class="video-embed">
                     <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;"><iframe
-                            width="100%" height="100%" src="https://www.youtube.com/embed/kqtD5dpn9C8?enablejsapi=1"
-                            id="vplayer-12-poly" frameborder="0" allowfullscreen></iframe></div>
+                            width="100%" height="100%" src="https://www.youtube.com/embed/fHCPXatJoz8?enablejsapi=1"
+                            id="vplayer-12-poly" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
                 </div>
                 <div class="activity-row" onclick="showQuiz('12_poly')">
                     <div class="activity-info" style="padding-left: 20px;"><i class="fas fa-list-alt"></i>
@@ -3645,13 +3649,9 @@ for i in range(3):
                         <button type="button" onclick="submitQuiz('12_poly')" class="quiz-submit">Submit Quiz</button>
                     </form>
                 </div>
+
                 <div class="activity-row" style="padding-left: 45px;">
-                    <div class="activity-info"><i class="fas fa-search"></i> <span>Polymorphism - Find the output</span>
-                    </div>
-                    <button id="pbtn-12-poly-1" class="status-btn todo">To do</button>
-                </div>
-                <div class="activity-row" style="padding-left: 45px;">
-                    <div class="activity-info"><i class="fas fa-terminal"></i> <span>Polymorphism - Programs</span>
+                    <div class="activity-info"><i class="fas fa-terminal"></i> <span>PROGRAMS</span>
                     </div>
                     <button id="pbtn-12-poly-2" class="status-btn todo">To do</button>
                 </div>
@@ -3664,8 +3664,8 @@ for i in range(3):
                 </div>
                 <div class="video-embed">
                     <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;"><iframe
-                            width="100%" height="100%" src="https://www.youtube.com/embed/kqtD5dpn9C8?enablejsapi=1"
-                            id="vplayer-12-abstract" frameborder="0" allowfullscreen></iframe></div>
+                            width="100%" height="100%" src="https://www.youtube.com/embed/ohCDWZgNIU0?start=1800&enablejsapi=1"
+                            id="vplayer-12-abstract" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
                 </div>
                 <div class="activity-row" onclick="showQuiz('12_abstract')">
                     <div class="activity-info" style="padding-left: 20px;"><i class="fas fa-list-alt"></i>
@@ -3744,7 +3744,7 @@ for i in range(3):
                     </form>
                 </div>
                 <div class="activity-row" style="padding-left: 45px;">
-                    <div class="activity-info"><i class="fas fa-code"></i> <span>Abstraction - Programs</span></div>
+                    <div class="activity-info"><i class="fas fa-code"></i> <span>PROGRAMS</span></div>
                     <button id="pbtn-12-abstract" class="status-btn todo">To do</button>
                 </div>
             </div>
@@ -3755,7 +3755,7 @@ for i in range(3):
 
 <!-- YouTube IFrame API -->
 <script src="https://www.youtube.com/iframe_api"></script>
-<script src="js/dashboard.js"></script>
+
 <script>
     const totalModules = 12;
 

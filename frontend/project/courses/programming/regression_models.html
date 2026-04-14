@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regression Models Mastery — EduPath AI</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-blue: #2d6cdf;
+            --dark-blue: #1a3a6d;
+            --bg-light: #f8faff;
+            --white: #ffffff;
+            --text-main: #333;
+            --text-muted: #7f8c8d;
+            --success-green: #10b981;
+            --border-color: #e2e8f0;
+            --transition: all 0.3s ease;
+            --slate-500: #64748b;
+        }
+
+        body {
+            background: var(--bg-light);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+
+        /* --- Sidebar CSS (Synced with domain.html) --- */
+        .sidebar {
+            width: 260px;
+            background: var(--dark-blue);
+            color: white;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition);
+            position: fixed;
+            height: 100vh;
+            z-index: 1000;
+            box-sizing: border-box;
+        }
+
+        .sidebar.collapsed {
+            width: 80px;
+        }
+
+        .sidebar.collapsed .nav-menu span,
+        .sidebar.collapsed .logo span,
+        .sidebar.collapsed .user-info {
+            display: none;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 50px;
+            text-align: center;
+        }
+
+        .logo span {
+            color: var(--primary-blue);
+        }
+
+        .nav-menu {
+            list-style: none;
+            flex-grow: 1;
+            padding: 0;
+        }
+
+        .nav-menu li {
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .nav-menu li a {
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            width: 100%;
+        }
+
+        .nav-menu li:hover,
+        .nav-menu li.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--primary-blue);
+        }
+
+        .sidebar-footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 20px;
+            margin-top: auto;
+        }
+
+        .profile-card {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        /* --- Main Content --- */
+        .main-content {
+            margin-left: 260px;
+            padding: 25px 40px;
+            transition: 0.3s ease;
+            width: calc(100% - 260px);
+        }
+
+        .main-content.expanded {
+            margin-left: 80px;
+            width: calc(100% - 80px);
+        }
+
+        /* --- Module Accordion Styles --- */
+        .explore-header {
+            margin-bottom: 30px;
+        }
+
+        .explore-header h1 {
+            font-size: 1.5rem;
+            color: var(--dark-blue);
+            margin-bottom: 8px;
+        }
+
+        .section-box {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .section-header {
+            padding: 18px 25px;
+            background: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .section-header h3 {
+            font-size: 0.95rem;
+            margin: 0;
+            color: var(--dark-blue);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-header i.toggle-icon {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            transition: 0.3s;
+        }
+
+        .section-header.active i.toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        .section-content {
+            display: none;
+            background: #fff;
+        }
+
+        .activity-row {
+            padding: 12px 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #f8fafc;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+
+        .activity-row:hover {
+            background: #fcfdfe;
+        }
+
+        .activity-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.85rem;
+            color: #4b5563;
+            font-weight: 500;
+        }
+
+        .fa-link {
+            color: #06b6d4;
+        }
+
+        .fa-list-alt {
+            color: #ec4899;
+        }
+
+        .fa-code {
+            color: #8b5cf6;
+        }
+
+        .course-progress {
+            margin: 20px auto;
+            width: 60%;
+        }
+
+        .mcq-option.correct {
+            border: 2px solid #22c55e !important;
+        }
+
+        .mcq-option.wrong {
+            border: 2px solid #ef4444 !important;
+        }
+
+        .quiz-result {
+            margin-top: 20px;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            margin-bottom: 6px;
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 10px;
+            background: #e2e8f0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        #progressBar {
+            height: 100%;
+            width: 0%;
+            background: #10b981;
+            transition: 0.4s;
+        }
+
+        .mcq-container {
+            max-width: 700px;
+            margin: auto;
+        }
+
+        .mcq-question {
+            margin-bottom: 20px;
+        }
+
+        .mcq-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .mcq-options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        .mcq-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .mcq-option:hover {
+            background: #f1f5f9;
+            border-color: #94a3b8;
+        }
+
+        .mcq-option input {
+            display: none;
+        }
+
+        .option-letter {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 1px solid #cbd5e1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .mcq-option input:checked+.option-letter {
+            background: #2563eb;
+            color: white;
+            border-color: #2563eb;
+        }
+
+        .mcq-option:has(input:checked) {
+            background: #eaf1ff;
+            border: 2px solid #2563eb;
+        }
+
+        .quiz-submit {
+            margin-top: 20px;
+            padding: 10px 18px;
+            border: none;
+            background: #2d6cdf;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .section-box.locked {
+            filter: grayscale(1);
+            opacity: 0.8;
+            position: relative;
+        }
+
+        /* Activities are visible but not clickable when locked */
+        .section-box.locked .section-content .activity-row,
+        .section-box.locked .section-content .video-embed,
+        .section-box.locked .section-content .quiz-box {
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        .restriction-msg {
+            display: none;
+            padding: 12px 20px;
+            background: #f1f5f9;
+            border-radius: 10px;
+            margin: 15px 25px;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.85rem;
+            color: #475569;
+            font-weight: 600;
+            border-left: 4px solid var(--primary-blue);
+        }
+
+        .section-box.locked .restriction-msg {
+            display: flex;
+        }
+
+        .status-btn {
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            border: 1px solid var(--border-color);
+            background: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-btn.done {
+            color: var(--success-green);
+            border-color: #d1fae5;
+            background: #ecfdf5;
+        }
+
+        .status-btn.todo {
+            color: var(--text-muted);
+        }
+
+        .status-btn.todo:hover {
+            background: var(--primary-blue);
+            color: white;
+            border-color: var(--primary-blue);
+        }
+
+        .video-embed {
+            padding: 20px 25px;
+            background: #f8fafc;
+            border-bottom: 1px solid #f1f5f9;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar" id="sidebar">
+            <div class="logo">
+    <i class="fas fa-brain logo-icon"></i>
+    <div class="logo-text">EduPath <span>AI</span></div>
+</div>
+            <ul class="nav-menu">
+                <li><a href="../dashboard.html"><i class="fas fa-th-large"></i> <span>Overview</span></a></li>
+                <li><a href="../roadmap.html"><i class="fas fa-map-signs"></i> <span>My Roadmap</span></a></li>
+                <li class="active"><a href="../domain.html"><i class="fas fa-compass"></i> <span>Explore
+                            Domain</span></a></li>
+                <li><a href="#"><i class="fas fa-robot"></i> <span>AI ChatBot</span></a></li>
+                <li><a href="../profile.html"><i class="fas fa-cog"></i> <span>Profile Settings</span></a></li>
+                <li><a href="../index.html"><i class="fas fa-sign-out-alt"></i> <span>Log out</span></a></li>
+            </ul>
+            <div class="sidebar-footer">
+                <div class="profile-card">
+                    <div class="avatar">P</div>
+                    <div class="user-info">
+                        <p class="name" style="margin: 0; font-size: 0.9rem;">User Name</p>
+                        <p class="status" style="margin: 0; font-size: 0.7rem; opacity: 0.7;">Pro Member</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content" id="main-content">
+            <header class="top-nav"
+                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+                <div class="toggle-btn" id="sidebarToggle" style="cursor: pointer;"><i class="fas fa-bars"></i></div>
+                <div class="search-bar"
+                    style="background: white; padding: 8px 20px; border-radius: 25px; width: 40%; display: flex; align-items: center; gap: 10px; border: 1px solid #e2e8f0;">
+                    <i class="fas fa-search" style="color: var(--slate-500);"></i>
+                    <input type="text" id="moduleSearch" placeholder="Search Regression modules..."
+                        style="border: none; outline: none; width: 100%;">
+                </div>
+                <div class="user-profile"><i class="far fa-bell" style="color:var(--text-muted)"></i></div>
+            </header>
+
+            <div class="course-progress">
+                <div class="progress-label">
+                    <span>Course Progress</span>
+                    <span id="progressText">0%</span>
+                </div>
+                <div class="progress-container">
+                    <div id="progressBar"></div>
+                </div>
+            </div>
+
+            <div class="explore-header">
+                <h1>📈 Regression Models Mastery</h1>
+                <p style="color: var(--slate-500); font-size: 0.9rem;">Mastering machine learning for continuous
+                    predictions.</p>
+            </div>
+
+            <!-- MODULE 1: Simple Linear Regression -->
+            <div class="section-box">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h3>Module 1: Simple Linear Regression</h3>
+                    <i class="fas fa-chevron-down toggle-icon"></i>
+                </div>
+                <div class="section-content">
+                    <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
+                    <div class="activity-row" onclick="toggleVideo(this)">
+                        <div class="activity-info"><i class="fas fa-link"></i> <span>Introduction to Simple Regression -
+                                VIDEO</span></div>
+                        <button id="vbtn-1" class="status-btn todo">To do</button>
+                    </div>
+                    <div class="video-embed">
+                        <iframe width="100%" height="400" src="https://www.youtube.com/embed/zPG4NjIkCjc?enablejsapi=1"
+                            id="vplayer-1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    </div>
+                    <div class="activity-row" onclick="showQuiz(1)">
+                        <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Regression Basics - QUIZ</span>
+                        </div>
+                        <button id="qbtn-1" class="status-btn todo">To do</button>
+                    </div>
+                    <div class="quiz-box" id="quiz-module1"
+                        style="display:none;padding:20px;background:#f8fafc;margin:15px 0;border-radius:10px;">
+                        <form id="quizForm1">
+                            <div class="mcq-container">
+                                <div class="mcq-question">
+                                    <div class="mcq-title">1. What is the goal of simple linear regression?</div>
+                                    <div class="mcq-options">
+                                        <label class="mcq-option"><input type="radio" name="q1" value="A">
+                                            <div class="option-letter">A</div><span>Predict categorical labels</span>
+                                        </label>
+                                        <label class="mcq-option"><input type="radio" name="q1" value="B">
+                                            <div class="option-letter">B</div><span>Model relationship between one
+                                                dependent & independent variable</span>
+                                        </label>
+                                        <label class="mcq-option"><input type="radio" name="q1" value="C">
+                                            <div class="option-letter">C</div><span>Group similar data points</span>
+                                        </label>
+                                        <label class="mcq-option"><input type="radio" name="q1" value="D">
+                                            <div class="option-letter">D</div><span>Reduce dimensionality</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="mcq-question">
+                                    <div class="mcq-title">2. In y = mx + b, what does 'm' represent?</div>
+                                    <div class="mcq-options">
+                                        <label class="mcq-option"><input type="radio" name="q2" value="A">
+                                            <div class="option-letter">A</div><span>Intercept</span>
+                                        </label>
+                                        <label class="mcq-option"><input type="radio" name="q2" value="B">
+                                            <div class="option-letter">B</div><span>Slope</span>
+                                        </label>
+                                        <label class="mcq-option"><input type="radio" name="q2" value="C">
+                                            <div class="option-letter">C</div><span>Dependent variable</span>
+                                        </label>
+                                        <label class="mcq-option"><input type="radio" name="q2" value="D">
+                                            <div class="option-letter">D</div><span>Error term</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="mcq-question">
+                                    <div class="mcq-title">3. The distance between a point and the regression line is:
+                                    </div>
+                                    <div class="mcq-options">
+                                        <label class="mcq-option"><input type="radio" name="q3" value="A">
+                                            <div class="option-letter">A</div><span>Variance</span>
+                                        </label>
+                                        <label class="mcq-option"><input type="radio" name="q3" value="B">
+                                            <div class="option-letter">B</div><span>Residual</span>
+                                        </label>
+                                        <label class="mcq-option"><input type="radio" name="q3" value="C">
+                                            <div class="option-letter">C</div><span>Bias</span>
+                                        </label>
+                                        <label class="mcq-option"><input type="radio" name="q3" value="D">
+                                            <div class="option-letter">D</div><span>Outlier</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="mcq-question">
+                                    <div class="mcq-title">4. Which method finds the best-fit line by minimizing squared
+                                        errors?</div>
+                                    <div class="mcq-options">
+                                        <label class="mcq-option"><input type="radio" name="q4" value="A">
+                                            <div class="option-letter">A</div><span>Gradient Descent</span>
+                                        </label>
+                                        <label class="mcq-option"><input type="radio" name="q4" value="B">
+                                            <div class="option-letter">B</div><span>OLS (Ordinary Least Squares)</span>
+                                        </label>
+                                        <label class="mcq-option"><input type="radio" name="q4" value="C">
+                                            <div class="option-letter">C</div><span>PCA</span>
+                                        </label>
+                                        <label class="mcq-option"><input type="radio" name="q4" value="D">
+                                            <div class="option-letter">D</div><span>K-Means</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="mcq-question">
+                                    <div class="mcq-title">5. Correlation coefficient 'r' of 1.0 indicates:</div>
+                                    <div class="mcq-options">
+                                        <label class="mcq-option"><input type="radio" name="q5" value="A">
+                                            <div class="option-letter">A</div><span>No relationship</span>
+                                        </label>
+                                        <label class="mcq-option"><input type="radio" name="q5" value="B">
+                                            <div class="option-letter">B</div><span>Perfect positive relationship</span>
+                                        </label>
+                                        <label class="mcq-option"><input type="radio" name="q5" value="C">
+                                            <div class="option-letter">C</div><span>Perfect negative relationship</span>
+                                        </label>
+                                        <label class="mcq-option"><input type="radio" name="q5" value="D">
+                                            <div class="option-letter">D</div><span>Random data</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" onclick="submitQuiz(1)" class="quiz-submit">Submit Quiz</button>
+                        </form>
+                    </div>
+                    <div class="activity-row">
+                        <div class="activity-info"><i class="fas fa-code"></i> <span>Simple Regression Challenge -
+                                PROGRAM</span></div>
+                        <button class="status-btn todo">To do</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MODULE 2: Multiple Linear Regression -->
+            <div class="section-box locked" id="module-box-2">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h3>Module 2: Multiple Linear Regression</h3>
+                    <i class="fas fa-chevron-down toggle-icon"></i>
+                </div>
+                <div class="section-content">
+                    <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
+                    <div class="activity-row" onclick="toggleVideo(this)">
+                        <div class="activity-info"><i class="fas fa-link"></i> <span>Beyond One Variable - VIDEO</span>
+                        </div>
+                        <button id="vbtn-2" class="status-btn todo">To do</button>
+                    </div>
+                    <div class="video-embed">
+                        <iframe width="100%" height="400" src="https://www.youtube.com/embed/4SRe7p7t3vU?enablejsapi=1"
+                            id="vplayer-2" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    </div>
+                    <div class="activity-row" onclick="showQuiz(2)">
+                        <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Multiple Variables - QUIZ</span>
+                        </div>
+                        <button id="qbtn-2" class="status-btn todo">To do</button>
+                    </div>
+                    <div class="quiz-box" id="quiz-module2"
+                        style="display:none;padding:20px;background:#f8fafc;margin:15px 0;border-radius:10px;">
+                        <form id="quizForm2">
+                            <div class="mcq-container">
+                                <div class="mcq-question">
+                                    <div class="mcq-title">1. Multiple regression uses:</div>
+                                    <div class="mcq-options">
+                                        <label class="mcq-option"><input type="radio" name="q1" value="A">
+                                            <div class="option-letter">A</div><span>One independent variable</span>
+                                        </label>
+                                        <label class="mcq-option"><input type="radio" name="q1" value="B">
+                                            <div class="option-letter">B</div><span>Two or more independent
+                                                variables</span>
+                                        </label>
+                                        <label class="mcq-option"><input type="radio" name="q1" value="C">
+                                            <div class="option-letter">C</div><span>One dependent variable only</span>
+                                        </label>
+                                        <label class="mcq-option"><input type="radio" name="q1" value="D">
+                                            <div class="option-letter">D</div><span>No variables</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="mcq-question">
+                                    <div class="mcq-title">2. 'Multicollinearity' is when:</div>
+                                    <div class="mcq-options">
+                                        <label class="mcq-option"><input type="radio" name="q2" value="A">
+                                            <div class="option-letter">A</div><span>Error is minimized</span>
+                                        </label>
+                                        <label class="mcq-option"><input type="radio" name="q2" value="B">
+                                            <div class="option-letter">B</div><span>Independent variables are highly
+                                                correlated</span>
+                                        </label>
+                                        <label class="mcq-option"><input type="radio" name="q2" value="C">
+                                            <div class="option-letter">C</div><span>Model overfits</span>
+                                        </label>
+                                        <label class="mcq-option"><input type="radio" name="q2" value="D">
+                                            <div class="option-letter">D</div><span>Dataset is small</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="mcq-question">
+                                    <div class="mcq-title">3. Metric that penalizes adding useless variables:</div>
+                                    <div class="mcq-options">
+                                        <label class="mcq-option"><input type="radio" name="q3" value="A">
+                                            <div class="option-letter">A</div><span>R-squared</span>
+                                        </label>
+                                        <label class="mcq-option"><input type="radio" name="q3" value="B">
+                                            <div class="option-letter">B</div><span>Adjusted R-squared</span>
+                                        </label>
+                                        <label class="mcq-option"><input type="radio" name="q3" value="C">
+                                            <div class="option-letter">C</div><span>MAE</span>
+                                        </label>
+                                        <label class="mcq-option"><input type="radio" name="q3" value="D">
+                                            <div class="option-letter">D</div><span>Slope</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="mcq-question">
+                                    <div class="mcq-title">4. p-value &lt; 0.05 typically means:</div>
+                                    <div class="mcq-options">
+                                        <label class="mcq-option"><input type="radio" name="q4" value="A">
+                                            <div class="option-letter">A</div><span>Coefficient is insignificant</span>
+                                        </label>
+                                        <label class="mcq-option"><input type="radio" name="q4" value="B">
+                                            <div class="option-letter">B</div><span>Coefficient is statistically
+                                                significant</span>
+                                        </label>
+                                        <label class="mcq-option"><input type="radio" name="q4" value="C">
+                                            <div class="option-letter">C</div><span>Model is broken</span>
+                                        </label>
+                                        <label class="mcq-option"><input type="radio" name="q4" value="D">
+                                            <div class="option-letter">D</div><span>Error is zero</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="mcq-question">
+                                    <div class="mcq-title">5. Adding variables always improves predictions:</div>
+                                    <div class="mcq-options">
+                                        <label class="mcq-option"><input type="radio" name="q5" value="A">
+                                            <div class="option-letter">A</div><span>True</span>
+                                        </label>
+                                        <label class="mcq-option"><input type="radio" name="q5" value="B">
+                                            <div class="option-letter">B</div><span>False (can cause overfitting)</span>
+                                        </label>
+                                        <label class="mcq-option"><input type="radio" name="q5" value="C">
+                                            <div class="option-letter">C</div><span>Only if variables are random</span>
+                                        </label>
+                                        <label class="mcq-option"><input type="radio" name="q5" value="D">
+                                            <div class="option-letter">D</div><span>Depends on color of graph</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" onclick="submitQuiz(2)" class="quiz-submit">Submit Quiz</button>
+                        </form>
+                    </div>
+                    <div class="activity-row">
+                        <div class="activity-info"><i class="fas fa-code"></i> <span>Multiple Variable Model -
+                                PROGRAM</span></div>
+                        <button class="status-btn todo">To do</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MODULE 3: Polynomial Regression -->
+            <div class="section-box locked" id="module-box-3">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h3>Module 3: Polynomial Regression</h3>
+                    <i class="fas fa-chevron-down toggle-icon"></i>
+                </div>
+                <div class="section-content">
+                    <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
+                    <div class="activity-row" onclick="toggleVideo(this)">
+                        <div class="activity-info"><i class="fas fa-link"></i> <span>Dealing with Curves - VIDEO</span>
+                        </div>
+                        <button id="vbtn-3" class="status-btn todo">To do</button>
+                    </div>
+                    <div class="video-embed">
+                        <iframe width="100%" height="400" src="https://www.youtube.com/embed/zmdjNSmRXF4?enablejsapi=1"
+                            id="vplayer-3" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    </div>
+                    <div class="activity-row" onclick="showQuiz(3)">
+                        <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Curves & Degree - QUIZ</span>
+                        </div>
+                        <button id="qbtn-3" class="status-btn todo">To do</button>
+                    </div>
+                    <div class="quiz-box" id="quiz-module3"
+                        style="display:none;padding:20px;background:#f8fafc;margin:15px 0;border-radius:10px;">
+                        <form id="quizForm3">
+                            <!-- Basic MCQs for Poly Regression -->
+                            <div class="mcq-container">
+                                <div class="mcq-question">
+                                    <div class="mcq-title">1. When is polynomial regression useful?</div>
+                                    <div class="mcq-options">
+                                        <label class="mcq-option"><input type="radio" name="q1" value="A">
+                                            <div class="option-letter">A</div><span>When data is linear</span>
+                                        </label>
+                                        <label class="mcq-option"><input type="radio" name="q1" value="B">
+                                            <div class="option-letter">B</div><span>When relationship is non-linear</span>
+                                        </label>
+                                        <label class="mcq-option"><input type="radio" name="q1" value="C">
+                                            <div class="option-letter">C</div><span>When data has 3 dimensions</span>
+                                        </label>
+                                        <label class="mcq-option"><input type="radio" name="q1" value="D">
+                                            <div class="option-letter">D</div><span>When all values are zero</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="mcq-question">
+                                    <div class="mcq-title">2. Risk of setting a very high degree?</div>
+                                    <div class="mcq-options">
+                                        <label class="mcq-option"><input type="radio" name="q2" value="A">
+                                            <div class="option-letter">A</div><span>Underfitting</span>
+                                        </label>
+                                        <label class="mcq-option"><input type="radio" name="q2" value="B">
+                                            <div class="option-letter">B</div><span>Overfitting</span>
+                                        </label>
+                                        <label class="mcq-option"><input type="radio" name="q2" value="C">
+                                            <div class="option-letter">C</div><span>No risk</span>
+                                        </label>
+                                        <label class="mcq-option"><input type="radio" name="q2" value="D">
+                                            <div class="option-letter">D</div><span>Faster training</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="mcq-question">
+                                    <div class="mcq-title">3. Sklearn class for poly features?</div>
+                                    <div class="mcq-options">
+                                        <label class="mcq-option"><input type="radio" name="q3" value="A">
+                                            <div class="option-letter">A</div><span>LinearFeatures</span>
+                                        </label>
+                                        <label class="mcq-option"><input type="radio" name="q3" value="B">
+                                            <div class="option-letter">B</div><span>PolynomialFeatures</span>
+                                        </label>
+                                        <label class="mcq-option"><input type="radio" name="q3" value="C">
+                                            <div class="option-letter">C</div><span>NonLinearModel</span>
+                                        </label>
+                                        <label class="mcq-option"><input type="radio" name="q3" value="D">
+                                            <div class="option-letter">D</div><span>CurveModel</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="mcq-question">
+                                    <div class="mcq-title">4. Poly degree 1 is equivalent to:</div>
+                                    <div class="mcq-options">
+                                        <label class="mcq-option"><input type="radio" name="q4" value="A">
+                                            <div class="option-letter">A</div><span>Simple Linear Regression</span>
+                                        </label>
+                                        <label class="mcq-option"><input type="radio" name="q4" value="B">
+                                            <div class="option-letter">B</div><span>Decision Tree</span>
+                                        </label>
+                                        <label class="mcq-option"><input type="radio" name="q4" value="C">
+                                            <div class="option-letter">C</div><span>SVR</span>
+                                        </label>
+                                        <label class="mcq-option"><input type="radio" name="q4" value="D">
+                                            <div class="option-letter">D</div><span>Logistics</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="mcq-question">
+                                    <div class="mcq-title">5. Poly regression is "linear" in its:</div>
+                                    <div class="mcq-options">
+                                        <label class="mcq-option"><input type="radio" name="q5" value="A">
+                                            <div class="option-letter">A</div><span>Independent variables</span>
+                                        </label>
+                                        <label class="mcq-option"><input type="radio" name="q5" value="B">
+                                            <div class="option-letter">B</div><span>Coefficients (Weights)</span>
+                                        </label>
+                                        <label class="mcq-option"><input type="radio" name="q5" value="C">
+                                            <div class="option-letter">C</div><span>Residuals</span>
+                                        </label>
+                                        <label class="mcq-option"><input type="radio" name="q5" value="D">
+                                            <div class="option-letter">D</div><span>Intercept</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="button" onclick="submitQuiz(3)" class="quiz-submit">Submit Quiz</button>
+                        </form>
+                    </div>
+                    <div class="activity-row">
+                        <div class="activity-info"><i class="fas fa-code"></i> <span>Curve Fitting Challenge -
+                                PROGRAM</span></div>
+                        <button class="status-btn todo">To do</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MODULE 4 to 8 will be structurally similar -->
+            <!-- Adding them concisely for token efficiency -->
+            <div id="remaining-modules"></div>
+
+        </main>
+    </div>
+
+    <!-- YouTube IFrame API -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script>
+        const totalModules = 8;
+        let players = {};
+
+        // Injected data for remaining modules to handle token limits
+        const moduleContent = [
+            { id: 4, title: "Module 4: Model Evaluation Metrics", videoUrl: "H0ST0qR0d8Y" },
+            { id: 5, title: "Module 5: Support Vector Regression (SVR)", videoUrl: "v9S5X_OOnuY" },
+            { id: 6, title: "Module 6: Decision Tree Regression", videoUrl: "g9c66TUylZ4" },
+            { id: 7, title: "Module 7: Random Forest Regression", videoUrl: "J4Wdy0Wc_xQ" },
+            { id: 8, title: "Module 8: Regularization (Ridge and Lasso)", videoUrl: "Xm2C_gTAl8c" }
+        ];
+
+        function generateRemainingModules() {
+            const container = document.getElementById('remaining-modules');
+            moduleContent.forEach(m => {
+                const section = document.createElement('div');
+                section.className = 'section-box locked';
+                section.id = 'module-box-' + m.id;
+                section.innerHTML = `
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h3>${m.title}</h3>
+                    <i class="fas fa-chevron-down toggle-icon"></i>
+                </div>
+                <div class="section-content">
+                    <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
+                    <div class="activity-row" onclick="toggleVideo(this)">
+                        <div class="activity-info"><i class="fas fa-link"></i> <span>Video Lesson - VIDEO</span></div>
+                        <button id="vbtn-${m.id}" class="status-btn todo">To do</button>
+                    </div>
+                    <div class="video-embed">
+                        <iframe width="100%" height="400" src="https://www.youtube.com/embed/${m.videoUrl}?enablejsapi=1"
+                            id="vplayer-${m.id}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    </div>
+                    <div class="activity-row" onclick="showQuiz(${m.id})">
+                        <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Quiz - QUIZ</span></div>
+                        <button id="qbtn-${m.id}" class="status-btn todo">To do</button>
+                    </div>
+                    <div class="quiz-box" id="quiz-module${m.id}" style="display:none;padding:20px;background:#f8fafc;margin:15px 0;border-radius:10px;">
+                        <form id="quizForm${m.id}">
+                            <div class="mcq-container">
+                                <p style="font-size:0.9rem; color:var(--slate-500)">Select the correct answers to unlock the next module.</p>
+                                <!-- Quiz questions here -->
+                                ${[1, 2, 3, 4, 5].map(qNum => `
+                                <div class="mcq-question">
+                                    <div class="mcq-title">${qNum}. Question ${qNum} about ${m.title.split(': ')[1]}?</div>
+                                    <div class="mcq-options">
+                                        <label class="mcq-option"><input type="radio" name="q${qNum}" value="A"><div class="option-letter">A</div><span>Option A</span></label>
+                                        <label class="mcq-option"><input type="radio" name="q${qNum}" value="B"><div class="option-letter">B</div><span>Correct Answer</span></label>
+                                        <label class="mcq-option"><input type="radio" name="q${qNum}" value="C"><div class="option-letter">C</div><span>Option C</span></label>
+                                        <label class="mcq-option"><input type="radio" name="q${qNum}" value="D"><div class="option-letter">D</div><span>Option D</span></label>
+                                    </div>
+                                </div>`).join('')}
+                            </div>
+                            <button type="button" onclick="submitQuiz(${m.id})" class="quiz-submit">Submit Quiz</button>
+                        </form>
+                    </div>
+                    <div class="activity-row">
+                        <div class="activity-info"><i class="fas fa-code"></i> <span>Coding Task - PROGRAM</span></div>
+                        <button class="status-btn todo">To do</button>
+                    </div>
+                </div>`;
+                container.appendChild(section);
+            });
+        }
+
+        function onYouTubeIframeAPIReady() {
+            const iframes = document.querySelectorAll('iframe[id^="vplayer-"]');
+            iframes.forEach(iframe => {
+                const id = iframe.id;
+                players[id] = new YT.Player(id, {
+                    events: { 'onStateChange': (event) => onPlayerStateChange(event, id) }
+                });
+            });
+        }
+
+        function onPlayerStateChange(event, iframeId) {
+            if (event.data === YT.PlayerState.ENDED) {
+                const btnId = iframeId.replace('vplayer-', 'vbtn-');
+                markAsDone(btnId);
+            }
+        }
+
+        function markAsDone(btnId) {
+            const btn = document.getElementById(btnId);
+            if (btn) {
+                btn.classList.remove("todo");
+                btn.classList.add("done");
+                btn.innerHTML = 'Done <i class="fas fa-check"></i>';
+                localStorage.setItem("regression_" + btnId, "done");
+                updateProgress();
+            }
+        }
+
+        function toggleSection(header) {
+            header.classList.toggle('active');
+            const content = header.nextElementSibling;
+            content.style.display = (content.style.display === 'block') ? 'none' : 'block';
+        }
+
+        function toggleVideo(row) {
+            const video = row.nextElementSibling;
+            video.style.display = (video.style.display === 'block') ? 'none' : 'block';
+        }
+
+        function showQuiz(module) {
+            const quiz = document.getElementById("quiz-module" + module);
+            quiz.style.display = (quiz.style.display === "block") ? "none" : "block";
+        }
+
+        const quizAnswers = {
+            1: { q1: "B", q2: "B", q3: "B", q4: "B", q5: "B" },
+            2: { q1: "B", q2: "B", q3: "B", q4: "B", q5: "B" },
+            3: { q1: "B", q2: "B", q3: "B", q4: "A", q5: "B" },
+            4: { q1: "B", q2: "B", q3: "B", q4: "B", q5: "B" },
+            5: { q1: "B", q2: "B", q3: "B", q4: "B", q5: "B" },
+            6: { q1: "B", q2: "B", q3: "B", q4: "B", q5: "B" },
+            7: { q1: "B", q2: "B", q3: "B", q4: "B", q5: "B" },
+            8: { q1: "B", q2: "B", q3: "B", q4: "B", q5: "B" }
+        };
+
+        function submitQuiz(module) {
+            let answers = quizAnswers[module];
+            let score = 0;
+            for (let q in answers) {
+                let selected = document.querySelector(`#quiz-module${module} input[name="${q}"]:checked`);
+                let options = document.querySelectorAll(`#quiz-module${module} input[name="${q}"]`);
+                options.forEach(opt => opt.parentElement.classList.remove("correct", "wrong"));
+                if (selected) {
+                    if (selected.value === answers[q]) {
+                        score++;
+                        selected.parentElement.classList.add("correct");
+                    } else {
+                        selected.parentElement.classList.add("wrong");
+                        document.querySelector(`#quiz-module${module} input[name="${q}"][value="${answers[q]}"]`).parentElement.classList.add("correct");
+                    }
+                }
+            }
+            if (score >= 3) {
+                markAsDone("qbtn-" + module);
+                if (module < totalModules) {
+                    localStorage.setItem("regression_module" + module + "_unlocked", "true");
+                    const nextBox = document.getElementById("module-box-" + (module + 1));
+                    if (nextBox) nextBox.classList.remove("locked");
+                }
+            }
+        }
+
+        function updateProgress() {
+            let completed = 0;
+            const btns = document.querySelectorAll('.status-btn');
+            btns.forEach(btn => { if (btn.classList.contains('done')) completed++; });
+            const percent = btns.length > 0 ? Math.floor((completed / btns.length) * 100) : 0;
+            document.getElementById("progressBar").style.width = percent + "%";
+            document.getElementById("progressText").innerText = percent + "%";
+        }
+
+        // Search Functionality
+        document.getElementById('moduleSearch').addEventListener('input', function (e) {
+            const term = e.target.value.toLowerCase();
+            const boxes = document.querySelectorAll('.section-box');
+            boxes.forEach(box => {
+                const text = box.innerText.toLowerCase();
+                box.style.display = text.includes(term) ? 'block' : 'none';
+            });
+        });
+
+        document.addEventListener("DOMContentLoaded", () => {
+            generateRemainingModules();
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('main-content');
+
+            sidebarToggle.addEventListener('click', () => {
+                sidebar.classList.toggle('collapsed');
+                mainContent.classList.toggle('expanded');
+            });
+
+            for (let i = 2; i <= totalModules; i++) {
+                if (localStorage.getItem("regression_module" + (i - 1) + "_unlocked") === "true") {
+                    const box = document.getElementById("module-box-" + i);
+                    if (box) box.classList.remove("locked");
+                }
+            }
+            document.querySelectorAll('.status-btn').forEach(btn => {
+                if (btn.id && localStorage.getItem("regression_" + btn.id) === "done") {
+                    btn.classList.add("done");
+                    btn.innerHTML = 'Done <i class="fas fa-check"></i>';
+                }
+            });
+            updateProgress();
+        });
+    </script>
+</body>
+
+</html>

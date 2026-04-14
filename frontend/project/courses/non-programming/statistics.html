@@ -8,7 +8,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Inter:wght@400;500;600;700&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../../css/dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
@@ -332,20 +332,34 @@
 
         .section-box.locked {
             filter: grayscale(1);
-            opacity: 0.7;
-            pointer-events: none;
+            opacity: 0.8;
             position: relative;
         }
 
-        .section-box.locked::after {
-            content: "\f023";
-            font-family: "Font Awesome 5 Free";
-            font-weight: 900;
-            position: absolute;
-            top: 20px;
-            right: 50px;
-            color: var(--text-muted);
-            font-size: 1.2rem;
+        /* Activities are visible but not clickable when locked */
+        .section-box.locked .section-content .activity-row,
+        .section-box.locked .section-content .video-embed,
+        .section-box.locked .section-content .quiz-box {
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        .restriction-msg {
+            display: none;
+            padding: 12px 20px;
+            background: #f1f5f9;
+            border-radius: 10px;
+            margin: 15px 25px;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.85rem;
+            color: #475569;
+            font-weight: 600;
+            border-left: 4px solid var(--primary-blue);
+        }
+
+        .section-box.locked .restriction-msg {
+            display: flex;
         }
 
         .status-btn {
@@ -421,7 +435,7 @@
 <body>
 <div class="dashboard-container">
     <aside class="sidebar" id="sidebar">
-           <div class="logo">
+        <div class="logo">
     <i class="fas fa-brain logo-icon"></i>
     <div class="logo-text">EduPath <span>AI</span></div>
 </div>
@@ -476,13 +490,14 @@
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
             <div class="section-content">
+                <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this, 'vplayer-1')">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>What is Statistics? - VIDEO</span></div>
                     <button id="vbtn-1" class="status-btn todo">To do</button>
                 </div>
                 <div class="video-embed" id="video-1">
                     <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;">
-                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/CHp4KAn_uO8?enablejsapi=1" id="vplayer-1" frameborder="0" allowfullscreen></iframe>
+                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/CHp4KAn_uO8?enablejsapi=1" id="vplayer-1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                     </div>
                 </div>
                 <div class="activity-row" onclick="showQuiz(1)">
@@ -541,13 +556,14 @@
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
             <div class="section-content">
+                <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this, 'vplayer-2')">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Mean, Median, Mode - VIDEO</span></div>
                     <button id="vbtn-2" class="status-btn todo">To do</button>
                 </div>
                 <div class="video-embed" id="video-2">
                     <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;">
-                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/kn83BA7cRNM?enablejsapi=1" id="vplayer-2" frameborder="0" allowfullscreen></iframe>
+                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/kn83BA7cRNM?enablejsapi=1" id="vplayer-2" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                     </div>
                 </div>
                 <div class="activity-row" onclick="showQuiz(2)">
@@ -606,13 +622,14 @@
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
             <div class="section-content">
+                <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this, 'vplayer-3')">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Dispersion - VIDEO</span></div>
                     <button id="vbtn-3" class="status-btn todo">To do</button>
                 </div>
                 <div class="video-embed" id="video-3">
                     <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;">
-                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/O102-pU7o6Y?enablejsapi=1" id="vplayer-3" frameborder="0" allowfullscreen></iframe>
+                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/O102-pU7o6Y?enablejsapi=1" id="vplayer-3" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                     </div>
                 </div>
                 <div class="activity-row" onclick="showQuiz(3)">
@@ -671,13 +688,14 @@
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
             <div class="section-content">
+                <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this, 'vplayer-4')">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Probability Principles - VIDEO</span></div>
                     <button id="vbtn-4" class="status-btn todo">To do</button>
                 </div>
                 <div class="video-embed" id="video-4">
                     <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;">
-                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/KzfWUEJjG18?enablejsapi=1" id="vplayer-4" frameborder="0" allowfullscreen></iframe>
+                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/KzfWUEJjG18?enablejsapi=1" id="vplayer-4" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                     </div>
                 </div>
                 <div class="activity-row" onclick="showQuiz(4)">
@@ -736,13 +754,14 @@
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
             <div class="section-content">
+                <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this, 'vplayer-5')">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Normal Distribution - VIDEO</span></div>
                     <button id="vbtn-5" class="status-btn todo">To do</button>
                 </div>
                 <div class="video-embed" id="video-5">
                     <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;">
-                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/mtH1fmNVqcE?enablejsapi=1" id="vplayer-5" frameborder="0" allowfullscreen></iframe>
+                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/mtH1fmNVqcE?enablejsapi=1" id="vplayer-5" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                     </div>
                 </div>
                 <div class="activity-row" onclick="showQuiz(5)">
@@ -801,13 +820,14 @@
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
             <div class="section-content">
+                <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this, 'vplayer-6')">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Sampling Methods - VIDEO</span></div>
                     <button id="vbtn-6" class="status-btn todo">To do</button>
                 </div>
                 <div class="video-embed" id="video-6">
                     <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;">
-                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/L-9V_G9jV-0?enablejsapi=1" id="vplayer-6" frameborder="0" allowfullscreen></iframe>
+                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/L-9V_G9jV-0?enablejsapi=1" id="vplayer-6" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                     </div>
                 </div>
                 <div class="activity-row" onclick="showQuiz(6)">
@@ -866,13 +886,14 @@
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
             <div class="section-content">
+                <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this, 'vplayer-7')">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Intro to Testing - VIDEO</span></div>
                     <button id="vbtn-7" class="status-btn todo">To do</button>
                 </div>
                 <div class="video-embed" id="video-7">
                     <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;">
-                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/2oJ_v0_8_88?enablejsapi=1" id="vplayer-7" frameborder="0" allowfullscreen></iframe>
+                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/2oJ_v0_8_88?enablejsapi=1" id="vplayer-7" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                     </div>
                 </div>
                 <div class="activity-row" onclick="showQuiz(7)">
@@ -931,13 +952,14 @@
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
             <div class="section-content">
+                <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this, 'vplayer-8')">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Correlation Basics - VIDEO</span></div>
                     <button id="vbtn-8" class="status-btn todo">To do</button>
                 </div>
                 <div class="video-embed" id="video-8">
                     <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;">
-                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/4-Xv8jD-9Gk?enablejsapi=1" id="vplayer-8" frameborder="0" allowfullscreen></iframe>
+                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/4-Xv8jD-9Gk?enablejsapi=1" id="vplayer-8" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                     </div>
                 </div>
                 <div class="activity-row" onclick="showQuiz(8)">
@@ -993,7 +1015,6 @@
 </div>
 
 <script src="https://www.youtube.com/iframe_api"></script>
-<script src="js/dashboard.js"></script>
 <script>
     const totalModules = 8;
     const quizAnswers = {

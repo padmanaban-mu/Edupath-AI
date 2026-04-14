@@ -342,20 +342,34 @@
 
         .section-box.locked {
             filter: grayscale(1);
-            opacity: 0.7;
-            pointer-events: none;
+            opacity: 0.8;
             position: relative;
         }
 
-        .section-box.locked::after {
-            content: "\f023";
-            font-family: "Font Awesome 5 Free";
-            font-weight: 900;
-            position: absolute;
-            top: 20px;
-            right: 50px;
-            color: var(--text-muted);
-            font-size: 1.2rem;
+        /* Activities are visible but not clickable when locked */
+        .section-box.locked .section-content .activity-row,
+        .section-box.locked .section-content .video-embed,
+        .section-box.locked .section-content .quiz-box {
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        .restriction-msg {
+            display: none;
+            padding: 12px 20px;
+            background: #f1f5f9;
+            border-radius: 10px;
+            margin: 15px 25px;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.85rem;
+            color: #475569;
+            font-weight: 600;
+            border-left: 4px solid var(--primary-blue);
+        }
+
+        .section-box.locked .restriction-msg {
+            display: flex;
         }
 
         .course-progress {
@@ -390,7 +404,7 @@
 <body>
     <div class="dashboard-container">
         <aside class="sidebar" id="sidebar">
-               <div class="logo">
+            <div class="logo">
     <i class="fas fa-brain logo-icon"></i>
     <div class="logo-text">EduPath <span>AI</span></div>
 </div>
@@ -450,6 +464,7 @@
                         <i class="fas fa-chevron-down toggle-icon"></i>
                     </div>
                     <div class="section-content">
+                        <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                         <div class="activity-row" onclick="toggleVideo(this)">
                             <div class="activity-info"><i class="fas fa-link"></i> <span>What is NumPy? & Setup -
                                     VIDEO</span></div>
@@ -458,7 +473,7 @@
                         <div class="video-embed">
                             <iframe width="100%" height="400"
                                 src="https://www.youtube.com/embed/8Mpc9ukltVA?enablejsapi=1" id="vplayer-1"
-                                frameborder="0" allowfullscreen></iframe>
+                                frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                         </div>
                         <div class="activity-row" onclick="showQuiz(1)">
                             <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Basics - QUIZ</span></div>
@@ -574,6 +589,7 @@
                         <i class="fas fa-chevron-down toggle-icon"></i>
                     </div>
                     <div class="section-content">
+                        <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                         <div class="activity-row" onclick="toggleVideo(this)">
                             <div class="activity-info"><i class="fas fa-link"></i> <span>Creating Arrays (zeros, ones,
                                     arange) - VIDEO</span></div>
@@ -581,8 +597,8 @@
                         </div>
                         <div class="video-embed">
                             <iframe width="100%" height="400"
-                                src="https://www.youtube.com/embed/QUT1VHiLmmI?enablejsapi=1" id="vplayer-2"
-                                frameborder="0" allowfullscreen></iframe>
+                                src="https://www.youtube.com/embed/V620tL17t_4?enablejsapi=1" id="vplayer-2"
+                                frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                         </div>
                         <div class="activity-row" onclick="showQuiz(2)">
                             <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Creation Functions -
@@ -699,6 +715,7 @@
                         <i class="fas fa-chevron-down toggle-icon"></i>
                     </div>
                     <div class="section-content">
+                        <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                         <div class="activity-row" onclick="toggleVideo(this)">
                             <div class="activity-info"><i class="fas fa-link"></i> <span>Accessing & Slicing Elements -
                                     VIDEO</span></div>
@@ -706,8 +723,8 @@
                         </div>
                         <div class="video-embed">
                             <iframe width="100%" height="400"
-                                src="https://www.youtube.com/embed/QUT1VHiLmmI?enablejsapi=1" id="vplayer-3"
-                                frameborder="0" allowfullscreen></iframe>
+                                src="https://www.youtube.com/embed/P8p-0X2qB3s?enablejsapi=1" id="vplayer-3"
+                                frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                         </div>
                         <div class="activity-row" onclick="showQuiz(3)">
                             <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Indexing - QUIZ</span>
@@ -824,6 +841,7 @@
                         <i class="fas fa-chevron-down toggle-icon"></i>
                     </div>
                     <div class="section-content">
+                        <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                         <div class="activity-row" onclick="toggleVideo(this)">
                             <div class="activity-info"><i class="fas fa-link"></i> <span>Changing Array Shape -
                                     VIDEO</span></div>
@@ -831,8 +849,8 @@
                         </div>
                         <div class="video-embed">
                             <iframe width="100%" height="400"
-                                src="https://www.youtube.com/embed/QUT1VHiLmmI?enablejsapi=1" id="vplayer-4"
-                                frameborder="0" allowfullscreen></iframe>
+                                src="https://www.youtube.com/embed/V12Q4E5b1Q0?enablejsapi=1" id="vplayer-4"
+                                frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                         </div>
                         <div class="activity-row" onclick="showQuiz(4)">
                             <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Reshaping - QUIZ</span>
@@ -949,6 +967,7 @@
                         <i class="fas fa-chevron-down toggle-icon"></i>
                     </div>
                     <div class="section-content">
+                        <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                         <div class="activity-row" onclick="toggleVideo(this)">
                             <div class="activity-info"><i class="fas fa-link"></i> <span>Arithmetic & Vectorization -
                                     VIDEO</span></div>
@@ -957,7 +976,7 @@
                         <div class="video-embed">
                             <iframe width="100%" height="400"
                                 src="https://www.youtube.com/embed/R67XuYc9NQ4?enablejsapi=1" id="vplayer-5"
-                                frameborder="0" allowfullscreen></iframe>
+                                frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                         </div>
                         <div class="activity-row" onclick="showQuiz(5)">
                             <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Math Ops - QUIZ</span>
@@ -1077,6 +1096,7 @@
                         <i class="fas fa-chevron-down toggle-icon"></i>
                     </div>
                     <div class="section-content">
+                        <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                         <div class="activity-row" onclick="toggleVideo(this)">
                             <div class="activity-info"><i class="fas fa-link"></i> <span>Aggregations (Sum, Mean, Std) -
                                     VIDEO</span></div>
@@ -1084,8 +1104,8 @@
                         </div>
                         <div class="video-embed">
                             <iframe width="100%" height="400"
-                                src="https://www.youtube.com/embed/QUT1VHiLmmI?enablejsapi=1" id="vplayer-6"
-                                frameborder="0" allowfullscreen></iframe>
+                                src="https://www.youtube.com/embed/4-Xv8jD-9Gk?enablejsapi=1" id="vplayer-6"
+                                frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                         </div>
                         <div class="activity-row" onclick="showQuiz(6)">
                             <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Statistics - QUIZ</span>
@@ -1203,6 +1223,7 @@
                         <i class="fas fa-chevron-down toggle-icon"></i>
                     </div>
                     <div class="section-content">
+                        <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                         <div class="activity-row" onclick="toggleVideo(this)">
                             <div class="activity-info"><i class="fas fa-link"></i> <span>Generating Random Data -
                                     VIDEO</span></div>
@@ -1210,8 +1231,8 @@
                         </div>
                         <div class="video-embed">
                             <iframe width="100%" height="400"
-                                src="https://www.youtube.com/embed/QUT1VHiLmmI?enablejsapi=1" id="vplayer-7"
-                                frameborder="0" allowfullscreen></iframe>
+                                src="https://www.youtube.com/embed/oH6uXv9t6tI?enablejsapi=1" id="vplayer-7"
+                                frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                         </div>
                         <div class="activity-row" onclick="showQuiz(7)">
                             <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Randomness - QUIZ</span>
@@ -1337,8 +1358,8 @@
                         </div>
                         <div class="video-embed">
                             <iframe width="100%" height="400"
-                                src="https://www.youtube.com/embed/QUT1VHiLmmI?enablejsapi=1" id="vplayer-8"
-                                frameborder="0" allowfullscreen></iframe>
+                                src="https://www.youtube.com/embed/lI1L8F9K_OQ?enablejsapi=1" id="vplayer-8"
+                                frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                         </div>
                         <div class="activity-row" onclick="showQuiz(8)">
                             <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Linalg - QUIZ</span></div>
@@ -1451,7 +1472,6 @@
 
     <!-- YouTube IFrame API -->
     <script src="https://www.youtube.com/iframe_api"></script>
-    <script src="js/dashboard.js"></script>
     <script>
         const totalModules = 8;
         let players = {};

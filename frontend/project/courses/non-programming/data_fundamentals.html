@@ -4,11 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exploratory Data Analysis — EduPath AI</title>
+    <title>Data Fundamentals — EduPath AI</title>
     <link
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Inter:wght@400;500;600;700&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../../css/dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
@@ -332,20 +332,34 @@
 
         .section-box.locked {
             filter: grayscale(1);
-            opacity: 0.7;
-            pointer-events: none;
+            opacity: 0.8;
             position: relative;
         }
 
-        .section-box.locked::after {
-            content: "\f023";
-            font-family: "Font Awesome 5 Free";
-            font-weight: 900;
-            position: absolute;
-            top: 20px;
-            right: 50px;
-            color: var(--text-muted);
-            font-size: 1.2rem;
+        /* Activities are visible but not clickable when locked */
+        .section-box.locked .section-content .activity-row,
+        .section-box.locked .section-content .video-embed,
+        .section-box.locked .section-content .quiz-box {
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        .restriction-msg {
+            display: none;
+            padding: 12px 20px;
+            background: #f1f5f9;
+            border-radius: 10px;
+            margin: 15px 25px;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.85rem;
+            color: #475569;
+            font-weight: 600;
+            border-left: 4px solid var(--primary-blue);
+        }
+
+        .section-box.locked .restriction-msg {
+            display: flex;
         }
 
         .status-btn {
@@ -421,7 +435,7 @@
 <body>
 <div class="dashboard-container">
     <aside class="sidebar" id="sidebar">
-           <div class="logo">
+       <div class="logo">
     <i class="fas fa-brain logo-icon"></i>
     <div class="logo-text">EduPath <span>AI</span></div>
 </div>
@@ -449,7 +463,7 @@
             <div class="toggle-btn" id="sidebarToggle"><i class="fas fa-bars"></i></div>
             <div class="search-bar">
                 <i class="fas fa-search" style="color: var(--slate-500);"></i>
-                <input type="text" placeholder="Search EDA topics..." id="moduleSearch" style="border: none; outline: none; width: 100%;">
+                <input type="text" placeholder="Search Data topics..." style="border: none; outline: none; width: 100%;">
             </div>
             <div class="user-profile"><i class="far fa-bell" style="color:var(--text-muted)"></i></div>
         </header>
@@ -465,66 +479,67 @@
         </div>
 
         <div class="explore-header">
-            <h1>🔍 Exploratory Data Analysis</h1>
-            <p style="color: var(--slate-500); font-size: 0.9rem;">Uncovering patterns and insights without writing code.</p>
+            <h1>📊 Data Fundamentals</h1>
+            <p style="color: var(--slate-500); font-size: 0.9rem;">The non-programming track for data literacy.</p>
         </div>
 
         <!-- MODULE 1 -->
         <div class="section-box" id="module-box-1">
             <div class="section-header" onclick="toggleSection(this)">
-                <h3>Module 1: What is EDA?</h3>
+                <h3>Module 1: Introduction to Data</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
             <div class="section-content">
+                <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this, 'vplayer-1')">
-                    <div class="activity-info"><i class="fas fa-link"></i> <span>Intro to EDA - VIDEO</span></div>
+                    <div class="activity-info"><i class="fas fa-link"></i> <span>What is Data? - VIDEO</span></div>
                     <button id="vbtn-1" class="status-btn todo">To do</button>
                 </div>
                 <div class="video-embed" id="video-1">
                     <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;">
-                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/2AFgpQTfVnQ?enablejsapi=1" id="vplayer-1" frameborder="0" allowfullscreen></iframe>
+                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/szX7SjP_Kxs?enablejsapi=1" id="vplayer-1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                     </div>
                 </div>
                 <div class="activity-row" onclick="showQuiz(1)">
-                    <div class="activity-info"><i class="fas fa-list-alt"></i> <span>EDA Foundations Quiz</span></div>
+                    <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Intro Quiz</span></div>
                     <button id="qbtn-1" class="status-btn todo">To do</button>
                 </div>
                 <div class="quiz-box" id="quiz-1">
                     <form id="quizForm-1">
                         <div class="mcq-container">
                             <div class="mcq-question">
-                                <div class="mcq-title">1. What is the primary goal of EDA?</div>
+                                <div class="mcq-title">1. What is the definition of data in the simplest terms?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q1" value="A"><div class="option-letter">A</div><span>Summarize main characteristics of data</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q1" value="B"><div class="option-letter">B</div><span>Automate data cleaning entirely</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="A"><div class="option-letter">A</div><span>A collection of facts and info</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="B"><div class="option-letter">B</div><span>A computer program</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">2. Who is considered the pioneer of EDA?</div>
+                                <div class="mcq-title">2. Which of these is structured data?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q2" value="A"><div class="option-letter">A</div><span>John Tukey</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q2" value="B"><div class="option-letter">B</div><span>Bill Gates</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="A"><div class="option-letter">A</div><span>An Excel table</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="B"><div class="option-letter">B</div><span>A voice recording</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">3. When is EDA usually performed?</div>
+                                <div class="mcq-title">3. JSON files are usually considered:</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q3" value="A"><div class="option-letter">A</div><span>Before formal modeling</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q3" value="B"><div class="option-letter">B</div><span>After the final report is done</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="A"><div class="option-letter">A</div><span>Semi-structured</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="B"><div class="option-letter">B</div><span>Unstructured</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">4. EDA is primarily a:</div>
+                                <div class="mcq-title">4. Video files are examples of:</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q4" value="A"><div class="option-letter">A</div><span>Visual and summarizing approach</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q4" value="B"><div class="option-letter">B</div><span>Purely mathematical approach</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="A"><div class="option-letter">A</div><span>Unstructured data</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="B"><div class="option-letter">B</div><span>Structured data</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">5. Key tool for EDA is:</div>
+                                <div class="mcq-title">5. Primary goal of data analysis?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q5" value="A"><div class="option-letter">A</div><span>Data Visualization</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q5" value="B"><div class="option-letter">B</div><span>Word Processing</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="A"><div class="option-letter">A</div><span>Extraction of insights</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="B"><div class="option-letter">B</div><span>Deleting old files</span></label>
                                 </div>
                             </div>
                         </div>
@@ -537,59 +552,60 @@
         <!-- MODULE 2 -->
         <div class="section-box locked" id="module-box-2">
             <div class="section-header" onclick="toggleSection(this)">
-                <h3>Module 2: Variables & Data Types</h3>
+                <h3>Module 2: Data Lifecycle</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
             <div class="section-content">
+                <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this, 'vplayer-2')">
-                    <div class="activity-info"><i class="fas fa-link"></i> <span>Data Types in EDA - VIDEO</span></div>
+                    <div class="activity-info"><i class="fas fa-link"></i> <span>The Data Lifecycle - VIDEO</span></div>
                     <button id="vbtn-2" class="status-btn todo">To do</button>
                 </div>
                 <div class="video-embed" id="video-2">
                     <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;">
-                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/h8fTInSgPAs?enablejsapi=1" id="vplayer-2" frameborder="0" allowfullscreen></iframe>
+                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/h8fTInSgPAs?enablejsapi=1" id="vplayer-2" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                     </div>
                 </div>
                 <div class="activity-row" onclick="showQuiz(2)">
-                    <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Variables Quiz</span></div>
+                    <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Lifecycle Quiz</span></div>
                     <button id="qbtn-2" class="status-btn todo">To do</button>
                 </div>
                 <div class="quiz-box" id="quiz-2">
                     <form id="quizForm-2">
                         <div class="mcq-container">
                             <div class="mcq-question">
-                                <div class="mcq-title">1. 'City Name' is an example of:</div>
+                                <div class="mcq-title">1. First step in the data lifecycle?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q1" value="A"><div class="option-letter">A</div><span>Nominal data</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q1" value="B"><div class="option-letter">B</div><span>Discrete data</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="A"><div class="option-letter">A</div><span>Data Collection</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="B"><div class="option-letter">B</div><span>Data ARCHIVAL</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">2. 'Customer Rating (1-5 targets)' is:</div>
+                                <div class="mcq-title">2. Where is data stored for long-term use?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q2" value="A"><div class="option-letter">A</div><span>Ordinal data</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q2" value="B"><div class="option-letter">B</div><span>Continuous data</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="A"><div class="option-letter">A</div><span>Data Warehouse</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="B"><div class="option-letter">B</div><span>Computer RAM</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">3. Temperature is usually treated as:</div>
+                                <div class="mcq-title">3. What follows data cleaning?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q3" value="A"><div class="option-letter">A</div><span>Interval/Ratio data</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q3" value="B"><div class="option-letter">B</div><span>Nominal data</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="A"><div class="option-letter">A</div><span>Data Analysis</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="B"><div class="option-letter">B</div><span>Data Collection</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">4. Categorical data is also known as:</div>
+                                <div class="mcq-title">4. Data visualization is for:</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q4" value="A"><div class="option-letter">A</div><span>Qualitative data</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q4" value="B"><div class="option-letter">B</div><span>Quantitative data</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="A"><div class="option-letter">A</div><span>Communicating findings</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="B"><div class="option-letter">B</div><span>Hiding errors</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">5. Why identify data types first?</div>
+                                <div class="mcq-title">5. Final stage of data?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q5" value="A"><div class="option-letter">A</div><span>To choose the correct plot/analysis</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q5" value="B"><div class="option-letter">B</div><span>To make the data look better</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="A"><div class="option-letter">A</div><span>Archive or Deletion</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="B"><div class="option-letter">B</div><span>Initial collection</span></label>
                                 </div>
                             </div>
                         </div>
@@ -602,59 +618,60 @@
         <!-- MODULE 3 -->
         <div class="section-box locked" id="module-box-3">
             <div class="section-header" onclick="toggleSection(this)">
-                <h3>Module 3: Data Inspection</h3>
+                <h3>Module 3: Data Quality</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
             <div class="section-content">
+                <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this, 'vplayer-3')">
-                    <div class="activity-info"><i class="fas fa-link"></i> <span>Data Profiling - VIDEO</span></div>
+                    <div class="activity-info"><i class="fas fa-link"></i> <span>Data Quality & Cleaning - VIDEO</span></div>
                     <button id="vbtn-3" class="status-btn todo">To do</button>
                 </div>
                 <div class="video-embed" id="video-3">
                     <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;">
-                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/Hj6W0O1Xv0g?enablejsapi=1" id="vplayer-3" frameborder="0" allowfullscreen></iframe>
+                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/t_mXST0p6dM?enablejsapi=1" id="vplayer-3" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                     </div>
                 </div>
                 <div class="activity-row" onclick="showQuiz(3)">
-                    <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Inspection Quiz</span></div>
+                    <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Quality Quiz</span></div>
                     <button id="qbtn-3" class="status-btn todo">To do</button>
                 </div>
                 <div class="quiz-box" id="quiz-3">
                     <form id="quizForm-3">
                         <div class="mcq-container">
                             <div class="mcq-question">
-                                <div class="mcq-title">1. What does 'Data Profiling' mean?</div>
+                                <div class="mcq-title">1. What is "dirty data"?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q1" value="A"><div class="option-letter">A</div><span>Examining data to understand its structure</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q1" value="B"><div class="option-letter">B</div><span>Deleting old data records</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="A"><div class="option-letter">A</div><span>Inaccurate/Incomplete data</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="B"><div class="option-letter">B</div><span>Temporary data</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">2. A 'NULL' value in a dataset represents:</div>
+                                <div class="mcq-title">2. A common cleaning task?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q2" value="A"><div class="option-letter">A</div><span>Missing information</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q2" value="B"><div class="option-letter">B</div><span>A value of zero</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="A"><div class="option-letter">A</div><span>Removing duplicates</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="B"><div class="option-letter">B</div><span>Increasing file size</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">3. Checking dimensions (rows/cols) helps identify:</div>
+                                <div class="mcq-title">3. Missing values should be:</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q3" value="A"><div class="option-letter">A</div><span>Scale of the dataset</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q3" value="B"><div class="option-letter">B</div><span>The average value</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="A"><div class="option-letter">A</div><span>Handled (removed or filled)</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="B"><div class="option-letter">B</div><span>Ignored completely</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">4. 'Head(5)' is used to view:</div>
+                                <div class="mcq-title">4. Data validation ensures:</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q4" value="A"><div class="option-letter">A</div><span>First 5 rows</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q4" value="B"><div class="option-letter">B</div><span>Last 5 rows</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="A"><div class="option-letter">A</div><span>Accuracy/Completeness</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="B"><div class="option-letter">B</div><span>Fancy formatting</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">5. Data inspection should reveal:</div>
+                                <div class="mcq-title">5. Tool used for cleaning?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q5" value="A"><div class="option-letter">A</div><span>Inconsistencies and missing values</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q5" value="B"><div class="option-letter">B</div><span>The final prediction</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="A"><div class="option-letter">A</div><span>Excel / OpenRefine</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="B"><div class="option-letter">B</div><span>Paint</span></label>
                                 </div>
                             </div>
                         </div>
@@ -667,59 +684,60 @@
         <!-- MODULE 4 -->
         <div class="section-box locked" id="module-box-4">
             <div class="section-header" onclick="toggleSection(this)">
-                <h3>Module 4: Univariate Analysis</h3>
+                <h3>Module 4: Statistics Basics</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
             <div class="section-content">
+                <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this, 'vplayer-4')">
-                    <div class="activity-info"><i class="fas fa-link"></i> <span>Univariate Concepts - VIDEO</span></div>
+                    <div class="activity-info"><i class="fas fa-link"></i> <span>Descriptive Statistics - VIDEO</span></div>
                     <button id="vbtn-4" class="status-btn todo">To do</button>
                 </div>
                 <div class="video-embed" id="video-4">
                     <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;">
-                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/O102-pU7o6Y?enablejsapi=1" id="vplayer-4" frameborder="0" allowfullscreen></iframe>
+                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/J7k7_7P_LqM?enablejsapi=1" id="vplayer-4" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                     </div>
                 </div>
                 <div class="activity-row" onclick="showQuiz(4)">
-                    <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Univariate Quiz</span></div>
+                    <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Stats Quiz</span></div>
                     <button id="qbtn-4" class="status-btn todo">To do</button>
                 </div>
                 <div class="quiz-box" id="quiz-4">
                     <form id="quizForm-4">
                         <div class="mcq-container">
                             <div class="mcq-question">
-                                <div class="mcq-title">1. 'Univariate' refers to:</div>
+                                <div class="mcq-title">1. The 'Mean' is also known as:</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q1" value="A"><div class="option-letter">A</div><span>Analysis of a single variable</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q1" value="B"><div class="option-letter">B</div><span>Analysis of two variables</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="A"><div class="option-letter">A</div><span>Average</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="B"><div class="option-letter">B</div><span>Total</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">2. Best plot for frequency of a single numeric variable?</div>
+                                <div class="mcq-title">2. 'Median' is the:</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q2" value="A"><div class="option-letter">A</div><span>Histogram</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q2" value="B"><div class="option-letter">B</div><span>Scatter Plot</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="A"><div class="option-letter">A</div><span>Middle value</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="B"><div class="option-letter">B</div><span>Lowest value</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">3. Boxplots are excellent for identifying:</div>
+                                <div class="mcq-title">3. 'Mode' refers to:</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q3" value="A"><div class="option-letter">A</div><span>Outliers and spread</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q3" value="B"><div class="option-letter">B</div><span>Linear relationships</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="A"><div class="option-letter">A</div><span>Most frequent value</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="B"><div class="option-letter">B</div><span>Unique value</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">4. A 'tail' in a histogram suggests:</div>
+                                <div class="mcq-title">4. Difference between Max and Min?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q4" value="A"><div class="option-letter">A</div><span>Skewness in the data</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q4" value="B"><div class="option-letter">B</div><span>Perfectly consistent data</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="A"><div class="option-letter">A</div><span>Range</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="B"><div class="option-letter">B</div><span>Sum</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">5. Bar charts in univariate analysis show:</div>
+                                <div class="mcq-title">5. Standard Deviation measures:</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q5" value="A"><div class="option-letter">A</div><span>Frequency of categories</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q5" value="B"><div class="option-letter">B</div><span>Correlation between groups</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="A"><div class="option-letter">A</div><span>Data spread</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="B"><div class="option-letter">B</div><span>Data color</span></label>
                                 </div>
                             </div>
                         </div>
@@ -732,59 +750,60 @@
         <!-- MODULE 5 -->
         <div class="section-box locked" id="module-box-5">
             <div class="section-header" onclick="toggleSection(this)">
-                <h3>Module 5: Bivariate Analysis</h3>
+                <h3>Module 5: Data Visualization</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
             <div class="section-content">
+                <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this, 'vplayer-5')">
-                    <div class="activity-info"><i class="fas fa-link"></i> <span>Bivariate Concepts - VIDEO</span></div>
+                    <div class="activity-info"><i class="fas fa-link"></i> <span>Visualization Principles - VIDEO</span></div>
                     <button id="vbtn-5" class="status-btn todo">To do</button>
                 </div>
                 <div class="video-embed" id="video-5">
                     <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;">
-                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/69WpZ0Z0v0Y?enablejsapi=1" id="vplayer-5" frameborder="0" allowfullscreen></iframe>
+                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/L0pC7zS2Q-U?enablejsapi=1" id="vplayer-5" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                     </div>
                 </div>
                 <div class="activity-row" onclick="showQuiz(5)">
-                    <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Bivariate Quiz</span></div>
+                    <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Viz Quiz</span></div>
                     <button id="qbtn-5" class="status-btn todo">To do</button>
                 </div>
                 <div class="quiz-box" id="quiz-5">
                     <form id="quizForm-5">
                         <div class="mcq-container">
                             <div class="mcq-question">
-                                <div class="mcq-title">1. 'Bivariate' Analysis involves:</div>
+                                <div class="mcq-title">1. Best chart for trends over time?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q1" value="A"><div class="option-letter">A</div><span>Analysis of relationship between two variables</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q1" value="B"><div class="option-letter">B</div><span>Analysis of three variables</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="A"><div class="option-letter">A</div><span>Line Chart</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="B"><div class="option-letter">B</div><span>Pie Chart</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">2. Best plot for comparing two numeric variables?</div>
+                                <div class="mcq-title">2. Best for comparing categories?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q2" value="A"><div class="option-letter">A</div><span>Scatter Plot</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q2" value="B"><div class="option-letter">B</div><span>Histogram</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="A"><div class="option-letter">A</div><span>Bar Chart</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="B"><div class="option-letter">B</div><span>Line Chart</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">3. Cross-tabulation is used for:</div>
+                                <div class="mcq-title">3. Pie charts show:</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q3" value="A"><div class="option-letter">A</div><span>Two categorical variables</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q3" value="B"><div class="option-letter">B</div><span>Two numeric variables</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="A"><div class="option-letter">A</div><span>Parts of a whole</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="B"><div class="option-letter">B</div><span>Time trends</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">4. Correlation measures the:</div>
+                                <div class="mcq-title">4. Scatter plots show:</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q4" value="A"><div class="option-letter">A</div><span>Strength of linear relationship</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q4" value="B"><div class="option-letter">B</div><span>Difference between means</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="A"><div class="option-letter">A</div><span>Correlation</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="B"><div class="option-letter">B</div><span>Total count</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">5. A 'perfect' diagonal scatter suggests:</div>
+                                <div class="mcq-title">5. Avoid "chart junk" to:</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q5" value="A"><div class="option-letter">A</div><span>Strong correlation</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q5" value="B"><div class="option-letter">B</div><span>No relationship</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="A"><div class="option-letter">A</div><span>Keep focus on data</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="B"><div class="option-letter">B</div><span>Make it colorful</span></label>
                                 </div>
                             </div>
                         </div>
@@ -797,59 +816,60 @@
         <!-- MODULE 6 -->
         <div class="section-box locked" id="module-box-6">
             <div class="section-header" onclick="toggleSection(this)">
-                <h3>Module 6: Identifying Outliers</h3>
+                <h3>Module 6: Ethics & Privacy</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
             <div class="section-content">
+                <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this, 'vplayer-6')">
-                    <div class="activity-info"><i class="fas fa-link"></i> <span>Outlier Concepts - VIDEO</span></div>
+                    <div class="activity-info"><i class="fas fa-link"></i> <span>Data Ethics & Privacy - VIDEO</span></div>
                     <button id="vbtn-6" class="status-btn todo">To do</button>
                 </div>
                 <div class="video-embed" id="video-6">
                     <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;">
-                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/3p6-v7u8v0g?enablejsapi=1" id="vplayer-6" frameborder="0" allowfullscreen></iframe>
+                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/2AFgpQTfVnQ?enablejsapi=1" id="vplayer-6" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                     </div>
                 </div>
                 <div class="activity-row" onclick="showQuiz(6)">
-                    <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Outlier Quiz</span></div>
+                    <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Ethics Quiz</span></div>
                     <button id="qbtn-6" class="status-btn todo">To do</button>
                 </div>
                 <div class="quiz-box" id="quiz-6">
                     <form id="quizForm-6">
                         <div class="mcq-container">
                             <div class="mcq-question">
-                                <div class="mcq-title">1. What is an 'Outlier'?</div>
+                                <div class="mcq-title">1. What is PII?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q1" value="A"><div class="option-letter">A</div><span>Value far from other observations</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q1" value="B"><div class="option-letter">B</div><span>The average value</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="A"><div class="option-letter">A</div><span>Personally Identifiable Info</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="B"><div class="option-letter">B</div><span>Public Internal Index</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">2. Visual tool often used for outliers?</div>
+                                <div class="mcq-title">2. GDPR is a regulation on:</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q2" value="A"><div class="option-letter">A</div><span>Boxplot</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q2" value="B"><div class="option-letter">B</div><span>Pie Chart</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="A"><div class="option-letter">A</div><span>Data Protection</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="B"><div class="option-letter">B</div><span>Data Speed</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">3. Outliers can heavily skew the:</div>
+                                <div class="mcq-title">3. Data masking helps:</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q3" value="A"><div class="option-letter">A</div><span>Mean</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q3" value="B"><div class="option-letter">B</div><span>Median</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="A"><div class="option-letter">A</div><span>Protect sensitive info</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="B"><div class="option-letter">B</div><span>Make data visible to all</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">4. Are outliers always recording errors?</div>
+                                <div class="mcq-title">4. Ethics requires:</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q4" value="A"><div class="option-letter">A</div><span>No, they can be valid real-world extremes</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q4" value="B"><div class="option-letter">B</div><span>Yes, they must be deleted</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="A"><div class="option-letter">A</div><span>Informed consent</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="B"><div class="option-letter">B</div><span>Forced collection</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">5. One way to identify outliers statistically?</div>
+                                <div class="mcq-title">5. A data breach leads to:</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q5" value="A"><div class="option-letter">A</div><span>IQR (Interquartile Range) Method</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q5" value="B"><div class="option-letter">B</div><span>Summing the data</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="A"><div class="option-letter">A</div><span>Legal and reputational risk</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="B"><div class="option-letter">B</div><span>Better data quality</span></label>
                                 </div>
                             </div>
                         </div>
@@ -862,59 +882,60 @@
         <!-- MODULE 7 -->
         <div class="section-box locked" id="module-box-7">
             <div class="section-header" onclick="toggleSection(this)">
-                <h3>Module 7: Distribution Patterns</h3>
+                <h3>Module 7: Big Data & Cloud</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
             <div class="section-content">
+                <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this, 'vplayer-7')">
-                    <div class="activity-info"><i class="fas fa-link"></i> <span>Identifying Skew - VIDEO</span></div>
+                    <div class="activity-info"><i class="fas fa-link"></i> <span>Big Data & Cloud - VIDEO</span></div>
                     <button id="vbtn-7" class="status-btn todo">To do</button>
                 </div>
                 <div class="video-embed" id="video-7">
                     <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;">
-                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/mtH1fmNVqcE?enablejsapi=1" id="vplayer-7" frameborder="0" allowfullscreen></iframe>
+                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/0_P_9_v_0_88?enablejsapi=1" id="vplayer-7" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                     </div>
                 </div>
                 <div class="activity-row" onclick="showQuiz(7)">
-                    <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Patterns Quiz</span></div>
+                    <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Big Data Quiz</span></div>
                     <button id="qbtn-7" class="status-btn todo">To do</button>
                 </div>
                 <div class="quiz-box" id="quiz-7">
                     <form id="quizForm-7">
                         <div class="mcq-container">
                             <div class="mcq-question">
-                                <div class="mcq-title">1. A 'Symmetrical' distribution means:</div>
+                                <div class="mcq-title">1. One of the 3 V's of Big Data?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q1" value="A"><div class="option-letter">A</div><span>Both sides are mirror images</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q1" value="B"><div class="option-letter">B</div><span>Data is clustered on the left</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="A"><div class="option-letter">A</div><span>Volume</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="B"><div class="option-letter">B</div><span>Vacuum</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">2. A 'Left-Skewed' distribution has a long tail on:</div>
+                                <div class="mcq-title">2. Cloud storage benefit?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q2" value="A"><div class="option-letter">A</div><span>The left side</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q2" value="B"><div class="option-letter">B</div><span>The right side</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="A"><div class="option-letter">A</div><span>Scalability</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="B"><div class="option-letter">B</div><span>Low security</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">3. Kurtosis describes the:</div>
+                                <div class="mcq-title">3. Example of Cloud provider?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q3" value="A"><div class="option-letter">A</div><span>Peakedness / Flatness of distribution</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q3" value="B"><div class="option-letter">B</div><span>Range of the data</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="A"><div class="option-letter">A</div><span>AWS / Google Cloud</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="B"><div class="option-letter">B</div><span>Paint 3D</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">4. Why check distribution patterns?</div>
+                                <div class="mcq-title">4. Data Lake vs Warehouse?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q4" value="A"><div class="option-letter">A</div><span>To understand the frequency of values</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q4" value="B"><div class="option-letter">B</div><span>To change the data values</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="A"><div class="option-letter">A</div><span>Lake stores RAW, Warehouse STRUCTURED</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="B"><div class="option-letter">B</div><span>No difference</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">5. Binomial distribution is used for:</div>
+                                <div class="mcq-title">5. Real-time processing:</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q5" value="A"><div class="option-letter">A</div><span>Events with only two outcomes</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q5" value="B"><div class="option-letter">B</div><span>Large continuous datasets</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="A"><div class="option-letter">A</div><span>Processes data as it arrives</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="B"><div class="option-letter">B</div><span>Waits for weeks</span></label>
                                 </div>
                             </div>
                         </div>
@@ -927,59 +948,60 @@
         <!-- MODULE 8 -->
         <div class="section-box locked" id="module-box-8">
             <div class="section-header" onclick="toggleSection(this)">
-                <h3>Module 8: Feature Relationships</h3>
+                <h3>Module 8: Decision Making</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
             <div class="section-content">
+                <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this, 'vplayer-8')">
-                    <div class="activity-info"><i class="fas fa-link"></i> <span>Correlations & Map - VIDEO</span></div>
+                    <div class="activity-info"><i class="fas fa-link"></i> <span>Data-Driven Decision Making - VIDEO</span></div>
                     <button id="vbtn-8" class="status-btn todo">To do</button>
                 </div>
                 <div class="video-embed" id="video-8">
                     <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;">
-                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/4E2Z0-6wNn0?enablejsapi=1" id="vplayer-8" frameborder="0" allowfullscreen></iframe>
+                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/_V8eKsto3Ug?enablejsapi=1" id="vplayer-8" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                     </div>
                 </div>
                 <div class="activity-row" onclick="showQuiz(8)">
-                    <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Insights Quiz</span></div>
+                    <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Decision Quiz</span></div>
                     <button id="qbtn-8" class="status-btn todo">To do</button>
                 </div>
                 <div class="quiz-box" id="quiz-8">
                     <form id="quizForm-8">
                         <div class="mcq-container">
                             <div class="mcq-question">
-                                <div class="mcq-title">1. A 'Heatmap' in EDA is often used to visualize:</div>
+                                <div class="mcq-title">1. What is a KPI?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q1" value="A"><div class="option-letter">A</div><span>Correlation Matrix</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q1" value="B"><div class="option-letter">B</div><span>Single variable counts</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="A"><div class="option-letter">A</div><span>Key Performance Indicator</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="B"><div class="option-letter">B</div><span>Kind People Info</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">2. A correlation of 0.9 suggests:</div>
+                                <div class="mcq-title">2. Predictive analytics uses:</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q2" value="A"><div class="option-letter">A</div><span>Strong positive relationship</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q2" value="B"><div class="option-letter">B</div><span>Strong negative relationship</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="A"><div class="option-letter">A</div><span>Historical data</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="B"><div class="option-letter">B</div><span>Random guessing</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">3. Zero correlation means:</div>
+                                <div class="mcq-title">3. Data-driven culture means:</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q3" value="A"><div class="option-letter">A</div><span>No linear relationship</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q3" value="B"><div class="option-letter">B</div><span>The variables are identical</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="A"><div class="option-letter">A</div><span>Decisions based on facts</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="B"><div class="option-letter">B</div><span>Decisions based on luck</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">4. Multivariable analysis involves exploring:</div>
+                                <div class="mcq-title">4. Dashboard purpose?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q4" value="A"><div class="option-letter">A</div><span>Relationships between 3 or more variables</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q4" value="B"><div class="option-letter">B</div><span>Only the target variable</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="A"><div class="option-letter">A</div><span>Monitor performance at a glance</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="B"><div class="option-letter">B</div><span>Play games</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">5. The final goal of EDA is often to:</div>
+                                <div class="mcq-title">5. Feedback loop uses:</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q5" value="A"><div class="option-letter">A</div><span>Generated hypotheses and prepare data</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q5" value="B"><div class="option-letter">B</div><span>Publish the final results immediately</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="A"><div class="option-letter">A</div><span>Results to refine process</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="B"><div class="option-letter">B</div><span>Old data to repeat errors</span></label>
                                 </div>
                             </div>
                         </div>
@@ -991,7 +1013,7 @@
 
     </main>
 </div>
-<script src="js/dashboard.js"></script>
+
 <script src="https://www.youtube.com/iframe_api"></script>
 <script>
     const totalModules = 8;
@@ -1019,7 +1041,7 @@
 
         // Module unlocking logic
         for (let i = 2; i <= totalModules; i++) {
-            if (localStorage.getItem("eda_module" + (i - 1) + "_unlocked") === "true") {
+            if (localStorage.getItem("df_module" + (i - 1) + "_unlocked") === "true") {
                 const moduleBox = document.getElementById("module-box-" + i);
                 if (moduleBox) moduleBox.classList.remove("locked");
             }
@@ -1028,22 +1050,12 @@
         // Restore button states
         const buttons = document.querySelectorAll('.status-btn');
         buttons.forEach(btn => {
-            if (btn.id && localStorage.getItem("eda_" + btn.id) === "done") {
+            if (btn.id && localStorage.getItem("df_" + btn.id) === "done") {
                 applyDoneState(btn);
             }
         });
 
         updateProgress();
-
-        // Search Functionality
-        document.getElementById('moduleSearch').addEventListener('input', function (e) {
-            const term = e.target.value.toLowerCase();
-            const boxes = document.querySelectorAll('.section-box');
-            boxes.forEach(box => {
-                const text = box.innerText.toLowerCase();
-                box.style.display = text.includes(term) ? 'block' : 'none';
-            });
-        });
     });
 
     function toggleSection(header) {
@@ -1084,10 +1096,11 @@
         alert(`You scored ${score}/${total} (${scorePercent}%)`);
 
         if (score >= 4) {
+            const qbtn = document.getElementById("qbtn-" + moduleNum);
             markAsDone("qbtn-" + moduleNum);
             
             if (moduleNum < totalModules) {
-                localStorage.setItem("eda_module" + moduleNum + "_unlocked", "true");
+                localStorage.setItem("df_module" + moduleNum + "_unlocked", "true");
                 const nextModule = document.getElementById("module-box-" + (moduleNum + 1));
                 if (nextModule) nextModule.classList.remove("locked");
             }
@@ -1101,7 +1114,7 @@
         const btn = document.getElementById(btnId);
         if (btn) {
             applyDoneState(btn);
-            localStorage.setItem("eda_" + btnId, "done");
+            localStorage.setItem("df_" + btnId, "done");
             updateProgress();
         }
     }
@@ -1117,8 +1130,8 @@
         let doneItems = 0;
         
         for (let i = 1; i <= totalModules; i++) {
-            if (localStorage.getItem("eda_vbtn-" + i) === "done") doneItems++;
-            if (localStorage.getItem("eda_qbtn-" + i) === "done") doneItems++;
+            if (localStorage.getItem("df_vbtn-" + i) === "done") doneItems++;
+            if (localStorage.getItem("df_qbtn-" + i) === "done") doneItems++;
         }
 
         const progress = Math.round((doneItems / totalItems) * 100);

@@ -1,0 +1,98 @@
+
+=== FULL AUDIT RESULTS ===
+
+
+--- data_visualization.html ---
+  M1: 5Zg-C8AAIGg | Playable=YES | Duration=18:17 | >15m=YES | LONG 
+  M2: wB9C0Mz9gSo | Playable=YES | Duration=01:34:00 | >15m=YES | LONG 
+  M3: Gils_O8Nf5Y | Playable=NO | Duration=N/A | >15m=N/A | BROKEN | Unavailable
+  M4: hSInYV9676I | Playable=NO | Duration=N/A | >15m=N/A | BROKEN | Unavailable
+  M5: 2TR_6VaVp1E | Playable=NO | Duration=N/A | >15m=N/A | BROKEN | Unavailable
+  M6: ms29Z_XKsS0 | Playable=NO | Duration=N/A | >15m=N/A | BROKEN | Unavailable
+  M7: W_Xo5GAtK7o | Playable=NO | Duration=N/A | >15m=N/A | BROKEN | Unavailable
+  M8: zXp_vCiz60s | Playable=NO | Duration=N/A | >15m=N/A | BROKEN | Unavailable
+
+--- numpy.html ---
+  M1: 8Mpc9ukltVA | Playable=YES | Duration=20:03 | >15m=YES | LONG 
+  M2-4,6-8: QUT1VHiLmmI | Playable=YES | Duration=58:09 | >15m=YES | LONG 
+  M5: R67XuYc9NQ4 | Playable=YES | Duration=44:54 | >15m=YES | LONG 
+
+--- pandas.html ---
+  M1,3,4,6,8,9,11,12: zmdjNSmRXF4 | Playable=YES | Duration=33:35 | >15m=YES | LONG 
+  M2: F6kmIpWWEdU | Playable=YES | Duration=20:58 | >15m=YES | LONG 
+  M5: P_q0tkYqvSk | Playable=YES | Duration=17:57 | >15m=YES | LONG 
+  M7: Wb2Tp35dZ-I | Playable=YES | Duration=10:34 | >15m=NO | OK 
+  M10: tcRGa2soc-c | Playable=YES | Duration=25:00 | >15m=YES | LONG 
+
+--- python.html ---
+  M1,2,12,14-18: kqtD5dpn9C8 | Playable=YES | Duration=01:00:06 | >15m=YES | LONG 
+  M3: v5MR5JnKcZI | Playable=YES | Duration=11:06 | >15m=NO | OK 
+  M4: DZwmZ8Usvnk | Playable=YES | Duration=16:28 | >15m=YES | LONG 
+  M5: 6iF8Xb7Z3wQ | Playable=YES | Duration=10:14 | >15m=NO | OK 
+  M6: 94UHCEmprCY | Playable=YES | Duration=14:41 | >15m=NO | OK 
+  M7: KWgYha0clzw | Playable=YES | Duration=05:05 | >15m=NO | OK 
+  M8: ohCDWZgNIU0 | Playable=YES | Duration=05:43 | >15m=NO | OK 
+  M9: daefaLgNkw0 | Playable=YES | Duration=09:59 | >15m=NO | OK 
+  M10: 9Os0o3wzS_I | Playable=YES | Duration=21:47 | >15m=YES | LONG 
+  M11: Uh2ebFW8OYM | Playable=YES | Duration=24:33 | >15m=YES | LONG 
+  M13: ZDa-Z5JzLYM | Playable=YES | Duration=15:24 | >15m=YES | LONG 
+
+--- sql.html ---
+  M1: HXV3zeQKqGY | Playable=YES | Duration=04:20:39 | >15m=YES | LONG 
+  M2: 7S_tz1z_5bA | Playable=YES | Duration=03:10:19 | >15m=YES | LONG 
+  M3: 9yeOJ0ZMUYw | Playable=YES | Duration=10:26 | >15m=NO | OK 
+  M4: f77U8a-7_mI | Playable=NO | Duration=N/A | >15m=N/A | BROKEN | Unavailable
+  M5: Z98p1T_A8A8 | Playable=NO | Duration=N/A | >15m=N/A | BROKEN | Unavailable
+  M6: qS-I06G7bZc | Playable=NO | Duration=N/A | >15m=N/A | BROKEN | Unavailable
+  M7: t9Xk9_jH-8A | Playable=NO | Duration=N/A | >15m=N/A | BROKEN | Unavailable
+  M8: Yf5D_Hu_VI4 | Playable=NO | Duration=N/A | >15m=N/A | BROKEN | Unavailable
+
+--- bi_tools.html ---
+  M1: L0pC7zS2Q-U | Playable=NO | Duration=N/A | >15m=N/A | BROKEN | Unavailable
+  M2: TmhQCmq7zGk | Playable=NO | Duration=N/A | >15m=N/A | BROKEN | Unavailable
+  M3: 7Jl-R_FEno8 | Playable=NO | Duration=N/A | >15m=N/A | BROKEN | Unavailable
+  M4: C0y8a4H8X_8 | Playable=NO | Duration=N/A | >15m=N/A | BROKEN | Unavailable
+  M5: Z84n5wF9z1A | Playable=NO | Duration=N/A | >15m=N/A | BROKEN | Unavailable
+  M6: _pA9K55vM1Y | Playable=NO | Duration=N/A | >15m=N/A | BROKEN | Unavailable
+  M7: J7k7_7P_LqM | Playable=NO | Duration=N/A | >15m=N/A | BROKEN | Unavailable
+  M8: K9jX7u_v-0g | Playable=NO | Duration=N/A | >15m=N/A | BROKEN | Unavailable
+
+--- data_fundamentals.html ---
+  M1: szX7SjP_Kxs | Playable=NO | Duration=N/A | >15m=N/A | BROKEN | Unavailable
+  M2: h8fTInSgPAs | Playable=NO | Duration=N/A | >15m=N/A | BROKEN | Unavailable
+  M3: t_mXST0p6dM | Playable=NO | Duration=N/A | >15m=N/A | BROKEN | Unavailable
+  M4: J7k7_7P_LqM | Playable=NO | Duration=N/A | >15m=N/A | BROKEN | Unavailable
+  M5: L0pC7zS2Q-U | Playable=NO | Duration=N/A | >15m=N/A | BROKEN | Unavailable
+  M6: 2AFgpQTfVnQ | Playable=NO | Duration=N/A | >15m=N/A | BROKEN | Unavailable
+  M7: 0_P_9_v_0_8 | Playable=NO | Duration=N/A | >15m=N/A | BROKEN | Unavailable
+  M8: _V8eKsto3Ug | Playable=YES | Duration=02:10:39 | >15m=YES | LONG 
+
+--- eda.html ---
+  M1: 2AFgpQTfVnQ | Playable=NO | Duration=N/A | >15m=N/A | BROKEN | Unavailable
+  M2: h8fTInSgPAs | Playable=NO | Duration=N/A | >15m=N/A | BROKEN | Unavailable
+  M3: Hj6W0O1Xv0g | Playable=NO | Duration=N/A | >15m=N/A | BROKEN | Unavailable
+  M4: O102-pU7o6Y | Playable=NO | Duration=N/A | >15m=N/A | BROKEN | Unavailable
+  M5: 69WpZ0Z0v0Y | Playable=NO | Duration=N/A | >15m=N/A | BROKEN | Unavailable
+  M6: 3p6-v7u8v0g | Playable=NO | Duration=N/A | >15m=N/A | BROKEN | Unavailable
+  M7: mtH1fmNVqcE | Playable=NO | Duration=N/A | >15m=N/A | BROKEN | Unavailable
+  M8: 4E2Z0-6wNn0 | Playable=NO | Duration=N/A | >15m=N/A | BROKEN | Unavailable
+
+--- excel.html ---
+  M1: rwbho0CgEAE | Playable=YES | Duration=21:47 | >15m=YES | LONG 
+  M2: Jl0Qp8Ere-8 | Playable=NO | Duration=N/A | >15m=N/A | BROKEN | Unavailable
+  M3: S263O-I8o2s | Playable=NO | Duration=N/A | >15m=N/A | BROKEN | Unavailable
+  M4: _fL_v7_a6Ew | Playable=NO | Duration=N/A | >15m=N/A | BROKEN | Unavailable
+  M5: S_I5O_Yv9Uo | Playable=NO | Duration=N/A | >15m=N/A | BROKEN | Unavailable
+  M6: m0wI69n_S8s | Playable=NO | Duration=N/A | >15m=N/A | BROKEN | Unavailable
+  M7: 9P-Hpe0Yos8 | Playable=NO | Duration=N/A | >15m=N/A | BROKEN | Unavailable
+  M8: S_k8D6L4r6Y | Playable=NO | Duration=N/A | >15m=N/A | BROKEN | Unavailable
+
+--- statistics.html ---
+  M1: CHp4KAn_uO8 | Playable=NO | Duration=N/A | >15m=N/A | BROKEN | Unavailable
+  M2: kn83BA7cRNM | Playable=YES | Duration=11:23 | >15m=NO | OK 
+  M3: O102-pU7o6Y | Playable=NO | Duration=N/A | >15m=N/A | BROKEN | Unavailable
+  M4: KzfWUEJjG18 | Playable=YES | Duration=11:28 | >15m=NO | OK 
+  M5: mtH1fmNVqcE | Playable=NO | Duration=N/A | >15m=N/A | BROKEN | Unavailable
+  M6: L-9V_G9jV-0 | Playable=NO | Duration=N/A | >15m=N/A | BROKEN | Unavailable
+  M7: 2oJ_v0_8_88 | Playable=NO | Duration=N/A | >15m=N/A | BROKEN | Unavailable
+  M8: 4-Xv8jD-9Gk | Playable=NO | Duration=N/A | >15m=N/A | BROKEN | Unavailable

@@ -4,11 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Fundamentals — EduPath AI</title>
+    <title>BI Tools (Power BI/Tableau) — EduPath AI</title>
     <link
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Inter:wght@400;500;600;700&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../../css/dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
@@ -332,20 +332,34 @@
 
         .section-box.locked {
             filter: grayscale(1);
-            opacity: 0.7;
-            pointer-events: none;
+            opacity: 0.8;
             position: relative;
         }
 
-        .section-box.locked::after {
-            content: "\f023";
-            font-family: "Font Awesome 5 Free";
-            font-weight: 900;
-            position: absolute;
-            top: 20px;
-            right: 50px;
-            color: var(--text-muted);
-            font-size: 1.2rem;
+        /* Activities are visible but not clickable when locked */
+        .section-box.locked .section-content .activity-row,
+        .section-box.locked .section-content .video-embed,
+        .section-box.locked .section-content .quiz-box {
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        .restriction-msg {
+            display: none;
+            padding: 12px 20px;
+            background: #f1f5f9;
+            border-radius: 10px;
+            margin: 15px 25px;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.85rem;
+            color: #475569;
+            font-weight: 600;
+            border-left: 4px solid var(--primary-blue);
+        }
+
+        .section-box.locked .restriction-msg {
+            display: flex;
         }
 
         .status-btn {
@@ -421,7 +435,7 @@
 <body>
 <div class="dashboard-container">
     <aside class="sidebar" id="sidebar">
-           <div class="logo">
+       <div class="logo">
     <i class="fas fa-brain logo-icon"></i>
     <div class="logo-text">EduPath <span>AI</span></div>
 </div>
@@ -449,7 +463,7 @@
             <div class="toggle-btn" id="sidebarToggle"><i class="fas fa-bars"></i></div>
             <div class="search-bar">
                 <i class="fas fa-search" style="color: var(--slate-500);"></i>
-                <input type="text" placeholder="Search Data topics..." style="border: none; outline: none; width: 100%;">
+                <input type="text" placeholder="Search BI topics..." id="moduleSearch" style="border: none; outline: none; width: 100%;">
             </div>
             <div class="user-profile"><i class="far fa-bell" style="color:var(--text-muted)"></i></div>
         </header>
@@ -465,66 +479,67 @@
         </div>
 
         <div class="explore-header">
-            <h1>📊 Data Fundamentals</h1>
-            <p style="color: var(--slate-500); font-size: 0.9rem;">The non-programming track for data literacy.</p>
+            <h1>📈 BI Tools (Power BI / Tableau)</h1>
+            <p style="color: var(--slate-500); font-size: 0.9rem;">Visualization and Dashboard mastery for business insights.</p>
         </div>
 
         <!-- MODULE 1 -->
         <div class="section-box" id="module-box-1">
             <div class="section-header" onclick="toggleSection(this)">
-                <h3>Module 1: Introduction to Data</h3>
+                <h3>Module 1: Intro to BI</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
             <div class="section-content">
+                <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this, 'vplayer-1')">
-                    <div class="activity-info"><i class="fas fa-link"></i> <span>What is Data? - VIDEO</span></div>
+                    <div class="activity-info"><i class="fas fa-link"></i> <span>What is BI? - VIDEO</span></div>
                     <button id="vbtn-1" class="status-btn todo">To do</button>
                 </div>
                 <div class="video-embed" id="video-1">
                     <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;">
-                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/szX7SjP_Kxs?enablejsapi=1" id="vplayer-1" frameborder="0" allowfullscreen></iframe>
+                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/L0pC7zS2Q-U?enablejsapi=1" id="vplayer-1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                     </div>
                 </div>
                 <div class="activity-row" onclick="showQuiz(1)">
-                    <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Intro Quiz</span></div>
+                    <div class="activity-info"><i class="fas fa-list-alt"></i> <span>BI Intro Quiz</span></div>
                     <button id="qbtn-1" class="status-btn todo">To do</button>
                 </div>
                 <div class="quiz-box" id="quiz-1">
                     <form id="quizForm-1">
                         <div class="mcq-container">
                             <div class="mcq-question">
-                                <div class="mcq-title">1. What is the definition of data in the simplest terms?</div>
+                                <div class="mcq-title">1. What does BI stand for?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q1" value="A"><div class="option-letter">A</div><span>A collection of facts and info</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q1" value="B"><div class="option-letter">B</div><span>A computer program</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="A"><div class="option-letter">A</div><span>Business Intelligence</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="B"><div class="option-letter">B</div><span>Basic Information</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">2. Which of these is structured data?</div>
+                                <div class="mcq-title">2. Main goal of Business Intelligence?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q2" value="A"><div class="option-letter">A</div><span>An Excel table</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q2" value="B"><div class="option-letter">B</div><span>A voice recording</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="A"><div class="option-letter">A</div><span>Transform raw data into actionable insights</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="B"><div class="option-letter">B</div><span>Store data for long-term archival only</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">3. JSON files are usually considered:</div>
+                                <div class="mcq-title">3. BI tools are primarily designed for:</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q3" value="A"><div class="option-letter">A</div><span>Semi-structured</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q3" value="B"><div class="option-letter">B</div><span>Unstructured</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="A"><div class="option-letter">A</div><span>Visualization and reporting</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="B"><div class="option-letter">B</div><span>Complex mathematical proofs</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">4. Video files are examples of:</div>
+                                <div class="mcq-title">4. A 'Dashboard' in BI is best described as:</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q4" value="A"><div class="option-letter">A</div><span>Unstructured data</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q4" value="B"><div class="option-letter">B</div><span>Structured data</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="A"><div class="option-letter">A</div><span>A collection of visual reports on one screen</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="B"><div class="option-letter">B</div><span>A single raw data table</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">5. Primary goal of data analysis?</div>
+                                <div class="mcq-title">5. Who is a primary user of BI insights?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q5" value="A"><div class="option-letter">A</div><span>Extraction of insights</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q5" value="B"><div class="option-letter">B</div><span>Deleting old files</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="A"><div class="option-letter">A</div><span>Decision-makers and managers</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="B"><div class="option-letter">B</div><span>The general public only</span></label>
                                 </div>
                             </div>
                         </div>
@@ -537,59 +552,60 @@
         <!-- MODULE 2 -->
         <div class="section-box locked" id="module-box-2">
             <div class="section-header" onclick="toggleSection(this)">
-                <h3>Module 2: Data Lifecycle</h3>
+                <h3>Module 2: Power BI Basics</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
             <div class="section-content">
+                <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this, 'vplayer-2')">
-                    <div class="activity-info"><i class="fas fa-link"></i> <span>The Data Lifecycle - VIDEO</span></div>
+                    <div class="activity-info"><i class="fas fa-link"></i> <span>Power BI Overview - VIDEO</span></div>
                     <button id="vbtn-2" class="status-btn todo">To do</button>
                 </div>
                 <div class="video-embed" id="video-2">
                     <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;">
-                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/h8fTInSgPAs?enablejsapi=1" id="vplayer-2" frameborder="0" allowfullscreen></iframe>
+                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/TmhQCmq7zGk?enablejsapi=1" id="vplayer-2" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                     </div>
                 </div>
                 <div class="activity-row" onclick="showQuiz(2)">
-                    <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Lifecycle Quiz</span></div>
+                    <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Power BI Quiz</span></div>
                     <button id="qbtn-2" class="status-btn todo">To do</button>
                 </div>
                 <div class="quiz-box" id="quiz-2">
                     <form id="quizForm-2">
                         <div class="mcq-container">
                             <div class="mcq-question">
-                                <div class="mcq-title">1. First step in the data lifecycle?</div>
+                                <div class="mcq-title">1. Power BI is a product developed by:</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q1" value="A"><div class="option-letter">A</div><span>Data Collection</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q1" value="B"><div class="option-letter">B</div><span>Data ARCHIVAL</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="A"><div class="option-letter">A</div><span>Microsoft</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="B"><div class="option-letter">B</div><span>Salesforce</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">2. Where is data stored for long-term use?</div>
+                                <div class="mcq-title">2. In Power BI Desktop, where do you build visuals?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q2" value="A"><div class="option-letter">A</div><span>Data Warehouse</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q2" value="B"><div class="option-letter">B</div><span>Computer RAM</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="A"><div class="option-letter">A</div><span>Report View</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="B"><div class="option-letter">B</div><span>Model View</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">3. What follows data cleaning?</div>
+                                <div class="mcq-title">3. DAX stands for:</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q3" value="A"><div class="option-letter">A</div><span>Data Analysis</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q3" value="B"><div class="option-letter">B</div><span>Data Collection</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="A"><div class="option-letter">A</div><span>Data Analysis Expressions</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="B"><div class="option-letter">B</div><span>Dynamic Access Exchange</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">4. Data visualization is for:</div>
+                                <div class="mcq-title">4. Can you import data from Excel into Power BI?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q4" value="A"><div class="option-letter">A</div><span>Communicating findings</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q4" value="B"><div class="option-letter">B</div><span>Hiding errors</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="A"><div class="option-letter">A</div><span>Yes</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="B"><div class="option-letter">B</div><span>No</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">5. Final stage of data?</div>
+                                <div class="mcq-title">5. Power BI Desktop is primarily for:</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q5" value="A"><div class="option-letter">A</div><span>Archive or Deletion</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q5" value="B"><div class="option-letter">B</div><span>Initial collection</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="A"><div class="option-letter">A</div><span>Authoring reports</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="B"><div class="option-letter">B</div><span>Running a web server</span></label>
                                 </div>
                             </div>
                         </div>
@@ -602,59 +618,60 @@
         <!-- MODULE 3 -->
         <div class="section-box locked" id="module-box-3">
             <div class="section-header" onclick="toggleSection(this)">
-                <h3>Module 3: Data Quality</h3>
+                <h3>Module 3: Tableau Basics</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
             <div class="section-content">
+                <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this, 'vplayer-3')">
-                    <div class="activity-info"><i class="fas fa-link"></i> <span>Data Quality & Cleaning - VIDEO</span></div>
+                    <div class="activity-info"><i class="fas fa-link"></i> <span>Tableau Overview - VIDEO</span></div>
                     <button id="vbtn-3" class="status-btn todo">To do</button>
                 </div>
                 <div class="video-embed" id="video-3">
                     <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;">
-                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/t_mXST0p6dM?enablejsapi=1" id="vplayer-3" frameborder="0" allowfullscreen></iframe>
+                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/7Jl-R_FEno8?enablejsapi=1" id="vplayer-3" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                     </div>
                 </div>
                 <div class="activity-row" onclick="showQuiz(3)">
-                    <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Quality Quiz</span></div>
+                    <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Tableau Quiz</span></div>
                     <button id="qbtn-3" class="status-btn todo">To do</button>
                 </div>
                 <div class="quiz-box" id="quiz-3">
                     <form id="quizForm-3">
                         <div class="mcq-container">
                             <div class="mcq-question">
-                                <div class="mcq-title">1. What is "dirty data"?</div>
+                                <div class="mcq-title">1. Tableau is widely known for its ability to:</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q1" value="A"><div class="option-letter">A</div><span>Inaccurate/Incomplete data</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q1" value="B"><div class="option-letter">B</div><span>Temporary data</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="A"><div class="option-letter">A</div><span>Create complex visual analytics quickly</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="B"><div class="option-letter">B</div><span>Write low-level assembly code</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">2. A common cleaning task?</div>
+                                <div class="mcq-title">2. A single chart or graph in Tableau is created in a:</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q2" value="A"><div class="option-letter">A</div><span>Removing duplicates</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q2" value="B"><div class="option-letter">B</div><span>Increasing file size</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="A"><div class="option-letter">A</div><span>Worksheet</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="B"><div class="option-letter">B</div><span>Collection</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">3. Missing values should be:</div>
+                                <div class="mcq-title">3. In Tableau, 'Dimensions' are usually:</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q3" value="A"><div class="option-letter">A</div><span>Handled (removed or filled)</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q3" value="B"><div class="option-letter">B</div><span>Ignored completely</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="A"><div class="option-letter">A</div><span>Qualitative / Categorical fields</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="B"><div class="option-letter">B</div><span>Numerical / Value fields</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">4. Data validation ensures:</div>
+                                <div class="mcq-title">4. 'Measures' in Tableau are usually color-coded as:</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q4" value="A"><div class="option-letter">A</div><span>Accuracy/Completeness</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q4" value="B"><div class="option-letter">B</div><span>Fancy formatting</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="A"><div class="option-letter">A</div><span>Green (Continuous)</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="B"><div class="option-letter">B</div><span>Blue (Discrete)</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">5. Tool used for cleaning?</div>
+                                <div class="mcq-title">5. Tableau 'Stories' are used to:</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q5" value="A"><div class="option-letter">A</div><span>Excel / OpenRefine</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q5" value="B"><div class="option-letter">B</div><span>Paint</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="A"><div class="option-letter">A</div><span>Guide users through a data narrative</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="B"><div class="option-letter">B</div><span>Automatically clean the entire database</span></label>
                                 </div>
                             </div>
                         </div>
@@ -667,59 +684,60 @@
         <!-- MODULE 4 -->
         <div class="section-box locked" id="module-box-4">
             <div class="section-header" onclick="toggleSection(this)">
-                <h3>Module 4: Statistics Basics</h3>
+                <h3>Module 4: Data Sources & Connections</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
             <div class="section-content">
+                <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this, 'vplayer-4')">
-                    <div class="activity-info"><i class="fas fa-link"></i> <span>Descriptive Statistics - VIDEO</span></div>
+                    <div class="activity-info"><i class="fas fa-link"></i> <span>Connecting Data - VIDEO</span></div>
                     <button id="vbtn-4" class="status-btn todo">To do</button>
                 </div>
                 <div class="video-embed" id="video-4">
                     <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;">
-                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/J7k7_7P_LqM?enablejsapi=1" id="vplayer-4" frameborder="0" allowfullscreen></iframe>
+                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/C0y8a4H8X_8?enablejsapi=1" id="vplayer-4" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                     </div>
                 </div>
                 <div class="activity-row" onclick="showQuiz(4)">
-                    <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Stats Quiz</span></div>
+                    <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Connections Quiz</span></div>
                     <button id="qbtn-4" class="status-btn todo">To do</button>
                 </div>
                 <div class="quiz-box" id="quiz-4">
                     <form id="quizForm-4">
                         <div class="mcq-container">
                             <div class="mcq-question">
-                                <div class="mcq-title">1. The 'Mean' is also known as:</div>
+                                <div class="mcq-title">1. Which is NOT a common data source for BI?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q1" value="A"><div class="option-letter">A</div><span>Average</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q1" value="B"><div class="option-letter">B</div><span>Total</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="A"><div class="option-letter">A</div><span>MP3 music files</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="B"><div class="option-letter">B</div><span>SQL Databases</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">2. 'Median' is the:</div>
+                                <div class="mcq-title">2. 'Data Transformation' is done to:</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q2" value="A"><div class="option-letter">A</div><span>Middle value</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q2" value="B"><div class="option-letter">B</div><span>Lowest value</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="A"><div class="option-letter">A</div><span>Clean and shape data for analysis</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="B"><div class="option-letter">B</div><span>Encrypt the data for hackers</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">3. 'Mode' refers to:</div>
+                                <div class="mcq-title">3. 'Import' mode in BI tools usually:</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q3" value="A"><div class="option-letter">A</div><span>Most frequent value</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q3" value="B"><div class="option-letter">B</div><span>Unique value</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="A"><div class="option-letter">A</div><span>Loads a snapshot of data into memory</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="B"><div class="option-letter">B</div><span>Queries the database live every time</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">4. Difference between Max and Min?</div>
+                                <div class="mcq-title">4. Can BI tools connect to cloud services like Google Sheets?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q4" value="A"><div class="option-letter">A</div><span>Range</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q4" value="B"><div class="option-letter">B</div><span>Sum</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="A"><div class="option-letter">A</div><span>Yes</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="B"><div class="option-letter">B</div><span>No</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">5. Standard Deviation measures:</div>
+                                <div class="mcq-title">5. Data refresh is needed to:</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q5" value="A"><div class="option-letter">A</div><span>Data spread</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q5" value="B"><div class="option-letter">B</div><span>Data color</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="A"><div class="option-letter">A</div><span>Update the reports with the latest data</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="B"><div class="option-letter">B</div><span>Rename the columns randomly</span></label>
                                 </div>
                             </div>
                         </div>
@@ -732,59 +750,60 @@
         <!-- MODULE 5 -->
         <div class="section-box locked" id="module-box-5">
             <div class="section-header" onclick="toggleSection(this)">
-                <h3>Module 5: Data Visualization</h3>
+                <h3>Module 5: Creating Simple Charts</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
             <div class="section-content">
+                <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this, 'vplayer-5')">
-                    <div class="activity-info"><i class="fas fa-link"></i> <span>Visualization Principles - VIDEO</span></div>
+                    <div class="activity-info"><i class="fas fa-link"></i> <span>Chart Building - VIDEO</span></div>
                     <button id="vbtn-5" class="status-btn todo">To do</button>
                 </div>
                 <div class="video-embed" id="video-5">
                     <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;">
-                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/L0pC7zS2Q-U?enablejsapi=1" id="vplayer-5" frameborder="0" allowfullscreen></iframe>
+                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/Z84n5wF9z1A?enablejsapi=1" id="vplayer-5" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                     </div>
                 </div>
                 <div class="activity-row" onclick="showQuiz(5)">
-                    <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Viz Quiz</span></div>
+                    <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Chart Quiz</span></div>
                     <button id="qbtn-5" class="status-btn todo">To do</button>
                 </div>
                 <div class="quiz-box" id="quiz-5">
                     <form id="quizForm-5">
                         <div class="mcq-container">
                             <div class="mcq-question">
-                                <div class="mcq-title">1. Best chart for trends over time?</div>
+                                <div class="mcq-title">1. To create a visual, you usually drag fields to:</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q1" value="A"><div class="option-letter">A</div><span>Line Chart</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q1" value="B"><div class="option-letter">B</div><span>Pie Chart</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="A"><div class="option-letter">A</div><span>The canvas or axis shelf</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="B"><div class="option-letter">B</div><span>The trash bin</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">2. Best for comparing categories?</div>
+                                <div class="mcq-title">2. Best chart for showing trends over specific time periods?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q2" value="A"><div class="option-letter">A</div><span>Bar Chart</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q2" value="B"><div class="option-letter">B</div><span>Line Chart</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="A"><div class="option-letter">A</div><span>Line Chart</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="B"><div class="option-letter">B</div><span>Treemap</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">3. Pie charts show:</div>
+                                <div class="mcq-title">3. 'Tooltips' are used to:</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q3" value="A"><div class="option-letter">A</div><span>Parts of a whole</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q3" value="B"><div class="option-letter">B</div><span>Time trends</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="A"><div class="option-letter">A</div><span>Show detail data when hovering over a point</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="B"><div class="option-letter">B</div><span>Locked the chart from editing</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">4. Scatter plots show:</div>
+                                <div class="mcq-title">4. Adding a 'Legend' color-codes the data by:</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q4" value="A"><div class="option-letter">A</div><span>Correlation</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q4" value="B"><div class="option-letter">B</div><span>Total count</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="A"><div class="option-letter">A</div><span>Specific categories</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="B"><div class="option-letter">B</div><span>The alphabetical order only</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">5. Avoid "chart junk" to:</div>
+                                <div class="mcq-title">5. To change a chart type in Power BI, you use the:</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q5" value="A"><div class="option-letter">A</div><span>Keep focus on data</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q5" value="B"><div class="option-letter">B</div><span>Make it colorful</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="A"><div class="option-letter">A</div><span>Visualizations Pane</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="B"><div class="option-letter">B</div><span>Search Bar</span></label>
                                 </div>
                             </div>
                         </div>
@@ -797,59 +816,60 @@
         <!-- MODULE 6 -->
         <div class="section-box locked" id="module-box-6">
             <div class="section-header" onclick="toggleSection(this)">
-                <h3>Module 6: Ethics & Privacy</h3>
+                <h3>Module 6: Interactive Dashboards</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
             <div class="section-content">
+                <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this, 'vplayer-6')">
-                    <div class="activity-info"><i class="fas fa-link"></i> <span>Data Ethics & Privacy - VIDEO</span></div>
+                    <div class="activity-info"><i class="fas fa-link"></i> <span>Dashboard Interactivity - VIDEO</span></div>
                     <button id="vbtn-6" class="status-btn todo">To do</button>
                 </div>
                 <div class="video-embed" id="video-6">
                     <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;">
-                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/2AFgpQTfVnQ?enablejsapi=1" id="vplayer-6" frameborder="0" allowfullscreen></iframe>
+                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/_pA9K55vM1Y?enablejsapi=1" id="vplayer-6" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                     </div>
                 </div>
                 <div class="activity-row" onclick="showQuiz(6)">
-                    <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Ethics Quiz</span></div>
+                    <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Dashboard Quiz</span></div>
                     <button id="qbtn-6" class="status-btn todo">To do</button>
                 </div>
                 <div class="quiz-box" id="quiz-6">
                     <form id="quizForm-6">
                         <div class="mcq-container">
                             <div class="mcq-question">
-                                <div class="mcq-title">1. What is PII?</div>
+                                <div class="mcq-title">1. A 'Slicer' is:</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q1" value="A"><div class="option-letter">A</div><span>Personally Identifiable Info</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q1" value="B"><div class="option-letter">B</div><span>Public Internal Index</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="A"><div class="option-letter">A</div><span>An on-canvas interactive filter</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="B"><div class="option-letter">B</div><span>A tool to cut the data into files</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">2. GDPR is a regulation on:</div>
+                                <div class="mcq-title">2. 'Cross-filtering' occurs when:</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q2" value="A"><div class="option-letter">A</div><span>Data Protection</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q2" value="B"><div class="option-letter">B</div><span>Data Speed</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="A"><div class="option-letter">A</div><span>Clicking one visual filters others on the same page</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="B"><div class="option-letter">B</div><span>The report is exported to PDF</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">3. Data masking helps:</div>
+                                <div class="mcq-title">3. 'Drill-down' functionality allows you to:</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q3" value="A"><div class="option-letter">A</div><span>Protect sensitive info</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q3" value="B"><div class="option-letter">B</div><span>Make data visible to all</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="A"><div class="option-letter">A</div><span>See more detailed levels of data (e.g., Year to Month)</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="B"><div class="option-letter">B</div><span>Summarize all data into a single number</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">4. Ethics requires:</div>
+                                <div class="mcq-title">4. Why is interactivity important in a dashboard?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q4" value="A"><div class="option-letter">A</div><span>Informed consent</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q4" value="B"><div class="option-letter">B</div><span>Forced collection</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="A"><div class="option-letter">A</div><span>It allows users to explore data and find specific answers</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="B"><div class="option-letter">B</div><span>It makes the file size significantly smaller</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">5. A data breach leads to:</div>
+                                <div class="mcq-title">5. A 'Filter' applied to the 'Entire Report' affects:</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q5" value="A"><div class="option-letter">A</div><span>Legal and reputational risk</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q5" value="B"><div class="option-letter">B</div><span>Better data quality</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="A"><div class="option-letter">A</div><span>All pages in the report</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="B"><div class="option-letter">B</div><span>Only the current active visual</span></label>
                                 </div>
                             </div>
                         </div>
@@ -862,59 +882,60 @@
         <!-- MODULE 7 -->
         <div class="section-box locked" id="module-box-7">
             <div class="section-header" onclick="toggleSection(this)">
-                <h3>Module 7: Big Data & Cloud</h3>
+                <h3>Module 7: Formatting & Layout</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
             <div class="section-content">
+                <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this, 'vplayer-7')">
-                    <div class="activity-info"><i class="fas fa-link"></i> <span>Big Data & Cloud - VIDEO</span></div>
+                    <div class="activity-info"><i class="fas fa-link"></i> <span>Design Best Practices - VIDEO</span></div>
                     <button id="vbtn-7" class="status-btn todo">To do</button>
                 </div>
                 <div class="video-embed" id="video-7">
                     <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;">
-                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/0_P_9_v_0_88?enablejsapi=1" id="vplayer-7" frameborder="0" allowfullscreen></iframe>
+                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/J7k7_7P_LqM?enablejsapi=1" id="vplayer-7" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                     </div>
                 </div>
                 <div class="activity-row" onclick="showQuiz(7)">
-                    <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Big Data Quiz</span></div>
+                    <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Design Quiz</span></div>
                     <button id="qbtn-7" class="status-btn todo">To do</button>
                 </div>
                 <div class="quiz-box" id="quiz-7">
                     <form id="quizForm-7">
                         <div class="mcq-container">
                             <div class="mcq-question">
-                                <div class="mcq-title">1. One of the 3 V's of Big Data?</div>
+                                <div class="mcq-title">1. Using 'White Space' in a dashboard design:</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q1" value="A"><div class="option-letter">A</div><span>Volume</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q1" value="B"><div class="option-letter">B</div><span>Vacuum</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="A"><div class="option-letter">A</div><span>Reduces clutter and improves readability</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="B"><div class="option-letter">B</div><span>Is a waste of space that should be filled</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">2. Cloud storage benefit?</div>
+                                <div class="mcq-title">2. Color should primarily be used to:</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q2" value="A"><div class="option-letter">A</div><span>Scalability</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q2" value="B"><div class="option-letter">B</div><span>Low security</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="A"><div class="option-letter">A</div><span>Highlight important data or differentiate categories</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="B"><div class="option-letter">B</div><span>Make every chart a different color for variety</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">3. Example of Cloud provider?</div>
+                                <div class="mcq-title">3. Correct alignment of visuals:</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q3" value="A"><div class="option-letter">A</div><span>AWS / Google Cloud</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q3" value="B"><div class="option-letter">B</div><span>Paint 3D</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="A"><div class="option-letter">A</div><span>Creates a logical flow and professional look</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="B"><div class="option-letter">B</div><span>Doesn't matter as long as the numbers are right</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">4. Data Lake vs Warehouse?</div>
+                                <div class="mcq-title">4. A dashboard title should be:</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q4" value="A"><div class="option-letter">A</div><span>Lake stores RAW, Warehouse STRUCTURED</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q4" value="B"><div class="option-letter">B</div><span>No difference</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="A"><div class="option-letter">A</div><span>Clear and descriptive of the content</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="B"><div class="option-letter">B</div><span>Hidden to save space</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">5. Real-time processing:</div>
+                                <div class="mcq-title">5. Rule of thumb for chart selection:</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q5" value="A"><div class="option-letter">A</div><span>Processes data as it arrives</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q5" value="B"><div class="option-letter">B</div><span>Waits for weeks</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="A"><div class="option-letter">A</div><span>Choose the simplest chart that answers the question</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="B"><div class="option-letter">B</div><span>Always use 3D charts for better visualization</span></label>
                                 </div>
                             </div>
                         </div>
@@ -927,59 +948,60 @@
         <!-- MODULE 8 -->
         <div class="section-box locked" id="module-box-8">
             <div class="section-header" onclick="toggleSection(this)">
-                <h3>Module 8: Decision Making</h3>
+                <h3>Module 8: Sharing & Collaborating</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
             <div class="section-content">
+                <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this, 'vplayer-8')">
-                    <div class="activity-info"><i class="fas fa-link"></i> <span>Data-Driven Decision Making - VIDEO</span></div>
+                    <div class="activity-info"><i class="fas fa-link"></i> <span>Collaborative BI - VIDEO</span></div>
                     <button id="vbtn-8" class="status-btn todo">To do</button>
                 </div>
                 <div class="video-embed" id="video-8">
                     <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;">
-                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/_V8eKsto3Ug?enablejsapi=1" id="vplayer-8" frameborder="0" allowfullscreen></iframe>
+                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/K9jX7u_v-0g?enablejsapi=1" id="vplayer-8" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                     </div>
                 </div>
                 <div class="activity-row" onclick="showQuiz(8)">
-                    <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Decision Quiz</span></div>
+                    <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Sharing Quiz</span></div>
                     <button id="qbtn-8" class="status-btn todo">To do</button>
                 </div>
                 <div class="quiz-box" id="quiz-8">
                     <form id="quizForm-8">
                         <div class="mcq-container">
                             <div class="mcq-question">
-                                <div class="mcq-title">1. What is a KPI?</div>
+                                <div class="mcq-title">1. Publishing a Power BI report allows you to view it in:</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q1" value="A"><div class="option-letter">A</div><span>Key Performance Indicator</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q1" value="B"><div class="option-letter">B</div><span>Kind People Info</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="A"><div class="option-letter">A</div><span>Power BI Service (Web browser)</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="B"><div class="option-letter">B</div><span>A physical paper printout only</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">2. Predictive analytics uses:</div>
+                                <div class="mcq-title">2. 'Workspaces' in BI tools are for:</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q2" value="A"><div class="option-letter">A</div><span>Historical data</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q2" value="B"><div class="option-letter">B</div><span>Random guessing</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="A"><div class="option-letter">A</div><span>Shared areas for collaborative authoring</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="B"><div class="option-letter">B</div><span>Storing personal photos</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">3. Data-driven culture means:</div>
+                                <div class="mcq-title">3. Tableau Public is primarily used for:</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q3" value="A"><div class="option-letter">A</div><span>Decisions based on facts</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q3" value="B"><div class="option-letter">B</div><span>Decisions based on luck</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="A"><div class="option-letter">A</div><span>Sharing public datasets and portfolios</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="B"><div class="option-letter">B</div><span>Storing sensitive corporate data</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">4. Dashboard purpose?</div>
+                                <div class="mcq-title">4. Permissions in BI tools control:</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q4" value="A"><div class="option-letter">A</div><span>Monitor performance at a glance</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q4" value="B"><div class="option-letter">B</div><span>Play games</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="A"><div class="option-letter">A</div><span>Who can view, edit, or share a report</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="B"><div class="option-letter">B</div><span>The color of the bars in a chart</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
-                                <div class="mcq-title">5. Feedback loop uses:</div>
+                                <div class="mcq-title">5. Data-driven collaboration means:</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q5" value="A"><div class="option-letter">A</div><span>Results to refine process</span></label>
-                                    <label class="mcq-option"><input type="radio" name="q5" value="B"><div class="option-letter">B</div><span>Old data to repeat errors</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="A"><div class="option-letter">A</div><span>Teams using the same insights to make joint decisions</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="B"><div class="option-letter">B</div><span>Deleting data that others have added</span></label>
                                 </div>
                             </div>
                         </div>
@@ -991,7 +1013,7 @@
 
     </main>
 </div>
-<script src="js/dashboard.js"></script>
+
 <script src="https://www.youtube.com/iframe_api"></script>
 <script>
     const totalModules = 8;
@@ -1019,7 +1041,7 @@
 
         // Module unlocking logic
         for (let i = 2; i <= totalModules; i++) {
-            if (localStorage.getItem("df_module" + (i - 1) + "_unlocked") === "true") {
+            if (localStorage.getItem("bi_module" + (i - 1) + "_unlocked") === "true") {
                 const moduleBox = document.getElementById("module-box-" + i);
                 if (moduleBox) moduleBox.classList.remove("locked");
             }
@@ -1028,12 +1050,22 @@
         // Restore button states
         const buttons = document.querySelectorAll('.status-btn');
         buttons.forEach(btn => {
-            if (btn.id && localStorage.getItem("df_" + btn.id) === "done") {
+            if (btn.id && localStorage.getItem("bi_" + btn.id) === "done") {
                 applyDoneState(btn);
             }
         });
 
         updateProgress();
+
+        // Search Functionality
+        document.getElementById('moduleSearch').addEventListener('input', function (e) {
+            const term = e.target.value.toLowerCase();
+            const boxes = document.querySelectorAll('.section-box');
+            boxes.forEach(box => {
+                const text = box.innerText.toLowerCase();
+                box.style.display = text.includes(term) ? 'block' : 'none';
+            });
+        });
     });
 
     function toggleSection(header) {
@@ -1074,11 +1106,10 @@
         alert(`You scored ${score}/${total} (${scorePercent}%)`);
 
         if (score >= 4) {
-            const qbtn = document.getElementById("qbtn-" + moduleNum);
             markAsDone("qbtn-" + moduleNum);
             
             if (moduleNum < totalModules) {
-                localStorage.setItem("df_module" + moduleNum + "_unlocked", "true");
+                localStorage.setItem("bi_module" + moduleNum + "_unlocked", "true");
                 const nextModule = document.getElementById("module-box-" + (moduleNum + 1));
                 if (nextModule) nextModule.classList.remove("locked");
             }
@@ -1092,7 +1123,7 @@
         const btn = document.getElementById(btnId);
         if (btn) {
             applyDoneState(btn);
-            localStorage.setItem("df_" + btnId, "done");
+            localStorage.setItem("bi_" + btnId, "done");
             updateProgress();
         }
     }
@@ -1108,8 +1139,8 @@
         let doneItems = 0;
         
         for (let i = 1; i <= totalModules; i++) {
-            if (localStorage.getItem("df_vbtn-" + i) === "done") doneItems++;
-            if (localStorage.getItem("df_qbtn-" + i) === "done") doneItems++;
+            if (localStorage.getItem("bi_vbtn-" + i) === "done") doneItems++;
+            if (localStorage.getItem("bi_qbtn-" + i) === "done") doneItems++;
         }
 
         const progress = Math.round((doneItems / totalItems) * 100);

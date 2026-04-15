@@ -87,8 +87,6 @@
 
         .top-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
         
-     
-
         /* Track Selector UI */
         .track-selector {
             margin-bottom: 25px;
@@ -649,8 +647,8 @@ async function loadRoadmap() {
                 const safeTooltipText = tooltipText.replace(/'/g, "\\'");
 
                 return `
-                    <div class="part-card ${status === 'Locked' ? 'locked' : ''}" onclick="updateProg('${m.id}')" onmouseenter="showTooltip(event, '${safeTooltipText}')" onmousemove="moveTooltip(event)" onmouseleave="hideTooltip()">
-                        <div class="card-img-box"><img src="${m.img}" alt="${m.title}"></div>
+                    <div class="part-card ${status === 'Locked' ? 'locked' : ''}" onclick="openCourse('${m.id}')" onmouseenter="showTooltip(event, '${safeTooltipText}')" onmousemove="moveTooltip(event)" onmouseleave="hideTooltip()">
+                        <div class="card-img-box"><img src="${m.img}" alt="${m.title}" onerror="this.src='https://via.placeholder.com/65x65.png?text=Img+Error'"></div>
                         <div>
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                                 <span class="status-tag" style="background: ${m.color}20; color: ${m.color};">${status}</span>
@@ -730,48 +728,55 @@ function appendWidgetMsg(text, sender) {
     document.getElementById('widgetMessages').appendChild(div);
     scrollChat();
 }
-    // ─── UPDATE MODULE PROGRESS ──────────────────────────────────────────────
-    window.updateProg = async (id) => {
-    const active = roadmapData[currentDomain];
-    const all = [...active.nonProgramming, ...active.programming];
-    const mod = all.find(m => m.id === id);
 
-    if (!checkPrerequisites(id)) {
-        return alert("Module locked! Complete prerequisites first.");
-    }
+    // ─── OPEN COURSE FOR NAVIGATION ONLY ─────────────────────────────────────
+    // This is the new function that only redirects without changing progress.
+    window.openCourse = (id) => {
+        if (!checkPrerequisites(id)) {
+            return alert("Module locked! Complete prerequisites first.");
+        }
 
-    // 1. Increment progress
-    mod.progress = Math.min(100, mod.progress + 25);
-    
-    // 2. Save to DB immediately
-    refreshUI(); 
-    await saveRoadmap();
-
-    // 3. Then Redirect if necessary
-   // 3. Then Redirect if necessary
-const redirects = {
-    //programming
-    "sql_a": "programming/sql.html",
-    "py_b": "programming/python.html",
-    "numpy": "programming/numpy.html",
-    "pandas": "programming/pandas.html",
-    "viz_py": "programming/data_visualization.html",
-    
-    //non-programming
-    "df": "non-programming/data_fundamentals.html",
-    "stats": "non-programming/statistics.html",
-    "excel": "non-programming/excel.html",
-    "eda": "non-programming/eda.html",
-    "bi": "non-programming/bi_tools.html"
-};
-    
-    if (redirects[id]) {
-        // Small delay to ensure the fetch starts before page change
-        setTimeout(() => {
+        const redirects = {
+            //programming
+            "sql_a": "programming/sql.html",
+            "py_b": "programming/python.html",
+            "numpy": "programming/numpy.html",
+            "pandas": "programming/pandas.html",
+            "viz_py": "programming/data_visualization.html",
+            
+            //non-programming
+            "df": "non-programming/data_fundamentals.html",
+            "stats": "non-programming/statistics.html",
+            "excel": "non-programming/excel.html",
+            "eda": "non-programming/eda.html",
+            "bi": "non-programming/bi_tools.html"
+        };
+        
+        if (redirects[id]) {
             window.location.href = `courses/${redirects[id]}`;
-        }, 100);
-    }
-};
+        }
+    };
+
+    // ─── UPDATE MODULE PROGRESS ──────────────────────────────────────────────
+    // Keep this so you can call it from your individual course pages later!
+    window.updateProg = async (id) => {
+        const active = roadmapData[currentDomain];
+        const all = [...active.nonProgramming, ...active.programming];
+        const mod = all.find(m => m.id === id);
+
+        if (!checkPrerequisites(id)) {
+            return alert("Module locked! Complete prerequisites first.");
+        }
+
+        // Increment progress (call this only when they complete a task inside the course)
+        mod.progress = Math.min(100, mod.progress + 25);
+        
+        // Save to DB immediately
+        refreshUI(); 
+        await saveRoadmap();
+    };
+
+
 function scrollGrid(btn, dist) { btn.parentElement.querySelector('.course-grid').scrollBy({ left: dist, behavior: 'smooth' }); }
 
     // --- CHAT WIDGET LOGIC ---

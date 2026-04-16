@@ -1,0 +1,90 @@
+{
+  "title": "Question 7.3 (Advanced)",
+  "description": "Use ALTER TABLE on Employees. Add phone_number VARCHAR(15), and add FOREIGN KEY constraint linking department_id to Departments(id).",
+  "schema": {
+    "tables": [
+      {
+        "name": "Departments",
+        "create_sql": "CREATE TABLE Departments(id INTEGER PRIMARY KEY, name TEXT);",
+        "insert_sql": [
+          "INSERT INTO Departments VALUES (1,'Engineering');"
+        ],
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER"
+          },
+          {
+            "name": "name",
+            "type": "TEXT"
+          }
+        ],
+        "sample_data": [
+          {
+            "id": 1,
+            "name": "Engineering"
+          }
+        ]
+      },
+      {
+        "name": "Employees",
+        "create_sql": "CREATE TABLE Employees(id INTEGER PRIMARY KEY, department_id INTEGER);",
+        "insert_sql": [
+          "INSERT INTO Employees VALUES (1,1);"
+        ],
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER"
+          },
+          {
+            "name": "department_id",
+            "type": "INTEGER"
+          }
+        ],
+        "sample_data": [
+          {
+            "id": 1,
+            "department_id": 1
+          }
+        ]
+      }
+    ]
+  },
+  "sample_io": {
+    "input": "Refer schema",
+    "output": "[\n  {\n    \"rows_affected\": -1\n  }\n]"
+  },
+  "test_cases": {
+    "visible": [
+      {
+        "id": "visible_1",
+        "description": "Primary validation",
+        "setup_sql": "",
+        "expected_output": [
+          {
+            "rows_affected": -1
+          }
+        ]
+      }
+    ],
+    "hidden": [
+      {
+        "id": "hidden_1",
+        "description": "Ensure existing schema data isn't broken by poor constraint setup.",
+        "setup_sql": "",
+        "expected_output": [
+          {
+            "rows_affected": -1
+          }
+        ]
+      }
+    ]
+  },
+  "expected_output": [
+    {
+      "rows_affected": -1
+    }
+  ],
+  "starter_sql": "ALTER TABLE Employees ADD COLUMN phone_number VARCHAR(15);"
+}

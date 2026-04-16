@@ -1,0 +1,80 @@
+{
+  "title": "Question 5.2 (Intermediate)",
+  "description": "Use a subquery in the FROM clause. Take Sales, calculate total sales per employee_id in subquery, then filter outer query for totals > 500.",
+  "schema": {
+    "tables": [
+      {
+        "name": "Sales",
+        "create_sql": "CREATE TABLE Sales(employee_id INTEGER, amount INTEGER);",
+        "insert_sql": [
+          "INSERT INTO Sales VALUES (1,300);",
+          "INSERT INTO Sales VALUES (1,250);",
+          "INSERT INTO Sales VALUES (2,200);"
+        ],
+        "columns": [
+          {
+            "name": "employee_id",
+            "type": "INTEGER"
+          },
+          {
+            "name": "amount",
+            "type": "INTEGER"
+          }
+        ],
+        "sample_data": [
+          {
+            "employee_id": 1,
+            "amount": 300
+          },
+          {
+            "employee_id": 1,
+            "amount": 250
+          },
+          {
+            "employee_id": 2,
+            "amount": 200
+          }
+        ]
+      }
+    ]
+  },
+  "sample_io": {
+    "input": "Refer schema",
+    "output": "[\n  {\n    \"employee_id\": 1,\n    \"total_sales\": 550\n  }\n]"
+  },
+  "test_cases": {
+    "visible": [
+      {
+        "id": "visible_1",
+        "description": "Primary validation",
+        "setup_sql": "",
+        "expected_output": [
+          {
+            "employee_id": 1,
+            "total_sales": 550
+          }
+        ]
+      }
+    ],
+    "hidden": [
+      {
+        "id": "hidden_1",
+        "description": "Verify table aliases are properly applied to the derived table.",
+        "setup_sql": "",
+        "expected_output": [
+          {
+            "employee_id": 1,
+            "total_sales": 550
+          }
+        ]
+      }
+    ]
+  },
+  "expected_output": [
+    {
+      "employee_id": 1,
+      "total_sales": 550
+    }
+  ],
+  "starter_sql": "SELECT t.employee_id, t.total_sales FROM (SELECT employee_id, SUM(amount) AS total_sales FROM Sales GROUP BY employee_id) t WHERE t.total_sales > 500;"
+}

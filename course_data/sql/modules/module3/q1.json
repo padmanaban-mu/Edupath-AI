@@ -1,0 +1,72 @@
+{
+  "title": "Question 3.1 (Basic)",
+  "description": "Count the total number of orders in the Orders table using the COUNT() function and alias it as Total_Orders.",
+  "schema": {
+    "tables": [
+      {
+        "name": "Orders",
+        "create_sql": "CREATE TABLE Orders(id INTEGER, amount INTEGER);",
+        "insert_sql": [
+          "INSERT INTO Orders VALUES (1,100);",
+          "INSERT INTO Orders VALUES (2,150);"
+        ],
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER"
+          },
+          {
+            "name": "amount",
+            "type": "INTEGER"
+          }
+        ],
+        "sample_data": [
+          {
+            "id": 1,
+            "amount": 100
+          },
+          {
+            "id": 2,
+            "amount": 150
+          }
+        ]
+      }
+    ]
+  },
+  "sample_io": {
+    "input": "Refer schema",
+    "output": "[\n  {\n    \"Total_Orders\": 2\n  }\n]"
+  },
+  "test_cases": {
+    "visible": [
+      {
+        "id": "visible_1",
+        "description": "Primary validation",
+        "setup_sql": "",
+        "expected_output": [
+          {
+            "Total_Orders": 2
+          }
+        ]
+      }
+    ],
+    "hidden": [
+      {
+        "id": "hidden_1",
+        "description": "Use COUNT(*) vs COUNT(column) to ensure NULLs aren't accidentally skipped.",
+        "setup_sql": "",
+        "expected_output": [
+          {
+            "Total_Orders": 2
+          }
+        ]
+      }
+    ]
+  },
+  "expected_output": [
+    {
+      "Total_Orders": 2
+    }
+  ],
+  "starter_sql": "SELECT COUNT(*) AS Total_Orders FROM Orders;"
+}

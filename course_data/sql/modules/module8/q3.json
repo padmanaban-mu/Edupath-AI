@@ -1,0 +1,92 @@
+{
+  "title": "Question 8.3 (Advanced)",
+  "description": "Using string/regex commands, extract domain names from Leads.email and group by those domains ordered by count descending.",
+  "schema": {
+    "tables": [
+      {
+        "name": "Leads",
+        "create_sql": "CREATE TABLE Leads(id INTEGER, email TEXT);",
+        "insert_sql": [
+          "INSERT INTO Leads VALUES (1,'u1@yahoo.com');",
+          "INSERT INTO Leads VALUES (2,'u2@gmail.com');",
+          "INSERT INTO Leads VALUES (3,'u3@yahoo.com');"
+        ],
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER"
+          },
+          {
+            "name": "email",
+            "type": "TEXT"
+          }
+        ],
+        "sample_data": [
+          {
+            "id": 1,
+            "email": "u1@yahoo.com"
+          },
+          {
+            "id": 2,
+            "email": "u2@gmail.com"
+          },
+          {
+            "id": 3,
+            "email": "u3@yahoo.com"
+          }
+        ]
+      }
+    ]
+  },
+  "sample_io": {
+    "input": "Refer schema",
+    "output": "[\n  {\n    \"domain\": \"yahoo.com\",\n    \"domain_count\": 2\n  },\n  {\n    \"domain\": \"gmail.com\",\n    \"domain_count\": 1\n  }\n]"
+  },
+  "test_cases": {
+    "visible": [
+      {
+        "id": "visible_1",
+        "description": "Primary validation",
+        "setup_sql": "",
+        "expected_output": [
+          {
+            "domain": "yahoo.com",
+            "domain_count": 2
+          },
+          {
+            "domain": "gmail.com",
+            "domain_count": 1
+          }
+        ]
+      }
+    ],
+    "hidden": [
+      {
+        "id": "hidden_1",
+        "description": "Handling poorly formed emails missing the '@' symbol smoothly.",
+        "setup_sql": "",
+        "expected_output": [
+          {
+            "domain": "yahoo.com",
+            "domain_count": 2
+          },
+          {
+            "domain": "gmail.com",
+            "domain_count": 1
+          }
+        ]
+      }
+    ]
+  },
+  "expected_output": [
+    {
+      "domain": "yahoo.com",
+      "domain_count": 2
+    },
+    {
+      "domain": "gmail.com",
+      "domain_count": 1
+    }
+  ],
+  "starter_sql": "SELECT substr(email, instr(email, '@') + 1) AS domain, COUNT(*) AS domain_count FROM Leads WHERE instr(email, '@') > 0 GROUP BY domain ORDER BY domain_count DESC;"
+}

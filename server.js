@@ -10,15 +10,23 @@ const fs = require('fs');
 const os = require('os');
 const { spawnSync } = require('child_process');
 const { GoogleGenerativeAI } = require('@google/generative-ai');
+const morgan = require('morgan');
+const axios = require('axios');
 
 // Check for API Key
 console.log("Checking API Key:", process.env.GEMINI_API_KEY ? "Key Found" : "Key MISSING");
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 const JWT_SECRET = '2da20021ba5468a6bd0883fde8fb0cc9b51de723ced5dc3d08d663e8518fb28ab0c02158e9a5ac628eb383e3496010cee77db48e51c87c877ce9330ba6cc2b22';
 
-// ─── Initialize SQL Engine ───────────────────────────────────────
+// Judge0 Configuration (For SQL compilation via Python harness)
+const JUDGE0_URL = process.env.JUDGE0_URL || "https://ce.judge0.com";
+const JUDGE0_API_KEY = process.env.JUDGE0_API_KEY || "";
+const JUDGE0_HOST = process.env.JUDGE0_HOST || "";
+const JUDGE0_LANGUAGE_ID = Number(process.env.JUDGE0_LANGUAGE_ID || 71);
+
+// ─── Initialize SQL Engine (Local) ───────────────────────────────
 let SQL;
 initSqlJs().then(s => {
     SQL = s;
@@ -29,7 +37,8 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 // ─── Middleware ──────────────────────────────────────────────────
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: "1mb" }));
+app.use(morgan('dev'));
 // UPDATED: Points to your new frontend folder
 app.use(express.static(path.join(__dirname, 'frontend', 'project')));
 
@@ -86,7 +95,7 @@ def input(prompt=''):
 
 `;
 
-// ─── Helper Functions ────────────────────────────────────────────
+// ─── Helper Functions (Local Python Execution) ───────────────────
 
 function runPythonCase(code, stdin) {
     const tmp = path.join(os.tmpdir(), `edupath_${Date.now()}_${Math.random().toString(36).slice(2)}.py`);
@@ -117,6 +126,136 @@ const sendWithRetry = async (chatSession, message, retries = 3) => {
         }
     }
 };
+
+// ─── Helper Functions (Judge0 SQL Compiler) ──────────────────────
+
+function loadQuestionForSql(course, moduleName, questionId) {
+    const filePath = path.join(__dirname, 'course_data', course, 'modules', moduleName, `${questionId}.json`);
+    if (!fs.existsSync(filePath)) return null;
+    return JSON.parse(fs.readFileSync(filePath, "utf-8"));
+}
+
+function buildBaseSetupSql(question) {
+    const tables = question?.schema?.tables ?? [];
+    const statements = [];
+    for (const t of tables) {
+        if (t.create_sql) statements.push(t.create_sql);
+        for (const insertSql of t.insert_sql ?? []) {
+            statements.push(insertSql);
+        }
+    }
+    return statements.join("\n");
+}
+
+function normalizeRows(rows) {
+    return (rows ?? []).map((row) => {
+        const keys = Object.keys(row).sort();
+        const normalized = {};
+        for (const key of keys) {
+            normalized[key] = row[key] === null ? null : String(row[key]);
+        }
+        return normalized;
+    });
+}
+
+function rowsMatch(actualRows, expectedRows) {
+    const actual = normalizeRows(actualRows);
+    const expected = normalizeRows(expectedRows);
+    return JSON.stringify(actual) === JSON.stringify(expected);
+}
+
+function getAllTestCases(question) {
+    const visible = question?.test_cases?.visible ?? [];
+    const hidden = question?.test_cases?.hidden ?? [];
+    const combined = [
+        ...visible.map((c, i) => ({ ...c, id: c.id || `visible_${i + 1}`, visibility: "visible" })),
+        ...hidden.map((c, i) => ({ ...c, id: c.id || `hidden_${i + 1}`, visibility: "hidden" }))
+    ];
+
+    if (combined.length === 0) {
+        return [
+            {
+                id: "fallback_1",
+                visibility: "visible",
+                description: "Default expected output check",
+                setup_sql: "",
+                expected_output: question?.expected_output ?? []
+            }
+        ];
+    }
+    return combined;
+}
+
+function buildPythonHarness(baseSetupSql, caseSetupSql, userSql) {
+    const payload = JSON.stringify({
+        base_setup_sql: baseSetupSql,
+        case_setup_sql: caseSetupSql || "",
+        user_sql: userSql
+    });
+
+    return `
+import sqlite3
+import json
+import traceback
+
+payload = json.loads(${JSON.stringify(payload)})
+conn = sqlite3.connect(":memory:")
+conn.row_factory = sqlite3.Row
+cur = conn.cursor()
+
+try:
+    cur.executescript(payload["base_setup_sql"])
+    if payload["case_setup_sql"]:
+        cur.executescript(payload["case_setup_sql"])
+except Exception as e:
+    print(json.dumps({"ok": False, "error": f"Setup Error: {str(e)}"}))
+    raise SystemExit(0)
+
+try:
+    cur.execute(payload["user_sql"])
+    if cur.description is not None:
+        rows = [dict(row) for row in cur.fetchall()]
+    else:
+        conn.commit()
+        rows = [{"rows_affected": cur.rowcount}]
+    print(json.dumps({"ok": True, "rows": rows}, default=str))
+except Exception as e:
+    print(json.dumps({"ok": False, "error": str(e)}))
+`.trim();
+}
+
+async function submitToJudge0(sourceCode) {
+    const headers = { "Content-Type": "application/json" };
+    if (JUDGE0_API_KEY) {
+        headers["x-rapidapi-key"] = JUDGE0_API_KEY;
+        headers["x-rapidapi-host"] = JUDGE0_HOST;
+    }
+
+    const url = `${JUDGE0_URL}/submissions?base64_encoded=false&wait=true`;
+    const response = await axios.post(
+        url,
+        {
+            language_id: JUDGE0_LANGUAGE_ID,
+            source_code: sourceCode
+        },
+        { headers, timeout: 30000 }
+    );
+    return response.data;
+}
+
+function parseJudge0Result(result) {
+    if (result?.stderr) return { ok: false, error: result.stderr };
+    if (result?.compile_output) return { ok: false, error: result.compile_output };
+    if (result?.message) return { ok: false, error: result.message };
+    if (!result?.stdout) return { ok: false, error: "No output returned from Judge0." };
+
+    try {
+        return JSON.parse(result.stdout);
+    } catch {
+        return { ok: false, error: `Unexpected Judge0 output: ${result.stdout}` };
+    }
+}
+
 
 // ─── Auth Routes ─────────────────────────────────────────────────
 
@@ -264,6 +403,7 @@ app.get('/api/modules/:moduleId/questions/:questionId', (req, res) => {
     }
 });
 
+// Original /api/execute (Local Python / Local sql.js execution)
 app.post('/api/execute', async (req, res) => {
     const { query, moduleId, questionId, course = 'data_visualization' } = req.body;
 
@@ -321,7 +461,7 @@ app.post('/api/execute', async (req, res) => {
         });
     }
 
-    // SQL Execution Logic
+    // SQL Execution Logic (Local Fallback)
     let db;
     try {
         if (!SQL) SQL = await initSqlJs();
@@ -366,6 +506,68 @@ app.post('/api/execute', async (req, res) => {
     } finally {
         if (db) db.close();
     }
+});
+
+// Judge0 API Endpoint for Advanced SQL compilation (Merged from (sql)server.js)
+app.post("/api/compile-sql", async (req, res) => {
+    const { module: moduleName, q, sql, course = 'data_visualization' } = req.body ?? {};
+    if (!moduleName || !q || !sql) {
+        return res.status(400).json({ error: "module, q, and sql are required" });
+    }
+
+    const question = loadQuestionForSql(course, moduleName, q);
+    if (!question) return res.status(404).json({ error: "Question not found" });
+
+    const baseSetupSql = buildBaseSetupSql(question);
+    const testCases = getAllTestCases(question);
+    const results = [];
+
+    for (const testCase of testCases) {
+        const sourceCode = buildPythonHarness(baseSetupSql, testCase.setup_sql || "", sql);
+        let judgeResult;
+        try {
+            judgeResult = await submitToJudge0(sourceCode);
+        } catch (err) {
+            return res.status(502).json({
+                status: "error",
+                isCorrect: false,
+                message: `Judge0 request failed: ${err.message}`
+            });
+        }
+
+        const parsed = parseJudge0Result(judgeResult);
+        if (!parsed.ok) {
+            results.push({
+                id: testCase.id,
+                visibility: testCase.visibility,
+                passed: false,
+                message: parsed.error
+            });
+            continue;
+        }
+
+        const passed = rowsMatch(parsed.rows, testCase.expected_output ?? []);
+        results.push({
+            id: testCase.id,
+            visibility: testCase.visibility,
+            passed,
+            message: passed ? "Passed" : "Output mismatch",
+            actual_output: testCase.visibility === "visible" ? parsed.rows : undefined,
+            expected_output: testCase.visibility === "visible" ? testCase.expected_output : undefined
+        });
+    }
+
+    const failed = results.filter((r) => !r.passed);
+    return res.json({
+        status: failed.length === 0 ? "success" : "error",
+        isCorrect: failed.length === 0,
+        summary: {
+            total: results.length,
+            passed: results.length - failed.length,
+            failed: failed.length
+        },
+        results
+    });
 });
 
 // ─── Gemini AI Chat Routes ───────────────────────────────────────

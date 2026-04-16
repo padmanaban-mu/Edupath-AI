@@ -1,0 +1,87 @@
+{
+  "title": "Question 8.1 (Basic)",
+  "description": "Write a query utilizing CASE WHEN. In Students, return name and Grade_Type: 'Pass' if score >= 50, else 'Fail'.",
+  "schema": {
+    "tables": [
+      {
+        "name": "Students",
+        "create_sql": "CREATE TABLE Students(name TEXT, score INTEGER);",
+        "insert_sql": [
+          "INSERT INTO Students VALUES ('A',50);",
+          "INSERT INTO Students VALUES ('B',49);"
+        ],
+        "columns": [
+          {
+            "name": "name",
+            "type": "TEXT"
+          },
+          {
+            "name": "score",
+            "type": "INTEGER"
+          }
+        ],
+        "sample_data": [
+          {
+            "name": "A",
+            "score": 50
+          },
+          {
+            "name": "B",
+            "score": 49
+          }
+        ]
+      }
+    ]
+  },
+  "sample_io": {
+    "input": "Refer schema",
+    "output": "[\n  {\n    \"Grade_Type\": \"Pass\",\n    \"name\": \"A\"\n  },\n  {\n    \"Grade_Type\": \"Fail\",\n    \"name\": \"B\"\n  }\n]"
+  },
+  "test_cases": {
+    "visible": [
+      {
+        "id": "visible_1",
+        "description": "Primary validation",
+        "setup_sql": "",
+        "expected_output": [
+          {
+            "Grade_Type": "Pass",
+            "name": "A"
+          },
+          {
+            "Grade_Type": "Fail",
+            "name": "B"
+          }
+        ]
+      }
+    ],
+    "hidden": [
+      {
+        "id": "hidden_1",
+        "description": "Validate exact 50 score is 'Pass'.",
+        "setup_sql": "",
+        "expected_output": [
+          {
+            "Grade_Type": "Pass",
+            "name": "A"
+          },
+          {
+            "Grade_Type": "Fail",
+            "name": "B"
+          }
+        ]
+      }
+    ]
+  },
+  "expected_output": [
+    {
+      "Grade_Type": "Pass",
+      "name": "A"
+    },
+    {
+      "Grade_Type": "Fail",
+      "name": "B"
+    }
+  ],
+  "starter_sql": "SELECT name, CASE WHEN score >= 50 THEN 'Pass' ELSE 'Fail' END AS Grade_Type FROM Students;"
+}

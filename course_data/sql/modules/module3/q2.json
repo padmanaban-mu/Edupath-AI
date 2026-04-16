@@ -1,0 +1,99 @@
+{
+  "title": "Question 3.2 (Intermediate)",
+  "description": "Write a query to find the AVG(salary) grouped by department from the Employees table.",
+  "schema": {
+    "tables": [
+      {
+        "name": "Employees",
+        "create_sql": "CREATE TABLE Employees(id INTEGER, department TEXT, salary INTEGER);",
+        "insert_sql": [
+          "INSERT INTO Employees VALUES (1,'Sales',60000);",
+          "INSERT INTO Employees VALUES (2,'Sales',80000);",
+          "INSERT INTO Employees VALUES (3,'HR',50000);"
+        ],
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER"
+          },
+          {
+            "name": "department",
+            "type": "TEXT"
+          },
+          {
+            "name": "salary",
+            "type": "INTEGER"
+          }
+        ],
+        "sample_data": [
+          {
+            "id": 1,
+            "department": "Sales",
+            "salary": 60000
+          },
+          {
+            "id": 2,
+            "department": "Sales",
+            "salary": 80000
+          },
+          {
+            "id": 3,
+            "department": "HR",
+            "salary": 50000
+          }
+        ]
+      }
+    ]
+  },
+  "sample_io": {
+    "input": "Refer schema",
+    "output": "[\n  {\n    \"avg_salary\": 50000,\n    \"department\": \"HR\"\n  },\n  {\n    \"avg_salary\": 70000,\n    \"department\": \"Sales\"\n  }\n]"
+  },
+  "test_cases": {
+    "visible": [
+      {
+        "id": "visible_1",
+        "description": "Primary validation",
+        "setup_sql": "",
+        "expected_output": [
+          {
+            "avg_salary": 50000,
+            "department": "HR"
+          },
+          {
+            "avg_salary": 70000,
+            "department": "Sales"
+          }
+        ]
+      }
+    ],
+    "hidden": [
+      {
+        "id": "hidden_1",
+        "description": "Department with only 1 employee; department where salaries are NULL.",
+        "setup_sql": "",
+        "expected_output": [
+          {
+            "avg_salary": 50000,
+            "department": "HR"
+          },
+          {
+            "avg_salary": 70000,
+            "department": "Sales"
+          }
+        ]
+      }
+    ]
+  },
+  "expected_output": [
+    {
+      "avg_salary": 50000,
+      "department": "HR"
+    },
+    {
+      "avg_salary": 70000,
+      "department": "Sales"
+    }
+  ],
+  "starter_sql": "SELECT department, AVG(salary) AS avg_salary FROM Employees GROUP BY department ORDER BY department;"
+}

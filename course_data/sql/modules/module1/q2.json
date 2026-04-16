@@ -1,0 +1,99 @@
+{
+  "title": "Question 1.2 (Intermediate)",
+  "description": "Write a query to retrieve only the first_name and email columns from the Users table.",
+  "schema": {
+    "tables": [
+      {
+        "name": "Users",
+        "create_sql": "CREATE TABLE Users(id INTEGER, first_name TEXT, email TEXT, phone TEXT);",
+        "insert_sql": [
+          "INSERT INTO Users VALUES (1,'Mia','mia@gmail.com','111');",
+          "INSERT INTO Users VALUES (2,'Noah','noah@yahoo.com','222');"
+        ],
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER"
+          },
+          {
+            "name": "first_name",
+            "type": "TEXT"
+          },
+          {
+            "name": "email",
+            "type": "TEXT"
+          },
+          {
+            "name": "phone",
+            "type": "TEXT"
+          }
+        ],
+        "sample_data": [
+          {
+            "id": 1,
+            "first_name": "Mia",
+            "email": "mia@gmail.com",
+            "phone": "111"
+          },
+          {
+            "id": 2,
+            "first_name": "Noah",
+            "email": "noah@yahoo.com",
+            "phone": "222"
+          }
+        ]
+      }
+    ]
+  },
+  "sample_io": {
+    "input": "Refer schema",
+    "output": "[\n  {\n    \"email\": \"mia@gmail.com\",\n    \"first_name\": \"Mia\"\n  },\n  {\n    \"email\": \"noah@yahoo.com\",\n    \"first_name\": \"Noah\"\n  }\n]"
+  },
+  "test_cases": {
+    "visible": [
+      {
+        "id": "visible_1",
+        "description": "Primary validation",
+        "setup_sql": "",
+        "expected_output": [
+          {
+            "email": "mia@gmail.com",
+            "first_name": "Mia"
+          },
+          {
+            "email": "noah@yahoo.com",
+            "first_name": "Noah"
+          }
+        ]
+      }
+    ],
+    "hidden": [
+      {
+        "id": "hidden_1",
+        "description": "Verify alias usage if tested, but strictly enforce those two specific columns.",
+        "setup_sql": "",
+        "expected_output": [
+          {
+            "email": "mia@gmail.com",
+            "first_name": "Mia"
+          },
+          {
+            "email": "noah@yahoo.com",
+            "first_name": "Noah"
+          }
+        ]
+      }
+    ]
+  },
+  "expected_output": [
+    {
+      "email": "mia@gmail.com",
+      "first_name": "Mia"
+    },
+    {
+      "email": "noah@yahoo.com",
+      "first_name": "Noah"
+    }
+  ],
+  "starter_sql": "SELECT first_name, email FROM Users;"
+}

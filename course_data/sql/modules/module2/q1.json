@@ -1,0 +1,84 @@
+{
+  "title": "Question 2.1 (Basic)",
+  "description": "Write a query to select all employees from the Employees table where department = 'Sales'.",
+  "schema": {
+    "tables": [
+      {
+        "name": "Employees",
+        "create_sql": "CREATE TABLE Employees(id INTEGER, name TEXT, department TEXT);",
+        "insert_sql": [
+          "INSERT INTO Employees VALUES (1,'Aarav','Sales');",
+          "INSERT INTO Employees VALUES (2,'Ira','Marketing');"
+        ],
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER"
+          },
+          {
+            "name": "name",
+            "type": "TEXT"
+          },
+          {
+            "name": "department",
+            "type": "TEXT"
+          }
+        ],
+        "sample_data": [
+          {
+            "id": 1,
+            "name": "Aarav",
+            "department": "Sales"
+          },
+          {
+            "id": 2,
+            "name": "Ira",
+            "department": "Marketing"
+          }
+        ]
+      }
+    ]
+  },
+  "sample_io": {
+    "input": "Refer schema",
+    "output": "[\n  {\n    \"department\": \"Sales\",\n    \"id\": 1,\n    \"name\": \"Aarav\"\n  }\n]"
+  },
+  "test_cases": {
+    "visible": [
+      {
+        "id": "visible_1",
+        "description": "Primary validation",
+        "setup_sql": "",
+        "expected_output": [
+          {
+            "department": "Sales",
+            "id": 1,
+            "name": "Aarav"
+          }
+        ]
+      }
+    ],
+    "hidden": [
+      {
+        "id": "hidden_1",
+        "description": "Case sensitivity handles (if database collation requires it).",
+        "setup_sql": "",
+        "expected_output": [
+          {
+            "department": "Sales",
+            "id": 1,
+            "name": "Aarav"
+          }
+        ]
+      }
+    ]
+  },
+  "expected_output": [
+    {
+      "department": "Sales",
+      "id": 1,
+      "name": "Aarav"
+    }
+  ],
+  "starter_sql": "SELECT * FROM Employees WHERE department = 'Sales';"
+}

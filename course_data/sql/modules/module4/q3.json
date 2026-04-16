@@ -1,0 +1,136 @@
+{
+  "title": "Question 4.3 (Advanced)",
+  "description": "Perform a FULL OUTER JOIN (or UNION equivalent if MySQL) between Students and Courses on course_id.",
+  "schema": {
+    "tables": [
+      {
+        "name": "Students",
+        "create_sql": "CREATE TABLE Students(student_id INTEGER, course_id INTEGER);",
+        "insert_sql": [
+          "INSERT INTO Students VALUES (1,101);",
+          "INSERT INTO Students VALUES (2,NULL);"
+        ],
+        "columns": [
+          {
+            "name": "student_id",
+            "type": "INTEGER"
+          },
+          {
+            "name": "course_id",
+            "type": "INTEGER"
+          }
+        ],
+        "sample_data": [
+          {
+            "student_id": 1,
+            "course_id": 101
+          },
+          {
+            "student_id": 2,
+            "course_id": null
+          }
+        ]
+      },
+      {
+        "name": "Courses",
+        "create_sql": "CREATE TABLE Courses(course_id INTEGER, course_name TEXT);",
+        "insert_sql": [
+          "INSERT INTO Courses VALUES (101,'SQL');",
+          "INSERT INTO Courses VALUES (102,'Python');"
+        ],
+        "columns": [
+          {
+            "name": "course_id",
+            "type": "INTEGER"
+          },
+          {
+            "name": "course_name",
+            "type": "TEXT"
+          }
+        ],
+        "sample_data": [
+          {
+            "course_id": 101,
+            "course_name": "SQL"
+          },
+          {
+            "course_id": 102,
+            "course_name": "Python"
+          }
+        ]
+      }
+    ]
+  },
+  "sample_io": {
+    "input": "Refer schema",
+    "output": "[\n  {\n    \"student_id\": 1,\n    \"course_id\": 101,\n    \"course_name\": \"SQL\"\n  },\n  {\n    \"student_id\": 2,\n    \"course_id\": null,\n    \"course_name\": null\n  },\n  {\n    \"student_id\": null,\n    \"course_id\": 102,\n    \"course_name\": \"Python\"\n  }\n]"
+  },
+  "test_cases": {
+    "visible": [
+      {
+        "id": "visible_1",
+        "description": "Primary validation",
+        "setup_sql": "",
+        "expected_output": [
+          {
+            "student_id": 1,
+            "course_id": 101,
+            "course_name": "SQL"
+          },
+          {
+            "student_id": 2,
+            "course_id": null,
+            "course_name": null
+          },
+          {
+            "student_id": null,
+            "course_id": 102,
+            "course_name": "Python"
+          }
+        ]
+      }
+    ],
+    "hidden": [
+      {
+        "id": "hidden_1",
+        "description": "Proper synthesis of missing IDs without dropping records.",
+        "setup_sql": "",
+        "expected_output": [
+          {
+            "student_id": 1,
+            "course_id": 101,
+            "course_name": "SQL"
+          },
+          {
+            "student_id": 2,
+            "course_id": null,
+            "course_name": null
+          },
+          {
+            "student_id": null,
+            "course_id": 102,
+            "course_name": "Python"
+          }
+        ]
+      }
+    ]
+  },
+  "expected_output": [
+    {
+      "student_id": 1,
+      "course_id": 101,
+      "course_name": "SQL"
+    },
+    {
+      "student_id": 2,
+      "course_id": null,
+      "course_name": null
+    },
+    {
+      "student_id": null,
+      "course_id": 102,
+      "course_name": "Python"
+    }
+  ],
+  "starter_sql": "SELECT s.student_id, c.course_id, c.course_name FROM Students s LEFT JOIN Courses c ON s.course_id = c.course_id UNION SELECT s.student_id, c.course_id, c.course_name FROM Courses c LEFT JOIN Students s ON s.course_id = c.course_id ORDER BY student_id;"
+}

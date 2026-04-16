@@ -1,0 +1,90 @@
+{
+  "title": "Question 5.1 (Basic)",
+  "description": "Use a basic subquery in the WHERE clause to find employees in the Staff table whose salary is strictly greater than the average salary of all staff.",
+  "schema": {
+    "tables": [
+      {
+        "name": "Staff",
+        "create_sql": "CREATE TABLE Staff(id INTEGER, name TEXT, salary INTEGER);",
+        "insert_sql": [
+          "INSERT INTO Staff VALUES (1,'A',500);",
+          "INSERT INTO Staff VALUES (2,'B',1000);",
+          "INSERT INTO Staff VALUES (3,'C',1500);"
+        ],
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER"
+          },
+          {
+            "name": "name",
+            "type": "TEXT"
+          },
+          {
+            "name": "salary",
+            "type": "INTEGER"
+          }
+        ],
+        "sample_data": [
+          {
+            "id": 1,
+            "name": "A",
+            "salary": 500
+          },
+          {
+            "id": 2,
+            "name": "B",
+            "salary": 1000
+          },
+          {
+            "id": 3,
+            "name": "C",
+            "salary": 1500
+          }
+        ]
+      }
+    ]
+  },
+  "sample_io": {
+    "input": "Refer schema",
+    "output": "[\n  {\n    \"id\": 3,\n    \"name\": \"C\",\n    \"salary\": 1500\n  }\n]"
+  },
+  "test_cases": {
+    "visible": [
+      {
+        "id": "visible_1",
+        "description": "Primary validation",
+        "setup_sql": "",
+        "expected_output": [
+          {
+            "id": 3,
+            "name": "C",
+            "salary": 1500
+          }
+        ]
+      }
+    ],
+    "hidden": [
+      {
+        "id": "hidden_1",
+        "description": "Verify standard functionality when everyone has the exact same salary (returns empty).",
+        "setup_sql": "",
+        "expected_output": [
+          {
+            "id": 3,
+            "name": "C",
+            "salary": 1500
+          }
+        ]
+      }
+    ]
+  },
+  "expected_output": [
+    {
+      "id": 3,
+      "name": "C",
+      "salary": 1500
+    }
+  ],
+  "starter_sql": "SELECT * FROM Staff WHERE salary > (SELECT AVG(salary) FROM Staff);"
+}

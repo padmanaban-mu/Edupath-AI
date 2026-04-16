@@ -1,0 +1,77 @@
+{
+  "title": "Question 5.3 (Advanced)",
+  "description": "Write a query using CTE WITH Regional_Sales AS (...) to calculate total sales per region, then select the max total sales from that CTE.",
+  "schema": {
+    "tables": [
+      {
+        "name": "Sales",
+        "create_sql": "CREATE TABLE Sales(region TEXT, amount INTEGER);",
+        "insert_sql": [
+          "INSERT INTO Sales VALUES ('East',200);",
+          "INSERT INTO Sales VALUES ('East',400);",
+          "INSERT INTO Sales VALUES ('West',800);"
+        ],
+        "columns": [
+          {
+            "name": "region",
+            "type": "TEXT"
+          },
+          {
+            "name": "amount",
+            "type": "INTEGER"
+          }
+        ],
+        "sample_data": [
+          {
+            "region": "East",
+            "amount": 200
+          },
+          {
+            "region": "East",
+            "amount": 400
+          },
+          {
+            "region": "West",
+            "amount": 800
+          }
+        ]
+      }
+    ]
+  },
+  "sample_io": {
+    "input": "Refer schema",
+    "output": "[\n  {\n    \"max_total_sales\": 800\n  }\n]"
+  },
+  "test_cases": {
+    "visible": [
+      {
+        "id": "visible_1",
+        "description": "Primary validation",
+        "setup_sql": "",
+        "expected_output": [
+          {
+            "max_total_sales": 800
+          }
+        ]
+      }
+    ],
+    "hidden": [
+      {
+        "id": "hidden_1",
+        "description": "Tied max sales values check.",
+        "setup_sql": "",
+        "expected_output": [
+          {
+            "max_total_sales": 800
+          }
+        ]
+      }
+    ]
+  },
+  "expected_output": [
+    {
+      "max_total_sales": 800
+    }
+  ],
+  "starter_sql": "WITH Regional_Sales AS (SELECT region, SUM(amount) AS total_sales FROM Sales GROUP BY region) SELECT MAX(total_sales) AS max_total_sales FROM Regional_Sales;"
+}

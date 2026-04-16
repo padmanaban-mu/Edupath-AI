@@ -1,0 +1,43 @@
+{
+  "title": "Question 7.2 (Intermediate)",
+  "description": "Write a CREATE TABLE script for Products including PRIMARY KEY on id and NOT NULL on price.",
+  "schema": {
+    "tables": []
+  },
+  "sample_io": {
+    "input": "Refer schema",
+    "output": "[\n  {\n    \"rows_affected\": -1\n  }\n]"
+  },
+  "test_cases": {
+    "visible": [
+      {
+        "id": "visible_1",
+        "description": "Primary validation",
+        "setup_sql": "",
+        "expected_output": [
+          {
+            "rows_affected": -1
+          }
+        ]
+      }
+    ],
+    "hidden": [
+      {
+        "id": "hidden_1",
+        "description": "Attempting to insert NULL price fails validation.",
+        "setup_sql": "",
+        "expected_output": [
+          {
+            "rows_affected": -1
+          }
+        ]
+      }
+    ]
+  },
+  "expected_output": [
+    {
+      "rows_affected": -1
+    }
+  ],
+  "starter_sql": "CREATE TABLE Products(id INTEGER PRIMARY KEY, name TEXT, price REAL NOT NULL);"
+}

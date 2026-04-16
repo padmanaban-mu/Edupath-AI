@@ -1,0 +1,68 @@
+{
+  "title": "Question 6.1 (Basic)",
+  "description": "Write an INSERT INTO statement to add a new record to the Books table: 'The Hobbit', author='J.R.R. Tolkien', year=1937.",
+  "schema": {
+    "tables": [
+      {
+        "name": "Books",
+        "create_sql": "CREATE TABLE Books(id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, author TEXT, year INTEGER);",
+        "insert_sql": [],
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER"
+          },
+          {
+            "name": "title",
+            "type": "TEXT"
+          },
+          {
+            "name": "author",
+            "type": "TEXT"
+          },
+          {
+            "name": "year",
+            "type": "INTEGER"
+          }
+        ],
+        "sample_data": []
+      }
+    ]
+  },
+  "sample_io": {
+    "input": "Refer schema",
+    "output": "[\n  {\n    \"rows_affected\": 1\n  }\n]"
+  },
+  "test_cases": {
+    "visible": [
+      {
+        "id": "visible_1",
+        "description": "Primary validation",
+        "setup_sql": "",
+        "expected_output": [
+          {
+            "rows_affected": 1
+          }
+        ]
+      }
+    ],
+    "hidden": [
+      {
+        "id": "hidden_1",
+        "description": "Omitting auto-increment id properly.",
+        "setup_sql": "",
+        "expected_output": [
+          {
+            "rows_affected": 1
+          }
+        ]
+      }
+    ]
+  },
+  "expected_output": [
+    {
+      "rows_affected": 1
+    }
+  ],
+  "starter_sql": "INSERT INTO Books(title, author, year) VALUES ('The Hobbit','J.R.R. Tolkien',1937);"
+}

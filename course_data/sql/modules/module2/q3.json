@@ -1,0 +1,105 @@
+{
+  "title": "Question 2.3 (Advanced)",
+  "description": "Write a query on the Customers table to find all users whose email ends with @gmail.com using the LIKE operator, OR their status is marked as 'VIP'.",
+  "schema": {
+    "tables": [
+      {
+        "name": "Customers",
+        "create_sql": "CREATE TABLE Customers(id INTEGER, email TEXT, status TEXT);",
+        "insert_sql": [
+          "INSERT INTO Customers VALUES (1,'a@gmail.com','Regular');",
+          "INSERT INTO Customers VALUES (2,'b@outlook.com','VIP');",
+          "INSERT INTO Customers VALUES (3,'c@yahoo.com','Regular');"
+        ],
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER"
+          },
+          {
+            "name": "email",
+            "type": "TEXT"
+          },
+          {
+            "name": "status",
+            "type": "TEXT"
+          }
+        ],
+        "sample_data": [
+          {
+            "id": 1,
+            "email": "a@gmail.com",
+            "status": "Regular"
+          },
+          {
+            "id": 2,
+            "email": "b@outlook.com",
+            "status": "VIP"
+          },
+          {
+            "id": 3,
+            "email": "c@yahoo.com",
+            "status": "Regular"
+          }
+        ]
+      }
+    ]
+  },
+  "sample_io": {
+    "input": "Refer schema",
+    "output": "[\n  {\n    \"email\": \"a@gmail.com\",\n    \"id\": 1,\n    \"status\": \"Regular\"\n  },\n  {\n    \"email\": \"b@outlook.com\",\n    \"id\": 2,\n    \"status\": \"VIP\"\n  }\n]"
+  },
+  "test_cases": {
+    "visible": [
+      {
+        "id": "visible_1",
+        "description": "Primary validation",
+        "setup_sql": "",
+        "expected_output": [
+          {
+            "email": "a@gmail.com",
+            "id": 1,
+            "status": "Regular"
+          },
+          {
+            "email": "b@outlook.com",
+            "id": 2,
+            "status": "VIP"
+          }
+        ]
+      }
+    ],
+    "hidden": [
+      {
+        "id": "hidden_1",
+        "description": "Emails with different domains but 'VIP' status should be included.",
+        "setup_sql": "",
+        "expected_output": [
+          {
+            "email": "a@gmail.com",
+            "id": 1,
+            "status": "Regular"
+          },
+          {
+            "email": "b@outlook.com",
+            "id": 2,
+            "status": "VIP"
+          }
+        ]
+      }
+    ]
+  },
+  "expected_output": [
+    {
+      "email": "a@gmail.com",
+      "id": 1,
+      "status": "Regular"
+    },
+    {
+      "email": "b@outlook.com",
+      "id": 2,
+      "status": "VIP"
+    }
+  ],
+  "starter_sql": "SELECT * FROM Customers WHERE email LIKE '%@gmail.com' OR status='VIP';"
+}

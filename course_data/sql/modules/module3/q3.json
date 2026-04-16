@@ -1,0 +1,80 @@
+{
+  "title": "Question 3.3 (Advanced)",
+  "description": "Group Sales records by region. Calculate the SUM(revenue) and only return regions using HAVING where the total revenue exceeds 10,000.",
+  "schema": {
+    "tables": [
+      {
+        "name": "Sales",
+        "create_sql": "CREATE TABLE Sales(region TEXT, revenue INTEGER);",
+        "insert_sql": [
+          "INSERT INTO Sales VALUES ('North',7000);",
+          "INSERT INTO Sales VALUES ('North',5000);",
+          "INSERT INTO Sales VALUES ('West',10000);"
+        ],
+        "columns": [
+          {
+            "name": "region",
+            "type": "TEXT"
+          },
+          {
+            "name": "revenue",
+            "type": "INTEGER"
+          }
+        ],
+        "sample_data": [
+          {
+            "region": "North",
+            "revenue": 7000
+          },
+          {
+            "region": "North",
+            "revenue": 5000
+          },
+          {
+            "region": "West",
+            "revenue": 10000
+          }
+        ]
+      }
+    ]
+  },
+  "sample_io": {
+    "input": "Refer schema",
+    "output": "[\n  {\n    \"region\": \"North\",\n    \"total_revenue\": 12000\n  }\n]"
+  },
+  "test_cases": {
+    "visible": [
+      {
+        "id": "visible_1",
+        "description": "Primary validation",
+        "setup_sql": "",
+        "expected_output": [
+          {
+            "region": "North",
+            "total_revenue": 12000
+          }
+        ]
+      }
+    ],
+    "hidden": [
+      {
+        "id": "hidden_1",
+        "description": "A region with exactly 10,000 revenue (should not appear).",
+        "setup_sql": "",
+        "expected_output": [
+          {
+            "region": "North",
+            "total_revenue": 12000
+          }
+        ]
+      }
+    ]
+  },
+  "expected_output": [
+    {
+      "region": "North",
+      "total_revenue": 12000
+    }
+  ],
+  "starter_sql": "SELECT region, SUM(revenue) AS total_revenue FROM Sales GROUP BY region HAVING SUM(revenue) > 10000;"
+}

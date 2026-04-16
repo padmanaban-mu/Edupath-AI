@@ -1,0 +1,93 @@
+{
+  "title": "Question 4.2 (Intermediate)",
+  "description": "Write a LEFT JOIN taking all Employees and their possible Manager details. Select employee name and manager name.",
+  "schema": {
+    "tables": [
+      {
+        "name": "Employees",
+        "create_sql": "CREATE TABLE Employees(id INTEGER, name TEXT, manager_id INTEGER);",
+        "insert_sql": [
+          "INSERT INTO Employees VALUES (1,'CEO',NULL);",
+          "INSERT INTO Employees VALUES (2,'Dev',1);"
+        ],
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER"
+          },
+          {
+            "name": "name",
+            "type": "TEXT"
+          },
+          {
+            "name": "manager_id",
+            "type": "INTEGER"
+          }
+        ],
+        "sample_data": [
+          {
+            "id": 1,
+            "name": "CEO",
+            "manager_id": null
+          },
+          {
+            "id": 2,
+            "name": "Dev",
+            "manager_id": 1
+          }
+        ]
+      }
+    ]
+  },
+  "sample_io": {
+    "input": "Refer schema",
+    "output": "[\n  {\n    \"employee_name\": \"CEO\",\n    \"manager_name\": null\n  },\n  {\n    \"employee_name\": \"Dev\",\n    \"manager_name\": \"CEO\"\n  }\n]"
+  },
+  "test_cases": {
+    "visible": [
+      {
+        "id": "visible_1",
+        "description": "Primary validation",
+        "setup_sql": "",
+        "expected_output": [
+          {
+            "employee_name": "CEO",
+            "manager_name": null
+          },
+          {
+            "employee_name": "Dev",
+            "manager_name": "CEO"
+          }
+        ]
+      }
+    ],
+    "hidden": [
+      {
+        "id": "hidden_1",
+        "description": "The CEO (who has no manager).",
+        "setup_sql": "",
+        "expected_output": [
+          {
+            "employee_name": "CEO",
+            "manager_name": null
+          },
+          {
+            "employee_name": "Dev",
+            "manager_name": "CEO"
+          }
+        ]
+      }
+    ]
+  },
+  "expected_output": [
+    {
+      "employee_name": "CEO",
+      "manager_name": null
+    },
+    {
+      "employee_name": "Dev",
+      "manager_name": "CEO"
+    }
+  ],
+  "starter_sql": "SELECT e.name AS employee_name, m.name AS manager_name FROM Employees e LEFT JOIN Employees m ON e.manager_id = m.id ORDER BY e.id;"
+}

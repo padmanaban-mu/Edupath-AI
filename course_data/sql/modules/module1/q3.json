@@ -1,0 +1,87 @@
+{
+  "title": "Question 1.3 (Advanced)",
+  "description": "Using the Products table, write a single query that returns a custom column via concatenation, formatting output as \"Product: [name] costs $[price]\", aliasing it as Product_Details.",
+  "schema": {
+    "tables": [
+      {
+        "name": "Products",
+        "create_sql": "CREATE TABLE Products(id INTEGER, name TEXT, price INTEGER);",
+        "insert_sql": [
+          "INSERT INTO Products VALUES (1,'Mouse',25);",
+          "INSERT INTO Products VALUES (2,'Keyboard',60);"
+        ],
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER"
+          },
+          {
+            "name": "name",
+            "type": "TEXT"
+          },
+          {
+            "name": "price",
+            "type": "INTEGER"
+          }
+        ],
+        "sample_data": [
+          {
+            "id": 1,
+            "name": "Mouse",
+            "price": 25
+          },
+          {
+            "id": 2,
+            "name": "Keyboard",
+            "price": 60
+          }
+        ]
+      }
+    ]
+  },
+  "sample_io": {
+    "input": "Refer schema",
+    "output": "[\n  {\n    \"Product_Details\": \"Product: Mouse costs $25\"\n  },\n  {\n    \"Product_Details\": \"Product: Keyboard costs $60\"\n  }\n]"
+  },
+  "test_cases": {
+    "visible": [
+      {
+        "id": "visible_1",
+        "description": "Primary validation",
+        "setup_sql": "",
+        "expected_output": [
+          {
+            "Product_Details": "Product: Mouse costs $25"
+          },
+          {
+            "Product_Details": "Product: Keyboard costs $60"
+          }
+        ]
+      }
+    ],
+    "hidden": [
+      {
+        "id": "hidden_1",
+        "description": "Check handling of NULL prices or missing names in concatenation.",
+        "setup_sql": "",
+        "expected_output": [
+          {
+            "Product_Details": "Product: Mouse costs $25"
+          },
+          {
+            "Product_Details": "Product: Keyboard costs $60"
+          }
+        ]
+      }
+    ]
+  },
+  "expected_output": [
+    {
+      "Product_Details": "Product: Mouse costs $25"
+    },
+    {
+      "Product_Details": "Product: Keyboard costs $60"
+    }
+  ],
+  "starter_sql": "SELECT 'Product: ' || name || ' costs $' || price AS Product_Details FROM Products;"
+}

@@ -1,0 +1,118 @@
+{
+  "title": "Question 2.2 (Intermediate)",
+  "description": "Select all products from Inventory where the string status is 'In Stock' AND price is between 50 and 150.",
+  "schema": {
+    "tables": [
+      {
+        "name": "Inventory",
+        "create_sql": "CREATE TABLE Inventory(id INTEGER, product TEXT, status TEXT, price INTEGER);",
+        "insert_sql": [
+          "INSERT INTO Inventory VALUES (1,'Headset','In Stock',50);",
+          "INSERT INTO Inventory VALUES (2,'Monitor','In Stock',150);",
+          "INSERT INTO Inventory VALUES (3,'Cable','In Stock',30);"
+        ],
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER"
+          },
+          {
+            "name": "product",
+            "type": "TEXT"
+          },
+          {
+            "name": "status",
+            "type": "TEXT"
+          },
+          {
+            "name": "price",
+            "type": "INTEGER"
+          }
+        ],
+        "sample_data": [
+          {
+            "id": 1,
+            "product": "Headset",
+            "status": "In Stock",
+            "price": 50
+          },
+          {
+            "id": 2,
+            "product": "Monitor",
+            "status": "In Stock",
+            "price": 150
+          },
+          {
+            "id": 3,
+            "product": "Cable",
+            "status": "In Stock",
+            "price": 30
+          }
+        ]
+      }
+    ]
+  },
+  "sample_io": {
+    "input": "Refer schema",
+    "output": "[\n  {\n    \"id\": 1,\n    \"price\": 50,\n    \"product\": \"Headset\",\n    \"status\": \"In Stock\"\n  },\n  {\n    \"id\": 2,\n    \"price\": 150,\n    \"product\": \"Monitor\",\n    \"status\": \"In Stock\"\n  }\n]"
+  },
+  "test_cases": {
+    "visible": [
+      {
+        "id": "visible_1",
+        "description": "Primary validation",
+        "setup_sql": "",
+        "expected_output": [
+          {
+            "id": 1,
+            "price": 50,
+            "product": "Headset",
+            "status": "In Stock"
+          },
+          {
+            "id": 2,
+            "price": 150,
+            "product": "Monitor",
+            "status": "In Stock"
+          }
+        ]
+      }
+    ],
+    "hidden": [
+      {
+        "id": "hidden_1",
+        "description": "Check exact boundary values (50 and 150 inclusive tests).",
+        "setup_sql": "",
+        "expected_output": [
+          {
+            "id": 1,
+            "price": 50,
+            "product": "Headset",
+            "status": "In Stock"
+          },
+          {
+            "id": 2,
+            "price": 150,
+            "product": "Monitor",
+            "status": "In Stock"
+          }
+        ]
+      }
+    ]
+  },
+  "expected_output": [
+    {
+      "id": 1,
+      "price": 50,
+      "product": "Headset",
+      "status": "In Stock"
+    },
+    {
+      "id": 2,
+      "price": 150,
+      "product": "Monitor",
+      "status": "In Stock"
+    }
+  ],
+  "starter_sql": "SELECT * FROM Inventory WHERE status='In Stock' AND price BETWEEN 50 AND 150;"
+}

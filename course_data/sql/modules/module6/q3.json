@@ -1,0 +1,78 @@
+{
+  "title": "Question 6.3 (Advanced)",
+  "description": "Write a DELETE statement to remove data from Sessions where last_active < '2022-01-01' AND is_bot = True.",
+  "schema": {
+    "tables": [
+      {
+        "name": "Sessions",
+        "create_sql": "CREATE TABLE Sessions(id INTEGER, last_active TEXT, is_bot INTEGER);",
+        "insert_sql": [
+          "INSERT INTO Sessions VALUES (1,'2021-01-01',1);",
+          "INSERT INTO Sessions VALUES (2,'2021-01-01',0);"
+        ],
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER"
+          },
+          {
+            "name": "last_active",
+            "type": "TEXT"
+          },
+          {
+            "name": "is_bot",
+            "type": "INTEGER"
+          }
+        ],
+        "sample_data": [
+          {
+            "id": 1,
+            "last_active": "2021-01-01",
+            "is_bot": 1
+          },
+          {
+            "id": 2,
+            "last_active": "2021-01-01",
+            "is_bot": 0
+          }
+        ]
+      }
+    ]
+  },
+  "sample_io": {
+    "input": "Refer schema",
+    "output": "[\n  {\n    \"rows_affected\": 1\n  }\n]"
+  },
+  "test_cases": {
+    "visible": [
+      {
+        "id": "visible_1",
+        "description": "Primary validation",
+        "setup_sql": "",
+        "expected_output": [
+          {
+            "rows_affected": 1
+          }
+        ]
+      }
+    ],
+    "hidden": [
+      {
+        "id": "hidden_1",
+        "description": "Ensure non-bots older than the date are NOT deleted.",
+        "setup_sql": "",
+        "expected_output": [
+          {
+            "rows_affected": 1
+          }
+        ]
+      }
+    ]
+  },
+  "expected_output": [
+    {
+      "rows_affected": 1
+    }
+  ],
+  "starter_sql": "DELETE FROM Sessions WHERE last_active < '2022-01-01' AND is_bot = 1;"
+}

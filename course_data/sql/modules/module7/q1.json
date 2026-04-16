@@ -1,0 +1,43 @@
+{
+  "title": "Question 7.1 (Basic)",
+  "description": "Write a CREATE TABLE statement for Users with id (INT), username (VARCHAR(50)), and created_at (DATE).",
+  "schema": {
+    "tables": []
+  },
+  "sample_io": {
+    "input": "Refer schema",
+    "output": "[\n  {\n    \"rows_affected\": -1\n  }\n]"
+  },
+  "test_cases": {
+    "visible": [
+      {
+        "id": "visible_1",
+        "description": "Primary validation",
+        "setup_sql": "",
+        "expected_output": [
+          {
+            "rows_affected": -1
+          }
+        ]
+      }
+    ],
+    "hidden": [
+      {
+        "id": "hidden_1",
+        "description": "Reject VARCHARs exceeding 50.",
+        "setup_sql": "",
+        "expected_output": [
+          {
+            "rows_affected": -1
+          }
+        ]
+      }
+    ]
+  },
+  "expected_output": [
+    {
+      "rows_affected": -1
+    }
+  ],
+  "starter_sql": "CREATE TABLE Users(id INT, username VARCHAR(50), created_at DATE);"
+}

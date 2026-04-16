@@ -1,0 +1,101 @@
+{
+  "title": "Question 1.1 (Basic)",
+  "description": "Write a SQL query to SELECT all columns (*) from a table named Employees.",
+  "schema": {
+    "tables": [
+      {
+        "name": "Employees",
+        "create_sql": "CREATE TABLE Employees(id INTEGER, first_name TEXT, department TEXT);",
+        "insert_sql": [
+          "INSERT INTO Employees VALUES (1,'Ava','Sales');",
+          "INSERT INTO Employees VALUES (2,'Liam','HR');"
+        ],
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER"
+          },
+          {
+            "name": "first_name",
+            "type": "TEXT"
+          },
+          {
+            "name": "department",
+            "type": "TEXT"
+          }
+        ],
+        "sample_data": [
+          {
+            "id": 1,
+            "first_name": "Ava",
+            "department": "Sales"
+          },
+          {
+            "id": 2,
+            "first_name": "Liam",
+            "department": "HR"
+          }
+        ]
+      }
+    ]
+  },
+  "sample_io": {
+    "input": "Refer schema",
+    "output": "[\n  {\n    \"id\": 1,\n    \"first_name\": \"Ava\",\n    \"department\": \"Sales\"\n  },\n  {\n    \"id\": 2,\n    \"first_name\": \"Liam\",\n    \"department\": \"HR\"\n  }\n]"
+  },
+  "test_cases": {
+    "visible": [
+      {
+        "id": "visible_1",
+        "description": "Primary validation",
+        "setup_sql": "",
+        "expected_output": [
+          {
+            "id": 1,
+            "first_name": "Ava",
+            "department": "Sales"
+          },
+          {
+            "id": 2,
+            "first_name": "Liam",
+            "department": "HR"
+          }
+        ]
+      }
+    ],
+    "hidden": [
+      {
+        "id": "hidden_1",
+        "description": "Ensure column selection wasn't hardcoded instead of using *.",
+        "setup_sql": "ALTER TABLE Employees ADD COLUMN city TEXT DEFAULT 'Pune';",
+        "expected_output": [
+          {
+            "city": "Pune",
+            "department": "Sales",
+            "first_name": "Ava",
+            "id": 1
+          },
+          {
+            "city": "Pune",
+            "department": "HR",
+            "first_name": "Liam",
+            "id": 2
+          }
+        ]
+      }
+    ]
+  },
+  "expected_output": [
+    {
+      "id": 1,
+      "first_name": "Ava",
+      "department": "Sales"
+    },
+    {
+      "id": 2,
+      "first_name": "Liam",
+      "department": "HR"
+    }
+  ],
+  "starter_sql": "SELECT * FROM Employees;"
+}

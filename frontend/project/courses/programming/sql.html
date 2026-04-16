@@ -4,11 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SQL Mastery â€” EduPath AI</title>
+    <title>SQL Mastery — EduPath AI</title>
     <link
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Inter:wght@400;500;600;700&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="../../css/dashboard.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
@@ -38,7 +38,7 @@
             min-height: 100vh;
         }
 
-        /* --- Sidebar CSS (Synced with domain.html) --- */
+        /* --- Sidebar CSS --- */
         .sidebar {
             width: 260px;
             background: var(--dark-blue);
@@ -64,10 +64,18 @@
         }
 
         .logo {
+            font-family: 'Poppins', sans-serif;
             font-size: 24px;
             font-weight: 700;
             margin-bottom: 50px;
-            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .logo i {
+            font-size: 1.5rem;
         }
 
         .logo span {
@@ -491,7 +499,7 @@
     </style>
 </head>
 
-
+<body>
 
 <div class="dashboard-container">
     <aside class="sidebar" id="sidebar">
@@ -500,13 +508,13 @@
     <div class="logo-text">EduPath <span>AI</span></div>
 </div>
         <ul class="nav-menu">
-            <li><a href="../../dashboard.html"><i class="fas fa-th-large"></i> <span>Overview</span></a></li>
-            <li><a href="../../roadmap.html"><i class="fas fa-map-signs"></i> <span>My Roadmap</span></a></li>
-            <li class="active"><a href="../domain.html"><i class="fas fa-compass"></i> <span>Explore Domain</span></a>
+            <li><a href="/dashboard.html"><i class="fas fa-th-large"></i> <span>Overview</span></a></li>
+            <li><a href="/roadmap.html"><i class="fas fa-map-signs"></i> <span>My Roadmap</span></a></li>
+            <li class="active"><a href="/domain.html"><i class="fas fa-compass"></i> <span>Explore Domain</span></a>
             </li>
-            <li><a href="../../chatbot.html"><i class="fas fa-robot"></i> <span>AI ChatBot</span></a></li>
-            <li><a href="../../profile.html"><i class="fas fa-cog"></i> <span>Profile Settings</span></a></li>
-            <li><a href="../../index.html"><i class="fas fa-sign-out-alt"></i> <span>Log out</span></a></li>
+            <li><a href="/chatbot.html"><i class="fas fa-robot"></i> <span>AI ChatBot</span></a></li>
+            <li><a href="/profile.html"><i class="fas fa-cog"></i> <span>Profile Settings</span></a></li>
+            <li><a href="/index.html"><i class="fas fa-sign-out-alt"></i> <span>Log out</span></a></li>
         </ul>
         <div class="sidebar-footer">
             <div class="profile-card">
@@ -523,12 +531,6 @@
         <header class="top-nav"
             style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
             <div class="toggle-btn" id="sidebarToggle" style="cursor: pointer;"><i class="fas fa-bars"></i></div>
-            <!-- <div class="search-bar"
-                style="background: white; padding: 8px 20px; border-radius: 25px; width: 40%; display: flex; align-items: center; gap: 10px; border: 1px solid #e2e8f0;">
-                <i class="fas fa-search" style="color: var(--slate-500);"></i>
-                <input type="text" id="moduleSearch" placeholder="Search SQL topics..."
-                    style="border: none; outline: none; width: 100%;">
-            </div> -->
             <div class="user-profile"><i class="far fa-bell" style="color:var(--text-muted)"></i></div>
         </header>
         <div class="course-progress">
@@ -562,11 +564,11 @@
             </div>
         </div>
         <div class="section-box" id="module-box-1">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header active" onclick="toggleSection(this)">
                 <h3>Module 1: Introduction to SQL & Databases</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-            <div class="section-content">
+            <div class="section-content" style="display:block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this)">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>SQL Basics & Database Concepts -
@@ -677,10 +679,9 @@
                         <button type="button" onclick="submitQuiz(1)" class="quiz-submit">Submit Quiz</button>
                     </form>
                 </div>
-                <div class="activity-row">
-                    <div class="activity-info"><i class="fas fa-code"></i> <span>SQL Basics & Database Concepts -
-                            PROGRAMS</span></div>
-                    <button class="status-btn todo">To do</button>
+                <div class="activity-row" onclick="window.location.href='/compiler/sql.html?module=module1'">
+                    <div class="activity-info"><i class="fas fa-code"></i> <span>SQL Basics & Database Concepts - PROGRAMS</span></div>
+                    <button id="pbtn-1" class="status-btn todo">To do</button>
                 </div>
             </div>
         </div>
@@ -803,10 +804,9 @@
                         <button type="button" onclick="submitQuiz(2)" class="quiz-submit">Submit Quiz</button>
                     </form>
                 </div>
-                <div class="activity-row">
-                    <div class="activity-info"><i class="fas fa-code"></i> <span>Basic SELECT & Filtering -
-                            PROGRAMS</span></div>
-                    <button class="status-btn todo">To do</button>
+                <div class="activity-row" onclick="window.location.href='/compiler/sql.html?module=module2'">
+                    <div class="activity-info"><i class="fas fa-code"></i> <span>Basic SELECT & Filtering - PROGRAMS</span></div>
+                    <button id="pbtn-2" class="status-btn todo">To do</button>
                 </div>
             </div>
         </div>
@@ -928,10 +928,9 @@
                         <button type="button" onclick="submitQuiz(3)" class="quiz-submit">Submit Quiz</button>
                     </form>
                 </div>
-                <div class="activity-row">
-                    <div class="activity-info"><i class="fas fa-code"></i> <span>Aggregates & Grouping - PROGRAMS</span>
-                    </div>
-                    <button class="status-btn todo">To do</button>
+                <div class="activity-row" onclick="window.location.href='/compiler/sql.html?module=module3'">
+                    <div class="activity-info"><i class="fas fa-code"></i> <span>Aggregates & Grouping - PROGRAMS</span></div>
+                    <button id="pbtn-3" class="status-btn todo">To do</button>
                 </div>
             </div>
         </div>
@@ -1053,9 +1052,9 @@
                         <button type="button" onclick="submitQuiz(4)" class="quiz-submit">Submit Quiz</button>
                     </form>
                 </div>
-                <div class="activity-row">
+                <div class="activity-row" onclick="window.location.href='/compiler/sql.html?module=module4'">
                     <div class="activity-info"><i class="fas fa-code"></i> <span>SQL JOINS - PROGRAMS</span></div>
-                    <button class="status-btn todo">To do</button>
+                    <button id="pbtn-4" class="status-btn todo">To do</button>
                 </div>
             </div>
         </div>
@@ -1179,10 +1178,9 @@
                         <button type="button" onclick="submitQuiz(5)" class="quiz-submit">Submit Quiz</button>
                     </form>
                 </div>
-                <div class="activity-row">
-                    <div class="activity-info"><i class="fas fa-code"></i> <span>Subqueries & CTEs - PROGRAMS</span>
-                    </div>
-                    <button class="status-btn todo">To do</button>
+                <div class="activity-row" onclick="window.location.href='/compiler/sql.html?module=module5'">
+                    <div class="activity-info"><i class="fas fa-code"></i> <span>Subqueries & CTEs - PROGRAMS</span></div>
+                    <button id="pbtn-5" class="status-btn todo">To do</button>
                 </div>
             </div>
         </div>
@@ -1307,10 +1305,9 @@
                         <button type="button" onclick="submitQuiz(6)" class="quiz-submit">Submit Quiz</button>
                     </form>
                 </div>
-                <div class="activity-row">
-                    <div class="activity-info"><i class="fas fa-code"></i> <span>Data Manipulation (DML) -
-                            PROGRAMS</span></div>
-                    <button class="status-btn todo">To do</button>
+                <div class="activity-row" onclick="window.location.href='/compiler/sql.html?module=module6'">
+                    <div class="activity-info"><i class="fas fa-code"></i> <span>Data Manipulation (DML) - PROGRAMS</span></div>
+                    <button id="pbtn-6" class="status-btn todo">To do</button>
                 </div>
             </div>
         </div>
@@ -1433,10 +1430,9 @@
                         <button type="button" onclick="submitQuiz(7)" class="quiz-submit">Submit Quiz</button>
                     </form>
                 </div>
-                <div class="activity-row">
-                    <div class="activity-info"><i class="fas fa-code"></i> <span>Table Creation & Structure (DDL) -
-                            PROGRAMS</span></div>
-                    <button class="status-btn todo">To do</button>
+                <div class="activity-row" onclick="window.location.href='/compiler/sql.html?module=module7'">
+                    <div class="activity-info"><i class="fas fa-code"></i> <span>Table Creation & Structure (DDL) - PROGRAMS</span></div>
+                    <button id="pbtn-7" class="status-btn todo">To do</button>
                 </div>
             </div>
         </div>
@@ -1558,10 +1554,9 @@
                         <button type="button" onclick="submitQuiz(8)" class="quiz-submit">Submit Quiz</button>
                     </form>
                 </div>
-                <div class="activity-row">
-                    <div class="activity-info"><i class="fas fa-code"></i> <span>Advanced SQL Concepts - PROGRAMS</span>
-                    </div>
-                    <button class="status-btn todo">To do</button>
+                <div class="activity-row" onclick="window.location.href='/compiler/sql.html?module=module8'">
+                    <div class="activity-info"><i class="fas fa-code"></i> <span>Advanced SQL Concepts - PROGRAMS</span></div>
+                    <button id="pbtn-8" class="status-btn todo">To do</button>
                 </div>
             </div>
         </div>
@@ -1569,7 +1564,6 @@
     </main>
 </div>
 
-<!-- YouTube IFrame API -->
 <script src="https://www.youtube.com/iframe_api"></script>
 
 <script>
@@ -1577,21 +1571,29 @@
 
     // Load saved state on page load
     document.addEventListener("DOMContentLoaded", () => {
-        // Module unlocking logic
+        // Module unlocking logic (Strictly synced with dataviz.html logic)
         for (let i = 2; i <= totalModules; i++) {
-            if (localStorage.getItem("sql_module" + (i - 1) + "_unlocked") === "true") {
+            if (localStorage.getItem("sql_module" + (i - 1) + "_completed") === "true") {
                 const moduleBox = document.getElementById("module-box-" + i);
                 if (moduleBox) moduleBox.classList.remove("locked");
             }
         }
 
-        // Restore button states
+        // Restore button states for videos and quizzes
         const buttons = document.querySelectorAll('.status-btn');
         buttons.forEach(btn => {
             if (btn.id && localStorage.getItem("sql_" + btn.id) === "done") {
                 applyDoneState(btn);
             }
         });
+
+        // Check for programming completions from the compiler
+        for (let i = 1; i <= totalModules; i++) {
+            if (localStorage.getItem("sql_prog_module" + i) === "done") {
+                const pbtn = document.getElementById("pbtn-" + i);
+                if (pbtn) applyDoneState(pbtn);
+            }
+        }
 
         updateProgress();
     });
@@ -1708,11 +1710,7 @@
 
         if (percent >= 60) {
             markAsDone("qbtn-" + module);
-            if (module < totalModules) {
-                localStorage.setItem("sql_module" + module + "_unlocked", "true");
-                const nextModuleBox = document.getElementById("module-box-" + (module + 1));
-                if (nextModuleBox) nextModuleBox.classList.remove("locked");
-            }
+            // Let the compiler's "Finish Module" button handle unlocking the next module!
         }
     }
 
@@ -1738,7 +1736,5 @@
     });
 </script>
 </body>
-
-</html>
 
 </html>

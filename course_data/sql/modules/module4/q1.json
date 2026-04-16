@@ -1,0 +1,121 @@
+{
+  "title": "Question 4.1 (Basic)",
+  "description": "Perform an INNER JOIN between Customers and Orders on customer_id. Select the customer's name and the order_date.",
+  "schema": {
+    "tables": [
+      {
+        "name": "Customers",
+        "create_sql": "CREATE TABLE Customers(customer_id INTEGER, name TEXT);",
+        "insert_sql": [
+          "INSERT INTO Customers VALUES (1,'Asha');",
+          "INSERT INTO Customers VALUES (2,'Ravi');"
+        ],
+        "columns": [
+          {
+            "name": "customer_id",
+            "type": "INTEGER"
+          },
+          {
+            "name": "name",
+            "type": "TEXT"
+          }
+        ],
+        "sample_data": [
+          {
+            "customer_id": 1,
+            "name": "Asha"
+          },
+          {
+            "customer_id": 2,
+            "name": "Ravi"
+          }
+        ]
+      },
+      {
+        "name": "Orders",
+        "create_sql": "CREATE TABLE Orders(order_id INTEGER, customer_id INTEGER, order_date TEXT);",
+        "insert_sql": [
+          "INSERT INTO Orders VALUES (1,1,'2024-01-01');",
+          "INSERT INTO Orders VALUES (2,1,'2024-01-03');"
+        ],
+        "columns": [
+          {
+            "name": "order_id",
+            "type": "INTEGER"
+          },
+          {
+            "name": "customer_id",
+            "type": "INTEGER"
+          },
+          {
+            "name": "order_date",
+            "type": "TEXT"
+          }
+        ],
+        "sample_data": [
+          {
+            "order_id": 1,
+            "customer_id": 1,
+            "order_date": "2024-01-01"
+          },
+          {
+            "order_id": 2,
+            "customer_id": 1,
+            "order_date": "2024-01-03"
+          }
+        ]
+      }
+    ]
+  },
+  "sample_io": {
+    "input": "Refer schema",
+    "output": "[\n  {\n    \"name\": \"Asha\",\n    \"order_date\": \"2024-01-01\"\n  },\n  {\n    \"name\": \"Asha\",\n    \"order_date\": \"2024-01-03\"\n  }\n]"
+  },
+  "test_cases": {
+    "visible": [
+      {
+        "id": "visible_1",
+        "description": "Primary validation",
+        "setup_sql": "",
+        "expected_output": [
+          {
+            "name": "Asha",
+            "order_date": "2024-01-01"
+          },
+          {
+            "name": "Asha",
+            "order_date": "2024-01-03"
+          }
+        ]
+      }
+    ],
+    "hidden": [
+      {
+        "id": "hidden_1",
+        "description": "Customers with no orders (should be omitted).",
+        "setup_sql": "",
+        "expected_output": [
+          {
+            "name": "Asha",
+            "order_date": "2024-01-01"
+          },
+          {
+            "name": "Asha",
+            "order_date": "2024-01-03"
+          }
+        ]
+      }
+    ]
+  },
+  "expected_output": [
+    {
+      "name": "Asha",
+      "order_date": "2024-01-01"
+    },
+    {
+      "name": "Asha",
+      "order_date": "2024-01-03"
+    }
+  ],
+  "starter_sql": "SELECT c.name, o.order_date FROM Customers c INNER JOIN Orders o ON c.customer_id = o.customer_id;"
+}

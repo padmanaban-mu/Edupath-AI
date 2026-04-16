@@ -1,0 +1,133 @@
+{
+  "title": "Question 8.2 (Intermediate)",
+  "description": "Write a window function query using RANK() OVER (ORDER BY score DESC). Return all students and their rank based on score.",
+  "schema": {
+    "tables": [
+      {
+        "name": "Students",
+        "create_sql": "CREATE TABLE Students(name TEXT, score INTEGER);",
+        "insert_sql": [
+          "INSERT INTO Students VALUES ('A',95);",
+          "INSERT INTO Students VALUES ('B',90);",
+          "INSERT INTO Students VALUES ('C',90);",
+          "INSERT INTO Students VALUES ('D',80);"
+        ],
+        "columns": [
+          {
+            "name": "name",
+            "type": "TEXT"
+          },
+          {
+            "name": "score",
+            "type": "INTEGER"
+          }
+        ],
+        "sample_data": [
+          {
+            "name": "A",
+            "score": 95
+          },
+          {
+            "name": "B",
+            "score": 90
+          },
+          {
+            "name": "C",
+            "score": 90
+          },
+          {
+            "name": "D",
+            "score": 80
+          }
+        ]
+      }
+    ]
+  },
+  "sample_io": {
+    "input": "Refer schema",
+    "output": "[\n  {\n    \"name\": \"A\",\n    \"score\": 95,\n    \"rank_num\": 1\n  },\n  {\n    \"name\": \"B\",\n    \"score\": 90,\n    \"rank_num\": 2\n  },\n  {\n    \"name\": \"C\",\n    \"score\": 90,\n    \"rank_num\": 2\n  },\n  {\n    \"name\": \"D\",\n    \"score\": 80,\n    \"rank_num\": 4\n  }\n]"
+  },
+  "test_cases": {
+    "visible": [
+      {
+        "id": "visible_1",
+        "description": "Primary validation",
+        "setup_sql": "",
+        "expected_output": [
+          {
+            "name": "A",
+            "score": 95,
+            "rank_num": 1
+          },
+          {
+            "name": "B",
+            "score": 90,
+            "rank_num": 2
+          },
+          {
+            "name": "C",
+            "score": 90,
+            "rank_num": 2
+          },
+          {
+            "name": "D",
+            "score": 80,
+            "rank_num": 4
+          }
+        ]
+      }
+    ],
+    "hidden": [
+      {
+        "id": "hidden_1",
+        "description": "Tied scores should yield matching ranks (e.g., 1, 2, 2, 4).",
+        "setup_sql": "",
+        "expected_output": [
+          {
+            "name": "A",
+            "score": 95,
+            "rank_num": 1
+          },
+          {
+            "name": "B",
+            "score": 90,
+            "rank_num": 2
+          },
+          {
+            "name": "C",
+            "score": 90,
+            "rank_num": 2
+          },
+          {
+            "name": "D",
+            "score": 80,
+            "rank_num": 4
+          }
+        ]
+      }
+    ]
+  },
+  "expected_output": [
+    {
+      "name": "A",
+      "score": 95,
+      "rank_num": 1
+    },
+    {
+      "name": "B",
+      "score": 90,
+      "rank_num": 2
+    },
+    {
+      "name": "C",
+      "score": 90,
+      "rank_num": 2
+    },
+    {
+      "name": "D",
+      "score": 80,
+      "rank_num": 4
+    }
+  ],
+  "starter_sql": "SELECT name, score, RANK() OVER (ORDER BY score DESC) AS rank_num FROM Students;"
+}

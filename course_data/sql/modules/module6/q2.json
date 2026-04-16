@@ -1,0 +1,78 @@
+{
+  "title": "Question 6.2 (Intermediate)",
+  "description": "Write an UPDATE statement that sets status='Shipped' in Orders for all orders where order_date is before '2023-01-01'.",
+  "schema": {
+    "tables": [
+      {
+        "name": "Orders",
+        "create_sql": "CREATE TABLE Orders(id INTEGER, order_date TEXT, status TEXT);",
+        "insert_sql": [
+          "INSERT INTO Orders VALUES (1,'2022-12-31','Pending');",
+          "INSERT INTO Orders VALUES (2,'2023-01-01','Pending');"
+        ],
+        "columns": [
+          {
+            "name": "id",
+            "type": "INTEGER"
+          },
+          {
+            "name": "order_date",
+            "type": "TEXT"
+          },
+          {
+            "name": "status",
+            "type": "TEXT"
+          }
+        ],
+        "sample_data": [
+          {
+            "id": 1,
+            "order_date": "2022-12-31",
+            "status": "Pending"
+          },
+          {
+            "id": 2,
+            "order_date": "2023-01-01",
+            "status": "Pending"
+          }
+        ]
+      }
+    ]
+  },
+  "sample_io": {
+    "input": "Refer schema",
+    "output": "[\n  {\n    \"rows_affected\": 1\n  }\n]"
+  },
+  "test_cases": {
+    "visible": [
+      {
+        "id": "visible_1",
+        "description": "Primary validation",
+        "setup_sql": "",
+        "expected_output": [
+          {
+            "rows_affected": 1
+          }
+        ]
+      }
+    ],
+    "hidden": [
+      {
+        "id": "hidden_1",
+        "description": "Test with date exactly '2023-01-01' (boundary condition).",
+        "setup_sql": "",
+        "expected_output": [
+          {
+            "rows_affected": 1
+          }
+        ]
+      }
+    ]
+  },
+  "expected_output": [
+    {
+      "rows_affected": 1
+    }
+  ],
+  "starter_sql": "UPDATE Orders SET status='Shipped' WHERE order_date < '2023-01-01';"
+}

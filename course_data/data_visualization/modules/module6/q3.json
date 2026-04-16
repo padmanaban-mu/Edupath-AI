@@ -1,0 +1,14 @@
+{
+  "title": "Interactive",
+  "description": "Build an interactive Altair chart.",
+  "input": "interactive",
+  "example_input": "interactive",
+  "expected_output": "interactive chart",
+  "difficulty": "Advanced",
+  "test_cases": [
+    {
+      "input": "interactive",
+      "expected": "interactive chart"
+    }
+  ]
+}

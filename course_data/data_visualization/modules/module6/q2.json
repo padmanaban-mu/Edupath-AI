@@ -1,0 +1,14 @@
+{
+  "title": "Scatter",
+  "description": "Create a colored scatter plot in Altair.",
+  "input": "scatter",
+  "example_input": "scatter",
+  "expected_output": "colored scatter",
+  "difficulty": "Intermediate",
+  "test_cases": [
+    {
+      "input": "scatter",
+      "expected": "colored scatter"
+    }
+  ]
+}

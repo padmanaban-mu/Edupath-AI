@@ -1,0 +1,14 @@
+{
+  "title": "ROC Curve",
+  "description": "Plot a ROC curve comparing classifier performance.",
+  "input": "roc",
+  "example_input": "roc",
+  "expected_output": "roc curve",
+  "difficulty": "Intermediate",
+  "test_cases": [
+    {
+      "input": "roc",
+      "expected": "roc curve"
+    }
+  ]
+}

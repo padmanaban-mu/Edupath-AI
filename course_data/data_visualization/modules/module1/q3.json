@@ -1,0 +1,14 @@
+{
+  "title": "Tidy Data",
+  "description": "Convert a wide-format dictionary to long-format tidy data.",
+  "input": "{'A':[1,2]}",
+  "example_input": "{'A':[1,2]}",
+  "expected_output": "[{'variable':'A','value':1},{'variable':'A','value':2}]",
+  "difficulty": "Advanced",
+  "test_cases": [
+    {
+      "input": "{'A':[1,2]}",
+      "expected": "[{'variable':'A','value':1},{'variable':'A','value':2}]"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "title": "Map",
+  "description": "Create a Folium map centered on New York.",
+  "input": "map",
+  "example_input": "map",
+  "expected_output": "map",
+  "difficulty": "Basic",
+  "test_cases": [
+    {
+      "input": "map",
+      "expected": "map"
+    }
+  ]
+}

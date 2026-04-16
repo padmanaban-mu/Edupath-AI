@@ -1,0 +1,14 @@
+{
+  "title": "Histogram",
+  "description": "Plot a histogram for age data.",
+  "input": "age data",
+  "example_input": "age data",
+  "expected_output": "histogram",
+  "difficulty": "Basic",
+  "test_cases": [
+    {
+      "input": "age data",
+      "expected": "histogram"
+    }
+  ]
+}

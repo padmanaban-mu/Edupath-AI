@@ -1,0 +1,14 @@
+{
+  "title": "Line Chart",
+  "description": "Create a Plotly line chart.",
+  "input": "line",
+  "example_input": "line",
+  "expected_output": "line chart",
+  "difficulty": "Basic",
+  "test_cases": [
+    {
+      "input": "line",
+      "expected": "line chart"
+    }
+  ]
+}

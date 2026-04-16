@@ -1,0 +1,14 @@
+{
+  "title": "Heatmap",
+  "description": "Plot a correlation heatmap.",
+  "input": "correlation",
+  "example_input": "correlation",
+  "expected_output": "heatmap",
+  "difficulty": "Advanced",
+  "test_cases": [
+    {
+      "input": "correlation",
+      "expected": "heatmap"
+    }
+  ]
+}

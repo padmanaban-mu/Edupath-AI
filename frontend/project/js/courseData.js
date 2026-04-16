@@ -15,7 +15,7 @@ window.roadmapData = {
             { id: "py_b", title: "Python Basics", level: 4, prereq: ["df"], progress: 0, img: "https://cdn-icons-png.flaticon.com/512/5968/5968350.png", color: "#f59e0b", keyTopics: ["Loops & Functions", "OOPs Concepts", "Lists & Dictionaries"] },
             { id: "numpy", title: "NumPy Arrays", level: 4, prereq: ["py_b"], progress: 0, img: "https://cdn-icons-png.flaticon.com/512/9135/9135965.png", color: "#ef4444", keyTopics: ["Array Slicing", "Broadcasting", "Matrix Operations"] },
             { id: "pandas", title: "Pandas DataFrames", level: 4, prereq: ["numpy"], progress: 0, img: "https://cdn-icons-png.flaticon.com/512/4862/4862036.png", color: "#10b981", keyTopics: ["DataFrames", "Groupby & Aggregation", "Merging Data"] },
-            { id: "viz_py", title: "Python Viz", level: 5, prereq: ["pandas"], progress: 0, img: "https://cdn-icons-png.flaticon.com/512/1055/1055644.png", color: "#6366f1", keyTopics: ["Matplotlib Pyplot", "Seaborn Styling", "Interactive Plots"] },
+            { id: "viz_py", title: "Python Viz", level: 5, prereq: [], progress: 0, img: "https://cdn-icons-png.flaticon.com/512/1055/1055644.png", color: "#6366f1", keyTopics: ["Matplotlib Pyplot", "Seaborn Styling", "Interactive Plots"] },
             { id: "reg", title: "Regression Models", level: 6, prereq: ["stats", "py_b"], progress: 0, img: "https://cdn-icons-png.flaticon.com/512/2103/2103507.png", color: "#ef4444", keyTopics: ["Linear Regression", "Logistic Regression", "Model Evaluation"] }
         ],
         levels: [

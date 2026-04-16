@@ -27,7 +27,7 @@
         body {
             background: var(--bg-light);
             color: var(--text-main);
-            font-family: 'Inter', sans-serif;
+            font-family: 'Poppins', sans-serif;
             margin: 0;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
@@ -63,16 +63,14 @@
             display: none;
         }
 
-        .logo {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 50px;
-            text-align: center;
+        .logo { 
+            font-size: 24px; 
+            font-weight: 700; 
+            margin-bottom: 50px; 
+            text-align: center; 
         }
 
-        .logo span {
-            color: var(--primary-blue);
-        }
+        .logo span { color: var(--primary-blue); }
 
         .nav-menu {
             list-style: none;
@@ -143,6 +141,39 @@
             width: calc(100% - 80px);
         }
 
+        /* --- Top Nav --- */
+        /* .top-nav { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 30px; 
+        } */
+
+        .toggle-btn {
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: var(--dark-blue);
+        }
+
+        /* --- Notifications matching roadmap.html --- */
+        .notifications {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        
+        .notifications .badge {
+            position: absolute;
+            top: -5px;
+            right: -8px;
+            background: #ef4444;
+            color: white;
+            font-size: 0.6rem;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 10px;
+        }
+
         /* --- Module Accordion Styles --- */
         .explore-header {
             margin-bottom: 30px;
@@ -152,6 +183,8 @@
             font-size: 1.5rem;
             color: var(--dark-blue);
             margin-bottom: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
         }
 
         .section-box {
@@ -238,6 +271,7 @@
             justify-content: space-between;
             font-size: 14px;
             margin-bottom: 6px;
+            font-weight: 600;
         }
 
         .progress-container {
@@ -336,7 +370,6 @@
             position: relative;
         }
 
-        /* Activities are visible but not clickable when locked */
         .section-box.locked .section-content .activity-row,
         .section-box.locked .section-content .video-embed,
         .section-box.locked .section-content .quiz-box {
@@ -405,54 +438,30 @@
             margin: 15px 0;
             border-radius: 10px;
         }
-
-        .top-nav {
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            margin-bottom: 30px;
-        }
-
-        .search-bar {
-            background: white; 
-            padding: 8px 20px; 
-            border-radius: 25px; 
-            width: 40%; 
-            display: flex; 
-            align-items: center; 
-            gap: 10px; 
-            border: 1px solid #e2e8f0;
-        }
-
-        .toggle-btn {
-            cursor: pointer;
-            font-size: 1.2rem;
-            color: var(--dark-blue);
-        }
     </style>
 </head>
 
 <body>
 <div class="dashboard-container">
     <aside class="sidebar" id="sidebar">
-       <div class="logo">
-    <i class="fas fa-brain logo-icon"></i>
-    <div class="logo-text">EduPath <span>AI</span></div>
-</div>
+        <div class="logo">
+            <i class="fas fa-brain logo-icon"></i>
+            <div class="logo-text">EduPath <span>AI</span></div>
+        </div>
         <ul class="nav-menu">
             <li><a href="../../dashboard.html"><i class="fas fa-th-large"></i> <span>Overview</span></a></li>
             <li><a href="../../roadmap.html"><i class="fas fa-map-signs"></i> <span>My Roadmap</span></a></li>
             <li class="active"><a href="../../domain.html"><i class="fas fa-compass"></i> <span>Explore Domain</span></a></li>
-            <li><a href="#"><i class="fas fa-robot"></i> <span>AI ChatBot</span></a></li>
+            <li><a href="../../chatbot.html"><i class="fas fa-robot"></i> <span>AI ChatBot</span></a></li>
             <li><a href="../../profile.html"><i class="fas fa-cog"></i> <span>Profile Settings</span></a></li>
-            <li><a href="../../index.html"><i class="fas fa-sign-out-alt"></i> <span>Log out</span></a></li>
+            <li style="margin-top: auto;"><a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> <span>Log out</span></a></li>
         </ul>
         <div class="sidebar-footer">
             <div class="profile-card">
-                <div class="avatar">U</div>
+                <div class="avatar">P</div>
                 <div class="user-info">
-                    <p class="name" style="margin:0; font-size:0.9rem;">User Name</p>
-                    <p class="status" style="margin:0; font-size:0.7rem; opacity:0.7;">Pro Member</p>
+                    <p class="name">User Name</p>
+                    <p class="status">Pro Member</p>
                 </div>
             </div>
         </div>
@@ -461,11 +470,10 @@
     <main class="main-content" id="main-content">
         <header class="top-nav">
             <div class="toggle-btn" id="sidebarToggle"><i class="fas fa-bars"></i></div>
-            <div class="search-bar">
-                <i class="fas fa-search" style="color: var(--slate-500);"></i>
-                <input type="text" placeholder="Search Data topics..." style="border: none; outline: none; width: 100%;">
+            <div class="notifications">
+                <i class="far fa-bell" style="font-size: 1.2rem; color: var(--text-muted);"></i>
+                <span class="badge">3</span>
             </div>
-            <div class="user-profile"><i class="far fa-bell" style="color:var(--text-muted)"></i></div>
         </header>
 
         <div class="course-progress">
@@ -483,7 +491,6 @@
             <p style="color: var(--slate-500); font-size: 0.9rem;">The non-programming track for data literacy.</p>
         </div>
 
-        <!-- MODULE 1 -->
         <div class="section-box" id="module-box-1">
             <div class="section-header" onclick="toggleSection(this)">
                 <h3>Module 1: Introduction to Data</h3>
@@ -549,7 +556,6 @@
             </div>
         </div>
 
-        <!-- MODULE 2 -->
         <div class="section-box locked" id="module-box-2">
             <div class="section-header" onclick="toggleSection(this)">
                 <h3>Module 2: Data Lifecycle</h3>
@@ -615,7 +621,6 @@
             </div>
         </div>
 
-        <!-- MODULE 3 -->
         <div class="section-box locked" id="module-box-3">
             <div class="section-header" onclick="toggleSection(this)">
                 <h3>Module 3: Data Quality</h3>
@@ -681,7 +686,6 @@
             </div>
         </div>
 
-        <!-- MODULE 4 -->
         <div class="section-box locked" id="module-box-4">
             <div class="section-header" onclick="toggleSection(this)">
                 <h3>Module 4: Statistics Basics</h3>
@@ -747,7 +751,6 @@
             </div>
         </div>
 
-        <!-- MODULE 5 -->
         <div class="section-box locked" id="module-box-5">
             <div class="section-header" onclick="toggleSection(this)">
                 <h3>Module 5: Data Visualization</h3>
@@ -813,7 +816,6 @@
             </div>
         </div>
 
-        <!-- MODULE 6 -->
         <div class="section-box locked" id="module-box-6">
             <div class="section-header" onclick="toggleSection(this)">
                 <h3>Module 6: Ethics & Privacy</h3>
@@ -879,7 +881,6 @@
             </div>
         </div>
 
-        <!-- MODULE 7 -->
         <div class="section-box locked" id="module-box-7">
             <div class="section-header" onclick="toggleSection(this)">
                 <h3>Module 7: Big Data & Cloud</h3>
@@ -945,7 +946,6 @@
             </div>
         </div>
 
-        <!-- MODULE 8 -->
         <div class="section-box locked" id="module-box-8">
             <div class="section-header" onclick="toggleSection(this)">
                 <h3>Module 8: Decision Making</h3>
@@ -1029,7 +1029,6 @@
     };
 
     document.addEventListener("DOMContentLoaded", () => {
-        // Toggle Sidebar
         const sidebarToggle = document.getElementById('sidebarToggle');
         const sidebar = document.getElementById('sidebar');
         const mainContent = document.getElementById('main-content');
@@ -1039,7 +1038,6 @@
             mainContent.classList.toggle('expanded');
         });
 
-        // Module unlocking logic
         for (let i = 2; i <= totalModules; i++) {
             if (localStorage.getItem("df_module" + (i - 1) + "_unlocked") === "true") {
                 const moduleBox = document.getElementById("module-box-" + i);
@@ -1047,7 +1045,6 @@
             }
         }
 
-        // Restore button states
         const buttons = document.querySelectorAll('.status-btn');
         buttons.forEach(btn => {
             if (btn.id && localStorage.getItem("df_" + btn.id) === "done") {
@@ -1062,7 +1059,6 @@
         const content = header.nextElementSibling;
         const icon = header.querySelector('.toggle-icon');
         const isOpen = content.style.display === 'block';
-        
         content.style.display = isOpen ? 'none' : 'block';
         header.classList.toggle('active', !isOpen);
     }
@@ -1083,7 +1079,7 @@
         const form = document.getElementById("quizForm-" + moduleNum);
         const answers = quizAnswers[moduleNum];
         let score = 0;
-        let total = 5;
+        let total = Object.keys(answers).length;
 
         for (let q in answers) {
             const selected = form.querySelector(`input[name="${q}"]:checked`);
@@ -1095,17 +1091,15 @@
         const scorePercent = (score / total) * 100;
         alert(`You scored ${score}/${total} (${scorePercent}%)`);
 
-        if (score >= 4) {
-            const qbtn = document.getElementById("qbtn-" + moduleNum);
+        if (scorePercent >= 80) {
             markAsDone("qbtn-" + moduleNum);
-            
             if (moduleNum < totalModules) {
                 localStorage.setItem("df_module" + moduleNum + "_unlocked", "true");
                 const nextModule = document.getElementById("module-box-" + (moduleNum + 1));
                 if (nextModule) nextModule.classList.remove("locked");
             }
         } else {
-            alert("You need at least 4/5 to unlock the next module.");
+            alert("You need at least 80% to unlock the next module.");
         }
         updateProgress();
     }
@@ -1126,14 +1120,12 @@
     }
 
     function updateProgress() {
-        const totalItems = totalModules * 2; // video + quiz
+        const totalItems = totalModules * 2;
         let doneItems = 0;
-        
         for (let i = 1; i <= totalModules; i++) {
             if (localStorage.getItem("df_vbtn-" + i) === "done") doneItems++;
             if (localStorage.getItem("df_qbtn-" + i) === "done") doneItems++;
         }
-
         const progress = Math.round((doneItems / totalItems) * 100);
         const bar = document.getElementById("progressBar");
         const text = document.getElementById("progressText");
@@ -1160,5 +1152,4 @@
     }
 </script>
 </body>
-
 </html>

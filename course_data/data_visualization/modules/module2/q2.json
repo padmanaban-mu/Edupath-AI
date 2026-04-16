@@ -1,0 +1,14 @@
+{
+  "title": "Scatter Plot",
+  "description": "Create a red x scatter plot.",
+  "input": "scatter",
+  "example_input": "scatter",
+  "expected_output": "red x",
+  "difficulty": "Intermediate",
+  "test_cases": [
+    {
+      "input": "scatter",
+      "expected": "red x"
+    }
+  ]
+}

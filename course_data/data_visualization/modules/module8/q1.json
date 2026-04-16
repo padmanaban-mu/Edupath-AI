@@ -1,0 +1,14 @@
+{
+  "title": "Confusion Matrix",
+  "description": "Plot a confusion matrix for classification output.",
+  "input": "cm",
+  "example_input": "cm",
+  "expected_output": "confusion matrix",
+  "difficulty": "Basic",
+  "test_cases": [
+    {
+      "input": "cm",
+      "expected": "confusion matrix"
+    }
+  ]
+}

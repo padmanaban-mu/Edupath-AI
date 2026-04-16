@@ -1,0 +1,14 @@
+{
+  "title": "PCA",
+  "description": "Create a PCA scatter visualization.",
+  "input": "pca",
+  "example_input": "pca",
+  "expected_output": "pca plot",
+  "difficulty": "Advanced",
+  "test_cases": [
+    {
+      "input": "pca",
+      "expected": "pca plot"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "title": "Line Plot",
+  "description": "Plot a line graph with title Growth.",
+  "input": "plot",
+  "example_input": "plot",
+  "expected_output": "Growth",
+  "difficulty": "Basic",
+  "test_cases": [
+    {
+      "input": "plot",
+      "expected": "Growth"
+    }
+  ]
+}

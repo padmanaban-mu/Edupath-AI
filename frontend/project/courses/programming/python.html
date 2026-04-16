@@ -38,7 +38,7 @@
             min-height: 100vh;
         }
 
-        /* --- Sidebar CSS (Synced with domain.html) --- */
+        /* --- Sidebar CSS (Synced with roadmap.html) --- */
         .sidebar {
             width: 260px;
             background: var(--dark-blue);
@@ -58,19 +58,27 @@
         }
 
         .sidebar.collapsed .nav-menu span,
-        .sidebar.collapsed .logo span,
+        .sidebar.collapsed .logo-text,
         .sidebar.collapsed .user-info {
             display: none;
         }
 
         .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
             font-size: 24px;
             font-weight: 700;
             margin-bottom: 50px;
-            text-align: center;
+            padding-left: 10px;
         }
 
-        .logo span {
+        .logo-icon {
+            color: var(--primary-blue);
+            font-size: 28px;
+        }
+
+        .logo-text span {
             color: var(--primary-blue);
         }
 
@@ -81,14 +89,10 @@
         }
 
         .nav-menu li {
-            padding: 15px;
             margin-bottom: 10px;
             border-radius: 12px;
             cursor: pointer;
             transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 15px;
         }
 
         .nav-menu li a {
@@ -97,7 +101,9 @@
             display: flex;
             align-items: center;
             gap: 15px;
+            padding: 15px;
             width: 100%;
+            box-sizing: border-box;
         }
 
         .nav-menu li:hover,
@@ -128,6 +134,7 @@
             align-items: center;
             justify-content: center;
             font-weight: bold;
+            flex-shrink: 0;
         }
 
         /* --- Main Content --- */
@@ -143,6 +150,38 @@
             width: calc(100% - 80px);
         }
 
+        /* --- Top Nav --- */
+        .top-nav { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 30px; 
+        }
+
+        .toggle-btn {
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: var(--dark-blue);
+        }
+
+        .notifications {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        
+        .notifications .badge {
+            position: absolute;
+            top: -5px;
+            right: -8px;
+            background: #ef4444;
+            color: white;
+            font-size: 0.6rem;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 10px;
+        }
+
         /* --- Module Accordion Styles --- */
         .explore-header {
             margin-bottom: 30px;
@@ -152,6 +191,8 @@
             font-size: 1.5rem;
             color: var(--dark-blue);
             margin-bottom: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
         }
 
         .section-box {
@@ -220,38 +261,13 @@
             font-weight: 500;
         }
 
-        .fa-link {
-            color: #06b6d4;
-        }
-
-        .fa-list-alt {
-            color: #ec4899;
-        }
-
-        .fa-code {
-            color: #8b5cf6;
-        }
+        .fa-link { color: #06b6d4; }
+        .fa-list-alt { color: #ec4899; }
+        .fa-code { color: #8b5cf6; }
 
         .course-progress {
             margin: 20px auto;
             width: 60%;
-        }
-
-        .mcq-option.correct {
-            border: 2px solid #22c55e;
-        }
-
-        .mcq-option.wrong {
-            border: 2px solid #ef4444;
-        }
-
-        .quiz-result {
-            margin-top: 20px;
-            padding: 12px;
-            border-radius: 8px;
-            font-weight: 600;
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
         }
 
         .progress-label {
@@ -259,6 +275,7 @@
             justify-content: space-between;
             font-size: 14px;
             margin-bottom: 6px;
+            font-weight: 600;
         }
 
         .progress-container {
@@ -276,6 +293,7 @@
             transition: 0.4s;
         }
 
+        /* --- Quiz Styles --- */
         .quiz-container {
             display: none;
             padding: 25px;
@@ -285,9 +303,7 @@
             border-radius: 10px;
         }
 
-        .quiz-question {
-            margin-bottom: 20px;
-        }
+        .quiz-question { margin-bottom: 20px; }
 
         .quiz-options {
             display: grid;
@@ -306,23 +322,15 @@
             gap: 10px;
         }
 
-        .quiz-options label:hover {
-            background: #f1f5f9;
-        }
+        .quiz-options label:hover { background: #f1f5f9; }
 
         .mcq-container {
             max-width: 700px;
             margin: auto;
         }
 
-        .mcq-question {
-            margin-bottom: 20px;
-        }
-
-        .mcq-title {
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
+        .mcq-question { margin-bottom: 20px; }
+        .mcq-title { font-weight: 600; margin-bottom: 10px; }
 
         .mcq-options {
             display: grid;
@@ -342,18 +350,13 @@
             transition: all 0.2s ease;
         }
 
-        /* Hover effect */
         .mcq-option:hover {
             background: #f1f5f9;
             border-color: #94a3b8;
         }
 
-        /* hide default radio */
-        .mcq-option input {
-            display: none;
-        }
+        .mcq-option input { display: none; }
 
-        /* option letter circle */
         .option-letter {
             width: 28px;
             height: 28px;
@@ -366,48 +369,29 @@
             font-size: 13px;
         }
 
-        /* SELECTED OPTION */
         .mcq-option input:checked+.option-letter {
             background: #2563eb;
             color: white;
             border-color: #2563eb;
         }
 
-        .mcq-option input:checked+.option-letter+span {
-            font-weight: 600;
-        }
+        .mcq-option input:checked+.option-letter+span { font-weight: 600; }
 
-        /* highlight whole card when selected */
         .mcq-option:has(input:checked) {
             background: #eaf1ff;
             border: 2px solid #2563eb;
         }
 
-        .mcq-option {
-            display: flex;
-            align-items: center;
-            gap: 12px;
+        .mcq-option.correct { border: 2px solid #22c55e !important; }
+        .mcq-option.wrong { border: 2px solid #ef4444 !important; }
+
+        .quiz-result {
+            margin-top: 20px;
             padding: 12px;
-            border: 1px solid #e2e8f0;
             border-radius: 8px;
-            background: white;
-            cursor: pointer;
-        }
-
-        .mcq-option input {
-            display: none;
-        }
-
-        .option-letter {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            border: 1px solid #cbd5e1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             font-weight: 600;
-            font-size: 13px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
         }
 
         .quiz-submit {
@@ -418,6 +402,7 @@
             color: white;
             border-radius: 8px;
             cursor: pointer;
+            font-weight: 600;
         }
 
         .section-box.locked {
@@ -426,7 +411,6 @@
             position: relative;
         }
 
-        /* Activities are visible but not clickable when locked */
         .section-box.locked .section-content .activity-row,
         .section-box.locked .section-content .video-embed,
         .section-box.locked .section-content .quiz-box {
@@ -448,9 +432,7 @@
             border-left: 4px solid var(--primary-blue);
         }
 
-        .section-box.locked .restriction-msg {
-            display: flex;
-        }
+        .section-box.locked .restriction-msg { display: flex; }
 
         .status-btn {
             padding: 6px 14px;
@@ -471,9 +453,7 @@
             background: #ecfdf5;
         }
 
-        .status-btn.todo {
-            color: var(--text-muted);
-        }
+        .status-btn.todo { color: var(--text-muted); }
 
         .status-btn.todo:hover {
             background: var(--primary-blue);
@@ -490,52 +470,46 @@
     </style>
 </head>
 
-
-
+<body>
 <div class="dashboard-container">
     <aside class="sidebar" id="sidebar">
         <div class="logo">
-    <i class="fas fa-brain logo-icon"></i>
-    <div class="logo-text">EduPath <span>AI</span></div>
-</div>
+            <i class="fas fa-brain logo-icon"></i>
+            <div class="logo-text">EduPath <span>AI</span></div>
+        </div>
         <ul class="nav-menu">
-            <li><a href="../dashboard.html"><i class="fas fa-th-large"></i> <span>Overview</span></a></li>
-            <li><a href="../roadmap.html"><i class="fas fa-map-signs"></i> <span>My Roadmap</span></a></li>
-            <li class="active"><a href="../domain.html"><i class="fas fa-compass"></i> <span>Explore Domain</span></a>
-            </li>
-            <li><a href="#"><i class="fas fa-robot"></i> <span>AI ChatBot</span></a></li>
-            <li><a href="../profile.html"><i class="fas fa-cog"></i> <span>Profile Settings</span></a></li>
-            <li><a href="../index.html"><i class="fas fa-sign-out-alt"></i> <span>Log out</span></a></li>
+            <li><a href="../../dashboard.html"><i class="fas fa-th-large"></i> <span>Overview</span></a></li>
+            <li><a href="../../roadmap.html"><i class="fas fa-map-signs"></i> <span>My Roadmap</span></a></li>
+            <li class="active"><a href="../../domain.html"><i class="fas fa-compass"></i> <span>Explore Domain</span></a></li>
+            <li><a href="../../chatbot.html"><i class="fas fa-robot"></i> <span>AI ChatBot</span></a></li>
+            <li><a href="../../profile.html"><i class="fas fa-cog"></i> <span>Profile Settings</span></a></li>
+            <li style="margin-top: auto;"><a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> <span>Log out</span></a></li>
         </ul>
         <div class="sidebar-footer">
             <div class="profile-card">
                 <div class="avatar">P</div>
                 <div class="user-info">
-                    <p class="name" style="margin:0; font-size:0.9rem;">User Name</p>
-                    <p class="status" style="margin:0; font-size:0.7rem; opacity:0.7;">Pro Member</p>
+                    <p class="name" style="margin: 0; font-size: 0.9rem;">User Name</p>
+                    <p class="status" style="margin: 0; font-size: 0.7rem; opacity: 0.7;">Pro Member</p>
                 </div>
             </div>
         </div>
     </aside>
 
     <main class="main-content" id="main-content">
-        <header class="top-nav"
-            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
-            <div class="toggle-btn" id="sidebarToggle" style="cursor: pointer;"><i class="fas fa-bars"></i></div>
-            <div class="search-bar"
-                style="background: white; padding: 8px 20px; border-radius: 25px; width: 40%; display: flex; align-items: center; gap: 10px; border: 1px solid #e2e8f0;">
-                <i class="fas fa-search" style="color: var(--slate-500);"></i>
-                <input type="text" placeholder="Search Python topics..."
-                    style="border: none; outline: none; width: 100%;">
+        <header class="top-nav">
+            <div class="toggle-btn" id="sidebarToggle"><i class="fas fa-bars"></i></div>
+            <div class="notifications">
+                <i class="far fa-bell" style="font-size: 1.2rem; color: var(--text-muted);"></i>
+                <span class="badge">3</span>
             </div>
-            <div class="user-profile"><i class="far fa-bell" style="color:var(--text-muted)"></i></div>
         </header>
+
         <div class="course-progress">
             <div class="progress-label">
                 <span>Course Progress</span>
                 <span id="progressText">0%</span>
             </div>
-
             <div class="progress-container">
                 <div id="progressBar"></div>
             </div>
@@ -592,7 +566,6 @@
 
                         <div class="mcq-container">
 
-                            <!-- QUESTION 1 -->
                             <div class="mcq-question">
                                 <div class="mcq-title">1. Who created the Python programming language?</div>
 
@@ -626,7 +599,6 @@
                             </div>
 
 
-                            <!-- QUESTION 2 -->
                             <div class="mcq-question">
                                 <div class="mcq-title">2. Python was first released in?</div>
 
@@ -660,7 +632,6 @@
                             </div>
 
 
-                            <!-- QUESTION 3 -->
                             <div class="mcq-question">
                                 <div class="mcq-title">3. Python is named after?</div>
 
@@ -694,7 +665,6 @@
                             </div>
 
 
-                            <!-- QUESTION 4 -->
                             <div class="mcq-question">
                                 <div class="mcq-title">4. What type of language is Python?</div>
 
@@ -728,7 +698,6 @@
                             </div>
 
 
-                            <!-- QUESTION 5 -->
                             <div class="mcq-question">
                                 <div class="mcq-title">5. Python files use which extension?</div>
 
@@ -767,7 +736,7 @@
 
                         <button type="button" onclick="submitQuiz(1)" class="quiz-submit">Submit Quiz</button>
 
-                        <div id="quizResult" style="margin-top:15px;font-weight:600;"></div>
+                        <div id="quizResult1" style="margin-top:15px;font-weight:600;"></div>
 
                     </form>
 
@@ -812,7 +781,6 @@
 
                         <div class="mcq-container">
 
-                            <!-- QUESTION 1 -->
                             <div class="mcq-question">
                                 <div class="mcq-title">1. Which of the following is an integer in Python?</div>
 
@@ -846,7 +814,6 @@
                             </div>
 
 
-                            <!-- QUESTION 2 -->
                             <div class="mcq-question">
                                 <div class="mcq-title">2. Which data type represents decimal numbers?</div>
 
@@ -880,7 +847,6 @@
                             </div>
 
 
-                            <!-- QUESTION 3 -->
                             <div class="mcq-question">
                                 <div class="mcq-title">3. Python variables are created when:</div>
 
@@ -914,7 +880,6 @@
                             </div>
 
 
-                            <!-- QUESTION 4 -->
                             <div class="mcq-question">
                                 <div class="mcq-title">4. What is the output of type(5)?</div>
 
@@ -948,7 +913,6 @@
                             </div>
 
 
-                            <!-- QUESTION 5 -->
                             <div class="mcq-question">
                                 <div class="mcq-title">5. Which function checks the data type of a variable?</div>
 
@@ -1032,7 +996,6 @@
 
                         <div class="mcq-container">
 
-                            <!-- QUESTION 1 -->
                             <div class="mcq-question">
                                 <div class="mcq-title">1. What does BODMAS stand for?</div>
 
@@ -1066,7 +1029,6 @@
                             </div>
 
 
-                            <!-- QUESTION 2 -->
                             <div class="mcq-question">
                                 <div class="mcq-title">2. What is the result of 5 + 2 * 3 in Python?</div>
 
@@ -1100,7 +1062,6 @@
                             </div>
 
 
-                            <!-- QUESTION 3 -->
                             <div class="mcq-question">
                                 <div class="mcq-title">3. Which operator gives the remainder?</div>
 
@@ -1134,7 +1095,6 @@
                             </div>
 
 
-                            <!-- QUESTION 4 -->
                             <div class="mcq-question">
                                 <div class="mcq-title">4. Which operator performs exponentiation in Python?</div>
 
@@ -1168,7 +1128,6 @@
                             </div>
 
 
-                            <!-- QUESTION 5 -->
                             <div class="mcq-question">
                                 <div class="mcq-title">5. What does // operator do?</div>
 
@@ -1477,7 +1436,6 @@
 
                         <div class="mcq-container">
 
-                            <!-- QUESTION 1 -->
                             <div class="mcq-question">
                                 <div class="mcq-title">1. A while loop runs until:</div>
 
@@ -1511,7 +1469,6 @@
                             </div>
 
 
-                            <!-- QUESTION 2 -->
                             <div class="mcq-question">
                                 <div class="mcq-title">2. Which keyword exits a loop immediately?</div>
 
@@ -1545,7 +1502,6 @@
                             </div>
 
 
-                            <!-- QUESTION 3 -->
                             <div class="mcq-question">
                                 <div class="mcq-title">3. Which statement skips the current loop iteration?</div>
 
@@ -1579,7 +1535,6 @@
                             </div>
 
 
-                            <!-- QUESTION 4 -->
                             <div class="mcq-question">
                                 <div class="mcq-title">4. Infinite loops happen when:</div>
 
@@ -1613,7 +1568,6 @@
                             </div>
 
 
-                            <!-- QUESTION 5 -->
                             <div class="mcq-question">
                                 <div class="mcq-title">5. What does the 'pass' statement do?</div>
 
@@ -1704,7 +1658,6 @@
 
                         <div class="mcq-container">
 
-                            <!-- QUESTION 1 -->
                             <div class="mcq-question">
                                 <div class="mcq-title">1. The 'for' loop in Python is used to:</div>
 
@@ -1738,7 +1691,6 @@
                             </div>
 
 
-                            <!-- QUESTION 2 -->
                             <div class="mcq-question">
                                 <div class="mcq-title">2. What does range(5) generate?</div>
 
@@ -1772,7 +1724,6 @@
                             </div>
 
 
-                            <!-- QUESTION 3 -->
                             <div class="mcq-question">
                                 <div class="mcq-title">3. What will be the output?</div>
 
@@ -1811,7 +1762,6 @@ for i in range(3):
                             </div>
 
 
-                            <!-- QUESTION 4 -->
                             <div class="mcq-question">
                                 <div class="mcq-title">4. Nested loops mean:</div>
 
@@ -1845,7 +1795,6 @@ for i in range(3):
                             </div>
 
 
-                            <!-- QUESTION 5 -->
                             <div class="mcq-question">
                                 <div class="mcq-title">5. Which function generates sequences for loops?</div>
 
@@ -1935,7 +1884,6 @@ for i in range(3):
 
                         <div class="mcq-container">
 
-                            <!-- QUESTION 1 -->
                             <div class="mcq-question">
                                 <div class="mcq-title">1. Which data structure in Python is mutable?</div>
 
@@ -1969,7 +1917,6 @@ for i in range(3):
                             </div>
 
 
-                            <!-- QUESTION 2 -->
                             <div class="mcq-question">
                                 <div class="mcq-title">2. Which data structure is immutable?</div>
 
@@ -2003,7 +1950,6 @@ for i in range(3):
                             </div>
 
 
-                            <!-- QUESTION 3 -->
                             <div class="mcq-question">
                                 <div class="mcq-title">3. What is the index of the first element in a list?</div>
 
@@ -2037,7 +1983,6 @@ for i in range(3):
                             </div>
 
 
-                            <!-- QUESTION 4 -->
                             <div class="mcq-question">
                                 <div class="mcq-title">4. Which method is used to add an element to a list?</div>
 
@@ -2071,7 +2016,6 @@ for i in range(3):
                             </div>
 
 
-                            <!-- QUESTION 5 -->
                             <div class="mcq-question">
                                 <div class="mcq-title">5. How do you access the last element of a list?</div>
 
@@ -2162,7 +2106,6 @@ for i in range(3):
 
                         <div class="mcq-container">
 
-                            <!-- QUESTION 1 -->
                             <div class="mcq-question">
                                 <div class="mcq-title">1. Dictionaries store data in which format?</div>
 
@@ -2195,7 +2138,6 @@ for i in range(3):
                                 </div>
                             </div>
 
-                            <!-- QUESTION 2 -->
                             <div class="mcq-question">
                                 <div class="mcq-title">2. Which brackets are used to define a dictionary?</div>
 
@@ -2228,7 +2170,6 @@ for i in range(3):
                                 </div>
                             </div>
 
-                            <!-- QUESTION 3 -->
                             <div class="mcq-question">
                                 <div class="mcq-title">3. Sets in Python do not allow:</div>
 
@@ -2261,7 +2202,6 @@ for i in range(3):
                                 </div>
                             </div>
 
-                            <!-- QUESTION 4 -->
                             <div class="mcq-question">
                                 <div class="mcq-title">4. Which operator is used for union of sets?</div>
 
@@ -2294,7 +2234,6 @@ for i in range(3):
                                 </div>
                             </div>
 
-                            <!-- QUESTION 5 -->
                             <div class="mcq-question">
                                 <div class="mcq-title">5. Which operator is used for intersection of sets?</div>
 
@@ -2385,7 +2324,6 @@ for i in range(3):
 
                         <div class="mcq-container">
 
-                            <!-- QUESTION 1 -->
                             <div class="mcq-question">
                                 <div class="mcq-title">1. Which keyword is used to define a function in Python?</div>
 
@@ -2419,7 +2357,6 @@ for i in range(3):
                             </div>
 
 
-                            <!-- QUESTION 2 -->
                             <div class="mcq-question">
                                 <div class="mcq-title">2. Variables declared inside a function are called:</div>
 
@@ -2453,7 +2390,6 @@ for i in range(3):
                             </div>
 
 
-                            <!-- QUESTION 3 -->
                             <div class="mcq-question">
                                 <div class="mcq-title">3. What does the 'return' statement do in a function?</div>
 
@@ -2487,7 +2423,6 @@ for i in range(3):
                             </div>
 
 
-                            <!-- QUESTION 4 -->
                             <div class="mcq-question">
                                 <div class="mcq-title">4. What is recursion?</div>
 
@@ -2521,7 +2456,6 @@ for i in range(3):
                             </div>
 
 
-                            <!-- QUESTION 5 -->
                             <div class="mcq-question">
                                 <div class="mcq-title">5. Function parameters are:</div>
 
@@ -2610,7 +2544,6 @@ for i in range(3):
 
                         <div class="mcq-container">
 
-                            <!-- QUESTION 1 -->
                             <div class="mcq-question">
                                 <div class="mcq-title">1. Which mode is used to read a file in Python?</div>
 
@@ -2644,7 +2577,6 @@ for i in range(3):
                             </div>
 
 
-                            <!-- QUESTION 2 -->
                             <div class="mcq-question">
                                 <div class="mcq-title">2. Which mode is used to write to a file?</div>
 
@@ -2678,7 +2610,6 @@ for i in range(3):
                             </div>
 
 
-                            <!-- QUESTION 3 -->
                             <div class="mcq-question">
                                 <div class="mcq-title">3. What does append mode (a) do?</div>
 
@@ -2712,7 +2643,6 @@ for i in range(3):
                             </div>
 
 
-                            <!-- QUESTION 4 -->
                             <div class="mcq-question">
                                 <div class="mcq-title">4. Which function is used to open a file in Python?</div>
 
@@ -2746,7 +2676,6 @@ for i in range(3):
                             </div>
 
 
-                            <!-- QUESTION 5 -->
                             <div class="mcq-question">
                                 <div class="mcq-title">5. Which function closes a file?</div>
 
@@ -2836,7 +2765,6 @@ for i in range(3):
 
                         <div class="mcq-container">
 
-                            <!-- QUESTION 1 -->
                             <div class="mcq-question">
                                 <div class="mcq-title">1. Which keyword is used to handle exceptions in Python?</div>
 
@@ -2870,7 +2798,6 @@ for i in range(3):
                             </div>
 
 
-                            <!-- QUESTION 2 -->
                             <div class="mcq-question">
                                 <div class="mcq-title">2. Which block is used to catch exceptions?</div>
 
@@ -2904,7 +2831,6 @@ for i in range(3):
                             </div>
 
 
-                            <!-- QUESTION 3 -->
                             <div class="mcq-question">
                                 <div class="mcq-title">3. The 'finally' block executes:</div>
 
@@ -2938,7 +2864,6 @@ for i in range(3):
                             </div>
 
 
-                            <!-- QUESTION 4 -->
                             <div class="mcq-question">
                                 <div class="mcq-title">4. What error occurs when dividing a number by zero?</div>
 
@@ -2972,7 +2897,6 @@ for i in range(3):
                             </div>
 
 
-                            <!-- QUESTION 5 -->
                             <div class="mcq-question">
                                 <div class="mcq-title">5. Which keyword is used to manually raise an exception?</div>
 
@@ -3030,7 +2954,6 @@ for i in range(3):
             </div>
             <div class="section-content">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
-                <!-- Introduction to OOPS -->
                 <div class="activity-row" onclick="toggleVideo(this)">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Introduction to OOPS - VIDEO</span></div>
                     <button id="vbtn-12-intro-en" class="status-btn todo">To do</button>
@@ -3126,7 +3049,6 @@ for i in range(3):
                     </form>
                 </div>
 
-                <!-- Constructor -->
                 <div class="activity-row" onclick="showQuiz('12_const')">
                     <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Constructor - Quiz</span></div>
                     <button id="qbtn-12-const" class="status-btn todo">To do</button>
@@ -3201,7 +3123,6 @@ for i in range(3):
                     </form>
                 </div>
 
-                <!-- this keyword -->
                 <div class="activity-row" onclick="showQuiz('12_this')">
                     <div class="activity-info"><i class="fas fa-list-alt"></i> <span>this keyword - quiz</span></div>
                     <button id="qbtn-12-this" class="status-btn todo">To do</button>
@@ -3276,7 +3197,6 @@ for i in range(3):
                     </form>
                 </div>
 
-                <!-- Access modifiers -->
                 <div class="activity-row" onclick="toggleVideo(this)">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Access modifiers - VIDEO</span></div>
                     <button id="vbtn-12-access" class="status-btn todo">To do</button>
@@ -3364,7 +3284,6 @@ for i in range(3):
                     </form>
                 </div>
 
-                <!-- 4 Pillars sub-header -->
                 <div class="activity-row" style="background: #f1f5f9; cursor: default; margin-top: 10px;">
                     <div class="activity-info" style="color: var(--dark-blue); font-weight: 700;"><i
                             class="fas fa-columns"></i>
@@ -3372,7 +3291,6 @@ for i in range(3):
                     </div>
                 </div>
 
-                <!-- Encapsulation -->
                 <div class="activity-row" onclick="toggleVideo(this)">
                     <div class="activity-info" style="padding-left: 20px;"><i class="fas fa-link"></i>
                         <span>Encapsulation - VIDEO</span>
@@ -3470,7 +3388,6 @@ for i in range(3):
                     <button id="pbtn-12-encap-2" class="status-btn todo">To do</button>
                 </div>
 
-                <!-- Inheritance -->
                 <div class="activity-row" onclick="toggleVideo(this)">
                     <div class="activity-info" style="padding-left: 20px;"><i class="fas fa-link"></i> <span>Inheritance
                             - VIDEO</span></div>
@@ -3558,7 +3475,6 @@ for i in range(3):
                     <button id="pbtn-12-inherit" class="status-btn todo">To do</button>
                 </div>
 
-                <!-- Polymorphism -->
                 <div class="activity-row" onclick="toggleVideo(this)">
                     <div class="activity-info" style="padding-left: 20px;"><i class="fas fa-link"></i>
                         <span>Polymorphism - VIDEO</span>
@@ -3656,7 +3572,6 @@ for i in range(3):
                     <button id="pbtn-12-poly-2" class="status-btn todo">To do</button>
                 </div>
 
-                <!-- Abstraction -->
                 <div class="activity-row" onclick="toggleVideo(this)">
                     <div class="activity-info" style="padding-left: 20px;"><i class="fas fa-link"></i> <span>Abstraction
                             - VIDEOS</span></div>
@@ -3753,7 +3668,6 @@ for i in range(3):
     </main>
 </div>
 
-<!-- YouTube IFrame API -->
 <script src="https://www.youtube.com/iframe_api"></script>
 
 <script>
@@ -3905,6 +3819,12 @@ for i in range(3):
 
                 }
 
+            } else {
+                // if nothing selected, still highlight correct
+                let correct = document.querySelector(
+                    `#quiz-module${module} input[name="${q}"][value="${answers[q]}"]`
+                );
+                if(correct) correct.parentElement.classList.add("correct");
             }
 
         }

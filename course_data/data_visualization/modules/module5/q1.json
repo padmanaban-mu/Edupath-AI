@@ -1,0 +1,14 @@
+{
+  "title": "Line",
+  "description": "Plot a basic line using Bokeh.",
+  "input": "line",
+  "example_input": "line",
+  "expected_output": "line",
+  "difficulty": "Basic",
+  "test_cases": [
+    {
+      "input": "line",
+      "expected": "line"
+    }
+  ]
+}

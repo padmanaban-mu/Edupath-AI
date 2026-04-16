@@ -1,0 +1,14 @@
+{
+  "title": "Interactive Scatter",
+  "description": "Create an interactive scatter plot.",
+  "input": "scatter",
+  "example_input": "scatter",
+  "expected_output": "interactive scatter",
+  "difficulty": "Advanced",
+  "test_cases": [
+    {
+      "input": "scatter",
+      "expected": "interactive scatter"
+    }
+  ]
+}

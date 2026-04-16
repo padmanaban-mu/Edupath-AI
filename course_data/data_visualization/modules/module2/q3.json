@@ -1,0 +1,14 @@
+{
+  "title": "Subplots",
+  "description": "Create two subplots in one figure.",
+  "input": "subplot",
+  "example_input": "subplot",
+  "expected_output": "2",
+  "difficulty": "Advanced",
+  "test_cases": [
+    {
+      "input": "subplot",
+      "expected": "2"
+    }
+  ]
+}

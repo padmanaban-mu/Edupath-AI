@@ -1,0 +1,14 @@
+{
+  "title": "Boxplot",
+  "description": "Create a boxplot comparing salary across departments.",
+  "input": "salary dept",
+  "example_input": "salary dept",
+  "expected_output": "boxplot",
+  "difficulty": "Intermediate",
+  "test_cases": [
+    {
+      "input": "salary dept",
+      "expected": "boxplot"
+    }
+  ]
+}

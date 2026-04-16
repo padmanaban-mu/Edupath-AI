@@ -1,0 +1,14 @@
+{
+  "title": "Bar Chart",
+  "description": "Build an Altair bar chart.",
+  "input": "bar",
+  "example_input": "bar",
+  "expected_output": "bar chart",
+  "difficulty": "Basic",
+  "test_cases": [
+    {
+      "input": "bar",
+      "expected": "bar chart"
+    }
+  ]
+}

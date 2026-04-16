@@ -1,0 +1,14 @@
+{
+  "title": "Pie Chart",
+  "description": "Create a Plotly pie chart.",
+  "input": "pie",
+  "example_input": "pie",
+  "expected_output": "pie chart",
+  "difficulty": "Intermediate",
+  "test_cases": [
+    {
+      "input": "pie",
+      "expected": "pie chart"
+    }
+  ]
+}

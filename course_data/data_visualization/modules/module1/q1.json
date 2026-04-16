@@ -1,0 +1,14 @@
+{
+  "title": "Color Palette",
+  "description": "Return 3 colorblind-friendly hex colors.",
+  "input": "generate",
+  "example_input": "generate",
+  "expected_output": "['#E69F00', '#56B4E9', '#009E73']",
+  "difficulty": "Basic",
+  "test_cases": [
+    {
+      "input": "generate",
+      "expected": "['#E69F00', '#56B4E9', '#009E73']"
+    }
+  ]
+}

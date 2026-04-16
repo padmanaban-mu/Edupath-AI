@@ -1,0 +1,14 @@
+{
+  "title": "Hover",
+  "description": "Add a hover tool to a Bokeh scatter plot.",
+  "input": "hover",
+  "example_input": "hover",
+  "expected_output": "hover",
+  "difficulty": "Advanced",
+  "test_cases": [
+    {
+      "input": "hover",
+      "expected": "hover"
+    }
+  ]
+}

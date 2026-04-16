@@ -8,7 +8,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Inter:wght@400;500;600;700&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
@@ -38,7 +38,7 @@
             min-height: 100vh;
         }
 
-        /* --- Sidebar CSS (Synced with domain.html) --- */
+        /* --- Sidebar CSS --- */
         .sidebar {
             width: 260px;
             background: var(--dark-blue);
@@ -64,10 +64,18 @@
         }
 
         .logo {
+            font-family: 'Poppins', sans-serif;
             font-size: 24px;
             font-weight: 700;
             margin-bottom: 50px;
-            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .logo i {
+            font-size: 1.5rem;
         }
 
         .logo span {
@@ -487,7 +495,7 @@
     </style>
 </head>
 
-
+<body>
 
 <div class="dashboard-container">
     <aside class="sidebar" id="sidebar">
@@ -496,13 +504,13 @@
     <div class="logo-text">EduPath <span>AI</span></div>
 </div>
         <ul class="nav-menu">
-            <li><a href="../dashboard.html"><i class="fas fa-th-large"></i> <span>Overview</span></a></li>
-            <li><a href="../roadmap.html"><i class="fas fa-map-signs"></i> <span>My Roadmap</span></a></li>
-            <li class="active"><a href="../domain.html"><i class="fas fa-compass"></i> <span>Explore Domain</span></a>
+            <li><a href="/dashboard.html"><i class="fas fa-th-large"></i> <span>Overview</span></a></li>
+            <li><a href="/roadmap.html"><i class="fas fa-map-signs"></i> <span>My Roadmap</span></a></li>
+            <li class="active"><a href="/domain.html"><i class="fas fa-compass"></i> <span>Explore Domain</span></a>
             </li>
-            <li><a href="#"><i class="fas fa-robot"></i> <span>AI ChatBot</span></a></li>
-            <li><a href="../profile.html"><i class="fas fa-cog"></i> <span>Profile Settings</span></a></li>
-            <li><a href="../index.html"><i class="fas fa-sign-out-alt"></i> <span>Log out</span></a></li>
+            <li><a href="/chatbot.html"><i class="fas fa-robot"></i> <span>AI ChatBot</span></a></li>
+            <li><a href="/profile.html"><i class="fas fa-cog"></i> <span>Profile Settings</span></a></li>
+            <li><a href="/index.html"><i class="fas fa-sign-out-alt"></i> <span>Log out</span></a></li>
         </ul>
         <div class="sidebar-footer">
             <div class="profile-card">
@@ -557,6 +565,7 @@
                 </div>
             </div>
         </div>
+
         <div class="section-box" id="module-box-1">
             <div class="section-header active" onclick="toggleSection(this)">
                 <h3>Module 1: Principles of Data Visualization</h3>
@@ -671,9 +680,9 @@
                         <button type="button" onclick="submitQuiz(1)" class="quiz-submit">Submit Quiz</button>
                     </form>
                 </div>
-                <div class="activity-row">
+                <div class="activity-row" onclick="window.location.href='/compiler/dataviz.html?module=module1'">
                     <div class="activity-info"><i class="fas fa-code"></i> <span>Visualization Theory - PROGRAMS</span></div>
-                    <button class="status-btn todo">To do</button>
+                    <button id="pbtn-1" class="status-btn todo">To do</button>
                 </div>
             </div>
         </div>
@@ -791,9 +800,9 @@
                         <button type="button" onclick="submitQuiz(2)" class="quiz-submit">Submit Quiz</button>
                     </form>
                 </div>
-                <div class="activity-row">
+                <div class="activity-row" onclick="window.location.href='/compiler/dataviz.html?module=module2'">
                     <div class="activity-info"><i class="fas fa-code"></i> <span>Matplotlib Basics - PROGRAMS</span></div>
-                    <button class="status-btn todo">To do</button>
+                    <button id="pbtn-2" class="status-btn todo">To do</button>
                 </div>
             </div>
         </div>
@@ -912,14 +921,13 @@
                         <button type="button" onclick="submitQuiz(3)" class="quiz-submit">Submit Quiz</button>
                     </form>
                 </div>
-                <div class="activity-row">
+                <div class="activity-row" onclick="window.location.href='/compiler/dataviz.html?module=module3'">
                     <div class="activity-info"><i class="fas fa-code"></i> <span>Seaborn Plotting - PROGRAMS</span>
                     </div>
-                    <button class="status-btn todo">To do</button>
+                    <button id="pbtn-3" class="status-btn todo">To do</button>
                 </div>
             </div>
         </div>
-
 
         <div class="section-box locked" id="module-box-4">
             <div class="section-header" onclick="toggleSection(this)">
@@ -1034,12 +1042,13 @@
                         <button type="button" onclick="submitQuiz(4)" class="quiz-submit">Submit Quiz</button>
                     </form>
                 </div>
-                <div class="activity-row">
+                <div class="activity-row" onclick="window.location.href='/compiler/dataviz.html?module=module4'">
                     <div class="activity-info"><i class="fas fa-code"></i> <span>Plotly Interactivity - PROGRAMS</span></div>
-                    <button class="status-btn todo">To do</button>
+                    <button id="pbtn-4" class="status-btn todo">To do</button>
                 </div>
             </div>
         </div>
+
         <div class="section-box locked" id="module-box-5">
             <div class="section-header" onclick="toggleSection(this)">
                 <h3>Module 5: Interactive Plots with Bokeh</h3>
@@ -1153,13 +1162,12 @@
                         <button type="button" onclick="submitQuiz(5)" class="quiz-submit">Submit Quiz</button>
                     </form>
                 </div>
-                <div class="activity-row">
+                <div class="activity-row" onclick="window.location.href='/compiler/dataviz.html?module=module5'">
                     <div class="activity-info"><i class="fas fa-code"></i> <span>Bokeh Interactive - PROGRAMS</span></div>
-                    <button class="status-btn todo">To do</button>
+                    <button id="pbtn-5" class="status-btn todo">To do</button>
                 </div>
             </div>
         </div>
-
 
         <div class="section-box locked" id="module-box-6">
             <div class="section-header" onclick="toggleSection(this)">
@@ -1274,12 +1282,13 @@
                         <button type="button" onclick="submitQuiz(6)" class="quiz-submit">Submit Quiz</button>
                     </form>
                 </div>
-                <div class="activity-row">
+                <div class="activity-row" onclick="window.location.href='/compiler/dataviz.html?module=module6'">
                     <div class="activity-info"><i class="fas fa-code"></i> <span>Altair Declarative - PROGRAMS</span></div>
-                    <button class="status-btn todo">To do</button>
+                    <button id="pbtn-6" class="status-btn todo">To do</button>
                 </div>
             </div>
         </div>
+
         <div class="section-box locked" id="module-box-7">
             <div class="section-header" onclick="toggleSection(this)">
                 <h3>Module 7: Geographic Mapping with Folium</h3>
@@ -1393,13 +1402,12 @@
                         <button type="button" onclick="submitQuiz(7)" class="quiz-submit">Submit Quiz</button>
                     </form>
                 </div>
-                <div class="activity-row">
+                <div class="activity-row" onclick="window.location.href='/compiler/dataviz.html?module=module7'">
                     <div class="activity-info"><i class="fas fa-code"></i> <span>Folium Mapping - PROGRAMS</span></div>
-                    <button class="status-btn todo">To do</button>
+                    <button id="pbtn-7" class="status-btn todo">To do</button>
                 </div>
             </div>
         </div>
-
 
         <div class="section-box locked" id="module-box-8">
             <div class="section-header" onclick="toggleSection(this)">
@@ -1514,17 +1522,16 @@
                         <button type="button" onclick="submitQuiz(8)" class="quiz-submit">Submit Quiz</button>
                     </form>
                 </div>
-                <div class="activity-row">
+                <div class="activity-row" onclick="window.location.href='/compiler/dataviz.html?module=module8'">
                     <div class="activity-info"><i class="fas fa-code"></i> <span>ML Mastery - PROGRAMS</span>
                     </div>
-                    <button class="status-btn todo">To do</button>
+                    <button id="pbtn-8" class="status-btn todo">To do</button>
                 </div>
             </div>
         </div>
     </main>
 </div>
 
-<!-- YouTube IFrame API -->
 <script src="https://www.youtube.com/iframe_api"></script>
 
 <script>
@@ -1540,13 +1547,21 @@
             }
         }
 
-        // Restore button states
+        // Restore button states for videos and quizzes
         const buttons = document.querySelectorAll('.status-btn');
         buttons.forEach(btn => {
             if (btn.id && localStorage.getItem("dataviz_" + btn.id) === "done") {
                 applyDoneState(btn);
             }
         });
+
+        // Check for programming completions from the compiler
+        for (let i = 1; i <= totalModules; i++) {
+            if (localStorage.getItem("dataviz_prog_module" + i) === "done") {
+                const pbtn = document.getElementById("pbtn-" + i);
+                if (pbtn) applyDoneState(pbtn);
+            }
+        }
 
         updateProgress();
     });
@@ -1585,6 +1600,7 @@
         btn.classList.add("done");
         btn.innerHTML = 'Done <i class="fas fa-check"></i>';
     }
+    
     const sidebarToggle = document.getElementById('sidebarToggle');
     const sidebar = document.getElementById('sidebar');
     const mainContent = document.getElementById('main-content');
@@ -1663,11 +1679,7 @@
 
         if (percent >= 60) {
             markAsDone("qbtn-" + module);
-            if (module < totalModules) {
-                localStorage.setItem("dataviz_module" + module + "_completed", "true");
-                const nextModuleBox = document.getElementById("module-box-" + (module + 1));
-                if (nextModuleBox) nextModuleBox.classList.remove("locked");
-            }
+            // PREMATURE UNLOCK REMOVED HERE. The compiler's "Finish Attempt" button handles unlocking the next module.
         }
     }
 
@@ -1695,4 +1707,3 @@
 </body>
 
 </html>
-```

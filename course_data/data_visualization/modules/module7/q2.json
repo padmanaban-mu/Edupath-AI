@@ -1,0 +1,14 @@
+{
+  "title": "Marker",
+  "description": "Add a marker to a Folium map.",
+  "input": "marker",
+  "example_input": "marker",
+  "expected_output": "marker added",
+  "difficulty": "Intermediate",
+  "test_cases": [
+    {
+      "input": "marker",
+      "expected": "marker added"
+    }
+  ]
+}

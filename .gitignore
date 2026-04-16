@@ -1,12 +1,19 @@
-# environment variables
+# Environment variables
 .env
 .env.*
 *.local
 
-# node modules
+# Dependencies
 node_modules/
 
-# logs
+# Build and Temporary files
+dist/
+dist-ssr/
+build/
+.tmp/
+.cache/
+
+# Logs
 logs/
 *.log
 npm-debug.log*
@@ -15,13 +22,11 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-# OS junk
+# OS Junk
 .DS_Store
 Thumbs.db
 
-# editor files
-.vscode/*
-!.vscode/extensions.json
+# Editor-specific files
 .idea/
 *.suo
 *.ntvs*
@@ -29,12 +34,10 @@ Thumbs.db
 *.sln
 *.sw?
 
-# build / temp
-dist/
-dist-ssr/
-build/
-.tmp/
-.cache/
+# VS Code specific
+# Ignore the whole folder but allow the extensions.json configuration
+.vscode/*
+!.vscode/extensions.json
 
-# archives
+# Archives
 *.zip

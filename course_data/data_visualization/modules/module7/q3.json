@@ -1,0 +1,14 @@
+{
+  "title": "Choropleth",
+  "description": "Create a Folium choropleth map.",
+  "input": "choropleth",
+  "example_input": "choropleth",
+  "expected_output": "choropleth",
+  "difficulty": "Advanced",
+  "test_cases": [
+    {
+      "input": "choropleth",
+      "expected": "choropleth"
+    }
+  ]
+}

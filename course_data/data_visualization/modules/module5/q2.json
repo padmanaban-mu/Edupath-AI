@@ -1,0 +1,14 @@
+{
+  "title": "Bar",
+  "description": "Create a green vertical bar chart.",
+  "input": "bar",
+  "example_input": "bar",
+  "expected_output": "green",
+  "difficulty": "Intermediate",
+  "test_cases": [
+    {
+      "input": "bar",
+      "expected": "green"
+    }
+  ]
+}

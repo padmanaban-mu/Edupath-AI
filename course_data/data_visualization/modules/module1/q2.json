@@ -1,0 +1,14 @@
+{
+  "title": "Data Ink Ratio",
+  "description": "Calculate data_ink / (data_ink + non_data_ink) * 100.",
+  "input": "50 50",
+  "example_input": "50 50",
+  "expected_output": "50.0",
+  "difficulty": "Intermediate",
+  "test_cases": [
+    {
+      "input": "50 50",
+      "expected": "50.0"
+    }
+  ]
+}

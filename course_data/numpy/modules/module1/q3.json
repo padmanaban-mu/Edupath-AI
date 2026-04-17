@@ -1,0 +1,7 @@
+{
+  "title": "Advanced: Memory Size",
+  "description": "Write a function memory_size(arr) that returns the total memory consumed by the elements of a NumPy array in bytes (using size and itemsize).",
+  "input": "np.array([1, 2, 3, 4, 5], dtype=np.int64)",
+  "expected_output": "40",
+  "hidden_test_cases": "Test with forced smaller dtypes (e.g., np.int8) to ensure accurate byte measurement."
+}

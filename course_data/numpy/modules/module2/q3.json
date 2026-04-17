@@ -1,0 +1,7 @@
+{
+  "title": "Advanced: Linspace Grid",
+  "description": "Write a function linspace_grid() that uses np.linspace() to generate exactly 50 evenly spaced samples between 0 and 10, inclusive of 10. Return the array.",
+  "input": "",
+  "expected_output": "Array of 50 samples starting at 0.0 ending at 10.0.",
+  "hidden_test_cases": "Ensure arr[0] == 0 and arr[-1] == 10. Verify len(arr) == 50."
+}

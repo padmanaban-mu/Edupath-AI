@@ -1,0 +1,7 @@
+{
+  "title": "Basic: Generate Random Matrix",
+  "description": "Write a function generate_random_matrix() that uses np.random.rand() to create and return a 3x3 matrix of random floats between 0 and 1.",
+  "input": "",
+  "expected_output": "3x3 array of random floats.",
+  "hidden_test_cases": "Ensure shape is exactly (3,3) and elements are strictly 0.0 <= x < 1.0."
+}

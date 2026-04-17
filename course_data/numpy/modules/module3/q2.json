@@ -1,0 +1,7 @@
+{
+  "title": "Intermediate: Slice Middle",
+  "description": "Write a function slice_middle(arr) that takes a 1D array of length 10 and returns the middle 4 elements (indices 3 through 6 inclusive).",
+  "input": "np.arange(10)",
+  "expected_output": "Subset array of size 4.",
+  "hidden_test_cases": "Passed array of size different than 10 to check edge-case robustness."
+}

@@ -1,0 +1,7 @@
+{
+  "title": "Basic: Add Arrays",
+  "description": "Write a function add_arrays(a, b) that performs element-wise addition on two NumPy arrays of the same shape without using loops.",
+  "input": "Two arrays of the same shape",
+  "expected_output": "Element-wise sum matrix.",
+  "hidden_test_cases": "Arrays with negative and decimal floats."
+}

@@ -1,0 +1,7 @@
+{
+  "title": "Advanced: Inverse Matrix",
+  "description": "Write a function inverse_matrix(A) that takes a 2x2 square matrix and returns its inverse using np.linalg.inv().",
+  "input": "2x2 square matrix",
+  "expected_output": "The inverse square matrix.",
+  "hidden_test_cases": "A singular matrix (determinant of 0) to ensure properly trapped LinAlgError."
+}

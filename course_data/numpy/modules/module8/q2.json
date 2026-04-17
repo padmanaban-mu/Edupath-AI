@@ -1,0 +1,7 @@
+{
+  "title": "Intermediate: Matrix Multiplication",
+  "description": "Write a function matrix_multiplication(A, B) that performs true matrix multiplication on two 2D matrices using the @ operator or np.matmul().",
+  "input": "Two 2D matrices",
+  "expected_output": "Resulting matrix product.",
+  "hidden_test_cases": "Shape compatibility checks (e.g., passing a 2x3 and 3x4 matrix)."
+}

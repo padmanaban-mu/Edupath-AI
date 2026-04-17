@@ -1,0 +1,7 @@
+{
+  "title": "Intermediate: Column Max",
+  "description": "Write a function column_max(arr) that takes a 2D matrix and returns a 1D array containing the maximum values evaluated across columns (using axis=0).",
+  "input": "2D Matrix",
+  "expected_output": "Returns the highest value encountered in each column.",
+  "hidden_test_cases": "Test with distinct row maxes vs column maxes."
+}

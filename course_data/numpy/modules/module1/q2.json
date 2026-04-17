@@ -1,0 +1,7 @@
+{
+  "title": "Intermediate: Check Attributes",
+  "description": "Write a function check_attributes(arr) that takes an array and returns a tuple containing its shape, dimensions (ndim), and data type (dtype).",
+  "input": "np.array([1, 2, 3, 4, 5])",
+  "expected_output": "((5,), 1, dtype('int64'))",
+  "hidden_test_cases": "Test with 3D arrays to ensure dimensions calculate correctly."
+}

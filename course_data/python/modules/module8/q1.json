@@ -1,0 +1,6 @@
+{
+  "title": "Dictionary Lookup",
+  "description": "Write a function `dict_lookup(d, key)` that returns the value for `key` or \"Not Found\". Case: {\"a\": 5}, key=\"a\".",
+  "input": "",
+  "expected_output": "5"
+}

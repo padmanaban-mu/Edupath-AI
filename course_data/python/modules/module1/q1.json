@@ -1,0 +1,6 @@
+{
+  "title": "Hello Python World",
+  "description": "Write a Python script that prints the exact phrase \"Hello, Python World!\".",
+  "input": "",
+  "expected_output": "Hello, Python World!"
+}

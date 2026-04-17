@@ -1,0 +1,6 @@
+{
+  "title": "Grade Calculator",
+  "description": "Write a function `grade_calculator(score)` that returns 'A' (>=90), 'B' (>=80), 'C' (>=70), 'D' (>=60), or 'F' (<60). Handle invalid scores (>100 or <0) by returning \"Invalid\". Case: 95.",
+  "input": "",
+  "expected_output": "A"
+}

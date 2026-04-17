@@ -1,0 +1,6 @@
+{
+  "title": "Pyramid Pattern",
+  "description": "Write a function `pyramid_pattern(n)` that prints a pyramid of asterisks of height `n`. For n=3, output 1, 3, 5 asterisks.",
+  "input": "",
+  "expected_output": "*\n***\n*****"
+}

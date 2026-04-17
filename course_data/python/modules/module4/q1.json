@@ -1,0 +1,6 @@
+{
+  "title": "Temperature Check",
+  "description": "Write a function `check_temperature(temp)` that returns \"Hot\" if temp > 30, \"Warm\" if temp >= 15, and \"Cold\" otherwise. Case: 20.",
+  "input": "",
+  "expected_output": "Warm"
+}

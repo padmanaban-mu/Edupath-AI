@@ -1,0 +1,6 @@
+{
+  "title": "Apply Operation",
+  "description": "Write a higher-order function `apply_operation(lst, func)` that applies `func` to every element in `lst`. Case: [1,2,3], lambda x: x**2.",
+  "input": "",
+  "expected_output": "[1, 4, 9]"
+}

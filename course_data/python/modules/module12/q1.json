@@ -1,0 +1,6 @@
+{
+  "title": "Car Class",
+  "description": "Create a `Car` class with `display_info()` returning \"Make: [make], Model: [model]\". Case: Toyota Corolla.",
+  "input": "",
+  "expected_output": "Make: Toyota, Model: Corolla"
+}

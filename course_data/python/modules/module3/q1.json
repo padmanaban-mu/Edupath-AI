@@ -1,0 +1,6 @@
+{
+  "title": "Math Operations",
+  "description": "Write a function `math_ops(a, b)` that returns a tuple containing the sum, difference, product, and float division of `a` and `b`. Case: a=10, b=5.",
+  "input": "",
+  "expected_output": "(15, 5, 50, 2.0)"
+}

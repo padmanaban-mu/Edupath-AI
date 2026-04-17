@@ -93,6 +93,21 @@ const NUMPY_MODULE_NAMES = {
     module8: 'Advanced NumPy'
 };
 
+const PYTHON_MODULE_NAMES = {
+    module1: 'Introduction to Python',
+    module2: 'Variables and Data Types',
+    module3: 'Python Operators',
+    module4: 'Conditional Statements',
+    module5: 'Loops – while loop',
+    module6: 'Loops – for loop',
+    module7: 'Data Structures (Lists & Tuples)',
+    module8: 'Advanced Data Structures',
+    module9: 'Methods and Functions',
+    module10: 'File Handling',
+    module11: 'Exception Handling',
+    module12: 'OOP Concepts'
+};
+
 // ─── Safe input() wrapper for Python ──────────────────────────────
 const SAFE_INPUT_WRAPPER = `import sys as _sys
 _stdin_lines = _sys.stdin.read().split('\\n')
@@ -111,7 +126,9 @@ def input(prompt=''):
 function runPythonCase(code, stdin) {
     const tmp = path.join(os.tmpdir(), `edupath_${Date.now()}_${Math.random().toString(36).slice(2)}.py`);
     try {
-        fs.writeFileSync(tmp, SAFE_INPUT_WRAPPER + code, 'utf-8');
+        // Fix: Ensure code retains exact formatting and carriage returns aren't mangled on Windows
+        const normalizedCode = code.replace(/\r\n/g, '\n'); 
+        fs.writeFileSync(tmp, SAFE_INPUT_WRAPPER + normalizedCode, 'utf-8');
         const result = spawnSync('python', [tmp], {
             input: stdin || '',
             timeout: 10000,
@@ -361,8 +378,8 @@ app.get('/api/modules', (req, res) => {
     try {
         // UPDATED: Points to your new course_data folder
         const course = req.query.course || 'data_visualization';
-        // Handle path for numpy if it was just in /modules in the original, adapting it to course_data
-        const modulesDir = course === 'numpy' && !fs.existsSync(path.join(__dirname, 'course_data', course, 'modules')) 
+        // Handle path for numpy and python if it was just in /modules in the original, adapting it to course_data
+        const modulesDir = (course === 'numpy' || course === 'python') && !fs.existsSync(path.join(__dirname, 'course_data', course, 'modules')) 
             ? path.join(__dirname, 'modules') 
             : path.join(__dirname, 'course_data', course, 'modules');
             
@@ -399,10 +416,12 @@ app.get('/api/modules', (req, res) => {
                     };
                 });
 
-            // Added check for NumPy naming
+            // Added check for NumPy and Python naming
             let moduleTitleName = folder;
             if (course === 'numpy' && NUMPY_MODULE_NAMES[folder]) {
                 moduleTitleName = NUMPY_MODULE_NAMES[folder];
+            } else if (course === 'python' && PYTHON_MODULE_NAMES[folder]) {
+                moduleTitleName = PYTHON_MODULE_NAMES[folder];
             } else if (MODULE_NAMES[folder]) {
                 moduleTitleName = MODULE_NAMES[folder];
             }
@@ -425,14 +444,14 @@ app.get('/api/modules/:moduleId/questions/:questionId', (req, res) => {
         const course = req.query.course || 'data_visualization';
         const { moduleId, questionId } = req.params;
         
-        const modulesDir = course === 'numpy' && !fs.existsSync(path.join(__dirname, 'course_data', course, 'modules')) 
+        const modulesDir = (course === 'numpy' || course === 'python') && !fs.existsSync(path.join(__dirname, 'course_data', course, 'modules')) 
             ? path.join(__dirname, 'modules') 
             : path.join(__dirname, 'course_data', course, 'modules');
             
         const moduleDir = path.join(modulesDir, moduleId);
         let filePath = path.join(moduleDir, `${questionId}.json`);
 
-        // Added fallback from NumPy server to match data.id
+        // Added fallback from NumPy/Python server to match data.id
         if (!fs.existsSync(filePath) && fs.existsSync(moduleDir)) {
             const files = fs.readdirSync(moduleDir).filter(f => f.endsWith('.json'));
             const match = files.find(f => {
@@ -462,14 +481,14 @@ app.post('/api/execute', async (req, res) => {
         return res.status(400).json({ status: 'error', error: 'Missing required fields' });
     }
 
-    const modulesDir = course === 'numpy' && !fs.existsSync(path.join(__dirname, 'course_data', course, 'modules')) 
+    const modulesDir = (course === 'numpy' || course === 'python') && !fs.existsSync(path.join(__dirname, 'course_data', course, 'modules')) 
         ? path.join(__dirname, 'modules') 
         : path.join(__dirname, 'course_data', course, 'modules');
 
     const moduleDir = path.join(modulesDir, moduleId);
     let filePath = path.join(moduleDir, `${questionId}.json`);
 
-    // Added fallback from NumPy server to match data.id
+    // Added fallback from NumPy/Python server to match data.id
     if (!fs.existsSync(filePath) && fs.existsSync(moduleDir)) {
         const files = fs.readdirSync(moduleDir).filter(f => f.endsWith('.json'));
         const match = files.find(f => {
@@ -484,7 +503,7 @@ app.post('/api/execute', async (req, res) => {
     }
     const question = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
 
-    // Python Execution Logic (Expanded to handle NumPy test_cases array pattern)
+    // Python Execution Logic (Expanded to handle Python/NumPy test_cases array pattern)
     if (question.expected_output !== undefined || (Array.isArray(question.test_cases) && question.test_cases.length > 0)) {
         const testList = (Array.isArray(question.test_cases) && question.test_cases.length > 0)
             ? question.test_cases

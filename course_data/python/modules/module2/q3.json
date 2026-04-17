@@ -1,0 +1,6 @@
+{
+  "title": "Type Caster",
+  "description": "Write a function `type_caster(val)` that takes a string representing a number, converts it to a float, multiplies it by 2, converts the result back to an integer, and returns it. Input: \"15.7\"",
+  "input": "",
+  "expected_output": "31"
+}

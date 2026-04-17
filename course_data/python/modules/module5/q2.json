@@ -1,0 +1,6 @@
+{
+  "title": "Sum of Digits",
+  "description": "Write a function `sum_digits(n)` that returns the sum of its digits using a while loop. Case: 123.",
+  "input": "",
+  "expected_output": "6"
+}

@@ -1,0 +1,6 @@
+{
+  "title": "Safe Divide",
+  "description": "Write a function `safe_divide(a, b)` that catches `ZeroDivisionError` and returns \"Cannot divide by zero\".",
+  "input": "",
+  "expected_output": "Cannot divide by zero"
+}

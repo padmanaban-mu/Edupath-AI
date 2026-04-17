@@ -1,0 +1,6 @@
+{
+  "title": "Bank Account",
+  "description": "Implement `BankAccount` with private `__balance`. Provide `deposit()` and `get_balance()`. Case: Deposit 100.",
+  "input": "",
+  "expected_output": "100"
+}

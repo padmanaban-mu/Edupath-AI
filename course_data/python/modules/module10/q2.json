@@ -1,0 +1,6 @@
+{
+  "title": "Count Lines",
+  "description": "Write a function `read_and_count_lines(filename)` that returns the number of lines in a file. Case: file with 5 lines.",
+  "input": "",
+  "expected_output": "5"
+}

@@ -1,0 +1,6 @@
+{
+  "title": "Star Grid",
+  "description": "Write a script that prints a formatted 3x3 grid of asterisks (`*`) using a single `print` statement and newline characters `\\n`.",
+  "input": "3",
+  "expected_output": "***\n***\n***"
+}

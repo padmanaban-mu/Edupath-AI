@@ -1,0 +1,6 @@
+{
+  "title": "Swap Values",
+  "description": "Write a function `swap_values(x, y)` that takes two variables, swaps their values without using a temporary third variable, and returns them as a tuple `(x, y)`. Case: x=10, y=20.",
+  "input": "",
+  "expected_output": "(20, 10)"
+}

@@ -1,0 +1,6 @@
+{
+  "title": "Write to File",
+  "description": "Write a function `write_to_file(filename, text)` that writes text to a file. Return \"Success\".",
+  "input": "",
+  "expected_output": "Success"
+}

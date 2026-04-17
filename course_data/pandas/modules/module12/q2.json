@@ -1,0 +1,7 @@
+{
+  "title": "Intermediate: Query Filtering",
+  "description": "Write a function `fast_filter(df, target_cat)` that uses `df.query()` to filter rows where \"Category\" equals the variable `target_cat` and \"Price\" > 50.",
+  "input": "df, 'Electronics'",
+  "expected_output": "Filtered DataFrame using the query engine.",
+  "hidden_test_cases": "Ensure @ variable referencing works in the query string."
+}

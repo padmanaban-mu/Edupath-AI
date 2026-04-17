@@ -1,0 +1,7 @@
+{
+  "title": "Basic: Read CSV",
+  "description": "Write a function `load_csv(filepath)` that uses `pd.read_csv()` to load a CSV file into a DataFrame and returns it.",
+  "input": "'data.csv'",
+  "expected_output": "DataFrame containing the CSV data.",
+  "hidden_test_cases": "Test with a hidden CSV file to ensure correct dynamic loading."
+}

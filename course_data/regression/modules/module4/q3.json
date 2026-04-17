@@ -1,0 +1,7 @@
+{
+  "title": "Advanced: L1 Gradient Step",
+  "description": "Write a function l1_gradient_step(weight, alpha, learning_rate) that performs a single update step for a weight subject to an L1 (Lasso) penalty using the subgradient.",
+  "input": "weight = 2.5, alpha = 1.0, learning_rate = 0.1",
+  "expected_output": "2.4",
+  "hidden_test_cases": "Test with negative weights. Test where the update crosses zero (soft thresholding edge cases)."
+}

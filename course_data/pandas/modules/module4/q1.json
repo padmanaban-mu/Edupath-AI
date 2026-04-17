@@ -1,0 +1,7 @@
+{
+  "title": "Basic: Select Single Column",
+  "description": "Write a function `get_column(df, col_name)` that returns a Pandas Series representing the requested column from the DataFrame.",
+  "input": "df, 'Price'",
+  "expected_output": "Series containing Price data.",
+  "hidden_test_cases": "Test with columns containing spaces in their names."
+}

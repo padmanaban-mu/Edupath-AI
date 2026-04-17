@@ -1,0 +1,7 @@
+{
+  "title": "Advanced: K-Fold Indices",
+  "description": "Write a function k_fold_indices(n_samples, k) that generates the start and end indices for k consecutive folds. It should return a list of tuples containing (train_indices, test_indices) for each fold.",
+  "input": "n_samples = 6, k = 3",
+  "expected_output": "[(array([2, 3, 4, 5]), array([0, 1])), (array([0, 1, 4, 5]), array([2, 3])), (array([0, 1, 2, 3]), array([4, 5]))]",
+  "hidden_test_cases": "Test where n_samples is not perfectly divisible by k (handle uneven fold sizes). Test where k = n_samples (Leave-One-Out Cross-Validation behavior)."
+}

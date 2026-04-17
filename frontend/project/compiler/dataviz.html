@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduPath AI - NumPy Compiler</title>
+    <title>EduPath AI - Dataviz Compiler</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@300;400;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -139,16 +139,16 @@
             <div class="logo-container">
                 <i class="fas fa-brain"></i>
                 <div>EduPath <span>AI</span></div>
-                <div class="logo-subtitle">NumPy Compiler</div>
+                <div class="logo-subtitle">Dataviz Compiler</div>
             </div>
         </div>
-        <a href="numpy.html"><i class="fas fa-arrow-left"></i> Course Overview</a>
+        <a href="../../project/courses/programming/data_visualization.html"><i class="fas fa-arrow-left"></i> Course Overview</a>
     </div>
 
     <div class="layout">
         
         <div class="sidebar" id="app-sidebar">
-            <div class="sidebar-header"><i class="fas fa-calculator" style="margin-right: 8px;"></i> NumPy Curriculum</div>
+            <div class="sidebar-header"><i class="fas fa-chart-pie" style="margin-right: 8px;"></i> Dataviz Curriculum</div>
             <div id="accordion-container">
                 <div style="padding: 20px; color: var(--text-muted);">Loading curriculum...</div>
             </div>
@@ -204,7 +204,7 @@
             modules: [],
             flatQuestions: [],
             currentQIndex: 0,
-            completedKeys: new Set(JSON.parse(localStorage.getItem('edupath_numpy_progress') || '[]'))
+            completedKeys: new Set(JSON.parse(localStorage.getItem('edupath_dataviz_progress') || '[]'))
         };
 
         // --- HARDCODED SYLLABUS MAPPING ---
@@ -251,7 +251,7 @@
         require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs' }});
         require(['vs/editor/editor.main'], function() {
             editor = monaco.editor.create(document.getElementById('monaco-editor'), {
-                value: "# Write your NumPy code here...\n# Remember to use print() to output your final answer!\n\n",
+                value: "# Write your code here...\n# Remember to use print() to output your final answer!\n\n",
                 language: 'python',
                 theme: 'vs',
                 automaticLayout: true,
@@ -270,7 +270,7 @@
 
         async function fetchData() {
             try {
-                const res = await fetch('/api/modules');
+                const res = await fetch('/api/modules?course=data_visualization');
                 const data = await res.json();
                 state.modules = data.modules;
                 
@@ -300,7 +300,7 @@
                         const foundIndex = state.flatQuestions.findIndex(q => q.moduleId === targetModuleId);
                         if (foundIndex !== -1) {
                             const mIdx = state.flatQuestions[foundIndex].moduleIndex;
-                            let isModuleUnlocked = (mIdx === 0) || (localStorage.getItem('numpy_module' + mIdx + '_completed') === 'true');
+                            let isModuleUnlocked = (mIdx === 0) || (localStorage.getItem('dataviz_module' + mIdx + '_completed') === 'true');
                             if (isModuleUnlocked) {
                                 targetIndex = foundIndex;
                             }
@@ -326,7 +326,7 @@
             const q = state.flatQuestions[idx];
             const prevQ = state.flatQuestions[idx - 1];
 
-            let isModuleUnlocked = (q.moduleIndex === 0) || (localStorage.getItem('numpy_module' + q.moduleIndex + '_completed') === 'true');
+            let isModuleUnlocked = (q.moduleIndex === 0) || (localStorage.getItem('dataviz_module' + q.moduleIndex + '_completed') === 'true');
             if (!isModuleUnlocked) return false;
 
             const isFirstQuestionInModule = (q.questionIndex === 0);
@@ -346,7 +346,7 @@
             state.modules.forEach((mod, mIdx) => {
                 const modMappedData = SYLLABUS_MAP[mod.id] || { title: mod.name, task: "Programming Challenge" };
 
-                let isModuleUnlocked = (mIdx === 0) || (localStorage.getItem('numpy_module' + mIdx + '_completed') === 'true');
+                let isModuleUnlocked = (mIdx === 0) || (localStorage.getItem('dataviz_module' + mIdx + '_completed') === 'true');
 
                 const modDiv = document.createElement('div');
                 modDiv.className = 'module-accordion';
@@ -460,13 +460,13 @@
             const actualModNum = activeModIdx + 1;
 
             // Save compiler completion
-            localStorage.setItem('numpy_prog_module' + actualModNum, 'done');
+            localStorage.setItem('dataviz_prog_module' + actualModNum, 'done');
             
             // UNLOCK the next module on the dashboard officially
-            localStorage.setItem('numpy_module' + actualModNum + '_completed', 'true');
+            localStorage.setItem('dataviz_module' + actualModNum + '_completed', 'true');
 
             // Return to the dashboard
-            window.location.href = 'numpy.html'; 
+            window.location.href = '/courses/programming/data_visualization.html'; 
         }
 
         async function loadQuestion(globalIndex) {
@@ -477,7 +477,7 @@
             updateNavButtons();
 
             try {
-                const res = await fetch(`/api/modules/${targetQ.moduleId}/questions/${targetQ.questionId}`);
+                const res = await fetch(`/api/modules/${targetQ.moduleId}/questions/${targetQ.questionId}?course=data_visualization`);
                 const qData = await res.json();
 
                 document.getElementById('workspace').style.display = 'flex';
@@ -486,7 +486,7 @@
                 document.getElementById('q-input').innerText = qData.input || "No input required";
                 document.getElementById('q-output').innerText = qData.expected_output || "No output provided";
 
-                editor.setValue("# Write your NumPy code here...\n# Remember to use print() to output your final answer!\n\n");
+                editor.setValue("# Write your code here...\n# Remember to use print() to output your final answer!\n\n");
                 
                 const banner = document.getElementById('validation-banner');
                 const term = document.getElementById('terminal-output');
@@ -519,7 +519,7 @@
                 const res = await fetch('/api/execute', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ query: code, moduleId: currentQ.moduleId, questionId: currentQ.questionId })
+                    body: JSON.stringify({ query: code, moduleId: currentQ.moduleId, questionId: currentQ.questionId, course: 'data_visualization' })
                 });
 
                 const result = await res.json();
@@ -559,7 +559,7 @@
                         term.innerHTML = tableHTML;
                         
                         state.completedKeys.add(currentQ.key);
-                        localStorage.setItem('edupath_numpy_progress', JSON.stringify([...state.completedKeys]));
+                        localStorage.setItem('edupath_dataviz_progress', JSON.stringify([...state.completedKeys]));
                         
                         // Wait for user to manually click next
                         if (!isLastQuestionInModule) {

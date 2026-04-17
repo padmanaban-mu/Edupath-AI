@@ -1,0 +1,7 @@
+{
+  "title": "Advanced: Left Join with Fill",
+  "description": "Write a function `left_join_fill(df_left, df_right)` that performs a left merge on \"Prod_ID\", and fills any resulting NaNs in the \"Price\" column with 0.",
+  "input": "df_left, df_right",
+  "expected_output": "Left merged DataFrame with no NaNs in 'Price'.",
+  "hidden_test_cases": "Ensure only the 'Price' column NaNs are filled, not others."
+}

@@ -1,0 +1,7 @@
+{
+  "title": "Basic: Create MultiIndex",
+  "description": "Write a function `create_multi_index(df)` that sets both \"Year\" and \"Quarter\" columns as a hierarchical MultiIndex for the DataFrame.",
+  "input": "DataFrame with 'Year' and 'Quarter' columns",
+  "expected_output": "MultiIndexed DataFrame.",
+  "hidden_test_cases": "Check the `df.index.nlevels` is exactly 2."
+}

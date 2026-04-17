@@ -1,0 +1,7 @@
+{
+  "title": "Intermediate: Calculate Slope",
+  "description": "Write a function calculate_slope(x, y) that takes two NumPy arrays and calculates the slope of the line of best fit.",
+  "input": "x = np.array([1, 2, 3]), y = np.array([2, 4, 5])",
+  "expected_output": "1.5",
+  "hidden_test_cases": "Test with perfectly correlated negative values. Test with arrays of length 2 (minimum required points)."
+}

@@ -1,0 +1,7 @@
+{
+  "title": "Basic: Line Plot Generation",
+  "description": "Write a function `plot_trends(df)` that uses `df.plot()` to generate a line plot of all numerical columns. Return the matplotlib Axes object.",
+  "input": "DataFrame with numeric data",
+  "expected_output": "Axes object of the plot.",
+  "hidden_test_cases": "Verify the returned object is `matplotlib.axes.Axes`."
+}

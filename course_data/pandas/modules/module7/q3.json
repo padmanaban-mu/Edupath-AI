@@ -1,0 +1,7 @@
+{
+  "title": "Advanced: Custom GroupBy Filter",
+  "description": "Write a function `filter_large_groups(df, min_size)` that groups by \"Category\" and uses `.filter()` to return a DataFrame excluding categories with fewer than `min_size` entries.",
+  "input": "df, 5",
+  "expected_output": "Filtered DataFrame containing only rows from large categories.",
+  "hidden_test_cases": "Test where no groups meet the condition (returns empty)."
+}

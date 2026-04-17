@@ -8,7 +8,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Inter:wght@400;500;600;700&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
@@ -471,12 +471,12 @@
                 <div class="logo-text">EduPath <span>AI</span></div>
             </div>
             <ul class="nav-menu">
-                <li><a href="../../dashboard.html"><i class="fas fa-th-large"></i> <span>Overview</span></a></li>
-                <li><a href="../../roadmap.html"><i class="fas fa-map-signs"></i> <span>My Roadmap</span></a></li>
-                <li class="active"><a href="../../domain.html"><i class="fas fa-compass"></i> <span>Explore Domain</span></a></li>
-                <li><a href="../../chatbot.html"><i class="fas fa-robot"></i> <span>AI ChatBot</span></a></li>
-                <li><a href="../../profile.html"><i class="fas fa-cog"></i> <span>Profile Settings</span></a></li>
-                <li style="margin-top: auto;"><a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> <span>Log out</span></a></li>
+                <li><a href="/dashboard.html"><i class="fas fa-th-large"></i> <span>Overview</span></a></li>
+                <li><a href="/roadmap.html"><i class="fas fa-map-signs"></i> <span>My Roadmap</span></a></li>
+                <li class="active"><a href="/domain.html"><i class="fas fa-compass"></i> <span>Explore Domain</span></a></li>
+                <li><a href="/chatbot.html"><i class="fas fa-robot"></i> <span>AI ChatBot</span></a></li>
+                <li><a href="/profile.html"><i class="fas fa-cog"></i> <span>Profile Settings</span></a></li>
+                <li style="margin-top: auto;"><a href="/index.html"><i class="fas fa-sign-out-alt"></i> <span>Log out</span></a></li>
             </ul>
             <div class="sidebar-footer">
                 <div class="profile-card">
@@ -745,10 +745,10 @@
                     <button type="button" onclick="submitQuiz(2)" class="quiz-submit">Submit Quiz</button>
                 </form>
             </div>
-            <div class="activity-row">
+            <div class="activity-row" onclick="window.location.href='/compiler/pandas_compiler.html?module=module2'">
                 <div class="activity-info"><i class="fas fa-code"></i> <span>Creating your first DataFrame -
                         PROGRAM</span></div>
-                <button class="status-btn todo">To do</button>
+                <button id="pbtn-2" class="status-btn todo">To do</button>
             </div>
         </div>
     </div>
@@ -866,9 +866,9 @@
                     <button type="button" onclick="submitQuiz(3)" class="quiz-submit">Submit Quiz</button>
                 </form>
             </div>
-            <div class="activity-row">
+            <div class="activity-row" onclick="window.location.href='/compiler/pandas_compiler.html?module=module3'">
                 <div class="activity-info"><i class="fas fa-code"></i> <span>Reading a sample CSV - PROGRAM</span></div>
-                <button class="status-btn todo">To do</button>
+                <button id="pbtn-3" class="status-btn todo">To do</button>
             </div>
         </div>
     </div>
@@ -986,10 +986,10 @@
                     <button type="button" onclick="submitQuiz(4)" class="quiz-submit">Submit Quiz</button>
                 </form>
             </div>
-            <div class="activity-row">
+            <div class="activity-row" onclick="window.location.href='/compiler/pandas_compiler.html?module=module4'">
                 <div class="activity-info"><i class="fas fa-code"></i> <span>Custom Indexing Exercise - PROGRAM</span>
                 </div>
-                <button class="status-btn todo">To do</button>
+                <button id="pbtn-4" class="status-btn todo">To do</button>
             </div>
         </div>
     </div>
@@ -1107,10 +1107,10 @@
                     <button type="button" onclick="submitQuiz(5)" class="quiz-submit">Submit Quiz</button>
                 </form>
             </div>
-            <div class="activity-row">
+            <div class="activity-row" onclick="window.location.href='/compiler/pandas_compiler.html?module=module5'">
                 <div class="activity-info"><i class="fas fa-code"></i> <span>Mapping Values Challenge - PROGRAM</span>
                 </div>
-                <button class="status-btn todo">To do</button>
+                <button id="pbtn-5" class="status-btn todo">To do</button>
             </div>
         </div>
     </div>
@@ -1228,9 +1228,9 @@
                     <button type="button" onclick="submitQuiz(6)" class="quiz-submit">Submit Quiz</button>
                 </form>
             </div>
-            <div class="activity-row">
+            <div class="activity-row" onclick="window.location.href='/compiler/pandas_compiler.html?module=module6'">
                 <div class="activity-info"><i class="fas fa-code"></i> <span>Cleaning a Dataset - PROGRAM</span></div>
-                <button class="status-btn todo">To do</button>
+                <button id="pbtn-6" class="status-btn todo">To do</button>
             </div>
         </div>
     </div>
@@ -1348,10 +1348,10 @@
                     <button type="button" onclick="submitQuiz(7)" class="quiz-submit">Submit Quiz</button>
                 </form>
             </div>
-            <div class="activity-row">
+            <div class="activity-row" onclick="window.location.href='/compiler/pandas_compiler.html?module=module7'">
                 <div class="activity-info"><i class="fas fa-code"></i> <span>Sales Aggregation Task - PROGRAM</span>
                 </div>
-                <button class="status-btn todo">To do</button>
+                <button id="pbtn-7" class="status-btn todo">To do</button>
             </div>
         </div>
     </div>
@@ -1469,10 +1469,10 @@
                     <button type="button" onclick="submitQuiz(8)" class="quiz-submit">Submit Quiz</button>
                 </form>
             </div>
-            <div class="activity-row">
+            <div class="activity-row" onclick="window.location.href='/compiler/pandas_compiler.html?module=module8'">
                 <div class="activity-info"><i class="fas fa-code"></i> <span>Table Merging Exercise - PROGRAM</span>
                 </div>
-                <button class="status-btn todo">To do</button>
+                <button id="pbtn-8" class="status-btn todo">To do</button>
             </div>
         </div>
     </div>
@@ -1590,9 +1590,9 @@
                     <button type="button" onclick="submitQuiz(9)" class="quiz-submit">Submit Quiz</button>
                 </form>
             </div>
-            <div class="activity-row">
+            <div class="activity-row" onclick="window.location.href='/compiler/pandas_compiler.html?module=module9'">
                 <div class="activity-info"><i class="fas fa-code"></i> <span>Stock Price Analysis - PROGRAM</span></div>
-                <button class="status-btn todo">To do</button>
+                <button id="pbtn-9" class="status-btn todo">To do</button>
             </div>
         </div>
     </div>
@@ -1710,10 +1710,10 @@
                     <button type="button" onclick="submitQuiz(10)" class="quiz-submit">Submit Quiz</button>
                 </form>
             </div>
-            <div class="activity-row">
+            <div class="activity-row" onclick="window.location.href='/compiler/pandas_compiler.html?module=module10'">
                 <div class="activity-info"><i class="fas fa-code"></i> <span>Hierarchical Data Task - PROGRAM</span>
                 </div>
-                <button class="status-btn todo">To do</button>
+                <button id="pbtn-10" class="status-btn todo">To do</button>
             </div>
         </div>
     </div>
@@ -1831,10 +1831,10 @@
                     <button type="button" onclick="submitQuiz(11)" class="quiz-submit">Submit Quiz</button>
                 </form>
             </div>
-            <div class="activity-row">
+            <div class="activity-row" onclick="window.location.href='/compiler/pandas_compiler.html?module=module11'">
                 <div class="activity-info"><i class="fas fa-code"></i> <span>Graphing Trends Exercise - PROGRAM</span>
                 </div>
-                <button class="status-btn todo">To do</button>
+                <button id="pbtn-11" class="status-btn todo">To do</button>
             </div>
         </div>
     </div>
@@ -1952,10 +1952,10 @@
                     <button type="button" onclick="submitQuiz(12)" class="quiz-submit">Submit Quiz</button>
                 </form>
             </div>
-            <div class="activity-row">
+            <div class="activity-row" onclick="window.location.href='/compiler/pandas_compiler.html?module=module12'">
                 <div class="activity-info"><i class="fas fa-code"></i> <span>Memory Optimization Task - PROGRAM</span>
                 </div>
-                <button class="status-btn todo">To do</button>
+                <button id="pbtn-12" class="status-btn todo">To do</button>
             </div>
         </div>
 
@@ -2082,6 +2082,7 @@
             document.querySelectorAll('.status-btn').forEach(btn => {
                 if (btn.id && localStorage.getItem("pandas_" + btn.id) === "done") {
                     btn.classList.add("done");
+                    btn.classList.remove("todo");
                     btn.innerHTML = 'Done <i class="fas fa-check"></i>';
                 }
             });

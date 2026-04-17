@@ -1,0 +1,7 @@
+{
+  "title": "Advanced: iloc Matrix Slicing",
+  "description": "Write a function `slice_matrix(df)` that uses `.iloc` to return a DataFrame containing only the first 3 rows and the last 2 columns of the input DataFrame.",
+  "input": "DataFrame (5x5)",
+  "expected_output": "DataFrame (3x2)",
+  "hidden_test_cases": "Test with DataFrames smaller than 3x2 to check bounds handling."
+}

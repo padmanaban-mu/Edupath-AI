@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduPath AI - Regression Models Compiler</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@300;400;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/loader.min.js"></script>
+
+    <style>
+        :root {
+            --primary: #1a3a6d;       
+            --secondary: #2d6cdf;     
+            --bg-color: #f0f4f8;      
+            --success: #10b981;
+            --fail: #ef4444;
+            --border-color: #e2e8f0;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-color); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+
+        /* Custom Scrollbar for Grandeur Look */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        /* Navbar - Rich Gradient */
+        .navbar { background: linear-gradient(90deg, #1a3a6d 0%, #102a52 100%); color: white; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.1); z-index: 10; height: 70px; flex-shrink: 0;}
+        .navbar a { color: #e2e8f0; text-decoration: none; font-size: 0.95rem; transition: 0.3s; font-weight: 500; display: flex; align-items: center; gap: 8px;}
+        .navbar a:hover { color: white; transform: translateX(-2px);}
+        .menu-toggle { cursor: pointer; font-size: 1.3rem; transition: 0.3s; }
+        .menu-toggle:hover { color: var(--secondary); }
+        
+        .logo-container { display: flex; align-items: center; gap: 12px; font-family: 'Poppins', sans-serif; font-size: 1.5rem; font-weight: 700; letter-spacing: 0.5px;}
+        .logo-container i { color: white; font-size: 1.4rem; }
+        .logo-container span { color: #3b82f6; }
+        .logo-subtitle { font-family: 'Inter', sans-serif; font-size: 0.9rem; font-weight: 500; opacity: 0.85; margin-left: 12px; padding-left: 12px; border-left: 1px solid rgba(255,255,255,0.2); }
+
+        /* 2-Pane Layout */
+        .layout { display: flex; flex: 1; overflow: hidden; }
+        
+        /* ─── LEFT PANE: ACCORDION SIDEBAR ─── */
+        .sidebar { width: 350px; background: white; border-right: 1px solid var(--border-color); display: flex; flex-direction: column; transition: margin-left 0.4s cubic-bezier(0.4, 0, 0.2, 1); flex-shrink: 0; box-shadow: 4px 0 20px rgba(0,0,0,0.03); z-index: 5;}
+        .sidebar.collapsed { margin-left: -350px; } 
+        
+        .sidebar-header { padding: 22px 25px; font-weight: 700; border-bottom: 1px solid #f1f5f9; background: #ffffff; color: var(--primary); flex-shrink: 0; font-size: 1.15rem; letter-spacing: 0.3px;}
+        
+        #accordion-container { flex: 1; overflow-y: auto; background: #fafcff;}
+        
+        .module-accordion { border-bottom: 1px solid #f1f5f9; }
+        .module-header { padding: 18px 25px; background: white; color: var(--text-dark); font-weight: 600; font-size: 0.95rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: 0.3s; line-height: 1.4; }
+        .module-header:hover { background: #f8faff; color: var(--primary); }
+        .module-header i.fa-chevron-down { transition: transform 0.3s; color: var(--text-muted); font-size: 0.8rem; flex-shrink: 0; margin-left: 10px; }
+        .module-header.open i.fa-chevron-down { transform: rotate(180deg); color: var(--secondary); }
+        
+        .question-list { list-style: none; display: none; background: #f8fafc; border-top: 1px solid #f1f5f9; box-shadow: inset 0 2px 4px rgba(0,0,0,0.01);}
+        .module-accordion.open .question-list { display: block; }
+        
+        .q-item { padding: 16px 25px 16px 35px; display: flex; align-items: flex-start; gap: 14px; border-bottom: 1px solid #f1f5f9; transition: 0.2s; cursor: pointer; }
+        .q-item i { margin-top: 3px; font-size: 0.9rem; color: #94a3b8; }
+        .q-item-text { display: flex; flex-direction: column; gap: 5px; }
+        .q-item-title { font-size: 0.9rem; font-weight: 600; color: #334155; }
+        .q-item-subtitle { font-size: 0.8rem; color: var(--text-muted); }
+        
+        .q-item:hover:not(.locked) { background: #eef2ff; }
+        .q-item.active { background: #eef2ff; border-left: 4px solid var(--secondary); padding-left: 31px; }
+        .q-item.active .q-item-title { color: var(--secondary); }
+        .q-item.active i { color: var(--secondary); }
+        
+        .q-item.completed .q-item-title { color: var(--success); }
+        .q-item.completed i { color: var(--success); }
+        
+        .q-item.locked { cursor: not-allowed; opacity: 0.5; }
+        
+        /* ─── CENTER PANE: WORKSPACE ─── */
+        .workspace { flex: 1; padding: 30px 40px; display: flex; flex-direction: column; gap: 20px; overflow-y: auto; height: calc(100vh - 70px); }
+        
+        /* Top Navigation Bar inside Workspace */
+        .workspace-top-bar { display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
+        
+        .nav-buttons { display: flex; gap: 12px; }
+        .btn-nav { background: white; border: 1px solid var(--border-color); color: var(--primary); padding: 10px 20px; border-radius: 8px; font-weight: 600; font-size: 0.9rem; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; align-items: center; gap: 8px; }
+        .btn-nav:hover:not(:disabled) { background: #f8faff; border-color: #cbd5e1; color: var(--secondary); box-shadow: 0 4px 8px rgba(0,0,0,0.05); transform: translateY(-1px); }
+        .btn-nav:disabled { opacity: 0.5; cursor: not-allowed; background: #f1f5f9; border-color: #e2e8f0; color: #94a3b8;}
+
+        /* Finish Button moved to Main Workspace */
+        .btn-finish-main { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border: none; padding: 12px 28px; border-radius: 8px; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3); display: flex; align-items: center; gap: 10px; letter-spacing: 0.5px; }
+        .btn-finish-main:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4); }
+
+        /* Problem Description */
+        .question-card { background: white; border-radius: 12px; padding: 25px 30px; border: 1px solid rgba(226, 232, 240, 0.8); box-shadow: 0 8px 24px rgba(0,0,0,0.03); flex-shrink: 0; transition: 0.3s; }
+        .q-title { font-size: 1.4rem; font-weight: 700; color: var(--primary); margin-bottom: 12px; font-family: 'Poppins', sans-serif;}
+        .q-desc { color: #475569; line-height: 1.6; font-size: 1rem; margin-bottom: 20px; }
+        
+        .io-table-desc { width: 100%; border-collapse: collapse; background: #f8fafc; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; border-radius: 8px; overflow: hidden; border: 1px solid var(--border-color);}
+        .io-table-desc th, .io-table-desc td { border: 1px solid var(--border-color); padding: 12px 16px; text-align: left; }
+        .io-table-desc th { background: #f1f5f9; color: var(--primary); width: 50%; font-family: 'Inter', sans-serif; font-weight: 600;}
+
+        /* Editor Section */
+        .editor-container { background: white; border: 1px solid rgba(226, 232, 240, 0.8); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; flex-shrink: 0; min-height: 450px; box-shadow: 0 8px 24px rgba(0,0,0,0.03); }
+        .editor-header { padding: 12px 25px; background: #ffffff; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); font-weight: 600; color: var(--primary); flex-shrink: 0; }
+        #monaco-editor { flex: 1; width: 100%; height: 100%; }
+        
+        .btn-run { background: var(--secondary); color: white; border: none; padding: 10px 28px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; gap: 8px; font-family: 'Inter', sans-serif; box-shadow: 0 4px 10px rgba(45, 108, 223, 0.2);}
+        .btn-run:hover { background: #1e5ab8; transform: translateY(-1px); box-shadow: 0 6px 15px rgba(45, 108, 223, 0.3);}
+        .btn-run:disabled { background: #94a3b8; cursor: not-allowed; box-shadow: none; transform: none;}
+
+        /* Validation Results */
+        .validation-banner { padding: 16px 25px; border-radius: 12px 12px 0 0; display: none; font-weight: 600; flex-shrink: 0; border: 1px solid transparent; border-bottom: none; font-size: 1rem;}
+        .validation-banner.success { display: block; background: #ecfdf5; color: #065f46; border-color: #a7f3d0; }
+        .validation-banner.fail { display: block; background: #fef2f2; color: #991b1b; border-color: #fecaca; }
+        
+        .terminal-output { padding: 20px 25px; font-family: 'Inter', sans-serif; border-radius: 0 0 12px 12px; overflow: auto; flex-shrink: 0; border: 1px solid transparent; border-top: none; }
+        .terminal-output.success-bg { background-color: #ecfdf5; border-color: #a7f3d0; }
+        .terminal-output.fail-bg { background-color: #fef2f2; border-color: #fecaca; }
+        .terminal-output.default-bg { background-color: #0f172a; color: #f8fafc; border-color: #0f172a; font-family: 'JetBrains Mono', monospace; border-radius: 12px; box-shadow: inset 0 4px 6px rgba(0,0,0,0.1); padding: 25px;}
+
+        .moodle-table { width: 100%; border-collapse: collapse; background: white; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; border: 1px solid #e2e8f0; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border-radius: 8px; overflow: hidden;}
+        .moodle-table th, .moodle-table td { border: 1px solid #e2e8f0; padding: 14px; text-align: left; vertical-align: top; }
+        .moodle-table th { background: #f8fafc; color: #334155; font-weight: 700; font-family: 'Inter', sans-serif; }
+        .moodle-table pre { margin: 0; white-space: pre-wrap; font-family: inherit; color: #1e293b; font-size: 0.85rem;}
+        .error-text { color: #dc2626; font-weight: bold; }
+        
+        .output-wrapper { display: flex; flex-direction: column; flex-shrink: 0; margin-bottom: 30px; box-shadow: 0 8px 24px rgba(0,0,0,0.03); border-radius: 12px;}
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <div style="display: flex; align-items: center; gap: 20px;">
+            <i class="fas fa-bars menu-toggle" onclick="toggleSidebar()" title="Toggle Sidebar"></i>
+            <div class="logo-container">
+                <i class="fas fa-brain"></i>
+                <div>EduPath <span>AI</span></div>
+                <div class="logo-subtitle">Regression Compiler</div>
+            </div>
+        </div>
+        <a href="/courses/programming/regression_models.html"><i class="fas fa-arrow-left"></i> Course Overview</a>
+    </div>
+
+    <div class="layout">
+        
+        <div class="sidebar" id="app-sidebar">
+            <div class="sidebar-header"><i class="fas fa-chart-line" style="margin-right: 8px;"></i> Regression Curriculum</div>
+            <div id="accordion-container">
+                <div style="padding: 20px; color: var(--text-muted);">Loading curriculum...</div>
+            </div>
+        </div>
+
+        <div class="workspace" id="workspace" style="display: none;">
+            
+            <div class="workspace-top-bar">
+                <div class="nav-buttons">
+                    <button class="btn-nav" id="btn-prev" onclick="prevQuestion()"><i class="fas fa-arrow-left"></i> Previous</button>
+                    <button class="btn-nav" id="btn-next" onclick="nextQuestion()">Next <i class="fas fa-arrow-right"></i></button>
+                </div>
+                <button id="btn-finish-main" class="btn-finish-main" onclick="finishAttempt()" style="display: none;">
+                    <i class="fas fa-flag-checkered"></i> Finish Module
+                </button>
+            </div>
+
+            <div class="question-card">
+                <div class="q-title" id="q-title">Loading Question...</div>
+                <div class="q-desc" id="q-desc"></div>
+                <table class="io-table-desc">
+                    <thead>
+                        <tr><th>Example Input</th><th>Expected Output</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td id="q-input"></td>
+                            <td id="q-output"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="editor-container">
+                <div class="editor-header">
+                    <span><i class="fab fa-python" style="color: #3776ab; margin-right: 8px; font-size: 1.1rem;"></i> Python Engine (Scikit-Learn Pre-installed)</span>
+                    <button class="btn-run" id="btn-run" onclick="runCode()"><i class="fas fa-play"></i> Run Code</button>
+                </div>
+                <div id="monaco-editor"></div>
+            </div>
+
+            <div class="output-wrapper">
+                <div id="validation-banner" class="validation-banner"></div>
+                <div class="terminal-output default-bg" id="terminal-output">Awaiting execution...</div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        let editor;
+        let state = {
+            modules: [],
+            flatQuestions: [],
+            currentQIndex: 0,
+            completedKeys: new Set(JSON.parse(localStorage.getItem('edupath_regression_progress') || '[]'))
+        };
+
+        // --- HARDCODED SYLLABUS MAPPING ---
+        const SYLLABUS_MAP = {
+            "module1": { title: "Introduction to Regression", task: "Intro to Regression - PROGRAMS" },
+            "module2": { title: "Simple Linear Regression", task: "Simple Linear Regression - PROGRAMS" },
+            "module3": { title: "Multiple Linear Regression", task: "Multiple Linear Regression - PROGRAMS" },
+            "module4": { title: "Polynomial Regression", task: "Polynomial Regression - PROGRAMS" },
+            "module5": { title: "Support Vector Regression", task: "Support Vector Regression - PROGRAMS" },
+            "module6": { title: "Decision Tree Regression", task: "Decision Tree Regression - PROGRAMS" },
+            "module7": { title: "Random Forest Regression", task: "Random Forest Regression - PROGRAMS" },
+            "module8": { title: "Model Evaluation & Metrics", task: "Model Evaluation - PROGRAMS" }
+        };
+
+        function escapeHTML(str) {
+            if (!str) return '';
+            return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
+        }
+
+        require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs' }});
+        require(['vs/editor/editor.main'], function() {
+            editor = monaco.editor.create(document.getElementById('monaco-editor'), {
+                value: "import pandas as pd\nimport numpy as np\nfrom sklearn.linear_model import LinearRegression\n\n# Write your ML code here...\n# Remember to use print() to output your final answer!\n\n",
+                language: 'python',
+                theme: 'vs',
+                automaticLayout: true,
+                fontSize: 14,
+                fontFamily: "'JetBrains Mono', monospace",
+                minimap: { enabled: false },
+                padding: { top: 15 }
+            });
+            fetchData();
+        });
+
+        function toggleSidebar() {
+            document.getElementById('app-sidebar').classList.toggle('collapsed');
+            setTimeout(() => { if (editor) editor.layout(); }, 400);
+        }
+
+        async function fetchData() {
+            try {
+                // FETCHES WITH COURSE FLAG
+                const res = await fetch('/api/modules?course=regression');
+                const data = await res.json();
+                state.modules = data.modules;
+                
+                state.flatQuestions = [];
+                state.modules.forEach((mod, mIdx) => {
+                    mod.questions.forEach((q, qIdx) => {
+                        const moduleId = mod.id || mod.module || `module${mIdx + 1}`;
+                        state.flatQuestions.push({
+                            globalIndex: state.flatQuestions.length,
+                            moduleId: moduleId,
+                            moduleName: SYLLABUS_MAP[moduleId] ? SYLLABUS_MAP[moduleId].title : mod.name,
+                            taskName: SYLLABUS_MAP[moduleId] ? SYLLABUS_MAP[moduleId].task : "Programming Challenge",
+                            questionId: q.id || q,
+                            questionTitle: q.title || `Task ${qIdx + 1}`,
+                            moduleIndex: mIdx,
+                            questionIndex: qIdx,
+                            key: `${moduleId}-${q.id || q}`
+                        });
+                    });
+                });
+
+                if(state.flatQuestions.length > 0) {
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const targetModuleId = urlParams.get('module');
+
+                    let targetIndex = 0;
+                    if (targetModuleId) {
+                        const foundIndex = state.flatQuestions.findIndex(q => q.moduleId === targetModuleId);
+                        if (foundIndex !== -1) {
+                            const mIdx = state.flatQuestions[foundIndex].moduleIndex;
+                            let isModuleUnlocked = (mIdx === 0) || (localStorage.getItem('regression_module' + mIdx + '_completed') === 'true');
+                            if (isModuleUnlocked) {
+                                targetIndex = foundIndex;
+                            }
+                        }
+                    } else {
+                        for (let i = 0; i < state.flatQuestions.length; i++) {
+                            if (!state.completedKeys.has(state.flatQuestions[i].key)) {
+                                targetIndex = i;
+                                break;
+                            }
+                        }
+                    }
+                    renderSidebar();
+                    loadQuestion(targetIndex);
+                }
+            } catch (err) {
+                document.getElementById('accordion-container').innerHTML = "<div style='padding:20px; color:red;'>Error connecting to server. Please verify the Regression module folder exists.</div>";
+            }
+        }
+
+        function isQuestionUnlocked(idx) {
+            if (idx === 0) return true;
+            const q = state.flatQuestions[idx];
+            const prevQ = state.flatQuestions[idx - 1];
+
+            let isModuleUnlocked = (q.moduleIndex === 0) || (localStorage.getItem('regression_module' + q.moduleIndex + '_completed') === 'true');
+            if (!isModuleUnlocked) return false;
+
+            const isFirstQuestionInModule = (q.questionIndex === 0);
+            const prevCompleted = state.completedKeys.has(prevQ.key);
+            const isCompleted = state.completedKeys.has(q.key);
+
+            return isFirstQuestionInModule || prevCompleted || isCompleted;
+        }
+
+        function renderSidebar() {
+            const container = document.getElementById('accordion-container');
+            container.innerHTML = '';
+            
+            let globalQCounter = 0;
+            const activeModIdx = state.flatQuestions[state.currentQIndex]?.moduleIndex || 0;
+
+            state.modules.forEach((mod, mIdx) => {
+                const moduleId = mod.id || mod.module || `module${mIdx + 1}`;
+                const modMappedData = SYLLABUS_MAP[moduleId] || { title: mod.name || "Module " + (mIdx+1), task: "Programming Challenge" };
+
+                let isModuleUnlocked = (mIdx === 0) || (localStorage.getItem('regression_module' + mIdx + '_completed') === 'true');
+
+                const modDiv = document.createElement('div');
+                modDiv.className = 'module-accordion';
+                
+                if (mIdx === activeModIdx) {
+                    modDiv.classList.add('open');
+                }
+
+                const header = document.createElement('div');
+                header.className = 'module-header';
+                
+                if (!isModuleUnlocked) {
+                    header.innerHTML = `<span><i class="fas fa-lock" style="color:#94a3b8; margin-right:8px;"></i> Module ${mIdx + 1}: ${modMappedData.title}</span> <i class="fas fa-chevron-down"></i>`;
+                    header.style.opacity = '0.7';
+                } else {
+                    header.innerHTML = `<span>Module ${mIdx + 1}: ${modMappedData.title}</span> <i class="fas fa-chevron-down"></i>`;
+                }
+                
+                header.onclick = () => modDiv.classList.toggle('open');
+                
+                const qList = document.createElement('ul');
+                qList.className = 'question-list';
+
+                mod.questions.forEach((q, qIdx) => {
+                    const fq = state.flatQuestions[globalQCounter];
+                    const isUnlocked = isQuestionUnlocked(globalQCounter);
+                    const isCompleted = state.completedKeys.has(fq.key);
+                    
+                    const li = document.createElement('li');
+                    li.className = 'q-item';
+                    
+                    if (globalQCounter === state.currentQIndex) li.classList.add('active');
+                    
+                    let iconHTML = '';
+                    if (isCompleted) {
+                        li.classList.add('completed');
+                        iconHTML = '<i class="fas fa-check-circle"></i>';
+                    } else if (!isUnlocked) {
+                        li.classList.add('locked');
+                        iconHTML = '<i class="fas fa-lock"></i>';
+                    } else {
+                        iconHTML = '<i class="far fa-circle"></i>';
+                    }
+
+                    li.innerHTML = `
+                        ${iconHTML} 
+                        <div class="q-item-text">
+                            <span class="q-item-title">${modMappedData.task}</span>
+                            <span class="q-item-subtitle">Task ${qIdx + 1}: ${fq.questionTitle}</span>
+                        </div>
+                    `;
+                    
+                    if (isUnlocked) {
+                        li.onclick = () => loadQuestion(fq.globalIndex);
+                    }
+                    
+                    qList.appendChild(li);
+                    globalQCounter++;
+                });
+
+                modDiv.appendChild(header);
+                modDiv.appendChild(qList);
+                container.appendChild(modDiv);
+            });
+
+            const questionsInActiveMod = state.flatQuestions.filter(q => q.moduleIndex === activeModIdx);
+            const isActiveModComplete = questionsInActiveMod.length > 0 && questionsInActiveMod.every(q => state.completedKeys.has(q.key));
+            
+            const finishBtnMain = document.getElementById('btn-finish-main');
+            if (finishBtnMain) {
+                finishBtnMain.style.display = isActiveModComplete ? 'flex' : 'none';
+            }
+        }
+
+        function updateNavButtons() {
+            const btnPrev = document.getElementById('btn-prev');
+            const btnNext = document.getElementById('btn-next');
+            
+            btnPrev.disabled = state.currentQIndex === 0;
+            btnNext.disabled = state.currentQIndex === state.flatQuestions.length - 1;
+        }
+
+        function prevQuestion() {
+            if (state.currentQIndex > 0) {
+                loadQuestion(state.currentQIndex - 1);
+            }
+        }
+
+        function nextQuestion() {
+            const nextIdx = state.currentQIndex + 1;
+            if (nextIdx < state.flatQuestions.length) {
+                if (isQuestionUnlocked(nextIdx)) {
+                    loadQuestion(nextIdx);
+                } else {
+                    const banner = document.getElementById('validation-banner');
+                    banner.className = 'validation-banner fail';
+                    banner.innerHTML = `<i class="fas fa-lock"></i> <strong>Task Locked!</strong> <span style="font-weight:400; font-size:0.9rem; margin-left:10px;">Please successfully complete the current task to unlock the next one.</span>`;
+                    banner.style.display = 'block';
+                    
+                    setTimeout(() => {
+                        banner.scrollIntoView({ behavior: 'smooth', block: 'end' });
+                    }, 100);
+                }
+            }
+        }
+
+        // --- FINISH ATTEMPT ACTION ---
+        function finishAttempt() {
+            const activeModIdx = state.flatQuestions[state.currentQIndex].moduleIndex;
+            const actualModNum = activeModIdx + 1;
+
+            // Save compiler completion
+            localStorage.setItem('regression_prog_module' + actualModNum, 'done');
+            
+            // UNLOCK the next module on the dashboard officially
+            localStorage.setItem('regression_module' + actualModNum + '_completed', 'true');
+
+            // Return to the dashboard
+            window.location.href = '/courses/programming/regression_models.html'; 
+        }
+
+        async function loadQuestion(globalIndex) {
+            state.currentQIndex = globalIndex;
+            const targetQ = state.flatQuestions[globalIndex];
+            
+            renderSidebar(); 
+            updateNavButtons();
+
+            try {
+                // FETCHES WITH COURSE FLAG
+                const res = await fetch(`/api/modules/${targetQ.moduleId}/questions/${targetQ.questionId}?course=regression`);
+                const qData = await res.json();
+                const questionDetails = qData.question || qData;
+
+                document.getElementById('workspace').style.display = 'flex';
+                document.getElementById('q-title').innerText = `${targetQ.questionTitle}`;
+                document.getElementById('q-desc').innerHTML = questionDetails.description || "No description provided.";
+                
+                const sampleIO = questionDetails.sample_io || {};
+                document.getElementById('q-input').innerText = sampleIO.input || questionDetails.input || "No input required";
+                document.getElementById('q-output').innerText = sampleIO.output || sampleIO.expected_output || questionDetails.expected_output || "No output provided";
+
+                editor.setValue("import pandas as pd\nimport numpy as np\nfrom sklearn.linear_model import LinearRegression\n\n# Write your ML code here...\n# Remember to use print() to output your final answer!\n\n");
+                
+                const banner = document.getElementById('validation-banner');
+                const term = document.getElementById('terminal-output');
+                banner.style.display = 'none';
+                term.className = 'terminal-output default-bg';
+                term.innerText = "Ready for execution...";
+            } catch (err) {
+                console.error("Failed to load question details");
+                document.getElementById('workspace').style.display = 'flex';
+                document.getElementById('q-title').innerText = targetQ.questionTitle;
+                document.getElementById('q-desc').innerHTML = "Could not load question description from server.";
+            }
+        }
+
+        async function runCode() {
+            const btn = document.getElementById('btn-run');
+            const term = document.getElementById('terminal-output');
+            const banner = document.getElementById('validation-banner');
+            const code = editor.getValue();
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Running...';
+            term.className = 'terminal-output default-bg';
+            term.innerText = "Executing on server...";
+            banner.style.display = 'none';
+
+            const currentQ = state.flatQuestions[state.currentQIndex];
+            const isLastQuestionInModule = (state.currentQIndex === state.flatQuestions.length - 1) || 
+                                           (state.flatQuestions[state.currentQIndex + 1].moduleIndex !== currentQ.moduleIndex);
+
+            try {
+                // EXECUTES WITH COURSE FLAG
+                const res = await fetch('/api/execute', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ query: code, moduleId: currentQ.moduleId, questionId: currentQ.questionId, course: 'regression' })
+                });
+
+                const result = await res.json();
+                
+                const isCorrect = (result.status === "success" && result.correct === true) || (result.correct === true);
+                
+                if (result.details && result.details.length > 0) {
+                    let tableHTML = `
+                        <table class="moodle-table">
+                            <thead>
+                                <tr>
+                                    <th width="5%" style="text-align:center;">Test</th>
+                                    <th width="30%">Input</th>
+                                    <th width="30%">Expected Output</th>
+                                    <th width="35%">Actual Output / Error</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                    `;
+
+                    result.details.forEach((tc, idx) => {
+                        const passed = tc.passed || tc.pass;
+                        const icon = passed ? '<i class="fas fa-check-circle" style="color: #10b981; font-size:1.2rem;"></i>' : '<i class="fas fa-times-circle" style="color: #ef4444; font-size:1.2rem;"></i>';
+                        const gotText = tc.error ? `<span class="error-text">***Run error***\n${escapeHTML(tc.error)}</span>` : escapeHTML(JSON.stringify(tc.actual_output || tc.actual || []));
+                        
+                        tableHTML += `
+                            <tr>
+                                <td style="text-align:center; vertical-align:middle;">${icon}</td>
+                                <td><pre>${escapeHTML(tc.message || tc.input || '')}</pre></td>
+                                <td><pre>${escapeHTML(tc.expected || tc.expected_output || '')}</pre></td>
+                                <td><pre style="max-height: 200px; overflow-y: auto;">${gotText}</pre></td>
+                            </tr>
+                        `;
+                    });
+
+                    tableHTML += `</tbody></table>`;
+
+                    if (isCorrect) {
+                        term.className = 'terminal-output success-bg';
+                        term.innerHTML = tableHTML;
+                        
+                        state.completedKeys.add(currentQ.key);
+                        localStorage.setItem('edupath_regression_progress', JSON.stringify([...state.completedKeys]));
+                        
+                        if (!isLastQuestionInModule) {
+                            banner.className = 'validation-banner success';
+                            banner.innerHTML = `<i class="fas fa-check-circle"></i> <strong>Passed all tests!</strong> <span style="font-weight:400; font-size:0.95rem; margin-left:10px;">Marks for this submission: 10/10. Click 'Next' above to continue.</span>`;
+                            renderSidebar(); 
+                        } else {
+                            banner.className = 'validation-banner success';
+                            banner.innerHTML = `<i class="fas fa-check-circle"></i> <strong>Passed all tests!</strong> <span style="font-weight:400; font-size:0.95rem; margin-left:10px;">Module Complete! Click 'Finish Module' above to return to your dashboard.</span>`;
+                            renderSidebar(); 
+                        }
+
+                    } else {
+                        banner.className = 'validation-banner fail';
+                        banner.innerHTML = `<i class="fas fa-times-circle"></i> <strong>Testing was aborted due to error or output mismatch.</strong> <span style="font-weight:400; font-size:0.95rem; margin-left:10px;">Review the table below.</span>`;
+                        term.className = 'terminal-output fail-bg';
+                        term.innerHTML = tableHTML;
+                    }
+                } else {
+                    term.innerText = result.error || result.output || result.message || "Execution Complete.";
+                    term.className = isCorrect ? 'terminal-output success-bg' : 'terminal-output fail-bg';
+                    banner.className = isCorrect ? 'validation-banner success' : 'validation-banner fail';
+                    banner.innerHTML = isCorrect ? "✅ Passed" : "❌ Failed";
+                }
+
+                setTimeout(() => {
+                    document.getElementById('validation-banner').scrollIntoView({ behavior: 'smooth', block: 'end' });
+                }, 100);
+
+            } catch (err) {
+                banner.className = 'validation-banner fail';
+                banner.innerHTML = `<i class="fas fa-exclamation-triangle"></i> <strong>NETWORK ERROR.</strong> Could not connect to the server.`;
+                term.className = 'terminal-output fail-bg';
+                term.innerText = err.toString();
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-play"></i> Run Code';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+{
+  "title": "Basic: Column Arithmetic",
+  "description": "Write a function `calculate_profit(df)` that creates a new column \"Profit\" by subtracting the \"Cost\" column from the \"Revenue\" column. Return the updated DataFrame.",
+  "input": "DataFrame with 'Revenue' and 'Cost'",
+  "expected_output": "DataFrame with new 'Profit' column.",
+  "hidden_test_cases": "Ensure subtraction handles negative profit margins correctly."
+}

@@ -1,0 +1,7 @@
+{
+  "title": "Basic: Vertical Concatenation",
+  "description": "Write a function `stack_dataframes(df1, df2)` that uses `pd.concat()` to append df2 below df1, ignoring the original indices.",
+  "input": "Two DataFrames with identical columns",
+  "expected_output": "Single stacked DataFrame with a fresh continuous index.",
+  "hidden_test_cases": "Pass DataFrames with slightly mismatched columns to verify NaN filling."
+}

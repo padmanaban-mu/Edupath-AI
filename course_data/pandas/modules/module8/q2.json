@@ -1,0 +1,7 @@
+{
+  "title": "Intermediate: Inner Join",
+  "description": "Write a function `merge_users(users_df, orders_df)` that performs an inner merge on the common column \"User_ID\".",
+  "input": "Two DataFrames sharing 'User_ID'",
+  "expected_output": "Merged DataFrame containing only matched users.",
+  "hidden_test_cases": "Test with overlapping non-key columns to check for _x and _y suffixes."
+}

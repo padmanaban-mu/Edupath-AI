@@ -1,0 +1,7 @@
+{
+  "title": "Intermediate: R-Squared Score",
+  "description": "Write a function r_squared(y_true, y_pred) that calculates the R-squared score comparing predicted values to the mean of true values.",
+  "input": "y_true = np.array([1, 2, 3]), y_pred = np.array([1.1, 1.9, 3.2])",
+  "expected_output": "0.97",
+  "hidden_test_cases": "Test with a model that performs worse than the mean (negative R-squared). Test with perfect predictions (R-squared = 1.0)."
+}

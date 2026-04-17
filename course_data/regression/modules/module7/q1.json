@@ -1,0 +1,7 @@
+{
+  "title": "Basic: Train-Test Split Indices",
+  "description": "Write a function train_test_split_indices(n_samples, test_size) that takes the total number of samples and a test size percentage, and returns two arrays of indices for training and testing (without shuffling).",
+  "input": "n_samples = 10, test_size = 0.2",
+  "expected_output": "(array([0, 1, 2, 3, 4, 5, 6, 7]), array([8, 9]))",
+  "hidden_test_cases": "Test with odd total sample sizes where the split results in a float index. Test with test_size = 0.0."
+}

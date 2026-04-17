@@ -70,7 +70,7 @@ const authenticateToken = (req, res, next) => {
     });
 };
 
-// ─── Module Metadata (From Compiler Server) ───────────────────────
+// ─── Dynamic Module Metadata (Upgraded for all courses) ───────────
 const MODULE_NAMES = {
     module1: 'Introduction to Data Visualization',
     module2: 'Matplotlib Basics',
@@ -93,6 +93,20 @@ const NUMPY_MODULE_NAMES = {
     module8: 'Advanced NumPy'
 };
 
+const PANDAS_MODULE_NAMES = {
+    module2: 'DataFrames Basics',
+    module3: 'Reading Data (CSV, Excel, etc.)',
+    module4: 'Selection and Indexing',
+    module5: 'Numerical Operations & Mapping',
+    module6: 'Handling Missing Data',
+    module7: 'GroupBy & Aggregations',
+    module8: 'Concatenation & Merging',
+    module9: 'Time Series Data',
+    module10: 'Multi-indexing',
+    module11: 'Data Visualization with Pandas',
+    module12: 'Advanced Operations & Optimization'
+};
+
 const PYTHON_MODULE_NAMES = {
     module1: 'Introduction to Python',
     module2: 'Variables and Data Types',
@@ -106,6 +120,36 @@ const PYTHON_MODULE_NAMES = {
     module10: 'File Handling',
     module11: 'Exception Handling',
     module12: 'OOP Concepts'
+};
+
+// FULLY INTEGRATED REGRESSION METADATA
+const REGRESSION_MODULE_NAMES = {
+    module1: 'Introduction to Regression',
+    module2: 'Simple Linear Regression',
+    module3: 'Multiple Linear Regression',
+    module4: 'Polynomial Regression',
+    module5: 'Support Vector Regression',
+    module6: 'Decision Tree Regression',
+    module7: 'Random Forest Regression',
+    module8: 'Model Evaluation & Metrics'
+};
+
+const COURSE_MODULE_NAMES = {
+    data_visualization: MODULE_NAMES,
+    sql: {
+        module1: 'Introduction to SQL & Databases',
+        module2: 'Basic SELECT & Filtering',
+        module3: 'Aggregates & Grouping',
+        module4: 'SQL JOINS',
+        module5: 'Subqueries & CTEs',
+        module6: 'Data Manipulation (DML)',
+        module7: 'Table Creation & Structure (DDL)',
+        module8: 'Advanced SQL Concepts'
+    },
+    numpy: NUMPY_MODULE_NAMES,
+    pandas: PANDAS_MODULE_NAMES,
+    python: PYTHON_MODULE_NAMES,
+    regression: REGRESSION_MODULE_NAMES
 };
 
 // ─── Safe input() wrapper for Python ──────────────────────────────
@@ -126,7 +170,6 @@ def input(prompt=''):
 function runPythonCase(code, stdin) {
     const tmp = path.join(os.tmpdir(), `edupath_${Date.now()}_${Math.random().toString(36).slice(2)}.py`);
     try {
-        // Fix: Ensure code retains exact formatting and carriage returns aren't mangled on Windows
         const normalizedCode = code.replace(/\r\n/g, '\n'); 
         fs.writeFileSync(tmp, SAFE_INPUT_WRAPPER + normalizedCode, 'utf-8');
         const result = spawnSync('python', [tmp], {
@@ -144,13 +187,17 @@ function runPythonCase(code, stdin) {
 }
 
 const sendWithRetry = async (chatSession, message, retries = 3) => {
+    let baseDelay = 1500;
+    
     for (let i = 0; i < retries; i++) {
         try {
             return await chatSession.sendMessage(message);
         } catch (error) {
-            console.warn(`[Network] Gemini API fetch failed. Attempt ${i + 1} of ${retries}...`);
+            console.warn(`[Network] Gemini API fetch failed (Attempt ${i + 1}/${retries}). Error: ${error.status || 'Network Issue'}`);
             if (i === retries - 1) throw error;
-            await new Promise(res => setTimeout(res, 1500));
+            const delay = baseDelay * Math.pow(2, i);
+            console.log(`[Network] Waiting ${delay / 1000}s before next attempt...`);
+            await new Promise(res => setTimeout(res, delay));
         }
     }
 };
@@ -161,7 +208,6 @@ function loadQuestionForSql(course, moduleName, questionId) {
     const moduleDir = path.join(__dirname, 'course_data', course, 'modules', moduleName);
     let filePath = path.join(moduleDir, `${questionId}.json`);
 
-    // Added fallback from NumPy server to match data.id
     if (!fs.existsSync(filePath) && fs.existsSync(moduleDir)) {
         const files = fs.readdirSync(moduleDir).filter(f => f.endsWith('.json'));
         const match = files.find(f => {
@@ -376,10 +422,9 @@ app.post("/update-domain", authenticateToken, async (req, res) => {
 
 app.get('/api/modules', (req, res) => {
     try {
-        // UPDATED: Points to your new course_data folder
         const course = req.query.course || 'data_visualization';
-        // Handle path for numpy and python if it was just in /modules in the original, adapting it to course_data
-        const modulesDir = (course === 'numpy' || course === 'python') && !fs.existsSync(path.join(__dirname, 'course_data', course, 'modules')) 
+        // Updated to fully handle the new regression folder along with existing paths
+        const modulesDir = (course === 'numpy' || course === 'python' || course === 'pandas' || course === 'regression') && !fs.existsSync(path.join(__dirname, 'course_data', course, 'modules')) 
             ? path.join(__dirname, 'modules') 
             : path.join(__dirname, 'course_data', course, 'modules');
             
@@ -416,19 +461,12 @@ app.get('/api/modules', (req, res) => {
                     };
                 });
 
-            // Added check for NumPy and Python naming
-            let moduleTitleName = folder;
-            if (course === 'numpy' && NUMPY_MODULE_NAMES[folder]) {
-                moduleTitleName = NUMPY_MODULE_NAMES[folder];
-            } else if (course === 'python' && PYTHON_MODULE_NAMES[folder]) {
-                moduleTitleName = PYTHON_MODULE_NAMES[folder];
-            } else if (MODULE_NAMES[folder]) {
-                moduleTitleName = MODULE_NAMES[folder];
-            }
+            // Using the fully upgraded dictionary map for all courses
+            const mappedName = (COURSE_MODULE_NAMES[course] && COURSE_MODULE_NAMES[course][folder]) || folder;
 
             modules.push({
                 id: folder,
-                name: moduleTitleName,
+                name: mappedName,
                 questions
             });
         }
@@ -444,14 +482,13 @@ app.get('/api/modules/:moduleId/questions/:questionId', (req, res) => {
         const course = req.query.course || 'data_visualization';
         const { moduleId, questionId } = req.params;
         
-        const modulesDir = (course === 'numpy' || course === 'python') && !fs.existsSync(path.join(__dirname, 'course_data', course, 'modules')) 
+        const modulesDir = (course === 'numpy' || course === 'python' || course === 'pandas' || course === 'regression') && !fs.existsSync(path.join(__dirname, 'course_data', course, 'modules')) 
             ? path.join(__dirname, 'modules') 
             : path.join(__dirname, 'course_data', course, 'modules');
             
         const moduleDir = path.join(modulesDir, moduleId);
         let filePath = path.join(moduleDir, `${questionId}.json`);
 
-        // Added fallback from NumPy/Python server to match data.id
         if (!fs.existsSync(filePath) && fs.existsSync(moduleDir)) {
             const files = fs.readdirSync(moduleDir).filter(f => f.endsWith('.json'));
             const match = files.find(f => {
@@ -481,14 +518,13 @@ app.post('/api/execute', async (req, res) => {
         return res.status(400).json({ status: 'error', error: 'Missing required fields' });
     }
 
-    const modulesDir = (course === 'numpy' || course === 'python') && !fs.existsSync(path.join(__dirname, 'course_data', course, 'modules')) 
+    const modulesDir = (course === 'numpy' || course === 'python' || course === 'pandas' || course === 'regression') && !fs.existsSync(path.join(__dirname, 'course_data', course, 'modules')) 
         ? path.join(__dirname, 'modules') 
         : path.join(__dirname, 'course_data', course, 'modules');
 
     const moduleDir = path.join(modulesDir, moduleId);
     let filePath = path.join(moduleDir, `${questionId}.json`);
 
-    // Added fallback from NumPy/Python server to match data.id
     if (!fs.existsSync(filePath) && fs.existsSync(moduleDir)) {
         const files = fs.readdirSync(moduleDir).filter(f => f.endsWith('.json'));
         const match = files.find(f => {
@@ -503,7 +539,7 @@ app.post('/api/execute', async (req, res) => {
     }
     const question = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
 
-    // Python Execution Logic (Expanded to handle Python/NumPy test_cases array pattern)
+    // Python Execution Logic
     if (question.expected_output !== undefined || (Array.isArray(question.test_cases) && question.test_cases.length > 0)) {
         const testList = (Array.isArray(question.test_cases) && question.test_cases.length > 0)
             ? question.test_cases
@@ -597,7 +633,7 @@ app.post('/api/execute', async (req, res) => {
     }
 });
 
-// Judge0 API Endpoint for Advanced SQL compilation (Merged from (sql)server.js)
+// Judge0 API Endpoint for Advanced SQL compilation
 app.post("/api/compile-sql", async (req, res) => {
     const { module: moduleName, q, sql, course = 'data_visualization' } = req.body ?? {};
     if (!moduleName || !q || !sql) {
@@ -740,7 +776,21 @@ app.post('/api/chat', authenticateToken, async (req, res) => {
         res.status(500).send({ reply: "Architect is recalibrating. Please try again." });
     }
 });
+// ... existing imports and middleware ...
 
+// ─── REGRESSION FILE ROUTES ──────────────────────────────────────
+// Add these BEFORE your catch-all route to handle the specific files
+app.get('/regression_models.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'regression_models.html'));
+});
+
+app.get('/regression_compiler.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'regression_compiler.html'));
+});
+
+
+
+// ... rest of server.js ...
 // ─── Catch-all Route ─────────────────────────────────────────────
 // ─── Serve index.html for all other routes ───────────────────────
 app.use((req, res) => {

@@ -1,0 +1,7 @@
+{
+  "title": "Basic: Calculate MAE",
+  "description": "Write a function calculate_mae(y_true, y_pred) that returns the Mean Absolute Error using NumPy.",
+  "input": "y_true = np.array([3, -0.5, 2, 7]), y_pred = np.array([2.5, 0.0, 2, 8])",
+  "expected_output": "0.5",
+  "hidden_test_cases": "All predictions perfectly match the true values. Extreme outliers causing massive absolute errors."
+}

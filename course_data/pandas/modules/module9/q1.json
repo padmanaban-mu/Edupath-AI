@@ -1,0 +1,7 @@
+{
+  "title": "Basic: Convert to Datetime",
+  "description": "Write a function `parse_dates(df, col_name)` that converts a string column into proper Pandas datetime objects.",
+  "input": "df, 'Date_String'",
+  "expected_output": "DataFrame with converted column dtype datetime64.",
+  "hidden_test_cases": "Pass mixed date formats (e.g., MM/DD/YY and YYYY-MM-DD)."
+}

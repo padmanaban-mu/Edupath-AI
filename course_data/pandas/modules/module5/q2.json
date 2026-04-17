@@ -1,0 +1,7 @@
+{
+  "title": "Intermediate: Apply Function",
+  "description": "Write a function `categorize_age(df)` that uses `.apply()` to create an \"AgeGroup\" column: \"Adult\" if Age >= 18, else \"Minor\".",
+  "input": "DataFrame with 'Age' column",
+  "expected_output": "DataFrame with 'AgeGroup' column mapped properly.",
+  "hidden_test_cases": "Test exact boundary condition (Age == 18)."
+}

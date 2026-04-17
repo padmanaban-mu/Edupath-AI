@@ -1,0 +1,7 @@
+{
+  "title": "Intermediate: Drop NaNs",
+  "description": "Write a function `clean_rows(df)` that drops any row containing at least one missing value using `.dropna()`.",
+  "input": "DataFrame",
+  "expected_output": "Cleaned DataFrame.",
+  "hidden_test_cases": "Test with rows containing all NaNs vs single NaNs."
+}

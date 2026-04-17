@@ -1,0 +1,7 @@
+{
+  "title": "Intermediate: Binary Cross Entropy",
+  "description": "Write a function binary_cross_entropy(y_true, y_pred) that calculates the Log Loss for a set of probability predictions.",
+  "input": "y_true = np.array([1, 0, 1]), y_pred = np.array([0.9, 0.1, 0.8])",
+  "expected_output": "0.14462152754328741",
+  "hidden_test_cases": "Test with predictions being exactly 0 or 1 (handle np.log(0) mathematically by adding a tiny epsilon). Test with completely incorrect predictions."
+}

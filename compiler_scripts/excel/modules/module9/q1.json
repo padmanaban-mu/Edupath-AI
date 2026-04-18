@@ -1,0 +1,7 @@
+{
+  "title": "Mock Test: Data Extraction Pipeline",
+  "description": "Write a nested formula utilizing TRIM, PROPER, and XLOOKUP to clean the lookup value in A1 before searching for it in B:B and returning C:C.",
+  "input": "Messy text string in A1",
+  "expected_output": "=XLOOKUP(PROPER(TRIM(A1)), B:B, C:C)",
+  "hidden_test_cases": "Test execution order to ensure text is fully sanitized before the XLOOKUP comparison begins."
+}

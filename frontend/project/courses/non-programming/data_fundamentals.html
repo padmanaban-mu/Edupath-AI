@@ -142,17 +142,28 @@
         }
 
         /* --- Top Nav --- */
-        /* .top-nav { 
+        .top-nav { 
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
             margin-bottom: 30px; 
-        } */
+        }
 
         .toggle-btn {
             cursor: pointer;
             font-size: 1.2rem;
             color: var(--dark-blue);
+        }
+        
+        .search-bar {
+            background: white; 
+            padding: 8px 20px; 
+            border-radius: 25px; 
+            width: 40%; 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            border: 1px solid #e2e8f0;
         }
 
         /* --- Notifications matching roadmap.html --- */
@@ -424,13 +435,6 @@
             border-color: var(--primary-blue);
         }
 
-        .video-embed {
-            padding: 20px 25px;
-            background: #f8fafc;
-            border-bottom: 1px solid #f1f5f9;
-            display: none;
-        }
-
         .quiz-box {
             display: none;
             padding: 20px;
@@ -470,10 +474,10 @@
     <main class="main-content" id="main-content">
         <header class="top-nav">
             <div class="toggle-btn" id="sidebarToggle"><i class="fas fa-bars"></i></div>
-            <!-- <div class="search-bar">
+            <div class="search-bar">
                 <i class="fas fa-search" style="color: var(--slate-500);"></i>
-                <input type="text" placeholder="Search EDA topics..." id="moduleSearch" style="border: none; outline: none; width: 100%;">
-            </div> -->
+                <input type="text" placeholder="Search Data topics..." id="moduleSearch" style="border: none; outline: none; width: 100%;">
+            </div>
             <div class="notifications">
                 <i class="far fa-bell" style="font-size: 1.2rem; color: var(--text-muted);"></i>
                 <span class="badge">3</span>
@@ -496,11 +500,11 @@
         </div>
 
         <div class="section-box">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header active" onclick="toggleSection(this)">
                 <h3><i class="fas fa-chevron-circle-right" style="color:var(--primary-blue)"></i> General</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-           <div class="section-content">
+           <div class="section-content" style="display: block;">
                            <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Course Syllabus & Objectives</span>
@@ -509,6 +513,7 @@
                 </div>
             </div>
         </div>
+        
         <div class="section-box" id="module-box-1">
             <div class="section-header active" onclick="toggleSection(this)">
                 <h3>Module 1: Introduction to Data</h3>
@@ -516,14 +521,9 @@
             </div>
             <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
-                <div class="activity-row" onclick="toggleVideo(this, 'vplayer-1')">
-                    <div class="activity-info"><i class="fas fa-link"></i> <span>What is Data? - VIDEO</span></div>
+                <div class="activity-row" onclick="window.open('https://www.youtube.com/watch?v=szX7SjP_Kxs', '_blank'); markAsDone('vbtn-1');">
+                    <div class="activity-info"><i class="fab fa-youtube" style="color: #ff0000;"></i> <span>What is Data? - VIDEO</span></div>
                     <button id="vbtn-1" class="status-btn todo">To do</button>
-                </div>
-                <div class="video-embed" id="video-1">
-                    <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;">
-                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/szX7SjP_Kxs?enablejsapi=1" id="vplayer-1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                    </div>
                 </div>
                 <div class="activity-row" onclick="showQuiz(1)">
                     <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Intro Quiz</span></div>
@@ -581,14 +581,9 @@
             </div>
             <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
-                <div class="activity-row" onclick="toggleVideo(this, 'vplayer-2')">
-                    <div class="activity-info"><i class="fas fa-link"></i> <span>The Data Lifecycle - VIDEO</span></div>
+                <div class="activity-row" onclick="window.open('https://www.youtube.com/watch?v=h8fTInSgPAs', '_blank'); markAsDone('vbtn-2');">
+                    <div class="activity-info"><i class="fab fa-youtube" style="color: #ff0000;"></i> <span>The Data Lifecycle - VIDEO</span></div>
                     <button id="vbtn-2" class="status-btn todo">To do</button>
-                </div>
-                <div class="video-embed" id="video-2">
-                    <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;">
-                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/h8fTInSgPAs?enablejsapi=1" id="vplayer-2" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                    </div>
                 </div>
                 <div class="activity-row" onclick="showQuiz(2)">
                     <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Lifecycle Quiz</span></div>
@@ -646,14 +641,9 @@
             </div>
             <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
-                <div class="activity-row" onclick="toggleVideo(this, 'vplayer-3')">
-                    <div class="activity-info"><i class="fas fa-link"></i> <span>Data Quality & Cleaning - VIDEO</span></div>
+                <div class="activity-row" onclick="window.open('https://www.youtube.com/watch?v=t_mXST0p6dM', '_blank'); markAsDone('vbtn-3');">
+                    <div class="activity-info"><i class="fab fa-youtube" style="color: #ff0000;"></i> <span>Data Quality & Cleaning - VIDEO</span></div>
                     <button id="vbtn-3" class="status-btn todo">To do</button>
-                </div>
-                <div class="video-embed" id="video-3">
-                    <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;">
-                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/t_mXST0p6dM?enablejsapi=1" id="vplayer-3" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                    </div>
                 </div>
                 <div class="activity-row" onclick="showQuiz(3)">
                     <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Quality Quiz</span></div>
@@ -711,14 +701,9 @@
             </div>
             <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
-                <div class="activity-row" onclick="toggleVideo(this, 'vplayer-4')">
-                    <div class="activity-info"><i class="fas fa-link"></i> <span>Descriptive Statistics - VIDEO</span></div>
+                <div class="activity-row" onclick="window.open('https://www.youtube.com/watch?v=J7k7_7P_LqM', '_blank'); markAsDone('vbtn-4');">
+                    <div class="activity-info"><i class="fab fa-youtube" style="color: #ff0000;"></i> <span>Descriptive Statistics - VIDEO</span></div>
                     <button id="vbtn-4" class="status-btn todo">To do</button>
-                </div>
-                <div class="video-embed" id="video-4">
-                    <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;">
-                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/J7k7_7P_LqM?enablejsapi=1" id="vplayer-4" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                    </div>
                 </div>
                 <div class="activity-row" onclick="showQuiz(4)">
                     <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Stats Quiz</span></div>
@@ -776,14 +761,9 @@
             </div>
             <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
-                <div class="activity-row" onclick="toggleVideo(this, 'vplayer-5')">
-                    <div class="activity-info"><i class="fas fa-link"></i> <span>Visualization Principles - VIDEO</span></div>
+                <div class="activity-row" onclick="window.open('https://www.youtube.com/watch?v=L0pC7zS2Q-U', '_blank'); markAsDone('vbtn-5');">
+                    <div class="activity-info"><i class="fab fa-youtube" style="color: #ff0000;"></i> <span>Visualization Principles - VIDEO</span></div>
                     <button id="vbtn-5" class="status-btn todo">To do</button>
-                </div>
-                <div class="video-embed" id="video-5">
-                    <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;">
-                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/L0pC7zS2Q-U?enablejsapi=1" id="vplayer-5" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                    </div>
                 </div>
                 <div class="activity-row" onclick="showQuiz(5)">
                     <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Viz Quiz</span></div>
@@ -841,14 +821,9 @@
             </div>
             <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
-                <div class="activity-row" onclick="toggleVideo(this, 'vplayer-6')">
-                    <div class="activity-info"><i class="fas fa-link"></i> <span>Data Ethics & Privacy - VIDEO</span></div>
+                <div class="activity-row" onclick="window.open('https://www.youtube.com/watch?v=2AFgpQTfVnQ', '_blank'); markAsDone('vbtn-6');">
+                    <div class="activity-info"><i class="fab fa-youtube" style="color: #ff0000;"></i> <span>Data Ethics & Privacy - VIDEO</span></div>
                     <button id="vbtn-6" class="status-btn todo">To do</button>
-                </div>
-                <div class="video-embed" id="video-6">
-                    <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;">
-                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/2AFgpQTfVnQ?enablejsapi=1" id="vplayer-6" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                    </div>
                 </div>
                 <div class="activity-row" onclick="showQuiz(6)">
                     <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Ethics Quiz</span></div>
@@ -906,14 +881,9 @@
             </div>
             <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
-                <div class="activity-row" onclick="toggleVideo(this, 'vplayer-7')">
-                    <div class="activity-info"><i class="fas fa-link"></i> <span>Big Data & Cloud - VIDEO</span></div>
+                <div class="activity-row" onclick="window.open('https://www.youtube.com/watch?v=0_P_9_v_0_88', '_blank'); markAsDone('vbtn-7');">
+                    <div class="activity-info"><i class="fab fa-youtube" style="color: #ff0000;"></i> <span>Big Data & Cloud - VIDEO</span></div>
                     <button id="vbtn-7" class="status-btn todo">To do</button>
-                </div>
-                <div class="video-embed" id="video-7">
-                    <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;">
-                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/0_P_9_v_0_88?enablejsapi=1" id="vplayer-7" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                    </div>
                 </div>
                 <div class="activity-row" onclick="showQuiz(7)">
                     <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Big Data Quiz</span></div>
@@ -971,14 +941,9 @@
             </div>
             <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
-                <div class="activity-row" onclick="toggleVideo(this, 'vplayer-8')">
-                    <div class="activity-info"><i class="fas fa-link"></i> <span>Data-Driven Decision Making - VIDEO</span></div>
+                <div class="activity-row" onclick="window.open('https://www.youtube.com/watch?v=_V8eKsto3Ug', '_blank'); markAsDone('vbtn-8');">
+                    <div class="activity-info"><i class="fab fa-youtube" style="color: #ff0000;"></i> <span>Data-Driven Decision Making - VIDEO</span></div>
                     <button id="vbtn-8" class="status-btn todo">To do</button>
-                </div>
-                <div class="video-embed" id="video-8">
-                    <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;">
-                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/_V8eKsto3Ug?enablejsapi=1" id="vplayer-8" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                    </div>
                 </div>
                 <div class="activity-row" onclick="showQuiz(8)">
                     <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Decision Quiz</span></div>
@@ -1029,12 +994,33 @@
             </div>
         </div>
 
+        <div class="section-box locked" id="module-box-9">
+            <div class="section-header active" onclick="toggleSection(this)">
+                <h3>Module 9: Final Mock Test</h3>
+                <i class="fas fa-chevron-down toggle-icon"></i>
+            </div>
+            <div class="section-content" style="display: block;">
+                <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
+                <div class="activity-row" onclick="generateAndShowMockTest()">
+                    <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Comprehensive Mock Test</span></div>
+                    <button id="qbtn-9" class="status-btn todo">To do</button>
+                </div>
+                <div class="quiz-box" id="quiz-9">
+                    <form id="quizForm-9">
+                        <div class="mcq-container" id="mock-test-container">
+                        </div>
+                        <button type="button" onclick="submitMockTest()" class="quiz-submit">Submit Mock Test</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
     </main>
 </div>
 
-<script src="https://www.youtube.com/iframe_api"></script>
 <script>
-    const totalModules = 8;
+    const totalModules = 9;
+    let mockTestAnswers = {};
     const quizAnswers = {
         1: { q1: 'A', q2: 'A', q3: 'A', q4: 'A', q5: 'A' },
         2: { q1: 'A', q2: 'A', q3: 'A', q4: 'A', q5: 'A' },
@@ -1071,6 +1057,19 @@
         });
 
         updateProgress();
+
+        // Search Functionality
+        const searchInput = document.getElementById('moduleSearch');
+        if (searchInput) {
+            searchInput.addEventListener('input', function (e) {
+                const term = e.target.value.toLowerCase();
+                const boxes = document.querySelectorAll('.section-box');
+                boxes.forEach(box => {
+                    const text = box.innerText.toLowerCase();
+                    box.style.display = text.includes(term) ? 'block' : 'none';
+                });
+            });
+        }
     });
 
     function toggleSection(header) {
@@ -1079,12 +1078,6 @@
         const isOpen = content.style.display === 'block';
         content.style.display = isOpen ? 'none' : 'block';
         header.classList.toggle('active', !isOpen);
-    }
-
-    function toggleVideo(row, playerId) {
-        const embed = row.nextElementSibling;
-        const isOpen = embed.style.display === 'block';
-        embed.style.display = isOpen ? 'none' : 'block';
     }
 
     function showQuiz(moduleNum) {
@@ -1138,12 +1131,14 @@
     }
 
     function updateProgress() {
-        const totalItems = totalModules * 2;
+        const totalItems = (8 * 2) + 1; // 8 modules (video + quiz) + 1 mock test
         let doneItems = 0;
-        for (let i = 1; i <= totalModules; i++) {
+        for (let i = 1; i <= 8; i++) {
             if (localStorage.getItem("df_vbtn-" + i) === "done") doneItems++;
             if (localStorage.getItem("df_qbtn-" + i) === "done") doneItems++;
         }
+        if (localStorage.getItem("df_qbtn-9") === "done") doneItems++;
+
         const progress = Math.round((doneItems / totalItems) * 100);
         const bar = document.getElementById("progressBar");
         const text = document.getElementById("progressText");
@@ -1151,22 +1146,75 @@
         if (text) text.innerText = progress + "%";
     }
 
-    let players = {};
-    function onYouTubeIframeAPIReady() {
-        const iframes = document.querySelectorAll('iframe[id^="vplayer-"]');
-        iframes.forEach(iframe => {
-            const id = iframe.id;
-            players[id] = new YT.Player(id, {
-                events: {
-                    'onStateChange': (event) => {
-                        if (event.data === YT.PlayerState.ENDED) {
-                            const btnId = id.replace('vplayer-', 'vbtn-');
-                            markAsDone(btnId);
-                        }
-                    }
-                }
-            });
+    function generateAndShowMockTest() {
+        showQuiz(9);
+        const container = document.getElementById('mock-test-container');
+        
+        // Prevent re-generating questions if user opens/closes the accordion
+        if (container.innerHTML.trim() !== '') return;
+
+        let allQuestions = [];
+        
+        // Gather all questions from modules 1 to 8
+        for (let i = 1; i <= 8; i++) {
+            const quizBox = document.getElementById('quiz-' + i);
+            if (quizBox) {
+                const questions = quizBox.querySelectorAll('.mcq-question');
+                questions.forEach((q, index) => {
+                    const originalQNum = `q${index + 1}`;
+                    const correctAnswer = quizAnswers[i][originalQNum];
+                    allQuestions.push({
+                        html: q.innerHTML,
+                        correct: correctAnswer
+                    });
+                });
+            }
+        }
+
+        // Shuffle array and slice the first 15 questions
+        allQuestions.sort(() => 0.5 - Math.random());
+        const selectedQuestions = allQuestions.slice(0, 15);
+
+        // Inject into the DOM and save answers
+        selectedQuestions.forEach((q, index) => {
+            const qDiv = document.createElement('div');
+            qDiv.className = 'mcq-question';
+            
+            // Rename the radio button groups to ensure they are unique to the mock test
+            let modifiedHtml = q.html.replace(/name="q\d+"/g, `name="mq${index + 1}"`);
+            
+            // Re-number the questions visually 1 through 15
+            modifiedHtml = modifiedHtml.replace(/<div class="mcq-title">\d+\./, '<div class="mcq-title">' + (index + 1) + '.');
+            
+            qDiv.innerHTML = modifiedHtml;
+            container.appendChild(qDiv);
+            
+            // Store the correct answer tied to the new radio group name
+            mockTestAnswers[`mq${index + 1}`] = q.correct;
         });
+    }
+
+    function submitMockTest() {
+        const form = document.getElementById("quizForm-9");
+        let score = 0;
+        let total = 15;
+
+        for (let q in mockTestAnswers) {
+            const selected = form.querySelector(`input[name="${q}"]:checked`);
+            if (selected && selected.value === mockTestAnswers[q]) {
+                score++;
+            }
+        }
+
+        const scorePercent = Math.round((score / total) * 100);
+        alert(`Mock Test Score: ${score}/${total} (${scorePercent}%)`);
+
+        // Requires an 80% to officially "pass" and update progress
+        if (scorePercent >= 80) {
+            markAsDone("qbtn-9");
+        } else {
+            alert("You need at least 80% to pass the Mock Test.");
+        }
     }
 </script>
 </body>

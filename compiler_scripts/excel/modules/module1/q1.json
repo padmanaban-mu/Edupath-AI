@@ -1,0 +1,7 @@
+{
+  "title": "Basic: Current Date",
+  "description": "Write a standard Excel formula that returns the current system date and will automatically update when the workbook is opened.",
+  "input": "None",
+  "expected_output": "=TODAY()",
+  "hidden_test_cases": "Verify the formula returns a valid serial date and updates dynamically."
+}

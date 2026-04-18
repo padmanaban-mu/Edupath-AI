@@ -1,0 +1,7 @@
+{
+  "title": "Basic: Remove Extra Spaces",
+  "description": "Write a formula using the TRIM function to remove all leading, trailing, and excessive internal spaces from the text in cell A2.",
+  "input": "A2=\"  Excel   Data   \"",
+  "expected_output": "=TRIM(A2)",
+  "hidden_test_cases": "Test with a string containing only spaces."
+}

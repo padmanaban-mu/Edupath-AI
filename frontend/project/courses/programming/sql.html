@@ -437,7 +437,6 @@
 
         /* Activities are visible but not clickable when locked */
         .section-box.locked .section-content .activity-row,
-        .section-box.locked .section-content .video-embed,
         .section-box.locked .section-content .quiz-box {
             pointer-events: none;
             opacity: 0.6;
@@ -490,12 +489,6 @@
             border-color: var(--primary-blue);
         }
 
-        .video-embed {
-            padding: 20px 25px;
-            background: #f8fafc;
-            border-bottom: 1px solid #f1f5f9;
-            display: none;
-        }
     </style>
 </head>
 
@@ -570,15 +563,9 @@
             </div>
             <div class="section-content" style="display:block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
-                <div class="activity-row" onclick="toggleVideo(this)">
-                    <div class="activity-info"><i class="fas fa-link"></i> <span>SQL Basics & Database Concepts -
-                            VIDEO</span></div>
-                    <button id="vbtn-1" class="status-btn todo">To do</button>
-                </div>
-                <div class="video-embed">
-                    <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;"><iframe
-                            width="100%" height="100%" src="https://www.youtube.com/embed/HXV3zeQKqGY?enablejsapi=1"
-                            id="vplayer-1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
+                <div class="activity-row" onclick="openVideo('https://www.youtube.com/watch?v=HXV3zeQKqGY', 'vbtn-1')">
+                    <div class="activity-info"><i class="fab fa-youtube" style="color: #ff0000;"></i> <span>SQL Basics & Database Concepts - VIDEO</span></div>
+                    <button id="vbtn-1" class="status-btn todo" onclick="event.stopPropagation(); markAsDone('vbtn-1')">To do</button>
                 </div>
                 <div class="activity-row" onclick="showQuiz(1)">
                     <div class="activity-info"><i class="fas fa-list-alt"></i> <span>SQL Fundamentals - MCQ</span></div>
@@ -626,7 +613,7 @@
                                 <div class="mcq-title">3. Which of the following is a Relational Database Management
                                     System (RDBMS)?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q3" value="A">
+                                    <label class="mcq-option"><input type="radio" name="q3" value="A">+
                                         <div class="option-letter">A</div><span>MongoDB</span>
                                     </label>
                                     <label class="mcq-option"><input type="radio" name="q3" value="B">
@@ -693,15 +680,9 @@
             </div>
             <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
-                <div class="activity-row" onclick="toggleVideo(this)">
-                    <div class="activity-info"><i class="fas fa-link"></i> <span>SELECT, WHERE & Logical Operators -
-                            VIDEO</span></div>
-                    <button id="vbtn-2" class="status-btn todo">To do</button>
-                </div>
-                <div class="video-embed">
-                    <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;"><iframe
-                            width="100%" height="100%" src="https://www.youtube.com/embed/7S_tz1z_5bA?enablejsapi=1"
-                            id="vplayer-2" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
+                <div class="activity-row" onclick="openVideo('https://www.youtube.com/watch?v=7S_tz1z_5bA', 'vbtn-2')">
+                    <div class="activity-info"><i class="fab fa-youtube" style="color: #ff0000;"></i> <span>SELECT, WHERE & Logical Operators - VIDEO</span></div>
+                    <button id="vbtn-2" class="status-btn todo" onclick="event.stopPropagation(); markAsDone('vbtn-2')">To do</button>
                 </div>
                 <div class="activity-row" onclick="showQuiz(2)">
                     <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Data Filtering - MCQ</span></div>
@@ -818,15 +799,9 @@
             </div>
             <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
-                <div class="activity-row" onclick="toggleVideo(this)">
-                    <div class="activity-info"><i class="fas fa-link"></i> <span>COUNT, SUM, AVG, MIN, MAX -
-                            VIDEO</span></div>
-                    <button id="vbtn-3" class="status-btn todo">To do</button>
-                </div>
-                <div class="video-embed">
-                    <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;"><iframe
-                            width="100%" height="100%" src="https://www.youtube.com/embed/9yeOJ0ZMUYw?enablejsapi=1"
-                            id="vplayer-3" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
+                <div class="activity-row" onclick="openVideo('https://www.youtube.com/watch?v=9yeOJ0ZMUYw', 'vbtn-3')">
+                    <div class="activity-info"><i class="fab fa-youtube" style="color: #ff0000;"></i> <span>COUNT, SUM, AVG, MIN, MAX - VIDEO</span></div>
+                    <button id="vbtn-3" class="status-btn todo" onclick="event.stopPropagation(); markAsDone('vbtn-3')">To do</button>
                 </div>
                 <div class="activity-row" onclick="showQuiz(3)">
                     <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Aggregate Functions - MCQ</span>
@@ -942,15 +917,9 @@
             </div>
             <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
-                <div class="activity-row" onclick="toggleVideo(this)">
-                    <div class="activity-info"><i class="fas fa-link"></i> <span>Inner, Left, Right & Full Joins -
-                            VIDEO</span></div>
-                    <button id="vbtn-4" class="status-btn todo">To do</button>
-                </div>
-                <div class="video-embed">
-                    <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;"><iframe
-                            width="100%" height="100%" src="https://www.youtube.com/embed/f77U8a-7_mI?enablejsapi=1"
-                            id="vplayer-4" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
+                <div class="activity-row" onclick="openVideo('https://www.youtube.com/watch?v=f77U8a-7_mI', 'vbtn-4')">
+                    <div class="activity-info"><i class="fab fa-youtube" style="color: #ff0000;"></i> <span>Inner, Left, Right & Full Joins - VIDEO</span></div>
+                    <button id="vbtn-4" class="status-btn todo" onclick="event.stopPropagation(); markAsDone('vbtn-4')">To do</button>
                 </div>
                 <div class="activity-row" onclick="showQuiz(4)">
                     <div class="activity-info"><i class="fas fa-list-alt"></i> <span>SQL Joins - MCQ</span></div>
@@ -1066,15 +1035,9 @@
             </div>
             <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
-                <div class="activity-row" onclick="toggleVideo(this)">
-                    <div class="activity-info"><i class="fas fa-link"></i> <span>Queries within Queries & Common Table
-                            Expressions - VIDEO</span></div>
-                    <button id="vbtn-5" class="status-btn todo">To do</button>
-                </div>
-                <div class="video-embed">
-                    <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;"><iframe
-                            width="100%" height="100%" src="https://www.youtube.com/embed/Z98p1T_A8A8?enablejsapi=1"
-                            id="vplayer-5" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
+                <div class="activity-row" onclick="openVideo('https://www.youtube.com/watch?v=Z98p1T_A8A8', 'vbtn-5')">
+                    <div class="activity-info"><i class="fab fa-youtube" style="color: #ff0000;"></i> <span>Queries within Queries & Common Table Expressions - VIDEO</span></div>
+                    <button id="vbtn-5" class="status-btn todo" onclick="event.stopPropagation(); markAsDone('vbtn-5')">To do</button>
                 </div>
                 <div class="activity-row" onclick="showQuiz(5)">
                     <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Subqueries - MCQ</span></div>
@@ -1192,15 +1155,9 @@
             </div>
             <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
-                <div class="activity-row" onclick="toggleVideo(this)">
-                    <div class="activity-info"><i class="fas fa-link"></i> <span>INSERT, UPDATE, DELETE - VIDEO</span>
-                    </div>
-                    <button id="vbtn-6" class="status-btn todo">To do</button>
-                </div>
-                <div class="video-embed">
-                    <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;"><iframe
-                            width="100%" height="100%" src="https://www.youtube.com/embed/qS-I06G7bZc?enablejsapi=1"
-                            id="vplayer-6" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
+                <div class="activity-row" onclick="openVideo('https://www.youtube.com/watch?v=qS-I06G7bZc', 'vbtn-6')">
+                    <div class="activity-info"><i class="fab fa-youtube" style="color: #ff0000;"></i> <span>INSERT, UPDATE, DELETE - VIDEO</span></div>
+                    <button id="vbtn-6" class="status-btn todo" onclick="event.stopPropagation(); markAsDone('vbtn-6')">To do</button>
                 </div>
                 <div class="activity-row" onclick="showQuiz(6)">
                     <div class="activity-info"><i class="fas fa-list-alt"></i> <span>DML Operations - MCQ</span></div>
@@ -1319,15 +1276,9 @@
             </div>
             <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
-                <div class="activity-row" onclick="toggleVideo(this)">
-                    <div class="activity-info"><i class="fas fa-link"></i> <span>CREATE, ALTER, DROP - VIDEO</span>
-                    </div>
-                    <button id="vbtn-7" class="status-btn todo">To do</button>
-                </div>
-                <div class="video-embed">
-                    <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;"><iframe
-                            width="100%" height="100%" src="https://www.youtube.com/embed/t9Xk9_jH-8A?enablejsapi=1"
-                            id="vplayer-7" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
+                <div class="activity-row" onclick="openVideo('https://www.youtube.com/watch?v=t9Xk9_jH-8A', 'vbtn-7')">
+                    <div class="activity-info"><i class="fab fa-youtube" style="color: #ff0000;"></i> <span>CREATE, ALTER, DROP - VIDEO</span></div>
+                    <button id="vbtn-7" class="status-btn todo" onclick="event.stopPropagation(); markAsDone('vbtn-7')">To do</button>
                 </div>
                 <div class="activity-row" onclick="showQuiz(7)">
                     <div class="activity-info"><i class="fas fa-list-alt"></i> <span>DDL Operations - MCQ</span></div>
@@ -1444,15 +1395,9 @@
             </div>
             <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
-                <div class="activity-row" onclick="toggleVideo(this)">
-                    <div class="activity-info"><i class="fas fa-link"></i> <span>Indexing & Transactions - VIDEO</span>
-                    </div>
-                    <button id="vbtn-8" class="status-btn todo">To do</button>
-                </div>
-                <div class="video-embed">
-                    <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;"><iframe
-                            width="100%" height="100%" src="https://www.youtube.com/embed/Yf5D_Hu_VI4?enablejsapi=1"
-                            id="vplayer-8" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
+                <div class="activity-row" onclick="openVideo('https://www.youtube.com/watch?v=Yf5D_Hu_VI4', 'vbtn-8')">
+                    <div class="activity-info"><i class="fab fa-youtube" style="color: #ff0000;"></i> <span>Indexing & Transactions - VIDEO</span></div>
+                    <button id="vbtn-8" class="status-btn todo" onclick="event.stopPropagation(); markAsDone('vbtn-8')">To do</button>
                 </div>
                 <div class="activity-row" onclick="showQuiz(8)">
                     <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Advanced SQL - MCQ</span></div>
@@ -1576,8 +1521,6 @@
     </main>
 </div>
 
-<script src="https://www.youtube.com/iframe_api"></script>
-
 <script>
     const totalModules = 9;
 
@@ -1610,24 +1553,10 @@
         updateProgress();
     });
 
-    let players = {};
-    function onYouTubeIframeAPIReady() {
-        const iframes = document.querySelectorAll('iframe[id^="vplayer-"]');
-        iframes.forEach(iframe => {
-            const id = iframe.id;
-            players[id] = new YT.Player(id, {
-                events: {
-                    'onStateChange': (event) => onPlayerStateChange(event, id)
-                }
-            });
-        });
-    }
-
-    function onPlayerStateChange(event, iframeId) {
-        if (event.data === YT.PlayerState.ENDED) {
-            const btnId = iframeId.replace('vplayer-', 'vbtn-');
-            markAsDone(btnId);
-        }
+    // Opens the video in a new tab and automatically marks it as done
+    function openVideo(url, btnId) {
+        window.open(url, '_blank'); // Opens YouTube in a new tab
+        markAsDone(btnId);          // Marks the button as "Done" on the dashboard
     }
 
     function markAsDone(btnId) {
@@ -1657,11 +1586,6 @@
         header.classList.toggle('active');
         const content = header.nextElementSibling;
         content.style.display = (content.style.display === 'block') ? 'none' : 'block';
-    }
-
-    function toggleVideo(row) {
-        const video = row.nextElementSibling;
-        video.style.display = (video.style.display === 'block') ? 'none' : 'block';
     }
 
     function showQuiz(module) {
@@ -1738,7 +1662,7 @@
     }
 
     // Search Functionality
-    document.getElementById('moduleSearch').addEventListener('input', function (e) {
+    document.getElementById('moduleSearch')?.addEventListener('input', function (e) {
         const term = e.target.value.toLowerCase();
         const modules = document.querySelectorAll('.section-box');
         modules.forEach(mod => {

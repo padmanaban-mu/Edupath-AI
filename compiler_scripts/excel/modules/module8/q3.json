@@ -1,0 +1,7 @@
+{
+  "title": "Advanced: User Defined Function (UDF)",
+  "description": "Write a custom VBA Function named `MultiplyByTwo` that takes a single variable `val` as an argument and returns that value multiplied by 2.",
+  "input": "Numeric Input",
+  "expected_output": "Function MultiplyByTwo(val)\nMultiplyByTwo = val * 2\nEnd Function",
+  "hidden_test_cases": "Test with floating-point integers to ensure implicit variant types handle decimals correctly."
+}

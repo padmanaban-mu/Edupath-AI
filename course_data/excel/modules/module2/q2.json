@@ -1,0 +1,7 @@
+{
+  "title": "Intermediate: Average Calculation",
+  "description": "Write a formula to calculate the arithmetic mean of the values located in the range B1 through B20.",
+  "input": "Range B1:B20 containing floats and integers",
+  "expected_output": "=AVERAGE(B1:B20)",
+  "hidden_test_cases": "Test with a range containing a 0 to ensure it is factored into the mean calculation correctly."
+}

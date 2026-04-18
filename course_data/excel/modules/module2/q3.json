@@ -1,0 +1,7 @@
+{
+  "title": "Advanced: Maximum Value",
+  "description": "Write a formula that identifies and returns the highest numerical value within the dataset spanning from cell C1 to C100.",
+  "input": "Range C1:C100",
+  "expected_output": "=MAX(C1:C100)",
+  "hidden_test_cases": "Test with entirely negative numbers to ensure the function returns the correct relative maximum."
+}

@@ -181,24 +181,6 @@
             color: var(--dark-blue);
         }
 
-        .search-bar {
-            background: white;
-            padding: 10px 20px;
-            border-radius: 30px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-            width: 40%;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            border: 1px solid #e2e8f0;
-        }
-
-        .search-bar input {
-            border: none;
-            outline: none;
-            width: 100%;
-        }
-
         .notifications {
             position: relative;
             cursor: pointer;
@@ -315,7 +297,6 @@
             width: 60%;
         }
 
-
         .mcq-option.correct {
             border: 2px solid #22c55e;
         }
@@ -355,38 +336,12 @@
             transition: 0.4s;
         }
 
-        .quiz-container {
+        .quiz-box {
             display: none;
-            padding: 25px;
-            margin: 20px auto;
-            width: 70%;
+            padding: 20px;
             background: #f8fafc;
+            margin: 15px 0;
             border-radius: 10px;
-        }
-
-        .quiz-question {
-            margin-bottom: 20px;
-        }
-
-        .quiz-options {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-top: 10px;
-        }
-
-        .quiz-options label {
-            border: 1px solid #d1d5db;
-            padding: 10px;
-            border-radius: 8px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .quiz-options label:hover {
-            background: #f1f5f9;
         }
 
         .mcq-container {
@@ -421,18 +376,15 @@
             transition: all 0.2s ease;
         }
 
-        /* Hover effect */
         .mcq-option:hover {
             background: #f1f5f9;
             border-color: #94a3b8;
         }
 
-        /* hide default radio */
         .mcq-option input {
             display: none;
         }
 
-        /* option letter circle */
         .option-letter {
             width: 28px;
             height: 28px;
@@ -445,7 +397,6 @@
             font-size: 13px;
         }
 
-        /* SELECTED OPTION */
         .mcq-option input:checked+.option-letter {
             background: #2563eb;
             color: white;
@@ -456,37 +407,9 @@
             font-weight: 600;
         }
 
-        /* highlight whole card when selected */
         .mcq-option:has(input:checked) {
             background: #eaf1ff;
             border: 2px solid #2563eb;
-        }
-
-        .mcq-option {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            background: white;
-            cursor: pointer;
-        }
-
-        .mcq-option input {
-            display: none;
-        }
-
-        .option-letter {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            border: 1px solid #cbd5e1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            font-size: 13px;
         }
 
         .quiz-submit {
@@ -505,9 +428,7 @@
             position: relative;
         }
 
-        /* Activities are visible but not clickable when locked */
         .section-box.locked .section-content .activity-row,
-        .section-box.locked .section-content .video-embed,
         .section-box.locked .section-content .quiz-box {
             pointer-events: none;
             opacity: 0.6;
@@ -559,13 +480,6 @@
             color: white;
             border-color: var(--primary-blue);
         }
-
-        .video-embed {
-            padding: 20px 25px;
-            background: #f8fafc;
-            border-bottom: 1px solid #f1f5f9;
-            display: none;
-        }
     </style>
 </head>
 
@@ -601,10 +515,6 @@
             <div class="toggle-btn" id="sidebarToggle">
                 <i class="fas fa-bars"></i>
             </div>
-            <!-- <div class="search-bar">
-                <i class="fas fa-search" style="color: var(--slate-500);"></i>
-                <input type="text" id="moduleSearch" placeholder="Search visualization topics...">
-            </div> -->
             <div class="notifications">
                 <i class="far fa-bell"></i>
                 <span class="badge">3</span>
@@ -633,7 +543,7 @@
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
            <div class="section-content">
-                           <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
+                <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Course Syllabus & Objectives</span>
                     </div>
@@ -649,107 +559,60 @@
             </div>
             <div class="section-content" style="display:block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
-                <div class="activity-row" onclick="toggleVideo(this)">
-                    <div class="activity-info"><i class="fas fa-link"></i> <span>Introduction to Visual Storytelling - VIDEO</span></div>
+                <div class="activity-row" onclick="openVideo('https://www.youtube.com/watch?v=leXt9btuyEY', 'vbtn-1')">
+                    <div class="activity-info"><i class="fab fa-youtube"></i> <span>Introduction to Visual Storytelling - VIDEO</span></div>
                     <button id="vbtn-1" class="status-btn todo">To do</button>
                 </div>
-                <div class="video-embed">
-                    <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;"><iframe
-                            width="100%" height="100%" src="https://www.youtube.com/embed/leXt9btuyEY?enablejsapi=1"
-                            id="vplayer-1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
-                </div>
                 <div class="activity-row" onclick="showQuiz(1)">
-                    <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Visualization Theory - MCQ</span>
-                    </div>
+                    <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Visualization Theory - MCQ</span></div>
                     <button id="qbtn-1" class="status-btn todo">To do</button>
                 </div>
-                <div class="quiz-box" id="quiz-module1"
-                    style="display:none;padding:20px;background:#f8fafc;margin:15px 0;border-radius:10px;">
+                <div class="quiz-box" id="quiz-module1">
                     <form id="quizForm1">
                         <div class="mcq-container">
                             <div class="mcq-question">
                                 <div class="mcq-title">1. What is the primary goal of data visualization?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q1" value="A">
-                                        <div class="option-letter">A</div><span>To make data look pretty</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q1" value="B">
-                                        <div class="option-letter">B</div><span>To communicate information clearly and efficiently</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q1" value="C">
-                                        <div class="option-letter">C</div><span>To hide complex details</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q1" value="D">
-                                        <div class="option-letter">D</div><span>To replace data analysis</span>
-                                    </label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="A"><div class="option-letter">A</div><span>To make data look pretty</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="B"><div class="option-letter">B</div><span>To communicate information clearly and efficiently</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="C"><div class="option-letter">C</div><span>To hide complex details</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="D"><div class="option-letter">D</div><span>To replace data analysis</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
                                 <div class="mcq-title">2. Which type of chart is best for showing trends over time?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q2" value="A">
-                                        <div class="option-letter">A</div><span>Line Chart</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q2" value="B">
-                                        <div class="option-letter">B</div><span>Pie Chart</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q2" value="C">
-                                        <div class="option-letter">C</div><span>Scatter Plot</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q2" value="D">
-                                        <div class="option-letter">D</div><span>Heat map</span>
-                                    </label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="A"><div class="option-letter">A</div><span>Line Chart</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="B"><div class="option-letter">B</div><span>Pie Chart</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="C"><div class="option-letter">C</div><span>Scatter Plot</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="D"><div class="option-letter">D</div><span>Heat map</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
                                 <div class="mcq-title">3. What does "Data-Ink Ratio" refer to?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q3" value="A">
-                                        <div class="option-letter">A</div><span>The amount of color used</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q3" value="B">
-                                        <div class="option-letter">B</div><span>Proportion of ink used for data vs non-data elements</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q3" value="C">
-                                        <div class="option-letter">C</div><span>The size of the chart</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q3" value="D">
-                                        <div class="option-letter">D</div><span>The thickness of lines</span>
-                                    </label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="A"><div class="option-letter">A</div><span>The amount of color used</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="B"><div class="option-letter">B</div><span>Proportion of ink used for data vs non-data elements</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="C"><div class="option-letter">C</div><span>The size of the chart</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="D"><div class="option-letter">D</div><span>The thickness of lines</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
                                 <div class="mcq-title">4. Which chart is useful for showing parts of a whole?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q4" value="A">
-                                        <div class="option-letter">A</div><span>Bar Chart</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q4" value="B">
-                                        <div class="option-letter">B</div><span>Pie Chart</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q4" value="C">
-                                        <div class="option-letter">C</div><span>Box Plot</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q4" value="D">
-                                        <div class="option-letter">D</div><span>Histogram</span>
-                                    </label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="A"><div class="option-letter">A</div><span>Bar Chart</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="B"><div class="option-letter">B</div><span>Pie Chart</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="C"><div class="option-letter">C</div><span>Box Plot</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="D"><div class="option-letter">D</div><span>Histogram</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
                                 <div class="mcq-title">5. Why is color choice important in visualization?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q5" value="A">
-                                        <div class="option-letter">A</div><span>Conveys meaning and accessibility</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q5" value="B">
-                                        <div class="option-letter">B</div><span>Makes it more expensive to print</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q5" value="C">
-                                        <div class="option-letter">C</div><span>Hides data errors</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q5" value="D">
-                                        <div class="option-letter">D</div><span>All colors are perceived equally</span>
-                                    </label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="A"><div class="option-letter">A</div><span>Conveys meaning and accessibility</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="B"><div class="option-letter">B</div><span>Makes it more expensive to print</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="C"><div class="option-letter">C</div><span>Hides data errors</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="D"><div class="option-letter">D</div><span>All colors are perceived equally</span></label>
                                 </div>
                             </div>
                         </div>
@@ -764,111 +627,66 @@
         </div>
 
         <div class="section-box locked" id="module-box-2">
-<div class="section-header active" onclick="toggleSection(this)">                <h3>Module 2: Python Visualization - Matplotlib</h3>
+            <div class="section-header active" onclick="toggleSection(this)">
+                <h3>Module 2: Python Visualization - Matplotlib</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-          <div class="section-content" style="display:block;">
+            <div class="section-content" style="display:block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
-                <div class="activity-row" onclick="toggleVideo(this)">
-                    <div class="activity-info"><i class="fas fa-link"></i> <span>Matplotlib Masterclass - VIDEO</span></div>
+                <div class="activity-row" onclick="openVideo('https://www.youtube.com/watch?v=D4VlmL3G4_o', 'vbtn-2')">
+                    <div class="activity-info"><i class="fab fa-youtube"></i> <span>Matplotlib Masterclass - VIDEO</span></div>
                     <button id="vbtn-2" class="status-btn todo">To do</button>
-                </div>
-                <div class="video-embed">
-                    <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;">
-                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/D4VlmL3G4_o?enablejsapi=1" id="vplayer-2" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                    </div>
                 </div>
                 <div class="activity-row" onclick="showQuiz(2)">
                     <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Matplotlib Basics - MCQ</span></div>
                     <button id="qbtn-2" class="status-btn todo">To do</button>
                 </div>
-                <div class="quiz-box" id="quiz-module2"
-                    style="display:none;padding:20px;background:#f8fafc;margin:15px 0;border-radius:10px;">
+                <div class="quiz-box" id="quiz-module2">
                     <form id="quizForm2">
                         <div class="mcq-container">
                             <div class="mcq-question">
                                 <div class="mcq-title">1. Which command imports Matplotlib's plotting module?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q1" value="A">
-                                        <div class="option-letter">A</div><span>import matplotlib.plot as plt</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q1" value="B">
-                                        <div class="option-letter">B</div><span>import matplotlib.pyplot as plt</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q1" value="C">
-                                        <div class="option-letter">C</div><span>import plt from matplotlib</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q1" value="D">
-                                        <div class="option-letter">D</div><span>import graph from matplotlib</span>
-                                    </label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="A"><div class="option-letter">A</div><span>import matplotlib.plot as plt</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="B"><div class="option-letter">B</div><span>import matplotlib.pyplot as plt</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="C"><div class="option-letter">C</div><span>import plt from matplotlib</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="D"><div class="option-letter">D</div><span>import graph from matplotlib</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
                                 <div class="mcq-title">2. How do you display a plot in Matplotlib?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q2" value="A">
-                                        <div class="option-letter">A</div><span>plt.print()</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q2" value="B">
-                                        <div class="option-letter">B</div><span>plt.show()</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q2" value="C">
-                                        <div class="option-letter">C</div><span>plt.display()</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q2" value="D">
-                                        <div class="option-letter">D</div><span>plt.open()</span>
-                                    </label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="A"><div class="option-letter">A</div><span>plt.print()</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="B"><div class="option-letter">B</div><span>plt.show()</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="C"><div class="option-letter">C</div><span>plt.display()</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="D"><div class="option-letter">D</div><span>plt.open()</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
                                 <div class="mcq-title">3. Which function is used to create a scatter plot?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q3" value="A">
-                                        <div class="option-letter">A</div><span>plt.dot()</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q3" value="B">
-                                        <div class="option-letter">B</div><span>plt.scatter()</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q3" value="C">
-                                        <div class="option-letter">C</div><span>plt.points()</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q3" value="D">
-                                        <div class="option-letter">D</div><span>plt.xy()</span>
-                                    </label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="A"><div class="option-letter">A</div><span>plt.dot()</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="B"><div class="option-letter">B</div><span>plt.scatter()</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="C"><div class="option-letter">C</div><span>plt.points()</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="D"><div class="option-letter">D</div><span>plt.xy()</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
                                 <div class="mcq-title">4. How do you add a label to the X-axis?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q4" value="A">
-                                        <div class="option-letter">A</div><span>plt.x_label()</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q4" value="B">
-                                        <div class="option-letter">B</div><span>plt.xlabel()</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q4" value="C">
-                                        <div class="option-letter">C</div><span>plt.label_x()</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q4" value="D">
-                                        <div class="option-letter">D</div><span>plt.set_x()</span>
-                                    </label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="A"><div class="option-letter">A</div><span>plt.x_label()</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="B"><div class="option-letter">B</div><span>plt.xlabel()</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="C"><div class="option-letter">C</div><span>plt.label_x()</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="D"><div class="option-letter">D</div><span>plt.set_x()</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
                                 <div class="mcq-title">5. Which function creates a bar chart?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q5" value="A">
-                                        <div class="option-letter">A</div><span>plt.barchart()</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q5" value="B">
-                                        <div class="option-letter">B</div><span>plt.bar()</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q5" value="C">
-                                        <div class="option-letter">C</div><span>plt.columns()</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q5" value="D">
-                                        <div class="option-letter">D</div><span>plt.rect()</span>
-                                    </label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="A"><div class="option-letter">A</div><span>plt.barchart()</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="B"><div class="option-letter">B</div><span>plt.bar()</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="C"><div class="option-letter">C</div><span>plt.columns()</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="D"><div class="option-letter">D</div><span>plt.rect()</span></label>
                                 </div>
                             </div>
                         </div>
@@ -889,107 +707,60 @@
             </div>
             <div class="section-content" style="display:block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
-                <div class="activity-row" onclick="toggleVideo(this)">
-                    <div class="activity-info"><i class="fas fa-link"></i> <span>Seaborn for Statistical Plotting - VIDEO</span></div>
+                <div class="activity-row" onclick="openVideo('https://www.youtube.com/watch?v=VI4k17NnrMM', 'vbtn-3')">
+                    <div class="activity-info"><i class="fab fa-youtube"></i> <span>Seaborn for Statistical Plotting - VIDEO</span></div>
                     <button id="vbtn-3" class="status-btn todo">To do</button>
                 </div>
-                <div class="video-embed">
-                    <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;">
-                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/VI4k17NnrMM?enablejsapi=1" id="vplayer-3" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                    </div>
-                </div>
                 <div class="activity-row" onclick="showQuiz(3)">
-                    <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Seaborn Essentials - MCQ</span>
-                    </div>
+                    <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Seaborn Essentials - MCQ</span></div>
                     <button id="qbtn-3" class="status-btn todo">To do</button>
                 </div>
-                <div class="quiz-box" id="quiz-module3"
-                    style="display:none;padding:20px;background:#f8fafc;margin:15px 0;border-radius:10px;">
+                <div class="quiz-box" id="quiz-module3">
                     <form id="quizForm3">
                         <div class="mcq-container">
                             <div class="mcq-question">
                                 <div class="mcq-title">1. What is a key advantage of Seaborn over Matplotlib?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q1" value="A">
-                                        <div class="option-letter">A</div><span>Easier integration with Pandas and high-level statistical plots</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q1" value="B">
-                                        <div class="option-letter">B</div><span>It is faster for large data</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q1" value="C">
-                                        <div class="option-letter">C</div><span>It doesn't require Python</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q1" value="D">
-                                        <div class="option-letter">D</div><span>It only supports interactive plots</span>
-                                    </label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="A"><div class="option-letter">A</div><span>Easier integration with Pandas and high-level statistical plots</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="B"><div class="option-letter">B</div><span>It is faster for large data</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="C"><div class="option-letter">C</div><span>It doesn't require Python</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="D"><div class="option-letter">D</div><span>It only supports interactive plots</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
                                 <div class="mcq-title">2. Which function is used for drawing a heatmap?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q2" value="A">
-                                        <div class="option-letter">A</div><span>sns.density()</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q2" value="B">
-                                        <div class="option-letter">B</div><span>sns.heatmap()</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q2" value="C">
-                                        <div class="option-letter">C</div><span>sns.grid()</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q2" value="D">
-                                        <div class="option-letter">D</div><span>sns.color()</span>
-                                    </label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="A"><div class="option-letter">A</div><span>sns.density()</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="B"><div class="option-letter">B</div><span>sns.heatmap()</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="C"><div class="option-letter">C</div><span>sns.grid()</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="D"><div class="option-letter">D</div><span>sns.color()</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
                                 <div class="mcq-title">3. Which plot shows the distribution of a single variable?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q3" value="A">
-                                        <div class="option-letter">A</div><span>sns.displot()</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q3" value="B">
-                                        <div class="option-letter">B</div><span>sns.lineplot()</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q3" value="C">
-                                        <div class="option-letter">C</div><span>sns.jointplot()</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q3" value="D">
-                                        <div class="option-letter">D</div><span>sns.scatter()</span>
-                                    </label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="A"><div class="option-letter">A</div><span>sns.displot()</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="B"><div class="option-letter">B</div><span>sns.lineplot()</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="C"><div class="option-letter">C</div><span>sns.jointplot()</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="D"><div class="option-letter">D</div><span>sns.scatter()</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
                                 <div class="mcq-title">4. Which plot is ideal for showing distributions across categories?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q4" value="A">
-                                        <div class="option-letter">A</div><span>sns.boxplot()</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q4" value="B">
-                                        <div class="option-letter">B</div><span>sns.pointplot()</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q4" value="C">
-                                        <div class="option-letter">C</div><span>sns.regplot()</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q4" value="D">
-                                        <div class="option-letter">D</div><span>sns.heatmap()</span>
-                                    </label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="A"><div class="option-letter">A</div><span>sns.boxplot()</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="B"><div class="option-letter">B</div><span>sns.pointplot()</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="C"><div class="option-letter">C</div><span>sns.regplot()</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="D"><div class="option-letter">D</div><span>sns.heatmap()</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
                                 <div class="mcq-title">5. How do you set the visual theme in Seaborn?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q5" value="A">
-                                        <div class="option-letter">A</div><span>sns.set_theme()</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q5" value="B">
-                                        <div class="option-letter">B</div><span>sns.style()</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q5" value="C">
-                                        <div class="option-letter">C</div><span>sns.color_palette()</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q5" value="D">
-                                        <div class="option-letter">D</div><span>sns.background()</span>
-                                    </label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="A"><div class="option-letter">A</div><span>sns.set_theme()</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="B"><div class="option-letter">B</div><span>sns.style()</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="C"><div class="option-letter">C</div><span>sns.color_palette()</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="D"><div class="option-letter">D</div><span>sns.background()</span></label>
                                 </div>
                             </div>
                         </div>
@@ -997,8 +768,7 @@
                     </form>
                 </div>
                 <div class="activity-row" onclick="window.location.href='/compiler/dataviz.html?module=module3'">
-                    <div class="activity-info"><i class="fas fa-code"></i> <span>Seaborn Plotting - PROGRAMS</span>
-                    </div>
+                    <div class="activity-info"><i class="fas fa-code"></i> <span>Seaborn Plotting - PROGRAMS</span></div>
                     <button id="pbtn-3" class="status-btn todo">To do</button>
                 </div>
             </div>
@@ -1011,106 +781,60 @@
             </div>
             <div class="section-content" style="display:block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
-                <div class="activity-row" onclick="toggleVideo(this)">
-                    <div class="activity-info"><i class="fas fa-link"></i> <span>Plotly Express & Figures - VIDEO</span></div>
+                <div class="activity-row" onclick="openVideo('https://www.youtube.com/watch?v=PqUaDvbczbI', 'vbtn-4')">
+                    <div class="activity-info"><i class="fab fa-youtube"></i> <span>Plotly Express & Figures - VIDEO</span></div>
                     <button id="vbtn-4" class="status-btn todo">To do</button>
-                </div>
-                <div class="video-embed">
-                    <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;">
-                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/PqUaDvbczbI?enablejsapi=1" id="vplayer-4" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                    </div>
                 </div>
                 <div class="activity-row" onclick="showQuiz(4)">
                     <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Plotly Basics - MCQ</span></div>
                     <button id="qbtn-4" class="status-btn todo">To do</button>
                 </div>
-                <div class="quiz-box" id="quiz-module4"
-                    style="display:none;padding:20px;background:#f8fafc;margin:15px 0;border-radius:10px;">
+                <div class="quiz-box" id="quiz-module4">
                     <form id="quizForm4">
                         <div class="mcq-container">
                             <div class="mcq-question">
                                 <div class="mcq-title">1. What is a key feature of Plotly visualizations?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q1" value="A">
-                                        <div class="option-letter">A</div><span>They are static static images</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q1" value="B">
-                                        <div class="option-letter">B</div><span>They are interactive and web-based</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q1" value="C">
-                                        <div class="option-letter">C</div><span>They only work in Excel</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q1" value="D">
-                                        <div class="option-letter">D</div><span>They require a GPU to render</span>
-                                    </label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="A"><div class="option-letter">A</div><span>They are static static images</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="B"><div class="option-letter">B</div><span>They are interactive and web-based</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="C"><div class="option-letter">C</div><span>They only work in Excel</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="D"><div class="option-letter">D</div><span>They require a GPU to render</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
                                 <div class="mcq-title">2. Which module provides the high-level API for Plotly?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q2" value="A">
-                                        <div class="option-letter">A</div><span>plotly.base</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q2" value="B">
-                                        <div class="option-letter">B</div><span>plotly.express</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q2" value="C">
-                                        <div class="option-letter">C</div><span>plotly.grid</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q2" value="D">
-                                        <div class="option-letter">D</div><span>plotly.simple</span>
-                                    </label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="A"><div class="option-letter">A</div><span>plotly.base</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="B"><div class="option-letter">B</div><span>plotly.express</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="C"><div class="option-letter">C</div><span>plotly.grid</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="D"><div class="option-letter">D</div><span>plotly.simple</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
                                 <div class="mcq-title">3. How do you add a slider to a Plotly chart easily?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q3" value="A">
-                                        <div class="option-letter">A</div><span>Using the animation_frame parameter</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q3" value="B">
-                                        <div class="option-letter">B</div><span>Writing custom JavaScript</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q3" value="C">
-                                        <div class="option-letter">C</div><span>Plotly doesn't support sliders</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q3" value="D">
-                                        <div class="option-letter">D</div><span>By converting to a GIF</span>
-                                    </label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="A"><div class="option-letter">A</div><span>Using the animation_frame parameter</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="B"><div class="option-letter">B</div><span>Writing custom JavaScript</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="C"><div class="option-letter">C</div><span>Plotly doesn't support sliders</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="D"><div class="option-letter">D</div><span>By converting to a GIF</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
                                 <div class="mcq-title">4. Which function shows the interactive plot?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q4" value="A">
-                                        <div class="option-letter">A</div><span>fig.save()</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q4" value="B">
-                                        <div class="option-letter">B</div><span>fig.show()</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q4" value="C">
-                                        <div class="option-letter">C</div><span>fig.display()</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q4" value="D">
-                                        <div class="option-letter">D</div><span>fig.open()</span>
-                                    </label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="A"><div class="option-letter">A</div><span>fig.save()</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="B"><div class="option-letter">B</div><span>fig.show()</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="C"><div class="option-letter">C</div><span>fig.display()</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="D"><div class="option-letter">D</div><span>fig.open()</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
                                 <div class="mcq-title">5. Which of these can be exported from Plotly?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q5" value="A">
-                                        <div class="option-letter">A</div><span>Interactive HTML files</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q5" value="B">
-                                        <div class="option-letter">B</div><span>Static PNG/PDF images</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q5" value="C">
-                                        <div class="option-letter">C</div><span>JSON data</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q5" value="D">
-                                        <div class="option-letter">D</div><span>All of the above</span>
-                                    </label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="A"><div class="option-letter">A</div><span>Interactive HTML files</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="B"><div class="option-letter">B</div><span>Static PNG/PDF images</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="C"><div class="option-letter">C</div><span>JSON data</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="D"><div class="option-letter">D</div><span>All of the above</span></label>
                                 </div>
                             </div>
                         </div>
@@ -1131,106 +855,60 @@
             </div>
             <div class="section-content" style="display:block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
-                <div class="activity-row" onclick="toggleVideo(this)">
-                    <div class="activity-info"><i class="fas fa-link"></i> <span>Interactive Web Plots with Bokeh - VIDEO</span></div>
+                <div class="activity-row" onclick="openVideo('https://www.youtube.com/watch?v=PpqhvqX-BpM', 'vbtn-5')">
+                    <div class="activity-info"><i class="fab fa-youtube"></i> <span>Interactive Web Plots with Bokeh - VIDEO</span></div>
                     <button id="vbtn-5" class="status-btn todo">To do</button>
-                </div>
-                <div class="video-embed">
-                    <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;">
-                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/PpqhvqX-BpM?enablejsapi=1" id="vplayer-5" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                    </div>
                 </div>
                 <div class="activity-row" onclick="showQuiz(5)">
                     <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Bokeh Basics - MCQ</span></div>
                     <button id="qbtn-5" class="status-btn todo">To do</button>
                 </div>
-                <div class="quiz-box" id="quiz-module5"
-                    style="display:none;padding:20px;background:#f8fafc;margin:15px 0;border-radius:10px;">
+                <div class="quiz-box" id="quiz-module5">
                     <form id="quizForm5">
                         <div class="mcq-container">
                             <div class="mcq-question">
                                 <div class="mcq-title">1. What is the primary focus of the Bokeh library?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q1" value="A">
-                                        <div class="option-letter">A</div><span>Static print visualization</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q1" value="B">
-                                        <div class="option-letter">B</div><span>Interactive web-based visualizations</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q1" value="C">
-                                        <div class="option-letter">C</div><span>Database management</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q1" value="D">
-                                        <div class="option-letter">D</div><span>Video editing</span>
-                                    </label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="A"><div class="option-letter">A</div><span>Static print visualization</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="B"><div class="option-letter">B</div><span>Interactive web-based visualizations</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="C"><div class="option-letter">C</div><span>Database management</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="D"><div class="option-letter">D</div><span>Video editing</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
                                 <div class="mcq-title">2. Which function is used to create a new figure in Bokeh?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q2" value="A">
-                                        <div class="option-letter">A</div><span>figure()</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q2" value="B">
-                                        <div class="option-letter">B</div><span>plt.plot()</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q2" value="C">
-                                        <div class="option-letter">C</div><span>sns.fig()</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q2" value="D">
-                                        <div class="option-letter">D</div><span>chart()</span>
-                                    </label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="A"><div class="option-letter">A</div><span>figure()</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="B"><div class="option-letter">B</div><span>plt.plot()</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="C"><div class="option-letter">C</div><span>sns.fig()</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="D"><div class="option-letter">D</div><span>chart()</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
                                 <div class="mcq-title">3. How does Bokeh deliver its visualizations?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q3" value="A">
-                                        <div class="option-letter">A</div><span>As PNG files</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q3" value="B">
-                                        <div class="option-letter">B</div><span>Inside an HTML and JavaScript wrapper</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q3" value="C">
-                                        <div class="option-letter">C</div><span>As PDF reports</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q3" value="D">
-                                        <div class="option-letter">D</div><span>Via ASCII art</span>
-                                    </label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="A"><div class="option-letter">A</div><span>As PNG files</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="B"><div class="option-letter">B</div><span>Inside an HTML and JavaScript wrapper</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="C"><div class="option-letter">C</div><span>As PDF reports</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="D"><div class="option-letter">D</div><span>Via ASCII art</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
                                 <div class="mcq-title">4. Which module in Bokeh provides high-level plotting?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q4" value="A">
-                                        <div class="option-letter">A</div><span>bokeh.models</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q4" value="B">
-                                        <div class="option-letter">B</div><span>bokeh.plotting</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q4" value="C">
-                                        <div class="option-letter">C</div><span>bokeh.io</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q4" value="D">
-                                        <div class="option-letter">D</div><span>bokeh.charts</span>
-                                    </label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="A"><div class="option-letter">A</div><span>bokeh.models</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="B"><div class="option-letter">B</div><span>bokeh.plotting</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="C"><div class="option-letter">C</div><span>bokeh.io</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="D"><div class="option-letter">D</div><span>bokeh.charts</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
                                 <div class="mcq-title">5. How do you display a Bokeh plot in a browser?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q5" value="A">
-                                        <div class="option-letter">A</div><span>show()</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q5" value="B">
-                                        <div class="option-letter">B</div><span>display()</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q5" value="C">
-                                        <div class="option-letter">C</div><span>plot.show()</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q5" value="D">
-                                        <div class="option-letter">D</div><span>render()</span>
-                                    </label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="A"><div class="option-letter">A</div><span>show()</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="B"><div class="option-letter">B</div><span>display()</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="C"><div class="option-letter">C</div><span>plot.show()</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="D"><div class="option-letter">D</div><span>render()</span></label>
                                 </div>
                             </div>
                         </div>
@@ -1251,106 +929,60 @@
             </div>
             <div class="section-content" style="display:block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
-                <div class="activity-row" onclick="toggleVideo(this)">
-                    <div class="activity-info"><i class="fas fa-link"></i> <span>Altair Charts & Encoding - VIDEO</span></div>
+                <div class="activity-row" onclick="openVideo('https://www.youtube.com/watch?v=jnbpWhZXj6o', 'vbtn-6')">
+                    <div class="activity-info"><i class="fab fa-youtube"></i> <span>Altair Charts & Encoding - VIDEO</span></div>
                     <button id="vbtn-6" class="status-btn todo">To do</button>
-                </div>
-                <div class="video-embed">
-                    <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;">
-                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/jnbpWhZXj6o?enablejsapi=1" id="vplayer-6" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                    </div>
                 </div>
                 <div class="activity-row" onclick="showQuiz(6)">
                     <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Altair Basics - MCQ</span></div>
                     <button id="qbtn-6" class="status-btn todo">To do</button>
                 </div>
-                <div class="quiz-box" id="quiz-module6"
-                    style="display:none;padding:20px;background:#f8fafc;margin:15px 0;border-radius:10px;">
+                <div class="quiz-box" id="quiz-module6">
                     <form id="quizForm6">
                         <div class="mcq-container">
                             <div class="mcq-question">
                                 <div class="mcq-title">1. What is the core philosophy of Altair?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q1" value="A">
-                                        <div class="option-letter">A</div><span>Procedural plotting</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q1" value="B">
-                                        <div class="option-letter">B</div><span>Declarative visualization based on Vega-Lite</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q1" value="C">
-                                        <div class="option-letter">C</div><span>Command-line only interface</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q1" value="D">
-                                        <div class="option-letter">D</div><span>Requiring custom JS for every plot</span>
-                                    </label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="A"><div class="option-letter">A</div><span>Procedural plotting</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="B"><div class="option-letter">B</div><span>Declarative visualization based on Vega-Lite</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="C"><div class="option-letter">C</div><span>Command-line only interface</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="D"><div class="option-letter">D</div><span>Requiring custom JS for every plot</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
                                 <div class="mcq-title">2. Which dataset format does Altair naturally handle best?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q2" value="A">
-                                        <div class="option-letter">A</div><span>TXT files</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q2" value="B">
-                                        <div class="option-letter">B</div><span>Pandas DataFrames</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q2" value="C">
-                                        <div class="option-letter">C</div><span>XML</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q2" value="D">
-                                        <div class="option-letter">D</div><span>Excel Binary</span>
-                                    </label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="A"><div class="option-letter">A</div><span>TXT files</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="B"><div class="option-letter">B</div><span>Pandas DataFrames</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="C"><div class="option-letter">C</div><span>XML</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="D"><div class="option-letter">D</div><span>Excel Binary</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
                                 <div class="mcq-title">3. How do you define a chart in Altair?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q3" value="A">
-                                        <div class="option-letter">A</div><span>alt.Chart(data)</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q3" value="B">
-                                        <div class="option-letter">B</div><span>alt.Plot(data)</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q3" value="C">
-                                        <div class="option-letter">C</div><span>alt.Figure(data)</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q3" value="D">
-                                        <div class="option-letter">D</div><span>alt.Graph(data)</span>
-                                    </label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="A"><div class="option-letter">A</div><span>alt.Chart(data)</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="B"><div class="option-letter">B</div><span>alt.Plot(data)</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="C"><div class="option-letter">C</div><span>alt.Figure(data)</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="D"><div class="option-letter">D</div><span>alt.Graph(data)</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
                                 <div class="mcq-title">4. What does the encode() function do in Altair?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q4" value="A">
-                                        <div class="option-letter">A</div><span>Encodes the data into a secret format</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q4" value="B">
-                                        <div class="option-letter">B</div><span>Maps data columns to visual channels (x, y, color, etc.)</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q4" value="C">
-                                        <div class="option-letter">C</div><span>Saves the file to disk</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q4" value="D">
-                                        <div class="option-letter">D</div><span>Compresses the plot</span>
-                                    </label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="A"><div class="option-letter">A</div><span>Encodes the data into a secret format</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="B"><div class="option-letter">B</div><span>Maps data columns to visual channels (x, y, color, etc.)</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="C"><div class="option-letter">C</div><span>Saves the file to disk</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="D"><div class="option-letter">D</div><span>Compresses the plot</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
                                 <div class="mcq-title">5. Which of these marks is used for a scatter plot in Altair?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q5" value="A">
-                                        <div class="option-letter">A</div><span>mark_scatter()</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q5" value="B">
-                                        <div class="option-letter">B</div><span>mark_point()</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q5" value="C">
-                                        <div class="option-letter">C</div><span>mark_dot()</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q5" value="D">
-                                        <div class="option-letter">D</div><span>mark_circle()</span>
-                                    </label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="A"><div class="option-letter">A</div><span>mark_scatter()</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="B"><div class="option-letter">B</div><span>mark_point()</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="C"><div class="option-letter">C</div><span>mark_dot()</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="D"><div class="option-letter">D</div><span>mark_circle()</span></label>
                                 </div>
                             </div>
                         </div>
@@ -1371,106 +1003,60 @@
             </div>
             <div class="section-content" style="display:block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
-                <div class="activity-row" onclick="toggleVideo(this)">
-                    <div class="activity-info"><i class="fas fa-link"></i> <span>Interactive Maps with Folium - VIDEO</span></div>
+                <div class="activity-row" onclick="openVideo('https://www.youtube.com/watch?v=_KhrbtFVlWg', 'vbtn-7')">
+                    <div class="activity-info"><i class="fab fa-youtube"></i> <span>Interactive Maps with Folium - VIDEO</span></div>
                     <button id="vbtn-7" class="status-btn todo">To do</button>
-                </div>
-                <div class="video-embed">
-                    <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;">
-                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/_KhrbtFVlWg?enablejsapi=1" id="vplayer-7" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                    </div>
                 </div>
                 <div class="activity-row" onclick="showQuiz(7)">
                     <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Folium Basics - MCQ</span></div>
                     <button id="qbtn-7" class="status-btn todo">To do</button>
                 </div>
-                <div class="quiz-box" id="quiz-module7"
-                    style="display:none;padding:20px;background:#f8fafc;margin:15px 0;border-radius:10px;">
+                <div class="quiz-box" id="quiz-module7">
                     <form id="quizForm7">
                         <div class="mcq-container">
                             <div class="mcq-question">
                                 <div class="mcq-title">1. What is Folium primarily used for?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q1" value="A">
-                                        <div class="option-letter">A</div><span>Text analysis</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q1" value="B">
-                                        <div class="option-letter">B</div><span>Interactive maps using Leaflet.js</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q1" value="C">
-                                        <div class="option-letter">C</div><span>Sound processing</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q1" value="D">
-                                        <div class="option-letter">D</div><span>3D modeling</span>
-                                    </label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="A"><div class="option-letter">A</div><span>Text analysis</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="B"><div class="option-letter">B</div><span>Interactive maps using Leaflet.js</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="C"><div class="option-letter">C</div><span>Sound processing</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="D"><div class="option-letter">D</div><span>3D modeling</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
                                 <div class="mcq-title">2. How do you create a basic map object in Folium?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q2" value="A">
-                                        <div class="option-letter">A</div><span>folium.Map()</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q2" value="B">
-                                        <div class="option-letter">B</div><span>folium.create()</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q2" value="C">
-                                        <div class="option-letter">C</div><span>folium.Globe()</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q2" value="D">
-                                        <div class="option-letter">D</div><span>folium.World()</span>
-                                    </label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="A"><div class="option-letter">A</div><span>folium.Map()</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="B"><div class="option-letter">B</div><span>folium.create()</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="C"><div class="option-letter">C</div><span>folium.Globe()</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="D"><div class="option-letter">D</div><span>folium.World()</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
                                 <div class="mcq-title">3. How do you add a marker to a Folium map?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q3" value="A">
-                                        <div class="option-letter">A</div><span>folium.Marker().add_to(map)</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q3" value="B">
-                                        <div class="option-letter">B</div><span>map.add_marker()</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q3" value="C">
-                                        <div class="option-letter">C</div><span>marker.create()</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q3" value="D">
-                                        <div class="option-letter">D</div><span>folium.Point()</span>
-                                    </label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="A"><div class="option-letter">A</div><span>folium.Marker().add_to(map)</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="B"><div class="option-letter">B</div><span>map.add_marker()</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="C"><div class="option-letter">C</div><span>marker.create()</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="D"><div class="option-letter">D</div><span>folium.Point()</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
                                 <div class="mcq-title">4. Folium can render maps as which file format?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q4" value="A">
-                                        <div class="option-letter">A</div><span>.exe</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q4" value="B">
-                                        <div class="option-letter">B</div><span>.html</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q4" value="C">
-                                        <div class="option-letter">C</div><span>.mp4</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q4" value="D">
-                                        <div class="option-letter">D</div><span>.zip</span>
-                                    </label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="A"><div class="option-letter">A</div><span>.exe</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="B"><div class="option-letter">B</div><span>.html</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="C"><div class="option-letter">C</div><span>.mp4</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="D"><div class="option-letter">D</div><span>.zip</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
                                 <div class="mcq-title">5. Which parameter sets the initial zoom level?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q5" value="A">
-                                        <div class="option-letter">A</div><span>start_zoom</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q5" value="B">
-                                        <div class="option-letter">B</div><span>zoom_start</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q5" value="C">
-                                        <div class="option-letter">C</div><span>initial_level</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q5" value="D">
-                                        <div class="option-letter">D</div><span>map_zoom</span>
-                                    </label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="A"><div class="option-letter">A</div><span>start_zoom</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="B"><div class="option-letter">B</div><span>zoom_start</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="C"><div class="option-letter">C</div><span>initial_level</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="D"><div class="option-letter">D</div><span>map_zoom</span></label>
                                 </div>
                             </div>
                         </div>
@@ -1491,106 +1077,60 @@
             </div>
             <div class="section-content" style="display:block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
-                <div class="activity-row" onclick="toggleVideo(this)">
-                    <div class="activity-info"><i class="fas fa-link"></i> <span>ML Visualization with Scikit-Learn - VIDEO</span></div>
+                <div class="activity-row" onclick="openVideo('https://www.youtube.com/watch?v=P2JXqgGPddE', 'vbtn-8')">
+                    <div class="activity-info"><i class="fab fa-youtube"></i> <span>ML Visualization with Scikit-Learn - VIDEO</span></div>
                     <button id="vbtn-8" class="status-btn todo">To do</button>
-                </div>
-                <div class="video-embed">
-                    <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;">
-                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/P2JXqgGPddE?enablejsapi=1" id="vplayer-8" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                    </div>
                 </div>
                 <div class="activity-row" onclick="showQuiz(8)">
                     <div class="activity-info"><i class="fas fa-list-alt"></i> <span>ML Viz Basics - MCQ</span></div>
                     <button id="qbtn-8" class="status-btn todo">To do</button>
                 </div>
-                <div class="quiz-box" id="quiz-module8"
-                    style="display:none;padding:20px;background:#f8fafc;margin:15px 0;border-radius:10px;">
+                <div class="quiz-box" id="quiz-module8">
                     <form id="quizForm8">
                         <div class="mcq-container">
                             <div class="mcq-question">
                                 <div class="mcq-title">1. Which plot is used to evaluate binary classification models?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q1" value="A">
-                                        <div class="option-letter">A</div><span>Box plot</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q1" value="B">
-                                        <div class="option-letter">B</div><span>ROC Curve / AUC</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q1" value="C">
-                                        <div class="option-letter">C</div><span>Heatmap</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q1" value="D">
-                                        <div class="option-letter">D</div><span>Pie chart</span>
-                                    </label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="A"><div class="option-letter">A</div><span>Box plot</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="B"><div class="option-letter">B</div><span>ROC Curve / AUC</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="C"><div class="option-letter">C</div><span>Heatmap</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q1" value="D"><div class="option-letter">D</div><span>Pie chart</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
                                 <div class="mcq-title">2. What does a Confusion Matrix visualize?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q2" value="A">
-                                        <div class="option-letter">A</div><span>Data distribution</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q2" value="B">
-                                        <div class="option-letter">B</div><span>Performance of a classification model (True vs False predictions)</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q2" value="C">
-                                        <div class="option-letter">C</div><span>File errors</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q2" value="D">
-                                        <div class="option-letter">D</div><span>Network latency</span>
-                                    </label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="A"><div class="option-letter">A</div><span>Data distribution</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="B"><div class="option-letter">B</div><span>Performance of a classification model (True vs False predictions)</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="C"><div class="option-letter">C</div><span>File errors</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q2" value="D"><div class="option-letter">D</div><span>Network latency</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
                                 <div class="mcq-title">3. Which tool is commonly used to visualize feature importance in ML?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q3" value="A">
-                                        <div class="option-letter">A</div><span>Bar chart</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q3" value="B">
-                                        <div class="option-letter">B</div><span>Histogram</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q3" value="C">
-                                        <div class="option-letter">C</div><span>Scatter plot</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q3" value="D">
-                                        <div class="option-letter">D</div><span>Line chart</span>
-                                    </label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="A"><div class="option-letter">A</div><span>Bar chart</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="B"><div class="option-letter">B</div><span>Histogram</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="C"><div class="option-letter">C</div><span>Scatter plot</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q3" value="D"><div class="option-letter">D</div><span>Line chart</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
                                 <div class="mcq-title">4. What is the purpose of a Precision-Recall curve?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q4" value="A">
-                                        <div class="option-letter">A</div><span>To track stock prices</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q4" value="B">
-                                        <div class="option-letter">B</div><span>To evaluate the trade-off between precision and recall</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q4" value="C">
-                                        <div class="option-letter">C</div><span>To measure time complexity</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q4" value="D">
-                                        <div class="option-letter">D</div><span>To visualize database joins</span>
-                                    </label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="A"><div class="option-letter">A</div><span>To track stock prices</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="B"><div class="option-letter">B</div><span>To evaluate the trade-off between precision and recall</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="C"><div class="option-letter">C</div><span>To measure time complexity</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q4" value="D"><div class="option-letter">D</div><span>To visualize database joins</span></label>
                                 </div>
                             </div>
                             <div class="mcq-question">
                                 <div class="mcq-title">5. Which library provides the Scikit-Learn plotting API in Python?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q5" value="A">
-                                        <div class="option-letter">A</div><span>NumPy</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q5" value="B">
-                                        <div class="option-letter">B</div><span>Scikit-learn</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q5" value="C">
-                                        <div class="option-letter">C</div><span>Requests</span>
-                                    </label>
-                                    <label class="mcq-option"><input type="radio" name="q5" value="D">
-                                        <div class="option-letter">D</div><span>OS</span>
-                                    </label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="A"><div class="option-letter">A</div><span>NumPy</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="B"><div class="option-letter">B</div><span>Scikit-learn</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="C"><div class="option-letter">C</div><span>Requests</span></label>
+                                    <label class="mcq-option"><input type="radio" name="q5" value="D"><div class="option-letter">D</div><span>OS</span></label>
                                 </div>
                             </div>
                         </div>
@@ -1622,12 +1162,9 @@
     </main>
 </div>
 
-<script src="https://www.youtube.com/iframe_api"></script>
-
 <script>
     const totalModules = 9;
 
-    // Load saved state on page load
     document.addEventListener("DOMContentLoaded", () => {
         // Module unlocking logic
         for (let i = 2; i <= totalModules; i++) {
@@ -1656,24 +1193,10 @@
         updateProgress();
     });
 
-    let players = {};
-    function onYouTubeIframeAPIReady() {
-        const iframes = document.querySelectorAll('iframe[id^="vplayer-"]');
-        iframes.forEach(iframe => {
-            const id = iframe.id;
-            players[id] = new YT.Player(id, {
-                events: {
-                    'onStateChange': (event) => onPlayerStateChange(event, id)
-                }
-            });
-        });
-    }
-
-    function onPlayerStateChange(event, iframeId) {
-        if (event.data === YT.PlayerState.ENDED) {
-            const btnId = iframeId.replace('vplayer-', 'vbtn-');
-            markAsDone(btnId);
-        }
+    // New function to open video link and automatically mark it as done
+    function openVideo(url, btnId) {
+        window.open(url, '_blank');
+        markAsDone(btnId);
     }
 
     function markAsDone(btnId) {
@@ -1704,11 +1227,6 @@
         header.classList.toggle('active');
         const content = header.nextElementSibling;
         content.style.display = (content.style.display === 'block') ? 'none' : 'block';
-    }
-
-    function toggleVideo(row) {
-        const video = row.nextElementSibling;
-        video.style.display = (video.style.display === 'block') ? 'none' : 'block';
     }
 
     function showQuiz(module) {
@@ -1782,16 +1300,6 @@
         if (progressBar) progressBar.style.width = percent + "%";
         if (progressText) progressText.innerText = percent + "%";
     }
-
-    // Search Functionality
-    document.getElementById('moduleSearch').addEventListener('input', function (e) {
-        const term = e.target.value.toLowerCase();
-        const modules = document.querySelectorAll('.section-box');
-        modules.forEach(mod => {
-            const text = mod.innerText.toLowerCase();
-            mod.style.display = text.includes(term) ? 'block' : 'none';
-        });
-    });
 </script>
 </body>
 

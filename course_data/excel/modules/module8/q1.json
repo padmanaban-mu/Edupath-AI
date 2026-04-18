@@ -1,0 +1,7 @@
+{
+  "title": "Basic: Standard Subroutine",
+  "description": "Write a basic VBA Sub procedure named `HelloWorld` that triggers a Message Box displaying the text \"Hello\".",
+  "input": "VBA Module",
+  "expected_output": "Sub HelloWorld()\nMsgBox \"Hello\"\nEnd Sub",
+  "hidden_test_cases": "Verify VBA syntax compiler accepts the string without prompt variable requirements."
+}

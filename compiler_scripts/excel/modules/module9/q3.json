@@ -1,0 +1,7 @@
+{
+  "title": "Mock Test: Analytical Metrics",
+  "description": "Write a formula using the AVERAGEIFS function to average the values in C1:C100 where A1:A100 equals \"Active\" AND B1:B100 is greater than or equal to 50.",
+  "input": "Ranges A1:A100, B1:B100, C1:C100",
+  "expected_output": "=AVERAGEIFS(C1:C100, A1:A100, \"Active\", B1:B100, \">=50\")",
+  "hidden_test_cases": "Ensure logical operators in the criteria are properly encapsulated within quotation marks."
+}

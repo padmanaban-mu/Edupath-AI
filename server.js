@@ -139,6 +139,18 @@ const REGRESSION_MODULE_NAMES = {
     module9: 'Final Mock Assessment'
 };
 
+const EXCEL_MODULE_NAMES = {
+    module1: 'Getting Started with Excel',
+    module2: 'Essential Formulas & Functions',
+    module3: 'Logical Functions (IF, AND, OR)',
+    module4: 'Lookup Functions (VLOOKUP, XLOOKUP)',
+    module5: 'Data Cleaning & Formatting',
+    module6: 'Pivot Tables & Charts',
+    module7: 'Advanced Data Analysis',
+    module8: 'Macros & VBA',
+    module9: 'Final Mock Assessment'
+};
+
 const COURSE_MODULE_NAMES = {
     data_visualization: MODULE_NAMES,
     sql: {
@@ -485,10 +497,11 @@ app.get('/api/modules', (req, res) => {
 
 app.get('/api/modules/:moduleId/questions/:questionId', (req, res) => {
     try {
-        const course = req.query.course || 'data_visualization';
+       const course = req.query.course || 'data_visualization';
         const { moduleId, questionId } = req.params;
         
-        const modulesDir = (course === 'numpy' || course === 'python' || course === 'pandas' || course === 'regression') && !fs.existsSync(path.join(__dirname, 'course_data', course, 'modules')) 
+        // Bulletproof check for questions
+        const modulesDir = !fs.existsSync(path.join(__dirname, 'course_data', course, 'modules')) 
             ? path.join(__dirname, 'modules') 
             : path.join(__dirname, 'course_data', course, 'modules');
             
@@ -638,7 +651,58 @@ app.post('/api/execute', async (req, res) => {
         if (db) db.close();
     }
 });
+// ==========================================
+// EXCEL COMPILER ENDPOINT
+// ==========================================
+app.post('/api/compile-excel', (req, res) => {
+    try {
+        const { code, module: moduleId, q: questionId, course } = req.body;
 
+        // Locate the correct question JSON file using the bulletproof path logic
+        const modulesDir = !fs.existsSync(path.join(__dirname, 'course_data', course, 'modules')) 
+            ? path.join(__dirname, 'modules') 
+            : path.join(__dirname, 'course_data', course, 'modules');
+
+        const moduleDir = path.join(modulesDir, moduleId);
+        let filePath = path.join(moduleDir, `${questionId}.json`);
+
+        if (!fs.existsSync(filePath)) {
+            return res.status(404).json({ status: "error", message: "Question file not found on server." });
+        }
+
+        const question = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+        const expected = (question.expected_output || "").trim().toLowerCase();
+        
+        // Clean the user's code (remove VBA comments, trim whitespace, ignore case)
+        const userCodeClean = code
+            .split('\n')
+            .filter(line => !line.trim().startsWith("'")) 
+            .join('')
+            .trim()
+            .toLowerCase();
+
+        // Compare user code to expected output (ignoring extra spaces)
+        const isCorrect = userCodeClean === expected || userCodeClean.replace(/\s+/g, '') === expected.replace(/\s+/g, '');
+
+        res.json({
+            status: "success",
+            isCorrect: isCorrect,
+            summary: { total: 1, passed: isCorrect ? 1 : 0, failed: isCorrect ? 0 : 1 },
+            results: [{
+                id: "test_1",
+                visibility: "visible",
+                passed: isCorrect,
+                message: isCorrect ? "Formula matches expected solution!" : "Formula logic incorrect.",
+               actual_output: code.split('\n').filter(line => !line.trim().startsWith("'")).join('\n').trim(),
+                expected_output: [question.expected_output]
+            }]
+        });
+
+    } catch (err) {
+        console.error("Excel compile error:", err);
+        res.status(500).json({ status: "error", message: "Server encountered an error." });
+    }
+});
 // Judge0 API Endpoint for Advanced SQL compilation
 app.post("/api/compile-sql", async (req, res) => {
     const { module: moduleName, q, sql, course = 'data_visualization' } = req.body ?? {};

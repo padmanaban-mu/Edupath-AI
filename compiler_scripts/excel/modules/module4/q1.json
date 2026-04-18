@@ -1,0 +1,7 @@
+{
+  "title": "Basic: Exact VLOOKUP",
+  "description": "Write a VLOOKUP formula to find the exact match of the value in cell D2 within the range A2:B10, and return the corresponding value from the 2nd column.",
+  "input": "Lookup value in D2, Data array A2:B10",
+  "expected_output": "=VLOOKUP(D2, A2:B10, 2, FALSE)",
+  "hidden_test_cases": "Verify the use of FALSE or 0 for the range_lookup parameter to enforce strict exact matching."
+}

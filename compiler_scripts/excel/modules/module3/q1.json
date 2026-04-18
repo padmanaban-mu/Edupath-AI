@@ -1,0 +1,7 @@
+{
+  "title": "Basic: Simple IF Statement",
+  "description": "Write an IF function that checks if the value in cell A1 is greater than 10. If it is, return \"Yes\", otherwise return \"No\".",
+  "input": "A1=15",
+  "expected_output": "=IF(A1>10, \"Yes\", \"No\")",
+  "hidden_test_cases": "Test with A1 exactly equal to 10 to ensure it correctly returns \"No\"."
+}

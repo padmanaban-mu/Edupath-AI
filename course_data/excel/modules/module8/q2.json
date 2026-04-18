@@ -1,0 +1,7 @@
+{
+  "title": "Intermediate: Range Manipulation",
+  "description": "Write a single line of VBA code to clear both the contents and formatting of the specific range A1:B10.",
+  "input": "Active Sheet Range",
+  "expected_output": "Range(\"A1:B10\").Clear",
+  "hidden_test_cases": "Ensure `.Clear` is used over `.ClearContents` to guarantee formatting is also wiped."
+}

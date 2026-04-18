@@ -505,8 +505,7 @@
     </style>
 </head>
 
-
-
+<body>
 <div class="dashboard-container">
     <aside class="sidebar" id="sidebar">
        <div class="logo">
@@ -537,12 +536,6 @@
         <header class="top-nav"
             style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
             <div class="toggle-btn" id="sidebarToggle" style="cursor: pointer;"><i class="fas fa-bars"></i></div>
-            <!-- <div class="search-bar"
-                style="background: white; padding: 8px 20px; border-radius: 25px; width: 40%; display: flex; align-items: center; gap: 10px; border: 1px solid #e2e8f0;">
-                <i class="fas fa-search" style="color: var(--slate-500);"></i>
-                <input type="text" id="moduleSearch" placeholder="Search Excel topics..."
-                    style="border: none; outline: none; width: 100%;">
-            </div> -->
             <div class="user-profile"><i class="far fa-bell" style="color:var(--text-muted)"></i></div>
         </header>
         <div class="course-progress">
@@ -575,6 +568,7 @@
                 </div>
             </div>
         </div>
+        
         <div class="section-box" id="module-box-1">
             <div class="section-header active" onclick="toggleSection(this)">
                 <h3>Module 1: Getting Started with Excel</h3>
@@ -582,14 +576,9 @@
             </div>
             <div class="section-content" style="display:block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
-                <div class="activity-row" onclick="toggleVideo(this)">
-                    <div class="activity-info"><i class="fas fa-link"></i> <span>Excel Interface & Basic Navigation - VIDEO</span></div>
+                <div class="activity-row" onclick="window.open('https://www.youtube.com/watch?v=rwbho0CgEAE', '_blank'); markAsDone('vbtn-1');">
+                    <div class="activity-info"><i class="fab fa-youtube" style="color: #ff0000;"></i> <span>Excel Interface & Basic Navigation - VIDEO</span></div>
                     <button id="vbtn-1" class="status-btn todo">To do</button>
-                </div>
-                <div class="video-embed">
-                    <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;"><iframe
-                            width="100%" height="100%" src="https://www.youtube.com/embed/rwbho0CgEAE?enablejsapi=1"
-                            id="vplayer-1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
                 </div>
                 <div class="activity-row" onclick="showQuiz(1)">
                     <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Excel Fundamentals - MCQ</span></div>
@@ -688,7 +677,7 @@
                         <button type="button" onclick="submitQuiz(1)" class="quiz-submit">Submit Quiz</button>
                     </form>
                 </div>
-                <div class="activity-row">
+                <div class="activity-row" onclick="window.location.href='/compiler/excel_compiler.html?module=module1'">
                     <div class="activity-info"><i class="fas fa-code"></i> <span>Excel Basics - PROGRAMS</span></div>
                     <button class="status-btn todo">To do</button>
                 </div>
@@ -702,14 +691,9 @@
             </div>
             <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
-                <div class="activity-row" onclick="toggleVideo(this)">
-                    <div class="activity-info"><i class="fas fa-link"></i> <span>Basic Math & Statistical Functions - VIDEO</span></div>
+                <div class="activity-row" onclick="window.open('https://www.youtube.com/watch?v=Jl0Qp8Ere-8', '_blank'); markAsDone('vbtn-2');">
+                    <div class="activity-info"><i class="fab fa-youtube" style="color: #ff0000;"></i> <span>Basic Math & Statistical Functions - VIDEO</span></div>
                     <button id="vbtn-2" class="status-btn todo">To do</button>
-                </div>
-                <div class="video-embed">
-                    <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;"><iframe
-                            width="100%" height="100%" src="https://www.youtube.com/embed/Jl0Qp8Ere-8?enablejsapi=1"
-                            id="vplayer-2" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
                 </div>
                 <div class="activity-row" onclick="showQuiz(2)">
                     <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Formulas - MCQ</span></div>
@@ -808,7 +792,7 @@
                         <button type="button" onclick="submitQuiz(2)" class="quiz-submit">Submit Quiz</button>
                     </form>
                 </div>
-                <div class="activity-row">
+                <div class="activity-row" onclick="window.location.href='excel_compiler.html?module=module2'">
                     <div class="activity-info"><i class="fas fa-code"></i> <span>Essential Formulas - PROGRAMS</span></div>
                     <button class="status-btn todo">To do</button>
                 </div>
@@ -822,14 +806,9 @@
             </div>
             <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
-                <div class="activity-row" onclick="toggleVideo(this)">
-                    <div class="activity-info"><i class="fas fa-link"></i> <span>Using IF Statements - VIDEO</span></div>
+                <div class="activity-row" onclick="window.open('https://www.youtube.com/watch?v=S263O-I8o2s', '_blank'); markAsDone('vbtn-3');">
+                    <div class="activity-info"><i class="fab fa-youtube" style="color: #ff0000;"></i> <span>Using IF Statements - VIDEO</span></div>
                     <button id="vbtn-3" class="status-btn todo">To do</button>
-                </div>
-                <div class="video-embed">
-                    <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;"><iframe
-                            width="100%" height="100%" src="https://www.youtube.com/embed/S263O-I8o2s?enablejsapi=1"
-                            id="vplayer-3" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
                 </div>
                 <div class="activity-row" onclick="showQuiz(3)">
                     <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Logical Logic - MCQ</span></div>
@@ -928,7 +907,7 @@
                         <button type="button" onclick="submitQuiz(3)" class="quiz-submit">Submit Quiz</button>
                     </form>
                 </div>
-                <div class="activity-row">
+                <div class="activity-row" onclick="window.location.href='excel_compiler.html?module=module3'">
                     <div class="activity-info"><i class="fas fa-code"></i> <span>Logical Functions - PROGRAMS</span></div>
                     <button class="status-btn todo">To do</button>
                 </div>
@@ -941,14 +920,9 @@
             </div>
             <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
-                <div class="activity-row" onclick="toggleVideo(this)">
-                    <div class="activity-info"><i class="fas fa-link"></i> <span>Mastering VLOOKUP & XLOOKUP - VIDEO</span></div>
+                <div class="activity-row" onclick="window.open('https://www.youtube.com/watch?v=_fL_v7_a6Ew', '_blank'); markAsDone('vbtn-4');">
+                    <div class="activity-info"><i class="fab fa-youtube" style="color: #ff0000;"></i> <span>Mastering VLOOKUP & XLOOKUP - VIDEO</span></div>
                     <button id="vbtn-4" class="status-btn todo">To do</button>
-                </div>
-                <div class="video-embed">
-                    <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;"><iframe
-                            width="100%" height="100%" src="https://www.youtube.com/embed/_fL_v7_a6Ew?enablejsapi=1"
-                            id="vplayer-4" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
                 </div>
                 <div class="activity-row" onclick="showQuiz(4)">
                     <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Lookup Mastery - MCQ</span></div>
@@ -1041,7 +1015,7 @@
                         <button type="button" onclick="submitQuiz(4)" class="quiz-submit">Submit Quiz</button>
                     </form>
                 </div>
-                <div class="activity-row">
+                <div class="activity-row" onclick="window.location.href='excel_compiler.html?module=module4'">
                     <div class="activity-info"><i class="fas fa-code"></i> <span>Lookup Mastery - PROGRAMS</span></div>
                     <button class="status-btn todo">To do</button>
                 </div>
@@ -1054,14 +1028,9 @@
             </div>
             <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
-                <div class="activity-row" onclick="toggleVideo(this)">
-                    <div class="activity-info"><i class="fas fa-link"></i> <span>Cleaning Messy Data - VIDEO</span></div>
+                <div class="activity-row" onclick="window.open('https://www.youtube.com/watch?v=S_I5O_Yv9Uo', '_blank'); markAsDone('vbtn-5');">
+                    <div class="activity-info"><i class="fab fa-youtube" style="color: #ff0000;"></i> <span>Cleaning Messy Data - VIDEO</span></div>
                     <button id="vbtn-5" class="status-btn todo">To do</button>
-                </div>
-                <div class="video-embed">
-                    <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;"><iframe
-                            width="100%" height="100%" src="https://www.youtube.com/embed/S_I5O_Yv9Uo?enablejsapi=1"
-                            id="vplayer-5" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
                 </div>
                 <div class="activity-row" onclick="showQuiz(5)">
                     <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Data Prep - MCQ</span></div>
@@ -1154,7 +1123,7 @@
                         <button type="button" onclick="submitQuiz(5)" class="quiz-submit">Submit Quiz</button>
                     </form>
                 </div>
-                <div class="activity-row">
+                <div class="activity-row" onclick="window.location.href='excel_compiler.html?module=module5'">
                     <div class="activity-info"><i class="fas fa-code"></i> <span>Data Prep - PROGRAMS</span></div>
                     <button class="status-btn todo">To do</button>
                 </div>
@@ -1167,15 +1136,10 @@
             </div>
             <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
-                <div class="activity-row" onclick="toggleVideo(this)">
-                    <div class="activity-info"><i class="fas fa-link"></i> <span>Pivot Tables Tutorial - VIDEO</span>
+                <div class="activity-row" onclick="window.open('https://www.youtube.com/watch?v=m0wI69n_S8s', '_blank'); markAsDone('vbtn-6');">
+                    <div class="activity-info"><i class="fab fa-youtube" style="color: #ff0000;"></i> <span>Pivot Tables Tutorial - VIDEO</span>
                     </div>
                     <button id="vbtn-6" class="status-btn todo">To do</button>
-                </div>
-                <div class="video-embed">
-                    <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;"><iframe
-                            width="100%" height="100%" src="https://www.youtube.com/embed/m0wI69n_S8s?enablejsapi=1"
-                            id="vplayer-6" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
                 </div>
                 <div class="activity-row" onclick="showQuiz(6)">
                     <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Pivot Table Mastery - MCQ</span></div>
@@ -1268,7 +1232,7 @@
                         <button type="button" onclick="submitQuiz(6)" class="quiz-submit">Submit Quiz</button>
                     </form>
                 </div>
-                <div class="activity-row">
+                <div class="activity-row" onclick="window.location.href='excel_compiler.html?module=module6'">
                     <div class="activity-info"><i class="fas fa-code"></i> <span>Pivot Table Practice - EXERCISES</span>
                     </div>
                     <button class="status-btn todo">To do</button>
@@ -1283,14 +1247,9 @@
             </div>
             <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
-                <div class="activity-row" onclick="toggleVideo(this)">
-                    <div class="activity-info"><i class="fas fa-link"></i> <span>What-If Analysis - VIDEO</span></div>
+                <div class="activity-row" onclick="window.open('https://www.youtube.com/watch?v=9P-Hpe0Yos8', '_blank'); markAsDone('vbtn-7');">
+                    <div class="activity-info"><i class="fab fa-youtube" style="color: #ff0000;"></i> <span>What-If Analysis - VIDEO</span></div>
                     <button id="vbtn-7" class="status-btn todo">To do</button>
-                </div>
-                <div class="video-embed">
-                    <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;"><iframe
-                            width="100%" height="100%" src="https://www.youtube.com/embed/9P-Hpe0Yos8?enablejsapi=1"
-                            id="vplayer-7" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
                 </div>
                 <div class="activity-row" onclick="showQuiz(7)">
                     <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Analysis Tools - MCQ</span></div>
@@ -1377,7 +1336,7 @@
                         <button type="button" onclick="submitQuiz(7)" class="quiz-submit">Submit Quiz</button>
                     </form>
                 </div>
-                <div class="activity-row">
+                <div class="activity-row" onclick="window.location.href='excel_compiler.html?module=module7'">
                     <div class="activity-info"><i class="fas fa-code"></i> <span>Data Analysis - EXERCISES</span></div>
                     <button class="status-btn todo">To do</button>
                 </div>
@@ -1391,14 +1350,9 @@
             </div>
             <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
-                <div class="activity-row" onclick="toggleVideo(this)">
-                    <div class="activity-info"><i class="fas fa-link"></i> <span>Introduction to Macros - VIDEO</span></div>
+                <div class="activity-row" onclick="window.open('https://www.youtube.com/watch?v=S_k8D6L4r6Y', '_blank'); markAsDone('vbtn-8');">
+                    <div class="activity-info"><i class="fab fa-youtube" style="color: #ff0000;"></i> <span>Introduction to Macros - VIDEO</span></div>
                     <button id="vbtn-8" class="status-btn todo">To do</button>
-                </div>
-                <div class="video-embed">
-                    <div style="aspect-ratio:16/9; background:#000; border-radius:8px; overflow:hidden;"><iframe
-                            width="100%" height="100%" src="https://www.youtube.com/embed/S_k8D6L4r6Y?enablejsapi=1"
-                            id="vplayer-8" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
                 </div>
                 <div class="activity-row" onclick="showQuiz(8)">
                     <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Macros & VBA - MCQ</span></div>
@@ -1491,9 +1445,23 @@
                         <button type="button" onclick="submitQuiz(8)" class="quiz-submit">Submit Quiz</button>
                     </form>
                 </div>
-                <div class="activity-row">
+                <div class="activity-row" onclick="window.location.href='excel_compiler.html?module=module8'">
                     <div class="activity-info"><i class="fas fa-code"></i> <span>Automating Excel - EXERCISES</span></div>
                     <button class="status-btn todo">To do</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-box locked" id="module-box-9">
+            <div class="section-header active" onclick="toggleSection(this)">
+                <h3>Module 9: Final Mock Assessment</h3>
+                <i class="fas fa-chevron-down toggle-icon"></i>
+            </div>
+            <div class="section-content" style="display:block;">
+                <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
+                <div class="activity-row" onclick="window.location.href='/compiler/excel_compiler.html?module=module9'">
+                    <div class="activity-info"><i class="fas fa-code"></i> <span>Take Final Mock Test</span></div>
+                    <button id="pbtn-9" class="status-btn todo">To do</button>
                 </div>
             </div>
         </div>
@@ -1501,11 +1469,8 @@
     </main>
 </div>
 
-<!-- YouTube IFrame API -->
-<script src="https://www.youtube.com/iframe_api"></script>
-
 <script>
-    const totalModules = 8;
+    const totalModules = 9;
 
     // Load saved state on page load
     document.addEventListener("DOMContentLoaded", () => {
@@ -1527,26 +1492,6 @@
 
         updateProgress();
     });
-
-    let players = {};
-    function onYouTubeIframeAPIReady() {
-        const iframes = document.querySelectorAll('iframe[id^="vplayer-"]');
-        iframes.forEach(iframe => {
-            const id = iframe.id;
-            players[id] = new YT.Player(id, {
-                events: {
-                    'onStateChange': (event) => onPlayerStateChange(event, id)
-                }
-            });
-        });
-    }
-
-    function onPlayerStateChange(event, iframeId) {
-        if (event.data === YT.PlayerState.ENDED) {
-            const btnId = iframeId.replace('vplayer-', 'vbtn-');
-            markAsDone(btnId);
-        }
-    }
 
     function markAsDone(btnId) {
         const btn = document.getElementById(btnId);
@@ -1575,11 +1520,6 @@
         header.classList.toggle('active');
         const content = header.nextElementSibling;
         content.style.display = (content.style.display === 'block') ? 'none' : 'block';
-    }
-
-    function toggleVideo(row) {
-        const video = row.nextElementSibling;
-        video.style.display = (video.style.display === 'block') ? 'none' : 'block';
     }
 
     function showQuiz(module) {
@@ -1670,7 +1610,5 @@
     });
 </script>
 </body>
-
-</html>
 
 </html>

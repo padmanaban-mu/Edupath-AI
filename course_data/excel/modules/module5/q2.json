@@ -1,0 +1,7 @@
+{
+  "title": "Intermediate: Proper Case",
+  "description": "Write a formula to convert the text string in cell B2 so that the first letter of each word is capitalized and all other letters are lowercase.",
+  "input": "B2=\"jOhN dOe\"",
+  "expected_output": "=PROPER(B2)",
+  "hidden_test_cases": "Test with numeric and punctuation characters interspersed within the text string."
+}

@@ -1,0 +1,7 @@
+{
+  "title": "Basic: Sum Range",
+  "description": "Write a formula using the SUM function to add all numerical values in the range from A1 to A10.",
+  "input": "Range A1:A10 containing various integers",
+  "expected_output": "=SUM(A1:A10)",
+  "hidden_test_cases": "Include empty cells and text strings in the range to verify the SUM function ignores non-numeric data."
+}

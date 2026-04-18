@@ -1,0 +1,7 @@
+{
+  "title": "Intermediate: Simple Arithmetic",
+  "description": "Write a formula to add the values of cell A1 and cell B1 together without using a named function.",
+  "input": "A1=10, B1=15",
+  "expected_output": "=A1+B1",
+  "hidden_test_cases": "Check with negative inputs to ensure the arithmetic operator is utilized correctly."
+}

@@ -1,0 +1,7 @@
+{
+  "title": "Advanced: Absolute Reference",
+  "description": "Write a formula that multiplies the value in cell C1 by the value in cell D1, ensuring that if the formula is dragged down, the reference to D1 never changes.",
+  "input": "C1=5, D1=20",
+  "expected_output": "=C1*$D$1",
+  "hidden_test_cases": "Test formula copying mechanics to ensure absolute row and column anchors ($) are present."
+}

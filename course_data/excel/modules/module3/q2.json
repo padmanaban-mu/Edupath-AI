@@ -1,0 +1,7 @@
+{
+  "title": "Intermediate: IF with AND Logic",
+  "description": "Write a formula that returns \"Valid\" if cell A1 is greater than 5 AND cell B1 is less than 10. Otherwise, return \"Invalid\".",
+  "input": "A1=8, B1=4",
+  "expected_output": "=IF(AND(A1>5, B1<10), \"Valid\", \"Invalid\")",
+  "hidden_test_cases": "Test conditional bounds where only one of the two parameters is true."
+}

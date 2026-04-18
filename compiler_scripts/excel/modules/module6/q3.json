@@ -1,0 +1,7 @@
+{
+  "title": "Advanced: Multi-Condition Counting",
+  "description": "Write a COUNTIFS formula to count the number of rows where the region in A2:A100 is \"East\" AND the corresponding sales value in B2:B100 is greater than 100.",
+  "input": "Ranges A2:A100 and B2:B100",
+  "expected_output": "=COUNTIFS(A2:A100, \"East\", B2:B100, \">100\")",
+  "hidden_test_cases": "Test criteria ranges using wildcards to verify exact string literal matching on \"East\"."
+}

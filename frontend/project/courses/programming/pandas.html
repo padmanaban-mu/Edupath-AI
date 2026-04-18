@@ -421,6 +421,33 @@
             border: 2px solid #2563eb;
         }
 
+        .mcq-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+        }
+
+        .mcq-option input {
+            display: none;
+        }
+
+        .option-letter {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 1px solid #cbd5e1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
         .quiz-submit {
             margin-top: 20px;
             padding: 10px 18px;
@@ -440,7 +467,6 @@
 
         /* Activities are visible but not clickable when locked */
         .section-box.locked .section-content .activity-row,
-        .section-box.locked .section-content .video-embed,
         .section-box.locked .section-content .quiz-box {
             pointer-events: none;
             opacity: 0.6;
@@ -492,13 +518,6 @@
             color: white;
             border-color: var(--primary-blue);
         }
-
-        .video-embed {
-            padding: 20px 25px;
-            background: #f8fafc;
-            border-bottom: 1px solid #f1f5f9;
-            display: none;
-        }
     </style>
 </head>
 
@@ -533,10 +552,6 @@
                 <div class="toggle-btn" id="sidebarToggle">
                     <i class="fas fa-bars"></i>
                 </div>
-                <!-- <div class="search-bar">
-                    <i class="fas fa-search" style="color: var(--slate-500);"></i>
-                    <input type="text" id="moduleSearch" placeholder="Search pandas topics...">
-                </div> -->
                 <div class="notifications">
                     <i class="far fa-bell"></i>
                     <span class="badge">3</span>
@@ -579,14 +594,10 @@
                 </div>
                 <div class="section-content" style="display: block;">
                     <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
-                    <div class="activity-row" onclick="toggleVideo(this)">
-                        <div class="activity-info"><i class="fas fa-link"></i> <span>What is Pandas? Intro to Series -
+                    <div class="activity-row" onclick="openVideo('https://www.youtube.com/watch?v=zmdjNSmRXF4', 'vbtn-1')">
+                        <div class="activity-info"><i class="fab fa-youtube" style="color: #ff0000;"></i> <span>What is Pandas? Intro to Series -
                                 VIDEO</span></div>
                         <button id="vbtn-1" class="status-btn todo">To do</button>
-                    </div>
-                    <div class="video-embed">
-                        <iframe width="100%" height="400" src="https://www.youtube.com/embed/zmdjNSmRXF4?enablejsapi=1"
-                            id="vplayer-1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                     </div>
                     <div class="activity-row" onclick="showQuiz(1)">
                         <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Series Basics - QUIZ</span>
@@ -697,14 +708,10 @@
         </div>
         <div class="section-content" style="display: block;">
             <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
-            <div class="activity-row" onclick="toggleVideo(this)">
-                <div class="activity-info"><i class="fas fa-link"></i> <span>Creating DataFrames from dicts & lists -
+            <div class="activity-row" onclick="openVideo('https://www.youtube.com/watch?v=F6kmIpWWEdU', 'vbtn-2')">
+                <div class="activity-info"><i class="fab fa-youtube" style="color: #ff0000;"></i> <span>Creating DataFrames from dicts & lists -
                         VIDEO</span></div>
                 <button id="vbtn-2" class="status-btn todo">To do</button>
-            </div>
-            <div class="video-embed">
-                <iframe width="100%" height="400" src="https://www.youtube.com/embed/F6kmIpWWEdU?enablejsapi=1"
-                    id="vplayer-2" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
             </div>
             <div class="activity-row" onclick="showQuiz(2)">
                 <div class="activity-info"><i class="fas fa-list-alt"></i> <span>DataFrame Core Concepts - QUIZ</span>
@@ -819,14 +826,10 @@
         </div>
         <div class="section-content" style="display: block;">
             <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
-            <div class="activity-row" onclick="toggleVideo(this)">
-                <div class="activity-info"><i class="fas fa-link"></i> <span>Loading CSV & Excel files - VIDEO</span>
+            <div class="activity-row" onclick="openVideo('https://www.youtube.com/watch?v=zmdjNSmRXF4', 'vbtn-3')">
+                <div class="activity-info"><i class="fab fa-youtube" style="color: #ff0000;"></i> <span>Loading CSV & Excel files - VIDEO</span>
                 </div>
                 <button id="vbtn-3" class="status-btn todo">To do</button>
-            </div>
-            <div class="video-embed">
-                <iframe width="100%" height="400" src="https://www.youtube.com/embed/zmdjNSmRXF4?enablejsapi=1"
-                    id="vplayer-3" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
             </div>
             <div class="activity-row" onclick="showQuiz(3)">
                 <div class="activity-info"><i class="fas fa-list-alt"></i> <span>File IO - QUIZ</span></div>
@@ -939,14 +942,10 @@
         </div>
         <div class="section-content" style="display: block;">
             <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
-            <div class="activity-row" onclick="toggleVideo(this)">
-                <div class="activity-info"><i class="fas fa-link"></i> <span>Accessing rows/cols with loc & iloc -
+            <div class="activity-row" onclick="openVideo('https://www.youtube.com/watch?v=zmdjNSmRXF4', 'vbtn-4')">
+                <div class="activity-info"><i class="fab fa-youtube" style="color: #ff0000;"></i> <span>Accessing rows/cols with loc & iloc -
                         VIDEO</span></div>
                 <button id="vbtn-4" class="status-btn todo">To do</button>
-            </div>
-            <div class="video-embed">
-                <iframe width="100%" height="400" src="https://www.youtube.com/embed/zmdjNSmRXF4?enablejsapi=1"
-                    id="vplayer-4" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
             </div>
             <div class="activity-row" onclick="showQuiz(4)">
                 <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Indexing Logic - QUIZ</span></div>
@@ -1060,14 +1059,10 @@
         </div>
         <div class="section-content" style="display: block;">
             <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
-            <div class="activity-row" onclick="toggleVideo(this)">
-                <div class="activity-info"><i class="fas fa-link"></i> <span>Arithmetic on Series & map/apply -
+            <div class="activity-row" onclick="openVideo('https://www.youtube.com/watch?v=P_q0tkYqvSk', 'vbtn-5')">
+                <div class="activity-info"><i class="fab fa-youtube" style="color: #ff0000;"></i> <span>Arithmetic on Series & map/apply -
                         VIDEO</span></div>
                 <button id="vbtn-5" class="status-btn todo">To do</button>
-            </div>
-            <div class="video-embed">
-                <iframe width="100%" height="400" src="https://www.youtube.com/embed/P_q0tkYqvSk?enablejsapi=1"
-                    id="vplayer-5" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
             </div>
             <div class="activity-row" onclick="showQuiz(5)">
                 <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Ops & Mapping - QUIZ</span></div>
@@ -1181,14 +1176,10 @@
         </div>
         <div class="section-content" style="display: block;">
             <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
-            <div class="activity-row" onclick="toggleVideo(this)">
-                <div class="activity-info"><i class="fas fa-link"></i> <span>Intro to NaN, isnull, fillna, dropna -
+            <div class="activity-row" onclick="openVideo('https://www.youtube.com/watch?v=zmdjNSmRXF4', 'vbtn-6')">
+                <div class="activity-info"><i class="fab fa-youtube" style="color: #ff0000;"></i> <span>Intro to NaN, isnull, fillna, dropna -
                         VIDEO</span></div>
                 <button id="vbtn-6" class="status-btn todo">To do</button>
-            </div>
-            <div class="video-embed">
-                <iframe width="100%" height="400" src="https://www.youtube.com/embed/zmdjNSmRXF4?enablejsapi=1"
-                    id="vplayer-6" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
             </div>
             <div class="activity-row" onclick="showQuiz(6)">
                 <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Missing Data - QUIZ</span></div>
@@ -1301,14 +1292,10 @@
         </div>
         <div class="section-content" style="display: block;">
             <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
-            <div class="activity-row" onclick="toggleVideo(this)">
-                <div class="activity-info"><i class="fas fa-link"></i> <span>Split-Apply-Combine Pattern - VIDEO</span>
+            <div class="activity-row" onclick="openVideo('https://www.youtube.com/watch?v=Wb2Tp35dZ-I', 'vbtn-7')">
+                <div class="activity-info"><i class="fab fa-youtube" style="color: #ff0000;"></i> <span>Split-Apply-Combine Pattern - VIDEO</span>
                 </div>
                 <button id="vbtn-7" class="status-btn todo">To do</button>
-            </div>
-            <div class="video-embed">
-                <iframe width="100%" height="400" src="https://www.youtube.com/embed/Wb2Tp35dZ-I?enablejsapi=1"
-                    id="vplayer-7" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
             </div>
             <div class="activity-row" onclick="showQuiz(7)">
                 <div class="activity-info"><i class="fas fa-list-alt"></i> <span>GroupBy Logic - QUIZ</span></div>
@@ -1422,14 +1409,10 @@
         </div>
         <div class="section-content" style="display: block;">
             <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
-            <div class="activity-row" onclick="toggleVideo(this)">
-                <div class="activity-info"><i class="fas fa-link"></i> <span>Joining DataFrames together - VIDEO</span>
+            <div class="activity-row" onclick="openVideo('https://www.youtube.com/watch?v=zmdjNSmRXF4', 'vbtn-8')">
+                <div class="activity-info"><i class="fab fa-youtube" style="color: #ff0000;"></i> <span>Joining DataFrames together - VIDEO</span>
                 </div>
                 <button id="vbtn-8" class="status-btn todo">To do</button>
-            </div>
-            <div class="video-embed">
-                <iframe width="100%" height="400" src="https://www.youtube.com/embed/zmdjNSmRXF4?enablejsapi=1"
-                    id="vplayer-8" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
             </div>
             <div class="activity-row" onclick="showQuiz(8)">
                 <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Joins & Concats - QUIZ</span></div>
@@ -1543,14 +1526,10 @@
         </div>
         <div class="section-content" style="display: block;">
             <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
-            <div class="activity-row" onclick="toggleVideo(this)">
-                <div class="activity-info"><i class="fas fa-link"></i> <span>Working with Datetime objects -
+            <div class="activity-row" onclick="openVideo('https://www.youtube.com/watch?v=zmdjNSmRXF4', 'vbtn-9')">
+                <div class="activity-info"><i class="fab fa-youtube" style="color: #ff0000;"></i> <span>Working with Datetime objects -
                         VIDEO</span></div>
                 <button id="vbtn-9" class="status-btn todo">To do</button>
-            </div>
-            <div class="video-embed">
-                <iframe width="100%" height="400" src="https://www.youtube.com/embed/zmdjNSmRXF4?enablejsapi=1"
-                    id="vplayer-9" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
             </div>
             <div class="activity-row" onclick="showQuiz(9)">
                 <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Time Series - QUIZ</span></div>
@@ -1663,14 +1642,10 @@
         </div>
         <div class="section-content" style="display: block;">
             <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
-            <div class="activity-row" onclick="toggleVideo(this)">
-                <div class="activity-info"><i class="fas fa-link"></i> <span>Hierarchical Indexing explained -
+            <div class="activity-row" onclick="openVideo('https://www.youtube.com/watch?v=tcRGa2soc-c', 'vbtn-10')">
+                <div class="activity-info"><i class="fab fa-youtube" style="color: #ff0000;"></i> <span>Hierarchical Indexing explained -
                         VIDEO</span></div>
                 <button id="vbtn-10" class="status-btn todo">To do</button>
-            </div>
-            <div class="video-embed">
-                <iframe width="100%" height="400" src="https://www.youtube.com/embed/tcRGa2soc-c?enablejsapi=1"
-                    id="vplayer-10" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
             </div>
             <div class="activity-row" onclick="showQuiz(10)">
                 <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Multi-Index - QUIZ</span></div>
@@ -1784,14 +1759,10 @@
         </div>
         <div class="section-content" style="display: block;">
             <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
-            <div class="activity-row" onclick="toggleVideo(this)">
-                <div class="activity-info"><i class="fas fa-link"></i> <span>Basic plotting with .plot() - VIDEO</span>
+            <div class="activity-row" onclick="openVideo('https://www.youtube.com/watch?v=zmdjNSmRXF4', 'vbtn-11')">
+                <div class="activity-info"><i class="fab fa-youtube" style="color: #ff0000;"></i> <span>Basic plotting with .plot() - VIDEO</span>
                 </div>
                 <button id="vbtn-11" class="status-btn todo">To do</button>
-            </div>
-            <div class="video-embed">
-                <iframe width="100%" height="400" src="https://www.youtube.com/embed/zmdjNSmRXF4?enablejsapi=1"
-                    id="vplayer-11" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
             </div>
             <div class="activity-row" onclick="showQuiz(11)">
                 <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Visualization - QUIZ</span></div>
@@ -1905,14 +1876,10 @@
         </div>
         <div class="section-content" style="display: block;">
             <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
-            <div class="activity-row" onclick="toggleVideo(this)">
-                <div class="activity-info"><i class="fas fa-link"></i> <span>Performance tips & query() - VIDEO</span>
+            <div class="activity-row" onclick="openVideo('https://www.youtube.com/watch?v=zmdjNSmRXF4', 'vbtn-12')">
+                <div class="activity-info"><i class="fab fa-youtube" style="color: #ff0000;"></i> <span>Performance tips & query() - VIDEO</span>
                 </div>
                 <button id="vbtn-12" class="status-btn todo">To do</button>
-            </div>
-            <div class="video-embed">
-                <iframe width="100%" height="400" src="https://www.youtube.com/embed/zmdjNSmRXF4?enablejsapi=1"
-                    id="vplayer-12" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
             </div>
             <div class="activity-row" onclick="showQuiz(12)">
                 <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Adv. Pandas - QUIZ</span></div>
@@ -2034,26 +2001,12 @@
     </main>
 </div>
 
-    <script src="https://www.youtube.com/iframe_api"></script>
     <script>
         const totalModules = 13;
-        let players = {};
 
-        function onYouTubeIframeAPIReady() {
-            const iframes = document.querySelectorAll('iframe[id^="vplayer-"]');
-            iframes.forEach(iframe => {
-                const id = iframe.id;
-                players[id] = new YT.Player(id, {
-                    events: { 'onStateChange': (event) => onPlayerStateChange(event, id) }
-                });
-            });
-        }
-
-        function onPlayerStateChange(event, iframeId) {
-            if (event.data === YT.PlayerState.ENDED) {
-                const btnId = iframeId.replace('vplayer-', 'vbtn-');
-                markAsDone(btnId);
-            }
+        function openVideo(url, btnId) {
+            window.open(url, '_blank');
+            markAsDone(btnId);
         }
 
         function markAsDone(btnId) {
@@ -2071,11 +2024,6 @@
             header.classList.toggle('active');
             const content = header.nextElementSibling;
             content.style.display = (content.style.display === 'block') ? 'none' : 'block';
-        }
-
-        function toggleVideo(row) {
-            const video = row.nextElementSibling;
-            video.style.display = (video.style.display === 'block') ? 'none' : 'block';
         }
 
         function showQuiz(module) {

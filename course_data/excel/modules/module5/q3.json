@@ -1,0 +1,7 @@
+{
+  "title": "Advanced: Dynamic Text Join",
+  "description": "Write a formula using TEXTJOIN to combine the values in range A2:A5, separated by a comma and a space (\", \"), ensuring that any empty cells in the range are ignored.",
+  "input": "Range A2:A5 with A3 being blank",
+  "expected_output": "=TEXTJOIN(\", \", TRUE, A2:A5)",
+  "hidden_test_cases": "Verify the boolean `TRUE` parameter correctly filters out multiple consecutive blank cells without printing extra commas."
+}

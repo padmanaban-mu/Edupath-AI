@@ -1,0 +1,7 @@
+{
+  "title": "Basic: Retrieve Pivot Data",
+  "description": "Write a GETPIVOTDATA formula to extract the \"Sales\" data field from a Pivot Table that originates at cell $A$3.",
+  "input": "Pivot Table referenced at $A$3",
+  "expected_output": "=GETPIVOTDATA(\"Sales\", $A$3)",
+  "hidden_test_cases": "Ensure the formula triggers correctly without hardcoding structural item references."
+}

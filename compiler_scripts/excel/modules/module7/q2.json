@@ -1,0 +1,7 @@
+{
+  "title": "Intermediate: Two-Way Lookup via INDEX MATCH",
+  "description": "Write a combined INDEX and MATCH formula to return the value from range B2:B10 where the value in range A2:A10 matches the exact value in cell E2.",
+  "input": "E2 lookup value, Return Array B2:B10, Lookup Array A2:A10",
+  "expected_output": "=INDEX(B2:B10, MATCH(E2, A2:A10, 0))",
+  "hidden_test_cases": "Ensure the MATCH match_type parameter is explicitly set to 0 for exact matches."
+}

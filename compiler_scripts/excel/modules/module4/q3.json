@@ -1,0 +1,7 @@
+{
+  "title": "Advanced: Flexible XLOOKUP",
+  "description": "Write an XLOOKUP formula to search for the value in F2 within the lookup array A2:A100, and return the result from C2:C100. If no match is found, return the text \"Not Found\".",
+  "input": "Lookup value F2, Arrays A2:A100 & C2:C100",
+  "expected_output": "=XLOOKUP(F2, A2:A100, C2:C100, \"Not Found\")",
+  "hidden_test_cases": "Input a non-existent value to test the internal error-handling string parameter."
+}

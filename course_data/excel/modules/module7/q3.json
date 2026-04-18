@@ -1,0 +1,7 @@
+{
+  "title": "Advanced: Error Trapping Pipeline",
+  "description": "Write a formula that attempts a standard VLOOKUP for cell A1 in columns B:C (returning column 2, exact match). If an error occurs (like #N/A), output the custom string \"Missing\".",
+  "input": "Lookup value A1",
+  "expected_output": "=IFERROR(VLOOKUP(A1, B:C, 2, FALSE), \"Missing\")",
+  "hidden_test_cases": "Trigger a #DIV/0! error within the VLOOKUP array to verify IFERROR catches calculation errors alongside missing reference errors."
+}

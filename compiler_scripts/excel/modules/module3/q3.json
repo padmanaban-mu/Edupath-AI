@@ -1,0 +1,7 @@
+{
+  "title": "Advanced: Nested IF Function",
+  "description": "Write a nested IF formula for cell A1: If value > 90 return \"A\", if value > 80 return \"B\", otherwise return \"C\".",
+  "input": "A1=85",
+  "expected_output": "=IF(A1>90, \"A\", IF(A1>80, \"B\", \"C\"))",
+  "hidden_test_cases": "Test with bounds exactly on 90 and 80 to verify strict greater-than logic."
+}

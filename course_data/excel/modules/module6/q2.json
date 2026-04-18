@@ -1,0 +1,7 @@
+{
+  "title": "Intermediate: Count Blank Cells",
+  "description": "Write a formula to count the total number of empty cells within the range D2:D50 before integrating the data into a Pivot Table.",
+  "input": "Range D2:D50",
+  "expected_output": "=COUNTBLANK(D2:D50)",
+  "hidden_test_cases": "Verify that cells containing formula-driven empty strings (\"\") are counted alongside truly blank cells."
+}

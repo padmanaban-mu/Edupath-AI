@@ -1,0 +1,7 @@
+{
+  "title": "Mock Test: Advanced Conditionals",
+  "description": "Write a formula combining IF, OR, and ISBLANK to return \"Pending\" if EITHER cell A1 is blank OR cell B1 is blank. Otherwise, return \"Complete\".",
+  "input": "Cells A1 and B1",
+  "expected_output": "=IF(OR(ISBLANK(A1), ISBLANK(B1)), \"Pending\", \"Complete\")",
+  "hidden_test_cases": "Evaluate against cells containing formulas that output empty strings vs. naturally empty cells."
+}

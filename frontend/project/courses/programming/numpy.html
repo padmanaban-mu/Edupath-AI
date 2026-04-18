@@ -1465,7 +1465,7 @@
             </div>
             <div class="section-content" style="display:block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
-                <div class="activity-row" onclick="window.location.href='/compiler/comp_numpy.html?module=mock-test'">
+                <div class="activity-row" onclick="window.location.href='/compiler/comp_numpy.html?module=module9'">
                     <div class="activity-info"><i class="fas fa-code"></i> <span>Take Final Mock Test</span></div>
                     <button id="pbtn-9" class="status-btn todo">To do</button>
                 </div>
@@ -1479,7 +1479,23 @@
 
     // Load saved state on page load
     document.addEventListener("DOMContentLoaded", () => {
-        // Module unlocking logic
+        // 1. CHATBOT FAST-TRACK LOGIC
+        // Instantly unlocks Modules 1-8 if flagged in the Chatbot
+        if (localStorage.getItem("numpy_fast_tracked") === "true") {
+            for (let i = 1; i <= 8; i++) {
+                localStorage.setItem("numpy_module" + i + "_completed", "true");
+                localStorage.setItem("numpy_vbtn-" + i, "done");
+                localStorage.setItem("numpy_qbtn-" + i, "done");
+                localStorage.setItem("numpy_pbtn-" + i, "done");
+                localStorage.setItem("numpy_prog_module" + i, "done");
+            }
+            // Explicitly unlock Module 9 and clear general restriction
+            localStorage.setItem("numpy_vbtn-gen", "done"); 
+            const mod9 = document.getElementById("module-box-9");
+            if (mod9) mod9.classList.remove("locked");
+        }
+
+        // 2. NORMAL UNLOCK LOGIC (Cascading)
         for (let i = 2; i <= totalModules; i++) {
             if (localStorage.getItem("numpy_module" + (i - 1) + "_completed") === "true") {
                 const moduleBox = document.getElementById("module-box-" + i);
@@ -1487,7 +1503,7 @@
             }
         }
 
-        // Restore button states for videos and quizzes
+        // 3. RESTORE BUTTON STATES
         const buttons = document.querySelectorAll('.status-btn');
         buttons.forEach(btn => {
             if (btn.id && localStorage.getItem("numpy_" + btn.id) === "done") {
@@ -1495,7 +1511,7 @@
             }
         });
 
-        // Check for programming completions from the compiler
+        // 4. CHECK COMPILER SYNC FLAGS
         for (let i = 1; i <= totalModules; i++) {
             if (localStorage.getItem("numpy_prog_module" + i) === "done") {
                 const pbtn = document.getElementById("pbtn-" + i);
@@ -1503,8 +1519,66 @@
             }
         }
 
+        // 5. DB SYNC: MOCK TEST COMPLETION 
+        // If compiler flags the mock test as successfully completed
+        if (localStorage.getItem("numpy_prog_mock-test") === "done" || localStorage.getItem("numpy_prog_module9") === "done") {
+            const finalBtn = document.getElementById("pbtn-9");
+            if (finalBtn) applyDoneState(finalBtn);
+            syncCourseCompletionToDB("numpy");
+        }
+
         updateProgress();
     });
+    async function syncCourseCompletionToDB(courseId) {
+        const token = localStorage.getItem('token');
+        if (!token) return;
+        
+        // Prevent continuous DB spamming if already updated
+        if (localStorage.getItem(courseId + "_db_synced") === "true") {
+            const pbtn9 = document.getElementById("pbtn-9");
+            if(pbtn9) {
+                pbtn9.innerHTML = 'Dependencies Unlocked <i class="fas fa-check-double"></i>';
+                pbtn9.style.backgroundColor = 'var(--success-green)';
+                pbtn9.style.color = 'white';
+            }
+            return;
+        }
+
+        try {
+            const res = await fetch('http://localhost:3000/get-roadmap', { headers: { 'Authorization': `Bearer ${token}` } });
+            const data = await res.json();
+            
+            if (data.roadmapData) {
+                const domain = data.selectedDomain;
+                const roadmap = data.roadmapData;
+                
+                // Locate the exact course and force to 100%
+                let course = roadmap[domain].programming.find(c => c.id === courseId);
+                if (!course) course = roadmap[domain].nonProgramming.find(c => c.id === courseId);
+                
+                if (course && course.progress !== 100) {
+                    course.progress = 100;
+                    await fetch('http://localhost:3000/save-roadmap', {
+                        method: 'POST',
+                        headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ hasGeneratedRoadmap: true, selectedDomain: domain, roadmapData: roadmap })
+                    });
+                    
+                    localStorage.setItem(courseId + "_db_synced", "true");
+                    
+                    // Quietly update UI instead of throwing an annoying alert
+                    const pbtn9 = document.getElementById("pbtn-9");
+                    if(pbtn9) {
+                        pbtn9.innerHTML = 'Dependencies Unlocked <i class="fas fa-check-double"></i>';
+                        pbtn9.style.backgroundColor = 'var(--success-green)';
+                        pbtn9.style.color = 'white';
+                    }
+                }
+            }
+        } catch(e) {
+            console.error("DB Sync Failed:", e);
+        }
+    }
 
     function openVideo(url, btnId) {
         window.open(url, '_blank');
@@ -1516,10 +1590,20 @@
         if (btn) {
             applyDoneState(btn);
             localStorage.setItem("numpy_" + btnId, "done");
+            
+            // Auto unlock next module logic
+            const modNum = parseInt(btnId.split('-')[1]);
+            if (!isNaN(modNum)) {
+                localStorage.setItem("numpy_module" + modNum + "_completed", "true");
+                
+                if(modNum < totalModules) {
+                    const nextMod = document.getElementById("module-box-" + (modNum + 1));
+                    if(nextMod) nextMod.classList.remove("locked");
+                }
+            }
             updateProgress();
         }
     }
-
     function applyDoneState(btn) {
         btn.classList.remove("todo");
         btn.classList.add("done");

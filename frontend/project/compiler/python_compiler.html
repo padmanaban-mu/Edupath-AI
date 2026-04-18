@@ -282,7 +282,7 @@
                         const foundIndex = state.flatQuestions.findIndex(q => q.moduleId === targetModuleId);
                         if (foundIndex !== -1) {
                             const mIdx = state.flatQuestions[foundIndex].moduleIndex;
-                            let isModuleUnlocked = (mIdx === 0) || (localStorage.getItem('module' + mIdx + '_unlocked') === 'true');
+                            let isModuleUnlocked = (mIdx === 0) || (localStorage.getItem('python_module' + mIdx + '_unlocked') === 'true');
                             if (isModuleUnlocked) {
                                 targetIndex = foundIndex;
                             }
@@ -309,7 +309,7 @@
             const prevQ = state.flatQuestions[idx - 1];
 
             // Note: python.html uses 'moduleX_unlocked' instead of 'python_moduleX_unlocked'
-            let isModuleUnlocked = (q.moduleIndex === 0) || (localStorage.getItem('module' + q.moduleIndex + '_unlocked') === 'true');
+            let isModuleUnlocked = (q.moduleIndex === 0) || (localStorage.getItem('python_module' + q.moduleIndex + '_unlocked') === 'true');
             if (!isModuleUnlocked) return false;
 
             const isFirstQuestionInModule = (q.questionIndex === 0);
@@ -443,11 +443,8 @@
             const activeModIdx = state.flatQuestions[state.currentQIndex].moduleIndex;
             const actualModNum = activeModIdx + 1;
 
-            // Save compiler completion button state based on python.html button IDs ('pbtn-X')
-            localStorage.setItem('pbtn-' + actualModNum, 'done');
-            
-            // UNLOCK the next module on the dashboard officially
-            localStorage.setItem('module' + actualModNum + '_unlocked', 'true');
+            localStorage.setItem('python_prog_module' + actualModNum, 'done');
+localStorage.setItem('python_module' + actualModNum + '_unlocked', 'true');
 
             // Return to the dashboard
             window.location.href = '/courses/programming/python.html'; 

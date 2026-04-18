@@ -279,7 +279,7 @@
                         const foundIndex = state.flatQuestions.findIndex(q => q.moduleId === targetModuleId);
                         if (foundIndex !== -1) {
                             const mIdx = state.flatQuestions[foundIndex].moduleIndex;
-                            let isModuleUnlocked = (mIdx === 0) || (localStorage.getItem('regression_module' + mIdx + '_completed') === 'true');
+                            let isModuleUnlocked = (mIdx === 0) || (localStorage.getItem('reg_module' + mIdx + '_completed') === 'true');
                             if (isModuleUnlocked) {
                                 targetIndex = foundIndex;
                             }
@@ -438,11 +438,8 @@
             const activeModIdx = state.flatQuestions[state.currentQIndex].moduleIndex;
             const actualModNum = activeModIdx + 1;
 
-            // Save compiler completion
-            localStorage.setItem('regression_prog_module' + actualModNum, 'done');
-            
-            // UNLOCK the next module on the dashboard officially
-            localStorage.setItem('regression_module' + actualModNum + '_completed', 'true');
+           localStorage.setItem('reg_prog_module' + actualModNum, 'done');
+localStorage.setItem('reg_module' + actualModNum + '_completed', 'true');
 
             // Return to the dashboard
             window.location.href = '/courses/programming/regression_models.html'; 

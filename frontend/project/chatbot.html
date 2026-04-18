@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EduPath AI | Edupath AI Chat</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-        <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/dashboard.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
@@ -209,6 +209,49 @@
             font-size: 0.8rem;
             text-transform: uppercase;
             letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .select-all-wrap {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: var(--primary-blue);
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 20px;
+            padding: 3px 10px;
+            cursor: pointer;
+            transition: 0.2s;
+            text-transform: none;
+            letter-spacing: 0;
+            margin-left: auto;
+            white-space: nowrap;
+            user-select: none;
+        }
+
+        .select-all-wrap:hover {
+            background: var(--primary-blue);
+            color: white;
+            border-color: var(--primary-blue);
+        }
+
+        .select-all-wrap input[type="checkbox"] {
+            width: 13px;
+            height: 13px;
+            accent-color: var(--primary-blue);
+            cursor: pointer;
+            margin: 0;
+        }
+
+        .select-all-wrap.all-checked {
+            background: var(--primary-blue);
+            color: white;
+            border-color: var(--primary-blue);
         }
 
         .chat-btn {
@@ -424,15 +467,25 @@
                         I am a complete beginner
                     </label>
                     <div class="checklist-section">
-                        <h4>Programming</h4>
-                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px;">
-                            ${domainData.programming.map(c => `<label style="font-size:0.85rem;" class="course-cb"><input type="checkbox" value="${c.id}" data-title="${c.title}"> ${c.title}</label>`).join('')}
+                        <h4>Programming
+                            <label class="select-all-wrap" id="prog-select-all-wrap" onclick="event.preventDefault(); toggleSelectAll('programming', this)">
+                                <input type="checkbox" id="prog-select-all" tabindex="-1">
+                                Select All
+                            </label>
+                        </h4>
+                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px;" id="prog-grid">
+                            ${domainData.programming.map(c => `<label style="font-size:0.85rem;" class="course-cb prog-cb"><input type="checkbox" value="${c.id}" data-title="${c.title}" onchange="syncSelectAll('programming')"> ${c.title}</label>`).join('')}
                         </div>
                     </div>
                     <div class="checklist-section">
-                        <h4>Fundamentals</h4>
-                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px;">
-                            ${domainData.nonProgramming.map(c => `<label style="font-size:0.85rem;" class="course-cb"><input type="checkbox" value="${c.id}" data-title="${c.title}"> ${c.title}</label>`).join('')}
+                        <h4>Fundamentals
+                            <label class="select-all-wrap" id="fund-select-all-wrap" onclick="event.preventDefault(); toggleSelectAll('fundamentals', this)">
+                                <input type="checkbox" id="fund-select-all" tabindex="-1">
+                                Select All
+                            </label>
+                        </h4>
+                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px;" id="fund-grid">
+                            ${domainData.nonProgramming.map(c => `<label style="font-size:0.85rem;" class="course-cb fund-cb"><input type="checkbox" value="${c.id}" data-title="${c.title}" onchange="syncSelectAll('fundamentals')"> ${c.title}</label>`).join('')}
                         </div>
                     </div>
                     <button class="chat-btn" style="width:100%; margin-top:15px; background:var(--primary-blue); color:white;" onclick="processChecklist()">Submit Assessment</button>
@@ -448,6 +501,48 @@
             if (noneCheckbox.checked) { cb.checked = false; cb.disabled = true; } 
             else { cb.disabled = false; }
         });
+        // Reset select-all badges
+        ['programming', 'fundamentals'].forEach(group => syncSelectAll(group));
+    };
+
+    // Toggles all courses in a section on/off
+    window.toggleSelectAll = (group, wrapLabel) => {
+        const cbClass = group === 'programming' ? '.prog-cb input' : '.fund-cb input';
+        const masterCb = document.getElementById(group === 'programming' ? 'prog-select-all' : 'fund-select-all');
+        const noneCheck = document.getElementById('check-none');
+
+        // If "beginner" is ticked, do nothing
+        if (noneCheck && noneCheck.checked) return;
+
+        // Flip state: if all checked → uncheck all, else check all
+        const allBoxes = document.querySelectorAll(cbClass);
+        const allChecked = [...allBoxes].every(cb => cb.checked);
+        allBoxes.forEach(cb => { cb.checked = !allChecked; });
+
+        syncSelectAll(group);
+    };
+
+    // Keeps the select-all badge in sync when individual boxes are toggled
+    window.syncSelectAll = (group) => {
+        const cbClass = group === 'programming' ? '.prog-cb input' : '.fund-cb input';
+        const masterCb = document.getElementById(group === 'programming' ? 'prog-select-all' : 'fund-select-all');
+        const wrapLabel = document.getElementById(group === 'programming' ? 'prog-select-all-wrap' : 'fund-select-all-wrap');
+
+        if (!masterCb || !wrapLabel) return;
+
+        const allBoxes = document.querySelectorAll(cbClass);
+        const checkedCount = [...allBoxes].filter(cb => cb.checked).length;
+        const allChecked = checkedCount === allBoxes.length && allBoxes.length > 0;
+
+        masterCb.checked = allChecked;
+        masterCb.indeterminate = checkedCount > 0 && !allChecked;
+
+        if (allChecked) {
+            wrapLabel.classList.add('all-checked');
+            wrapLabel.querySelector('span') && (wrapLabel.querySelector('span').textContent = 'All Selected');
+        } else {
+            wrapLabel.classList.remove('all-checked');
+        }
     };
 
     window.processChecklist = () => {
@@ -456,23 +551,42 @@
 
         if (isNone) {
             appendMsg("I am a beginner.", 'user');
+            
+            setTimeout(() => {
+                appendMsg(`Assessment received! Since you are starting fresh, I have mapped out your complete journey from Level 1.\n\nType **'confirm'** below to initialize your roadmap.`);
+                document.getElementById('chat-footer').style.display = 'block';
+            }, 800);
+
         } else if (checkedCourses.length > 0) {
             let userTitles = checkedCourses.map(cb => cb.getAttribute('data-title')).join(', ');
             appendMsg(`I have completed: ${userTitles}`, 'user');
             
             let domainData = userRoadmap[userSelection.domain];
             let allDomainCourses = [...domainData.programming, ...domainData.nonProgramming];
+            
+            let topicsHTML = "";
 
             checkedCourses.forEach(cb => {
                 let courseObj = allDomainCourses.find(c => c.id === cb.value);
-                if (courseObj) courseObj.progress = 100;
+                if (courseObj) {
+                    courseObj.progress = 90; // Sets 90% Pending Flag for Roadmap UI
+                    // Create Fast-Track Flag for the specific course page to auto-unlock modules 1-8
+                    localStorage.setItem(courseObj.id + "_fast_tracked", "true");
+                    
+                    // Build Topics Suggestion
+                    if (courseObj.keyTopics && courseObj.keyTopics.length > 0) {
+                        topicsHTML += `* **${courseObj.title}**: ${courseObj.keyTopics.join(', ')}\n`;
+                    }
+                }
             });
-        }
 
-        setTimeout(() => {
-            appendMsg(`Assessment received! Type **'confirm'** below to initialize your roadmap.`);
-            document.getElementById('chat-footer').style.display = 'block';
-        }, 800);
+            let finalMsg = `Assessment received! I have fast-tracked your selected courses to **90% completion**.\n\nTo ensure you are fully prepared, I suggest brushing up on these key topics before attending the mock tests:\n${topicsHTML}\n**Remember:** You must pass the **Final Mock Assessment** in each selected course to achieve 100% mastery and unlock your next dependencies.\n\nType **'confirm'** below to initialize your roadmap.`;
+
+            setTimeout(() => {
+                appendMsg(finalMsg);
+                document.getElementById('chat-footer').style.display = 'block';
+            }, 800);
+        }
     };
 
     // Allow sending with Enter key

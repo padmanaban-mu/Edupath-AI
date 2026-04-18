@@ -979,35 +979,52 @@
 
 <script>
     const totalModules = 9;
-    let mockTestAnswers = {};
-    const quizAnswers = {
-        1: { q1: 'A', q2: 'A', q3: 'A', q4: 'A', q5: 'A' },
-        2: { q1: 'A', q2: 'A', q3: 'A', q4: 'A', q5: 'A' },
-        3: { q1: 'A', q2: 'A', q3: 'A', q4: 'A', q5: 'A' },
-        4: { q1: 'A', q2: 'A', q3: 'A', q4: 'A', q5: 'A' },
-        5: { q1: 'A', q2: 'A', q3: 'A', q4: 'A', q5: 'A' },
-        6: { q1: 'A', q2: 'A', q3: 'A', q4: 'A', q5: 'A' },
-        7: { q1: 'A', q2: 'A', q3: 'A', q4: 'A', q5: 'A' },
-        8: { q1: 'A', q2: 'A', q3: 'A', q4: 'A', q5: 'A' }
-    };
 
     document.addEventListener("DOMContentLoaded", () => {
+        // 1. Sidebar Logic
         const sidebarToggle = document.getElementById('sidebarToggle');
         const sidebar = document.getElementById('sidebar');
         const mainContent = document.getElementById('main-content');
-        
-        sidebarToggle.addEventListener('click', () => {
-            sidebar.classList.toggle('collapsed');
-            mainContent.classList.toggle('expanded');
-        });
 
+        if (sidebarToggle) {
+            sidebarToggle.addEventListener('click', () => {
+                sidebar.classList.toggle('collapsed');
+                mainContent.classList.toggle('expanded');
+            });
+        }
+
+        // 2. CHATBOT FAST-TRACK LOGIC
+        // Course ID in courseData.js for Statistics is "stats"
+        if (localStorage.getItem("stats_fast_tracked") === "true") {
+            // Unlock module thresholds
+            for (let i = 1; i <= 8; i++) {
+                localStorage.setItem("stats_module" + i + "_completed", "true");
+                localStorage.setItem("stats_prog_module" + i, "done");
+            }
+            
+            // DYNAMICALLY MARK ALL BUTTONS AS DONE (Fixes incomplete modules issue)
+            document.querySelectorAll('.status-btn').forEach(btn => {
+                // Mark everything done EXCEPT Module 9 buttons
+                if (btn.id && !btn.id.includes("9")) {
+                    localStorage.setItem("stats_" + btn.id, "done");
+                }
+            });
+
+            // Explicitly unlock Module 9 and clear general restriction
+            localStorage.setItem("stats_vbtn-gen", "done"); 
+            const mod9 = document.getElementById("module-box-9");
+            if (mod9) mod9.classList.remove("locked");
+        }
+
+        // 3. NORMAL UNLOCK LOGIC (Cascading)
         for (let i = 2; i <= totalModules; i++) {
-            if (localStorage.getItem("stats_module" + (i - 1) + "_unlocked") === "true") {
-                const moduleBox = document.getElementById("module-box-" + i);
-                if (moduleBox) moduleBox.classList.remove("locked");
+            if (localStorage.getItem("stats_module" + (i - 1) + "_completed") === "true") {
+                const box = document.getElementById("module-box-" + i);
+                if (box) box.classList.remove("locked");
             }
         }
 
+        // 4. RESTORE BUTTON STATES
         const buttons = document.querySelectorAll('.status-btn');
         buttons.forEach(btn => {
             if (btn.id && localStorage.getItem("stats_" + btn.id) === "done") {
@@ -1015,50 +1032,87 @@
             }
         });
 
+        // 5. DB SYNC: MOCK TEST COMPLETION
+        if (localStorage.getItem("stats_qbtn-9") === "done" || localStorage.getItem("stats_pbtn-9") === "done") {
+            const finalBtn = document.getElementById("qbtn-9") || document.getElementById("pbtn-9");
+            if (finalBtn) applyDoneState(finalBtn);
+            syncCourseCompletionToDB("stats"); 
+        }
+
         updateProgress();
+        
+        // Triggers your custom Module 9 Mock Test renderer if it exists on the page
+        if (typeof renderMockTest === 'function') renderMockTest(); 
+        
+        // 6. Search Functionality
+        const searchInput = document.getElementById('moduleSearch');
+        if (searchInput) {
+            searchInput.addEventListener('input', function (e) {
+                const term = e.target.value.toLowerCase();
+                const modules = document.querySelectorAll('.section-box');
+                modules.forEach(mod => {
+                    const text = mod.innerText.toLowerCase();
+                    mod.style.display = text.includes(term) ? 'block' : 'none';
+                });
+            });
+        }
     });
 
-    function toggleSection(header) {
-        const content = header.nextElementSibling;
-        const icon = header.querySelector('.toggle-icon');
-        const isOpen = content.style.display === 'block';
-        content.style.display = isOpen ? 'none' : 'block';
-        header.classList.toggle('active', !isOpen);
-    }
-
-    function showQuiz(moduleNum) {
-        const quizBox = document.getElementById("quiz-" + moduleNum);
-        const isOpen = quizBox.style.display === 'block';
-        quizBox.style.display = isOpen ? 'none' : 'block';
-    }
-
-    function submitQuiz(moduleNum) {
-        const form = document.getElementById("quizForm-" + moduleNum);
-        const answers = quizAnswers[moduleNum];
-        let score = 0;
-        let total = 5;
-
-        for (let q in answers) {
-            const selected = form.querySelector(`input[name="${q}"]:checked`);
-            if (selected && selected.value === answers[q]) {
-                score++;
+    async function syncCourseCompletionToDB(courseId) {
+        const token = localStorage.getItem('token');
+        if (!token) return;
+        
+        // Prevent continuous DB spamming if already updated
+        if (localStorage.getItem(courseId + "_db_synced") === "true") {
+            const finalBtn = document.getElementById("qbtn-9") || document.getElementById("pbtn-9");
+            if(finalBtn) {
+                finalBtn.innerHTML = 'Dependencies Unlocked <i class="fas fa-check-double"></i>';
+                finalBtn.style.backgroundColor = 'var(--success-green)';
+                finalBtn.style.color = 'white';
             }
+            return;
         }
 
-        const scorePercent = (score / total) * 100;
-        alert(`You scored ${score}/${total} (${scorePercent}%)`);
-
-        if (score >= 4) {
-            markAsDone("qbtn-" + moduleNum);
-            if (moduleNum < totalModules) {
-                localStorage.setItem("stats_module" + moduleNum + "_unlocked", "true");
-                const nextModule = document.getElementById("module-box-" + (moduleNum + 1));
-                if (nextModule) nextModule.classList.remove("locked");
+        try {
+            const res = await fetch('http://localhost:3000/get-roadmap', { headers: { 'Authorization': `Bearer ${token}` } });
+            const data = await res.json();
+            
+            if (data.roadmapData) {
+                const domain = data.selectedDomain;
+                const roadmap = data.roadmapData;
+                
+                let course = roadmap[domain].programming.find(c => c.id === courseId);
+                if (!course) course = roadmap[domain].nonProgramming.find(c => c.id === courseId);
+                
+                if (course && course.progress !== 100) {
+                    course.progress = 100;
+                    await fetch('http://localhost:3000/save-roadmap', {
+                        method: 'POST',
+                        headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ hasGeneratedRoadmap: true, selectedDomain: domain, roadmapData: roadmap })
+                    });
+                    
+                    localStorage.setItem(courseId + "_db_synced", "true");
+                    
+                    // Quietly update UI
+                    const finalBtn = document.getElementById("qbtn-9") || document.getElementById("pbtn-9");
+                    if(finalBtn) {
+                        finalBtn.innerHTML = 'Dependencies Unlocked <i class="fas fa-check-double"></i>';
+                        finalBtn.style.backgroundColor = 'var(--success-green)';
+                        finalBtn.style.color = 'white';
+                    }
+                }
             }
-        } else {
-            alert("You need at least 4/5 to unlock the next module.");
+        } catch(e) {
+            console.error("DB Sync Failed:", e);
         }
-        updateProgress();
+    }
+
+    function openVideo(url, btnId) {
+        window.open(url, '_blank');
+        if(btnId) {
+            markAsDone(btnId);
+        }
     }
 
     function markAsDone(btnId) {
@@ -1066,72 +1120,232 @@
         if (btn) {
             applyDoneState(btn);
             localStorage.setItem("stats_" + btnId, "done");
+            
+            // Safely grab the module number from the button ID
+            const modNumMatch = btnId.match(/-(\d+)/);
+            if (modNumMatch && modNumMatch[1]) {
+                const modNum = parseInt(modNumMatch[1]);
+                localStorage.setItem("stats_module" + modNum + "_completed", "true");
+                
+                if(modNum < totalModules) {
+                    const nextMod = document.getElementById("module-box-" + (modNum + 1));
+                    if(nextMod) nextMod.classList.remove("locked");
+                } else if (modNum === totalModules) {
+                    syncCourseCompletionToDB("stats");
+                }
+            }
             updateProgress();
         }
     }
 
     function applyDoneState(btn) {
-        btn.classList.remove('todo');
-        btn.classList.add('done');
+        btn.classList.remove("todo");
+        btn.classList.add("done");
         btn.innerHTML = 'Done <i class="fas fa-check"></i>';
     }
 
-    function updateProgress() {
-        const totalItems = (8 * 2) + 1;
-        let doneItems = 0;
-        for (let i = 1; i <= 8; i++) {
-            if (localStorage.getItem("stats_vbtn-" + i) === "done") doneItems++;
-            if (localStorage.getItem("stats_qbtn-" + i) === "done") doneItems++;
-        }
-        if (localStorage.getItem("stats_qbtn-9") === "done") doneItems++;
-        const progress = Math.round((doneItems / totalItems) * 100);
-        const bar = document.getElementById("progressBar");
-        const text = document.getElementById("progressText");
-        if (bar) bar.style.width = progress + "%";
-        if (text) text.innerText = progress + "%";
+    function toggleSection(header) {
+        header.classList.toggle('active');
+        const content = header.nextElementSibling;
+        content.style.display = (content.style.display === 'block') ? 'none' : 'block';
     }
 
-    function generateAndShowMockTest() {
-        showQuiz(9);
-        const container = document.getElementById('mock-test-container');
-        if (container.innerHTML.trim() !== '') return;
-        let allQuestions = [];
-        for (let i = 1; i <= 8; i++) {
-            const quizBox = document.getElementById('quiz-' + i);
-            if (quizBox) {
-                const questions = quizBox.querySelectorAll('.mcq-question');
-                questions.forEach((q, index) => {
-                    const originalQNum = `q${index + 1}`;
-                    const correctAnswer = quizAnswers[i][originalQNum];
-                    allQuestions.push({ html: q.innerHTML, correct: correctAnswer });
-                });
+    function showQuiz(module) {
+    let quiz = document.getElementById("quiz-" + module);
+    if (!quiz) return; // safety check
+    quiz.style.display = (quiz.style.display === "block") ? "none" : "block";
+}
+
+    // Standard Quiz Logic for Modules 1-8
+    // Note: If you have a custom quizAnswers object, you can keep yours instead!
+    const quizAnswers = {
+        1: { q1: "B", q2: "A", q3: "C", q4: "B", q5: "A" },
+        2: { q1: "B", q2: "A", q3: "A", q4: "B", q5: "B" },
+        3: { q1: "B", q2: "A", q3: "A", q4: "B", q5: "B" },
+        4: { q1: "B", q2: "A", q3: "A", q4: "B", q5: "A" },
+        5: { q1: "A", q2: "C", q3: "B", q4: "B", q5: "C" },
+        6: { q1: "A", q2: "C", q3: "A", q4: "B", q5: "A" },
+        7: { q1: "B", q2: "C", q3: "A", q4: "B", q5: "B" },
+        8: { q1: "B", q2: "A", q3: "B", q4: "A", q5: "C" }
+    };
+
+    function submitQuiz(module) {
+        let answers = quizAnswers[module];
+        let score = 0;
+        let total = Object.keys(answers).length;
+
+        for (let q in answers) {
+            let selected = document.querySelector(`#quiz-module${module} input[name="${q}"]:checked`);
+            let options = document.querySelectorAll(`#quiz-module${module} input[name="${q}"]`);
+
+            options.forEach(opt => {
+                opt.parentElement.classList.remove("correct", "wrong");
+            });
+
+            if (selected) {
+                if (selected.value === answers[q]) {
+                    score++;
+                    selected.parentElement.classList.add("correct");
+                } else {
+                    selected.parentElement.classList.add("wrong");
+                    let correct = document.querySelector(`#quiz-module${module} input[name="${q}"][value="${answers[q]}"]`);
+                    if (correct) correct.parentElement.classList.add("correct");
+                }
+            } else {
+                let correct = document.querySelector(`#quiz-module${module} input[name="${q}"][value="${answers[q]}"]`);
+                if(correct) correct.parentElement.classList.add("correct");
             }
         }
-        allQuestions.sort(() => 0.5 - Math.random());
-        const selectedQuestions = allQuestions.slice(0, 15);
-        selectedQuestions.forEach((q, index) => {
-            const qDiv = document.createElement('div');
-            qDiv.className = 'mcq-question';
-            let modifiedHtml = q.html.replace(/name="q\d+"/g, `name="mq${index + 1}"`);
-            modifiedHtml = modifiedHtml.replace(/<div class="mcq-title">\d+\./, '<div class="mcq-title">' + (index + 1) + '.');
-            qDiv.innerHTML = modifiedHtml;
-            container.appendChild(qDiv);
-            mockTestAnswers[`mq${index + 1}`] = q.correct;
+
+        let percent = Math.floor((score / total) * 100);
+        let resultBox = document.querySelector(`#quiz-module${module} .quiz-result`);
+
+        if (!resultBox) {
+            resultBox = document.createElement("div");
+            resultBox.className = "quiz-result";
+            document.querySelector(`#quiz-module${module}`).appendChild(resultBox);
+        }
+
+        resultBox.innerHTML = `You scored ${score}/${total} (${percent}%)`;
+
+        if (percent >= 60) {
+            markAsDone("qbtn-" + module);
+        }
+    }
+
+    // --- Module 9 Mock Test: Random 15 questions from Statistics Modules 1–8 ---
+    const statsMockPool = [
+        // Module 1: Intro to Statistics
+        { q:"What is the main purpose of Descriptive Statistics?", opts:["A. To summarize and describe data","B. To predict the future"], ans:"A", tag:"Mod 1" },
+        { q:"Height of a person is an example of:", opts:["A. Continuous quantitative data","B. Qualitative data"], ans:"A", tag:"Mod 1" },
+        { q:"Which data type has a fixed number of categories?", opts:["A. Categorical (Qualitative)","B. Discrete quantitative"], ans:"A", tag:"Mod 1" },
+        { q:"Collecting data from the entire population is a:", opts:["A. Census","B. Sample"], ans:"A", tag:"Mod 1" },
+        { q:"Inferential statistics allows us to:", opts:["A. Make generalizations about a population from a sample","B. Only look at the group we measured"], ans:"A", tag:"Mod 1" },
+        // Module 2: Central Tendency
+        { q:"Which measure of central tendency is most affected by outliers?", opts:["A. Mean","B. Median"], ans:"A", tag:"Mod 2" },
+        { q:"The Median is the:", opts:["A. Middle value when data is ordered","B. Most frequent value"], ans:"A", tag:"Mod 2" },
+        { q:"Mode is especially useful for:", opts:["A. Categorical data","B. Normal distributions only"], ans:"A", tag:"Mod 2" },
+        { q:"If a distribution is perfectly symmetrical:", opts:["A. Mean = Median = Mode","B. Mean is greater than Median"], ans:"A", tag:"Mod 2" },
+        { q:"To calculate the Mean, you:", opts:["A. Sum all values and divide by the count","B. Find the middle number"], ans:"A", tag:"Mod 2" },
+        // Module 3: Dispersion
+        { q:"What does Standard Deviation measure?", opts:["A. Spread of data around the mean","B. The average of the data"], ans:"A", tag:"Mod 3" },
+        { q:"Range is calculated by:", opts:["A. Max value minus Min value","B. Sum divided by Count"], ans:"A", tag:"Mod 3" },
+        { q:"Variance is:", opts:["A. Standard Deviation squared","B. Square root of Standard Deviation"], ans:"A", tag:"Mod 3" },
+        { q:"High Standard Deviation indicates:", opts:["A. Data points are far from the mean","B. Data is very consistent"], ans:"A", tag:"Mod 3" },
+        { q:"Interquartile Range (IQR) focuses on:", opts:["A. The middle 50% of the data","B. The extreme ends of the data"], ans:"A", tag:"Mod 3" },
+        // Module 4: Probability
+        { q:"Probability of an impossible event is:", opts:["A. 0","B. 1"], ans:"A", tag:"Mod 4" },
+        { q:"Probability of a certain event is:", opts:["A. 1","B. 0.5"], ans:"A", tag:"Mod 4" },
+        { q:"'Sample space' refers to:", opts:["A. All possible outcomes","B. Only the successful outcomes"], ans:"A", tag:"Mod 4" },
+        { q:"Independent events means:", opts:["A. Outcome of one doesn't affect the other","B. The events always happen together"], ans:"A", tag:"Mod 4" },
+        { q:"Probability is always a value between:", opts:["A. 0 and 1","B. -1 and 1"], ans:"A", tag:"Mod 4" },
+        // Module 5: Distributions
+        { q:"The Normal Distribution curve is also known as:", opts:["A. Bell curve","B. Frequency curve"], ans:"A", tag:"Mod 5" },
+        { q:"In a Normal Distribution, 68% of data falls within:", opts:["A. 1 Standard Deviation of the mean","B. 2 Standard Deviations of the mean"], ans:"A", tag:"Mod 5" },
+        { q:"Standard Normal Distribution has a mean of:", opts:["A. 0","B. 1"], ans:"A", tag:"Mod 5" },
+        { q:"Skewness refers to:", opts:["A. Asymmetry in the distribution","B. The height of the peak"], ans:"A", tag:"Mod 5" },
+        { q:"A 'Right Skewed' distribution has a long tail on the:", opts:["A. Right side","B. Left side"], ans:"A", tag:"Mod 5" },
+        // Module 6: Sampling
+        { q:"A subset of a population is called a:", opts:["A. Sample","B. Census"], ans:"A", tag:"Mod 6" },
+        { q:"Random sampling helps ensure:", opts:["A. A representative, low-bias sample","B. Easier calculations"], ans:"A", tag:"Mod 6" },
+        { q:"Stratified sampling involves:", opts:["A. Dividing the population into subgroups","B. Choosing only the easiest people to reach"], ans:"A", tag:"Mod 6" },
+        { q:"Sampling bias occurs when:", opts:["A. Certain members are more likely to be selected","B. The sample size is too large"], ans:"A", tag:"Mod 6" },
+        { q:"The Central Limit Theorem states sample means will:", opts:["A. Tend toward a Normal Distribution as sample size grows","B. Always equal the population mean"], ans:"A", tag:"Mod 6" },
+        // Module 7: Hypothesis Testing
+        { q:"The 'Null Hypothesis' (H0) usually assumes:", opts:["A. No effect or no difference","B. There is a significant effect"], ans:"A", tag:"Mod 7" },
+        { q:"'P-value' measures:", opts:["A. The probability of seeing results if H0 is true","B. The absolute truth of a claim"], ans:"A", tag:"Mod 7" },
+        { q:"If the P-value is less than 0.05, we typically:", opts:["A. Reject the Null Hypothesis","B. Accept the Null Hypothesis"], ans:"A", tag:"Mod 7" },
+        { q:"Type I error is:", opts:["A. Rejecting H0 when it's actually true","B. Failing to reject H0 when it's false"], ans:"A", tag:"Mod 7" },
+        { q:"Significance level (alpha) is often set at:", opts:["A. 0.05","B. 0.50"], ans:"A", tag:"Mod 7" },
+        // Module 8: Correlation
+        { q:"The correlation coefficient ranges from:", opts:["A. -1 to +1","B. 0 to 100"], ans:"A", tag:"Mod 8" },
+        { q:"Correlation does NOT imply:", opts:["A. Causation","B. Relationship"], ans:"A", tag:"Mod 8" },
+        { q:"A correlation of +1 means:", opts:["A. Perfect positive linear relationship","B. No relationship at all"], ans:"A", tag:"Mod 8" },
+        { q:"A scatter plot with randomly scattered points indicates:", opts:["A. Zero or very low correlation","B. Strong negative correlation"], ans:"A", tag:"Mod 8" },
+        { q:"A 'Lurking Variable' is:", opts:["A. A hidden variable that affects the observed relationship","B. The main variable of interest"], ans:"A", tag:"Mod 8" },
+    ];
+
+    var mockTestAnswers = {};
+
+    function generateAndShowMockTest() {
+        const quizBox = document.getElementById("quiz-9");
+        const container = document.getElementById("mock-test-container");
+        if (!container) return;
+
+        const shuffled = [...statsMockPool].sort(() => Math.random() - 0.5);
+        const selected = shuffled.slice(0, 15);
+
+        mockTestAnswers = {};
+        container.innerHTML = "";
+
+        selected.forEach((item, idx) => {
+            const qKey = "mq" + (idx + 1);
+            mockTestAnswers[qKey] = item.ans;
+            const qNum = idx + 1;
+            const optionsHTML = item.opts.map(opt => {
+                const val = opt.charAt(0);
+                return `<label class="mcq-option"><input type="radio" name="${qKey}" value="${val}"><div class="option-letter">${val}</div><span>${opt.substring(3)}</span></label>`;
+            }).join("");
+            container.innerHTML += `
+                <div class="mcq-question">
+                    <div class="mcq-title">${qNum}. ${item.q} <span style="font-size:0.75rem;color:#64748b;font-weight:400;">(${item.tag})</span></div>
+                    <div class="mcq-options">${optionsHTML}</div>
+                </div>`;
         });
+
+        quizBox.style.display = "block";
     }
 
     function submitMockTest() {
         const form = document.getElementById("quizForm-9");
+        if (!form) return;
+        
         let score = 0;
-        let total = 15;
+        let total = Object.keys(mockTestAnswers).length || 15;
+
         for (let q in mockTestAnswers) {
             const selected = form.querySelector(`input[name="${q}"]:checked`);
-            if (selected && selected.value === mockTestAnswers[q]) score++;
+            if (selected && selected.value === mockTestAnswers[q]) {
+                score++;
+            }
         }
+
         const scorePercent = Math.round((score / total) * 100);
-        alert(`Mock Test Score: ${score}/${total} (${scorePercent}%)`);
-        if (scorePercent >= 80) markAsDone("qbtn-9");
-        else alert("You need at least 80% to pass the Mock Test.");
+        
+        let resultBox = document.querySelector('#quiz-module9 .quiz-result');
+        if (!resultBox) {
+            resultBox = document.createElement("div");
+            resultBox.className = "quiz-result";
+            document.querySelector('#quiz-module9').appendChild(resultBox);
+        }
+        
+        resultBox.innerHTML = `Mock Test Score: ${score}/${total} (${scorePercent}%)`;
+
+        // Requires an 80% to officially "pass"
+        if (scorePercent >= 80) {
+            markAsDone("qbtn-9");
+            alert(`Amazing! You passed with ${scorePercent}%. Dependencies Unlocked!`);
+        } else {
+            alert(`You scored ${scorePercent}%. You need at least 80% to pass. Keep trying!`);
+        }
+    }
+
+    function updateProgress() {
+        let completed = 0;
+        const totalItems = document.querySelectorAll('.status-btn').length;
+
+        document.querySelectorAll('.status-btn').forEach(btn => {
+            if (btn.classList.contains('done')) {
+                completed++;
+            }
+        });
+
+        const percent = totalItems > 0 ? Math.floor((completed / totalItems) * 100) : 0;
+        const progressBar = document.getElementById("progressBar");
+        const progressText = document.getElementById("progressText");
+
+        if (progressBar) progressBar.style.width = percent + "%";
+        if (progressText) progressText.innerText = percent + "%";
     }
 </script>
 </body>

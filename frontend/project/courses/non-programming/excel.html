@@ -792,7 +792,7 @@
                         <button type="button" onclick="submitQuiz(2)" class="quiz-submit">Submit Quiz</button>
                     </form>
                 </div>
-                <div class="activity-row" onclick="window.location.href='excel_compiler.html?module=module2'">
+                <div class="activity-row" onclick="window.location.href='/compiler/excel_compiler.html?module=module2'">
                     <div class="activity-info"><i class="fas fa-code"></i> <span>Essential Formulas - PROGRAMS</span></div>
                     <button class="status-btn todo">To do</button>
                 </div>
@@ -907,7 +907,7 @@
                         <button type="button" onclick="submitQuiz(3)" class="quiz-submit">Submit Quiz</button>
                     </form>
                 </div>
-                <div class="activity-row" onclick="window.location.href='excel_compiler.html?module=module3'">
+                <div class="activity-row" onclick="window.location.href='/compiler/excel_compiler.html?module=module3'">
                     <div class="activity-info"><i class="fas fa-code"></i> <span>Logical Functions - PROGRAMS</span></div>
                     <button class="status-btn todo">To do</button>
                 </div>
@@ -1015,7 +1015,7 @@
                         <button type="button" onclick="submitQuiz(4)" class="quiz-submit">Submit Quiz</button>
                     </form>
                 </div>
-                <div class="activity-row" onclick="window.location.href='excel_compiler.html?module=module4'">
+                <div class="activity-row" onclick="window.location.href='/compiler/excel_compiler.html?module=module4'">
                     <div class="activity-info"><i class="fas fa-code"></i> <span>Lookup Mastery - PROGRAMS</span></div>
                     <button class="status-btn todo">To do</button>
                 </div>
@@ -1123,7 +1123,7 @@
                         <button type="button" onclick="submitQuiz(5)" class="quiz-submit">Submit Quiz</button>
                     </form>
                 </div>
-                <div class="activity-row" onclick="window.location.href='excel_compiler.html?module=module5'">
+                <div class="activity-row" onclick="window.location.href='/compiler/excel_compiler.html?module=module5'">
                     <div class="activity-info"><i class="fas fa-code"></i> <span>Data Prep - PROGRAMS</span></div>
                     <button class="status-btn todo">To do</button>
                 </div>
@@ -1232,7 +1232,7 @@
                         <button type="button" onclick="submitQuiz(6)" class="quiz-submit">Submit Quiz</button>
                     </form>
                 </div>
-                <div class="activity-row" onclick="window.location.href='excel_compiler.html?module=module6'">
+                <div class="activity-row" onclick="window.location.href='/compiler/excel_compiler.html?module=module6'">
                     <div class="activity-info"><i class="fas fa-code"></i> <span>Pivot Table Practice - EXERCISES</span>
                     </div>
                     <button class="status-btn todo">To do</button>
@@ -1336,7 +1336,7 @@
                         <button type="button" onclick="submitQuiz(7)" class="quiz-submit">Submit Quiz</button>
                     </form>
                 </div>
-                <div class="activity-row" onclick="window.location.href='excel_compiler.html?module=module7'">
+                <div class="activity-row" onclick="window.location.href='/compiler/excel_compiler.html?module=module7'">
                     <div class="activity-info"><i class="fas fa-code"></i> <span>Data Analysis - EXERCISES</span></div>
                     <button class="status-btn todo">To do</button>
                 </div>
@@ -1445,7 +1445,7 @@
                         <button type="button" onclick="submitQuiz(8)" class="quiz-submit">Submit Quiz</button>
                     </form>
                 </div>
-                <div class="activity-row" onclick="window.location.href='excel_compiler.html?module=module8'">
+                <div class="activity-row" onclick="window.location.href='/compiler/excel_compiler.html?module=module8'">
                     <div class="activity-info"><i class="fas fa-code"></i> <span>Automating Excel - EXERCISES</span></div>
                     <button class="status-btn todo">To do</button>
                 </div>
@@ -1472,17 +1472,50 @@
 <script>
     const totalModules = 9;
 
-    // Load saved state on page load
     document.addEventListener("DOMContentLoaded", () => {
-        // Module unlocking logic
+        // 1. Sidebar Logic
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('main-content');
+
+        if (sidebarToggle) {
+            sidebarToggle.addEventListener('click', () => {
+                sidebar.classList.toggle('collapsed');
+                mainContent.classList.toggle('expanded');
+            });
+        }
+
+        // 2. CHATBOT FAST-TRACK LOGIC
+        if (localStorage.getItem("excel_fast_tracked") === "true") {
+            // Unlock module thresholds
+            for (let i = 1; i <= 8; i++) {
+                localStorage.setItem("excel_module" + i + "_completed", "true");
+                localStorage.setItem("excel_prog_module" + i, "done");
+            }
+            
+            // DYNAMICALLY MARK ALL BUTTONS AS DONE (This fixes the incomplete modules issue!)
+            document.querySelectorAll('.status-btn').forEach(btn => {
+                // Mark everything done EXCEPT Module 9 buttons
+                if (btn.id && !btn.id.includes("9")) {
+                    localStorage.setItem("excel_" + btn.id, "done");
+                }
+            });
+
+            // Explicitly unlock Module 9 and clear general restriction
+            localStorage.setItem("excel_vbtn-gen", "done"); 
+            const mod9 = document.getElementById("module-box-9");
+            if (mod9) mod9.classList.remove("locked");
+        }
+
+        // 3. NORMAL UNLOCK LOGIC (Cascading)
         for (let i = 2; i <= totalModules; i++) {
             if (localStorage.getItem("excel_module" + (i - 1) + "_completed") === "true") {
-                const moduleBox = document.getElementById("module-box-" + i);
-                if (moduleBox) moduleBox.classList.remove("locked");
+                const box = document.getElementById("module-box-" + i);
+                if (box) box.classList.remove("locked");
             }
         }
 
-        // Restore button states
+        // 4. RESTORE BUTTON STATES
         const buttons = document.querySelectorAll('.status-btn');
         buttons.forEach(btn => {
             if (btn.id && localStorage.getItem("excel_" + btn.id) === "done") {
@@ -1490,14 +1523,106 @@
             }
         });
 
+        // 5. DB SYNC: MOCK TEST COMPLETION
+        if (localStorage.getItem("excel_qbtn-9") === "done" || localStorage.getItem("excel_pbtn-9") === "done") {
+            const finalBtn = document.getElementById("qbtn-9") || document.getElementById("pbtn-9");
+            if (finalBtn) applyDoneState(finalBtn);
+            syncCourseCompletionToDB("excel"); 
+        }
+
         updateProgress();
+        if (typeof renderMockTest === 'function') renderMockTest(); 
+        
+        // 6. Search Functionality
+        const searchInput = document.getElementById('moduleSearch');
+        if (searchInput) {
+            searchInput.addEventListener('input', function (e) {
+                const term = e.target.value.toLowerCase();
+                const modules = document.querySelectorAll('.section-box');
+                modules.forEach(mod => {
+                    const text = mod.innerText.toLowerCase();
+                    mod.style.display = text.includes(term) ? 'block' : 'none';
+                });
+            });
+        }
     });
+
+    async function syncCourseCompletionToDB(courseId) {
+        const token = localStorage.getItem('token');
+        if (!token) return;
+        
+        // Prevent continuous DB spamming if already updated
+        if (localStorage.getItem(courseId + "_db_synced") === "true") {
+            const finalBtn = document.getElementById("qbtn-9") || document.getElementById("pbtn-9");
+            if(finalBtn) {
+                finalBtn.innerHTML = 'Dependencies Unlocked <i class="fas fa-check-double"></i>';
+                finalBtn.style.backgroundColor = 'var(--success-green)';
+                finalBtn.style.color = 'white';
+            }
+            return;
+        }
+
+        try {
+            const res = await fetch('http://localhost:3000/get-roadmap', { headers: { 'Authorization': `Bearer ${token}` } });
+            const data = await res.json();
+            
+            if (data.roadmapData) {
+                const domain = data.selectedDomain;
+                const roadmap = data.roadmapData;
+                
+                let course = roadmap[domain].programming.find(c => c.id === courseId);
+                if (!course) course = roadmap[domain].nonProgramming.find(c => c.id === courseId);
+                
+                if (course && course.progress !== 100) {
+                    course.progress = 100;
+                    await fetch('http://localhost:3000/save-roadmap', {
+                        method: 'POST',
+                        headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ hasGeneratedRoadmap: true, selectedDomain: domain, roadmapData: roadmap })
+                    });
+                    
+                    localStorage.setItem(courseId + "_db_synced", "true");
+                    
+                    // Quietly update UI
+                    const finalBtn = document.getElementById("qbtn-9") || document.getElementById("pbtn-9");
+                    if(finalBtn) {
+                        finalBtn.innerHTML = 'Dependencies Unlocked <i class="fas fa-check-double"></i>';
+                        finalBtn.style.backgroundColor = 'var(--success-green)';
+                        finalBtn.style.color = 'white';
+                    }
+                }
+            }
+        } catch(e) {
+            console.error("DB Sync Failed:", e);
+        }
+    }
+
+    function openVideo(url, btnId) {
+        window.open(url, '_blank');
+        if(btnId) {
+            markAsDone(btnId);
+        }
+    }
 
     function markAsDone(btnId) {
         const btn = document.getElementById(btnId);
         if (btn) {
             applyDoneState(btn);
             localStorage.setItem("excel_" + btnId, "done");
+            
+            // Safely grab the module number from the button ID
+            const modNumMatch = btnId.match(/-(\d+)/);
+            if (modNumMatch && modNumMatch[1]) {
+                const modNum = parseInt(modNumMatch[1]);
+                localStorage.setItem("excel_module" + modNum + "_completed", "true");
+                
+                if(modNum < totalModules) {
+                    const nextMod = document.getElementById("module-box-" + (modNum + 1));
+                    if(nextMod) nextMod.classList.remove("locked");
+                } else if (modNum === totalModules) {
+                    syncCourseCompletionToDB("excel");
+                }
+            }
             updateProgress();
         }
     }
@@ -1507,14 +1632,6 @@
         btn.classList.add("done");
         btn.innerHTML = 'Done <i class="fas fa-check"></i>';
     }
-    const sidebarToggle = document.getElementById('sidebarToggle');
-    const sidebar = document.getElementById('sidebar');
-    const mainContent = document.getElementById('main-content');
-
-    sidebarToggle.addEventListener('click', () => {
-        sidebar.classList.toggle('collapsed');
-        mainContent.classList.toggle('expanded');
-    });
 
     function toggleSection(header) {
         header.classList.toggle('active');
@@ -1522,92 +1639,79 @@
         content.style.display = (content.style.display === 'block') ? 'none' : 'block';
     }
 
-    function showQuiz(module) {
-        let quiz = document.getElementById("quiz-module" + module);
-        if (quiz.style.display === "block") {
-            quiz.style.display = "none";
-        } else {
-            quiz.style.display = "block";
-        }
-    }
+  function showQuiz(module) {
+    let quiz = document.getElementById("quiz-module" + module);  // ✅ matches HTML IDs
+    if (!quiz) return;
+    quiz.style.display = (quiz.style.display === "block") ? "none" : "block";
+}
 
+    // Standard Quiz Logic for Modules 1-8
     const quizAnswers = {
-        1: { q1: "B", q2: "A", q3: "B", q4: "B", q5: "A" },
-        2: { q1: "B", q2: "B", q3: "B", q4: "B", q5: "B" },
-        3: { q1: "B", q2: "A", q3: "B", q4: "A", q5: "B" },
-        4: { q1: "B", q2: "B", q3: "B", q4: "A", q5: "A" },
-        5: { q1: "B", q2: "B", q3: "B", q4: "B", q5: "A" },
-        6: { q1: "B", q2: "C", q3: "B", q4: "A", q5: "A" },
-        7: { q1: "B", q2: "B", q3: "A", q4: "B", q5: "A" },
-        8: { q1: "A", q2: "B", q3: "B", q4: "B", q5: "A" }
+        1: { q1: "B", q2: "A", q3: "C", q4: "B", q5: "A" },
+        2: { q1: "B", q2: "A", q3: "A", q4: "B", q5: "B" },
+        3: { q1: "B", q2: "A", q3: "A", q4: "B", q5: "B" },
+        4: { q1: "B", q2: "A", q3: "A", q4: "B", q5: "A" },
+        5: { q1: "A", q2: "C", q3: "B", q4: "B", q5: "C" },
+        6: { q1: "A", q2: "C", q3: "A", q4: "B", q5: "A" },
+        7: { q1: "B", q2: "C", q3: "A", q4: "B", q5: "B" },
+        8: { q1: "B", q2: "A", q3: "B", q4: "A", q5: "C" }
     };
+function submitQuiz(module) {
+    let answers = quizAnswers[module];
+    let score = 0;
+    let total = Object.keys(answers).length;
 
-    function submitQuiz(module) {
-        let answers = quizAnswers[module];
-        let score = 0;
-        let total = Object.keys(answers).length;
+    for (let q in answers) {
+        let selected = document.querySelector(`#quiz-${module} input[name="${q}"]:checked`); // ✅
+        let options  = document.querySelectorAll(`#quiz-${module} input[name="${q}"]`);       // ✅
 
-        for (let q in answers) {
-            let selected = document.querySelector(`#quiz-module${module} input[name="${q}"]:checked`);
-            let options = document.querySelectorAll(`#quiz-module${module} input[name="${q}"]`);
+        options.forEach(opt => opt.parentElement.classList.remove("correct", "wrong"));
 
-            options.forEach(opt => {
-                opt.parentElement.classList.remove("correct", "wrong");
-            });
-
-            if (selected) {
-                if (selected.value === answers[q]) {
-                    score++;
-                    selected.parentElement.classList.add("correct");
-                } else {
-                    selected.parentElement.classList.add("wrong");
-                    let correct = document.querySelector(`#quiz-module${module} input[name="${q}"][value="${answers[q]}"]`);
-                    if (correct) correct.parentElement.classList.add("correct");
-                }
+        if (selected) {
+            if (selected.value === answers[q]) {
+                score++;
+                selected.parentElement.classList.add("correct");
+            } else {
+                selected.parentElement.classList.add("wrong");
+                let correct = document.querySelector(`#quiz-${module} input[name="${q}"][value="${answers[q]}"]`); // ✅
+                if (correct) correct.parentElement.classList.add("correct");
             }
-        }
-
-        let percent = Math.floor((score / total) * 100);
-        let resultBox = document.querySelector(`#quiz-module${module} .quiz-result`);
-
-        if (!resultBox) {
-            resultBox = document.createElement("div");
-            resultBox.className = "quiz-result";
-            document.querySelector(`#quiz-module${module}`).appendChild(resultBox);
-        }
-
-        resultBox.innerHTML = `You scored ${score}/${total} (${percent}%)`;
-
-        if (percent >= 60) {
-            markAsDone("qbtn-" + module);
-            if (module < totalModules) {
-                localStorage.setItem("excel_module" + module + "_completed", "true");
-                const nextModuleBox = document.getElementById("module-box-" + (module + 1));
-                if (nextModuleBox) nextModuleBox.classList.remove("locked");
-            }
+        } else {
+            let correct = document.querySelector(`#quiz-${module} input[name="${q}"][value="${answers[q]}"]`); // ✅
+            if (correct) correct.parentElement.classList.add("correct");
         }
     }
+
+    let percent = Math.floor((score / total) * 100);
+    let resultBox = document.querySelector(`#quiz-${module} .quiz-result`); // ✅
+
+    if (!resultBox) {
+        resultBox = document.createElement("div");
+        resultBox.className = "quiz-result";
+        document.querySelector(`#quiz-${module}`).appendChild(resultBox); // ✅
+    }
+
+    resultBox.innerHTML = `You scored ${score}/${total} (${percent}%)`;
+    if (percent >= 60) markAsDone("qbtn-" + module);
+}
 
     function updateProgress() {
         let completed = 0;
-        const btns = document.querySelectorAll('.status-btn');
-        btns.forEach(btn => { if (btn.classList.contains('done')) completed++; });
-        const percent = btns.length > 0 ? Math.floor((completed / btns.length) * 100) : 0;
+        const totalItems = document.querySelectorAll('.status-btn').length;
+
+        document.querySelectorAll('.status-btn').forEach(btn => {
+            if (btn.classList.contains('done')) {
+                completed++;
+            }
+        });
+
+        const percent = totalItems > 0 ? Math.floor((completed / totalItems) * 100) : 0;
         const progressBar = document.getElementById("progressBar");
         const progressText = document.getElementById("progressText");
+
         if (progressBar) progressBar.style.width = percent + "%";
         if (progressText) progressText.innerText = percent + "%";
     }
-
-    // Search Functionality
-    document.getElementById('moduleSearch').addEventListener('input', function (e) {
-        const term = e.target.value.toLowerCase();
-        const modules = document.querySelectorAll('.section-box');
-        modules.forEach(mod => {
-            const text = mod.innerText.toLowerCase();
-            mod.style.display = text.includes(term) ? 'block' : 'none';
-        });
-    });
 </script>
 </body>
 

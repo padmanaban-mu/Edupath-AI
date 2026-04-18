@@ -3562,7 +3562,7 @@ for i in range(3):
             </div>
             <div class="section-content" style="display:block">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
-                <div class="activity-row" onclick="window.location.href='/compiler/python_compiler.html?module=mock-test'">
+                <div class="activity-row" onclick="window.location.href='/compiler/python_compiler.html?module=module13'">
                     <div class="activity-info"><i class="fas fa-code"></i> <span>Take Final Mock Test</span></div>
                     <button id="pbtn-13" class="status-btn todo">To do</button>
                 </div>
@@ -3575,28 +3575,137 @@ for i in range(3):
 <script>
     const totalModules = 13;
 
-    // Load saved state on page load
     document.addEventListener("DOMContentLoaded", () => {
-        // Module unlocking logic
+        // 1. Sidebar Logic
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('main-content');
+
+        if (sidebarToggle) {
+            sidebarToggle.addEventListener('click', () => {
+                sidebar.classList.toggle('collapsed');
+                mainContent.classList.toggle('expanded');
+            });
+        }
+
+        // 2. CHATBOT FAST-TRACK LOGIC (Modules 1-12)
+        if (localStorage.getItem("py_b_fast_tracked") === "true") {
+            // Unlock module thresholds
+            for (let i = 1; i <= 12; i++) {
+                localStorage.setItem("python_module" + i + "_unlocked", "true");
+                localStorage.setItem("python_prog_module" + i, "done");
+            }
+            
+            // DYNAMICALLY MARK ALL BUTTONS AS DONE (Accounts for custom sub-IDs in Mod 12)
+            document.querySelectorAll('.status-btn').forEach(btn => {
+                // Mark everything done EXCEPT Module 13
+                if (btn.id && !btn.id.includes("13")) {
+                    localStorage.setItem("python_" + btn.id, "done");
+                }
+            });
+
+            // Explicitly unlock Module 13 and clear general restriction
+            localStorage.setItem("python_vbtn-gen", "done"); 
+            const mod13 = document.getElementById("module-box-13");
+            if (mod13) mod13.classList.remove("locked");
+        }
+
+        // 3. NORMAL UNLOCK LOGIC (Cascading)
         for (let i = 2; i <= totalModules; i++) {
-            if (localStorage.getItem("module" + (i - 1) + "_unlocked") === "true") {
-                const moduleBox = document.getElementById("module-box-" + i);
-                if (moduleBox) moduleBox.classList.remove("locked");
+            if (localStorage.getItem("python_module" + (i - 1) + "_unlocked") === "true") {
+                const box = document.getElementById("module-box-" + i);
+                if (box) box.classList.remove("locked");
             }
         }
 
-        // Restore button states
+        // 4. RESTORE BUTTON STATES
         const buttons = document.querySelectorAll('.status-btn');
         buttons.forEach(btn => {
-            if (btn.id && localStorage.getItem(btn.id) === "done") {
+            if (btn.id && localStorage.getItem("python_" + btn.id) === "done") {
                 applyDoneState(btn);
             }
         });
 
+        // 5. CHECK COMPILER SYNC FLAGS
+        for (let i = 1; i <= totalModules; i++) {
+            if (localStorage.getItem("python_prog_module" + i) === "done") {
+                const pbtn = document.getElementById("pbtn-" + i);
+                if (pbtn) applyDoneState(pbtn);
+            }
+        }
+
+        // 6. DB SYNC: MOCK TEST COMPLETION
+        if (localStorage.getItem("python_prog_mock-test") === "done" || localStorage.getItem("python_prog_module13") === "done") {
+            const finalBtn = document.getElementById("pbtn-13");
+            if (finalBtn) applyDoneState(finalBtn);
+            syncCourseCompletionToDB("py_b"); 
+        }
+
         updateProgress();
+        
+        // 7. Search Functionality
+        const searchInput = document.getElementById('moduleSearch');
+        if (searchInput) {
+            searchInput.addEventListener('input', function (e) {
+                const term = e.target.value.toLowerCase();
+                const modules = document.querySelectorAll('.section-box');
+                modules.forEach(mod => {
+                    const text = mod.innerText.toLowerCase();
+                    mod.style.display = text.includes(term) ? 'block' : 'none';
+                });
+            });
+        }
     });
 
-    // New Function to handle video link opening and marking it as done
+    async function syncCourseCompletionToDB(courseId) {
+        const token = localStorage.getItem('token');
+        if (!token) return;
+        
+        // Prevent continuous DB spamming if already updated
+        if (localStorage.getItem(courseId + "_db_synced") === "true") {
+            const pbtn13 = document.getElementById("pbtn-13");
+            if(pbtn13) {
+                pbtn13.innerHTML = 'Dependencies Unlocked <i class="fas fa-check-double"></i>';
+                pbtn13.style.backgroundColor = 'var(--success-green)';
+                pbtn13.style.color = 'white';
+            }
+            return;
+        }
+
+        try {
+            const res = await fetch('http://localhost:3000/get-roadmap', { headers: { 'Authorization': `Bearer ${token}` } });
+            const data = await res.json();
+            
+            if (data.roadmapData) {
+                const domain = data.selectedDomain;
+                const roadmap = data.roadmapData;
+                
+                let course = roadmap[domain].programming.find(c => c.id === courseId);
+                if (!course) course = roadmap[domain].nonProgramming.find(c => c.id === courseId);
+                
+                if (course && course.progress !== 100) {
+                    course.progress = 100;
+                    await fetch('http://localhost:3000/save-roadmap', {
+                        method: 'POST',
+                        headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ hasGeneratedRoadmap: true, selectedDomain: domain, roadmapData: roadmap })
+                    });
+                    
+                    localStorage.setItem(courseId + "_db_synced", "true");
+                    
+                    const pbtn13 = document.getElementById("pbtn-13");
+                    if(pbtn13) {
+                        pbtn13.innerHTML = 'Dependencies Unlocked <i class="fas fa-check-double"></i>';
+                        pbtn13.style.backgroundColor = 'var(--success-green)';
+                        pbtn13.style.color = 'white';
+                    }
+                }
+            }
+        } catch(e) {
+            console.error("DB Sync Failed:", e);
+        }
+    }
+
     function openVideo(url, btnId) {
         window.open(url, '_blank');
         if(btnId) {
@@ -3608,7 +3717,18 @@ for i in range(3):
         const btn = document.getElementById(btnId);
         if (btn) {
             applyDoneState(btn);
-            localStorage.setItem(btnId, "done");
+            localStorage.setItem("python_" + btnId, "done");
+            
+            // Safely extract the module number even from complex IDs like vbtn-12-intro-en
+          const modNum = parseInt(btnId.split('-')[1]);
+            if (!isNaN(modNum)) {
+                localStorage.setItem("python_module" + modNum + "_unlocked", "true");
+                
+                if(modNum < totalModules) {
+                    const nextMod = document.getElementById("module-box-" + (modNum + 1));
+                    if(nextMod) nextMod.classList.remove("locked");
+                }
+            }
             updateProgress();
         }
     }
@@ -3618,14 +3738,6 @@ for i in range(3):
         btn.classList.add("done");
         btn.innerHTML = 'Done <i class="fas fa-check"></i>';
     }
-    const sidebarToggle = document.getElementById('sidebarToggle');
-    const sidebar = document.getElementById('sidebar');
-    const mainContent = document.getElementById('main-content');
-
-    sidebarToggle.addEventListener('click', () => {
-        sidebar.classList.toggle('collapsed');
-        mainContent.classList.toggle('expanded');
-    });
 
     function toggleSection(header) {
         header.classList.toggle('active');
@@ -3636,19 +3748,17 @@ for i in range(3):
     function openQuiz(page) {
         window.location.href = "../quiz/" + page;
     }
+
     function showQuiz(module) {
-
         let quiz = document.getElementById("quiz-module" + module);
-
         if (quiz.style.display === "block") {
             quiz.style.display = "none";
         } else {
             quiz.style.display = "block";
         }
-
     }
-    const quizAnswers = {
 
+    const quizAnswers = {
         1: { q1: "B", q2: "B", q3: "B", q4: "C", q5: "C" },
         2: { q1: "C", q2: "B", q3: "B", q4: "B", q5: "B" },
         3: { q1: "A", q2: "B", q3: "B", q4: "B", q5: "B" },
@@ -3670,15 +3780,12 @@ for i in range(3):
         "12_abstract": { q1: "A", q2: "B", q3: "B", q4: "A", q5: "B" }
     };
 
-
     function submitQuiz(module) {
-
         let answers = quizAnswers[module];
         let score = 0;
         let total = Object.keys(answers).length;
 
         for (let q in answers) {
-
             let selected = document.querySelector(`#quiz-module${module} input[name="${q}"]:checked`);
             let options = document.querySelectorAll(`#quiz-module${module} input[name="${q}"]`);
 
@@ -3687,63 +3794,37 @@ for i in range(3):
             });
 
             if (selected) {
-
                 if (selected.value === answers[q]) {
-
                     score++;
                     selected.parentElement.classList.add("correct");
-
                 } else {
-
                     selected.parentElement.classList.add("wrong");
-
                     let correct = document.querySelector(
                         `#quiz-module${module} input[name="${q}"][value="${answers[q]}"]`
                     );
-
-                    correct.parentElement.classList.add("correct");
-
+                    if(correct) correct.parentElement.classList.add("correct");
                 }
-
             } else {
-                // if nothing selected, still highlight correct
                 let correct = document.querySelector(
                     `#quiz-module${module} input[name="${q}"][value="${answers[q]}"]`
                 );
                 if(correct) correct.parentElement.classList.add("correct");
             }
-
         }
 
         let percent = Math.floor((score / total) * 100);
-
         let resultBox = document.querySelector(`#quiz-module${module} .quiz-result`);
 
         if (!resultBox) {
-
             resultBox = document.createElement("div");
             resultBox.className = "quiz-result";
             document.querySelector(`#quiz-module${module}`).appendChild(resultBox);
-
         }
 
         resultBox.innerHTML = `You scored ${score}/${total} (${percent}%)`;
 
         if (percent >= 60) {
             markAsDone("qbtn-" + module);
-
-            // Unlock next module
-            if (typeof module === 'number' && module < totalModules) {
-                localStorage.setItem("module" + module + "_unlocked", "true");
-                const nextModuleBox = document.getElementById("module-box-" + (module + 1));
-                if (nextModuleBox) {
-                    nextModuleBox.classList.remove("locked");
-                }
-            } else if (module === '11') {
-                localStorage.setItem("module11_unlocked", "true");
-                const m12 = document.getElementById("module-box-12");
-                if (m12) m12.classList.remove("locked");
-            }
         }
     }
 

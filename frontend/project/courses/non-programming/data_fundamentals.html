@@ -1020,35 +1020,45 @@
 
 <script>
     const totalModules = 9;
-    let mockTestAnswers = {};
-    const quizAnswers = {
-        1: { q1: 'A', q2: 'A', q3: 'A', q4: 'A', q5: 'A' },
-        2: { q1: 'A', q2: 'A', q3: 'A', q4: 'A', q5: 'A' },
-        3: { q1: 'A', q2: 'A', q3: 'A', q4: 'A', q5: 'A' },
-        4: { q1: 'A', q2: 'A', q3: 'A', q4: 'A', q5: 'A' },
-        5: { q1: 'A', q2: 'A', q3: 'A', q4: 'A', q5: 'A' },
-        6: { q1: 'A', q2: 'A', q3: 'A', q4: 'A', q5: 'A' },
-        7: { q1: 'A', q2: 'A', q3: 'A', q4: 'A', q5: 'A' },
-        8: { q1: 'A', q2: 'A', q3: 'A', q4: 'A', q5: 'A' }
-    };
 
     document.addEventListener("DOMContentLoaded", () => {
+        // 1. Sidebar Logic
         const sidebarToggle = document.getElementById('sidebarToggle');
         const sidebar = document.getElementById('sidebar');
         const mainContent = document.getElementById('main-content');
-        
-        sidebarToggle.addEventListener('click', () => {
-            sidebar.classList.toggle('collapsed');
-            mainContent.classList.toggle('expanded');
-        });
 
+        if (sidebarToggle) {
+            sidebarToggle.addEventListener('click', () => {
+                sidebar.classList.toggle('collapsed');
+                mainContent.classList.toggle('expanded');
+            });
+        }
+
+        // 2. CHATBOT FAST-TRACK LOGIC (Modules 1-8)
+        // Course ID in courseData.js for Data Fundamentals is "df"
+        if (localStorage.getItem("df_fast_tracked") === "true") {
+            for (let i = 1; i <= 8; i++) {
+                localStorage.setItem("df_module" + i + "_completed", "true");
+                localStorage.setItem("df_vbtn-" + i, "done");
+                localStorage.setItem("df_qbtn-" + i, "done");
+                localStorage.setItem("df_pbtn-" + i, "done");
+                localStorage.setItem("df_prog_module" + i, "done");
+            }
+            // Explicitly unlock Module 9 and clear general restriction
+            localStorage.setItem("df_vbtn-gen", "done"); 
+            const mod9 = document.getElementById("module-box-9");
+            if (mod9) mod9.classList.remove("locked");
+        }
+
+        // 3. NORMAL UNLOCK LOGIC (Cascading)
         for (let i = 2; i <= totalModules; i++) {
-            if (localStorage.getItem("df_module" + (i - 1) + "_unlocked") === "true") {
-                const moduleBox = document.getElementById("module-box-" + i);
-                if (moduleBox) moduleBox.classList.remove("locked");
+            if (localStorage.getItem("df_module" + (i - 1) + "_completed") === "true") {
+                const box = document.getElementById("module-box-" + i);
+                if (box) box.classList.remove("locked");
             }
         }
 
+        // 4. RESTORE BUTTON STATES
         const buttons = document.querySelectorAll('.status-btn');
         buttons.forEach(btn => {
             if (btn.id && localStorage.getItem("df_" + btn.id) === "done") {
@@ -1056,63 +1066,84 @@
             }
         });
 
-        updateProgress();
+        // 5. DB SYNC: MOCK TEST COMPLETION
+        if (localStorage.getItem("df_qbtn-9") === "done" || localStorage.getItem("df_pbtn-9") === "done") {
+            const finalBtn = document.getElementById("qbtn-9") || document.getElementById("pbtn-9");
+            if (finalBtn) applyDoneState(finalBtn);
+            syncCourseCompletionToDB("df"); 
+        }
 
-        // Search Functionality
+        updateProgress();
+        
+        // 6. Search Functionality
         const searchInput = document.getElementById('moduleSearch');
         if (searchInput) {
             searchInput.addEventListener('input', function (e) {
                 const term = e.target.value.toLowerCase();
-                const boxes = document.querySelectorAll('.section-box');
-                boxes.forEach(box => {
-                    const text = box.innerText.toLowerCase();
-                    box.style.display = text.includes(term) ? 'block' : 'none';
+                const modules = document.querySelectorAll('.section-box');
+                modules.forEach(mod => {
+                    const text = mod.innerText.toLowerCase();
+                    mod.style.display = text.includes(term) ? 'block' : 'none';
                 });
             });
         }
     });
 
-    function toggleSection(header) {
-        const content = header.nextElementSibling;
-        const icon = header.querySelector('.toggle-icon');
-        const isOpen = content.style.display === 'block';
-        content.style.display = isOpen ? 'none' : 'block';
-        header.classList.toggle('active', !isOpen);
-    }
-
-    function showQuiz(moduleNum) {
-        const quizBox = document.getElementById("quiz-" + moduleNum);
-        const isOpen = quizBox.style.display === 'block';
-        quizBox.style.display = isOpen ? 'none' : 'block';
-    }
-
-    function submitQuiz(moduleNum) {
-        const form = document.getElementById("quizForm-" + moduleNum);
-        const answers = quizAnswers[moduleNum];
-        let score = 0;
-        let total = Object.keys(answers).length;
-
-        for (let q in answers) {
-            const selected = form.querySelector(`input[name="${q}"]:checked`);
-            if (selected && selected.value === answers[q]) {
-                score++;
+    async function syncCourseCompletionToDB(courseId) {
+        const token = localStorage.getItem('token');
+        if (!token) return;
+        
+        // Prevent continuous DB spamming if already updated
+        if (localStorage.getItem(courseId + "_db_synced") === "true") {
+            const finalBtn = document.getElementById("qbtn-9") || document.getElementById("pbtn-9");
+            if(finalBtn) {
+                finalBtn.innerHTML = 'Dependencies Unlocked <i class="fas fa-check-double"></i>';
+                finalBtn.style.backgroundColor = 'var(--success-green)';
+                finalBtn.style.color = 'white';
             }
+            return;
         }
 
-        const scorePercent = (score / total) * 100;
-        alert(`You scored ${score}/${total} (${scorePercent}%)`);
-
-        if (scorePercent >= 80) {
-            markAsDone("qbtn-" + moduleNum);
-            if (moduleNum < totalModules) {
-                localStorage.setItem("df_module" + moduleNum + "_unlocked", "true");
-                const nextModule = document.getElementById("module-box-" + (moduleNum + 1));
-                if (nextModule) nextModule.classList.remove("locked");
+        try {
+            const res = await fetch('http://localhost:3000/get-roadmap', { headers: { 'Authorization': `Bearer ${token}` } });
+            const data = await res.json();
+            
+            if (data.roadmapData) {
+                const domain = data.selectedDomain;
+                const roadmap = data.roadmapData;
+                
+                let course = roadmap[domain].programming.find(c => c.id === courseId);
+                if (!course) course = roadmap[domain].nonProgramming.find(c => c.id === courseId);
+                
+                if (course && course.progress !== 100) {
+                    course.progress = 100;
+                    await fetch('http://localhost:3000/save-roadmap', {
+                        method: 'POST',
+                        headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ hasGeneratedRoadmap: true, selectedDomain: domain, roadmapData: roadmap })
+                    });
+                    
+                    localStorage.setItem(courseId + "_db_synced", "true");
+                    
+                    // Quietly update UI
+                    const finalBtn = document.getElementById("qbtn-9") || document.getElementById("pbtn-9");
+                    if(finalBtn) {
+                        finalBtn.innerHTML = 'Dependencies Unlocked <i class="fas fa-check-double"></i>';
+                        finalBtn.style.backgroundColor = 'var(--success-green)';
+                        finalBtn.style.color = 'white';
+                    }
+                }
             }
-        } else {
-            alert("You need at least 80% to unlock the next module.");
+        } catch(e) {
+            console.error("DB Sync Failed:", e);
         }
-        updateProgress();
+    }
+
+    function openVideo(url, btnId) {
+        window.open(url, '_blank');
+        if(btnId) {
+            markAsDone(btnId);
+        }
     }
 
     function markAsDone(btnId) {
@@ -1120,84 +1151,187 @@
         if (btn) {
             applyDoneState(btn);
             localStorage.setItem("df_" + btnId, "done");
+            
+            const modNumMatch = btnId.match(/-(\d+)/);
+            if (modNumMatch && modNumMatch[1]) {
+                const modNum = parseInt(modNumMatch[1]);
+                localStorage.setItem("df_module" + modNum + "_completed", "true");
+                
+                if(modNum < totalModules) {
+                    const nextMod = document.getElementById("module-box-" + (modNum + 1));
+                    if(nextMod) nextMod.classList.remove("locked");
+                } else if (modNum === totalModules) {
+                    // Trigger DB Sync instantly when the final mock test is passed
+                    syncCourseCompletionToDB("df");
+                }
+            }
             updateProgress();
         }
     }
 
     function applyDoneState(btn) {
-        btn.classList.remove('todo');
-        btn.classList.add('done');
+        btn.classList.remove("todo");
+        btn.classList.add("done");
         btn.innerHTML = 'Done <i class="fas fa-check"></i>';
     }
 
-    function updateProgress() {
-        const totalItems = (8 * 2) + 1; // 8 modules (video + quiz) + 1 mock test
-        let doneItems = 0;
-        for (let i = 1; i <= 8; i++) {
-            if (localStorage.getItem("df_vbtn-" + i) === "done") doneItems++;
-            if (localStorage.getItem("df_qbtn-" + i) === "done") doneItems++;
-        }
-        if (localStorage.getItem("df_qbtn-9") === "done") doneItems++;
-
-        const progress = Math.round((doneItems / totalItems) * 100);
-        const bar = document.getElementById("progressBar");
-        const text = document.getElementById("progressText");
-        if (bar) bar.style.width = progress + "%";
-        if (text) text.innerText = progress + "%";
+    function toggleSection(header) {
+        header.classList.toggle('active');
+        const content = header.nextElementSibling;
+        content.style.display = (content.style.display === 'block') ? 'none' : 'block';
     }
 
-    function generateAndShowMockTest() {
-        showQuiz(9);
-        const container = document.getElementById('mock-test-container');
-        
-        // Prevent re-generating questions if user opens/closes the accordion
-        if (container.innerHTML.trim() !== '') return;
+    function showQuiz(module) {
+    let quiz = document.getElementById("quiz-" + module);
+    if (!quiz) return; // safety check
+    quiz.style.display = (quiz.style.display === "block") ? "none" : "block";
+}
 
-        let allQuestions = [];
-        
-        // Gather all questions from modules 1 to 8
-        for (let i = 1; i <= 8; i++) {
-            const quizBox = document.getElementById('quiz-' + i);
-            if (quizBox) {
-                const questions = quizBox.querySelectorAll('.mcq-question');
-                questions.forEach((q, index) => {
-                    const originalQNum = `q${index + 1}`;
-                    const correctAnswer = quizAnswers[i][originalQNum];
-                    allQuestions.push({
-                        html: q.innerHTML,
-                        correct: correctAnswer
-                    });
-                });
+    // Standard Quiz Logic for Modules 1-8
+    const quizAnswers = {
+        1: { q1: "B", q2: "A", q3: "C", q4: "B", q5: "A" },
+        2: { q1: "B", q2: "A", q3: "A", q4: "B", q5: "B" },
+        3: { q1: "B", q2: "A", q3: "A", q4: "B", q5: "B" },
+        4: { q1: "B", q2: "A", q3: "A", q4: "B", q5: "A" },
+        5: { q1: "A", q2: "C", q3: "B", q4: "B", q5: "C" },
+        6: { q1: "A", q2: "C", q3: "A", q4: "B", q5: "A" },
+        7: { q1: "B", q2: "C", q3: "A", q4: "B", q5: "B" },
+        8: { q1: "B", q2: "A", q3: "B", q4: "A", q5: "C" }
+    };
+
+    function submitQuiz(module) {
+        let answers = quizAnswers[module];
+        let score = 0;
+        let total = Object.keys(answers).length;
+
+        for (let q in answers) {
+            let selected = document.querySelector(`#quiz-module${module} input[name="${q}"]:checked`);
+            let options = document.querySelectorAll(`#quiz-module${module} input[name="${q}"]`);
+
+            options.forEach(opt => {
+                opt.parentElement.classList.remove("correct", "wrong");
+            });
+
+            if (selected) {
+                if (selected.value === answers[q]) {
+                    score++;
+                    selected.parentElement.classList.add("correct");
+                } else {
+                    selected.parentElement.classList.add("wrong");
+                    let correct = document.querySelector(`#quiz-module${module} input[name="${q}"][value="${answers[q]}"]`);
+                    if (correct) correct.parentElement.classList.add("correct");
+                }
+            } else {
+                let correct = document.querySelector(`#quiz-module${module} input[name="${q}"][value="${answers[q]}"]`);
+                if(correct) correct.parentElement.classList.add("correct");
             }
         }
 
-        // Shuffle array and slice the first 15 questions
-        allQuestions.sort(() => 0.5 - Math.random());
-        const selectedQuestions = allQuestions.slice(0, 15);
+        let percent = Math.floor((score / total) * 100);
+        let resultBox = document.querySelector(`#quiz-module${module} .quiz-result`);
 
-        // Inject into the DOM and save answers
-        selectedQuestions.forEach((q, index) => {
-            const qDiv = document.createElement('div');
-            qDiv.className = 'mcq-question';
-            
-            // Rename the radio button groups to ensure they are unique to the mock test
-            let modifiedHtml = q.html.replace(/name="q\d+"/g, `name="mq${index + 1}"`);
-            
-            // Re-number the questions visually 1 through 15
-            modifiedHtml = modifiedHtml.replace(/<div class="mcq-title">\d+\./, '<div class="mcq-title">' + (index + 1) + '.');
-            
-            qDiv.innerHTML = modifiedHtml;
-            container.appendChild(qDiv);
-            
-            // Store the correct answer tied to the new radio group name
-            mockTestAnswers[`mq${index + 1}`] = q.correct;
+        if (!resultBox) {
+            resultBox = document.createElement("div");
+            resultBox.className = "quiz-result";
+            document.querySelector(`#quiz-module${module}`).appendChild(resultBox);
+        }
+
+        resultBox.innerHTML = `You scored ${score}/${total} (${percent}%)`;
+
+        if (percent >= 60) {
+            markAsDone("qbtn-" + module);
+        }
+    }
+
+    // --- Module 9 Mock Test: Random 15 questions from Modules 1–8 ---
+    const dfMockPool = [
+        // Module 1: Introduction to Data
+        { q:"What is the definition of data in the simplest terms?", opts:["A. A collection of facts and info","B. A computer program"], ans:"A", tag:"Mod 1" },
+        { q:"Which of these is structured data?", opts:["A. An Excel table","B. A voice recording"], ans:"A", tag:"Mod 1" },
+        { q:"JSON files are usually considered:", opts:["A. Semi-structured","B. Unstructured"], ans:"A", tag:"Mod 1" },
+        { q:"Video files are examples of:", opts:["A. Unstructured data","B. Structured data"], ans:"A", tag:"Mod 1" },
+        { q:"Primary goal of data analysis?", opts:["A. Extraction of insights","B. Deleting old files"], ans:"A", tag:"Mod 1" },
+        // Module 2: Data Lifecycle
+        { q:"First step in the data lifecycle?", opts:["A. Data Collection","B. Data Archival"], ans:"A", tag:"Mod 2" },
+        { q:"Where is data stored for long-term use?", opts:["A. Data Warehouse","B. Computer RAM"], ans:"A", tag:"Mod 2" },
+        { q:"What follows data cleaning in the lifecycle?", opts:["A. Data Analysis","B. Data Collection"], ans:"A", tag:"Mod 2" },
+        { q:"Data visualization is for:", opts:["A. Communicating findings","B. Hiding errors"], ans:"A", tag:"Mod 2" },
+        { q:"Final stage of the data lifecycle?", opts:["A. Archive or Deletion","B. Initial collection"], ans:"A", tag:"Mod 2" },
+        // Module 3: Data Quality
+        { q:"What is 'dirty data'?", opts:["A. Inaccurate/Incomplete data","B. Temporary data"], ans:"A", tag:"Mod 3" },
+        { q:"A common data cleaning task?", opts:["A. Removing duplicates","B. Increasing file size"], ans:"A", tag:"Mod 3" },
+        { q:"Missing values should be:", opts:["A. Handled (removed or filled)","B. Ignored completely"], ans:"A", tag:"Mod 3" },
+        { q:"Data validation ensures:", opts:["A. Accuracy and Completeness","B. Fancy formatting"], ans:"A", tag:"Mod 3" },
+        { q:"A common tool used for data cleaning?", opts:["A. Excel / OpenRefine","B. Paint"], ans:"A", tag:"Mod 3" },
+        // Module 4: Statistics Basics
+        { q:"The 'Mean' is also known as:", opts:["A. Average","B. Total"], ans:"A", tag:"Mod 4" },
+        { q:"'Median' is the:", opts:["A. Middle value in a sorted list","B. Lowest value"], ans:"A", tag:"Mod 4" },
+        { q:"'Mode' refers to:", opts:["A. Most frequent value","B. The unique value"], ans:"A", tag:"Mod 4" },
+        { q:"Difference between Max and Min is called:", opts:["A. Range","B. Sum"], ans:"A", tag:"Mod 4" },
+        { q:"Standard Deviation measures:", opts:["A. Spread of data","B. Data color"], ans:"A", tag:"Mod 4" },
+        // Module 5: Data Visualization
+        { q:"Best chart for trends over time?", opts:["A. Line Chart","B. Pie Chart"], ans:"A", tag:"Mod 5" },
+        { q:"Best chart for comparing categories?", opts:["A. Bar Chart","B. Line Chart"], ans:"A", tag:"Mod 5" },
+        { q:"Pie charts show:", opts:["A. Parts of a whole","B. Time trends"], ans:"A", tag:"Mod 5" },
+        { q:"Scatter plots are used to show:", opts:["A. Correlation between two variables","B. Total count only"], ans:"A", tag:"Mod 5" },
+        { q:"Avoiding 'chart junk' helps to:", opts:["A. Keep focus on the data","B. Make charts colorful"], ans:"A", tag:"Mod 5" },
+        // Module 6: Ethics & Privacy
+        { q:"What is PII?", opts:["A. Personally Identifiable Information","B. Public Internal Index"], ans:"A", tag:"Mod 6" },
+        { q:"GDPR is a regulation on:", opts:["A. Data Protection","B. Data Transmission Speed"], ans:"A", tag:"Mod 6" },
+        { q:"Data masking helps:", opts:["A. Protect sensitive information","B. Make data visible to all"], ans:"A", tag:"Mod 6" },
+        { q:"Data ethics requires:", opts:["A. Informed consent from users","B. Forced data collection"], ans:"A", tag:"Mod 6" },
+        { q:"A data breach leads to:", opts:["A. Legal and reputational risk","B. Better data quality"], ans:"A", tag:"Mod 6" },
+        // Module 7: Big Data & Cloud
+        { q:"One of the 3 V's of Big Data is:", opts:["A. Volume","B. Vacuum"], ans:"A", tag:"Mod 7" },
+        { q:"A key benefit of Cloud storage?", opts:["A. Scalability","B. Low security"], ans:"A", tag:"Mod 7" },
+        { q:"An example of a Cloud provider?", opts:["A. AWS / Google Cloud","B. Microsoft Paint"], ans:"A", tag:"Mod 7" },
+        { q:"Data Lake vs Warehouse — which is correct?", opts:["A. Lake stores RAW; Warehouse stores STRUCTURED","B. There is no difference"], ans:"A", tag:"Mod 7" },
+        { q:"Real-time data processing:", opts:["A. Processes data as it arrives","B. Waits for weeks before processing"], ans:"A", tag:"Mod 7" },
+        // Module 8: Decision Making
+        { q:"What does KPI stand for?", opts:["A. Key Performance Indicator","B. Kind People Info"], ans:"A", tag:"Mod 8" },
+        { q:"Predictive analytics uses:", opts:["A. Historical data to forecast outcomes","B. Random guessing"], ans:"A", tag:"Mod 8" },
+        { q:"A data-driven culture means:", opts:["A. Decisions are based on facts and data","B. Decisions are based on luck"], ans:"A", tag:"Mod 8" },
+        { q:"What is the purpose of a Dashboard?", opts:["A. Monitor performance at a glance","B. Play games"], ans:"A", tag:"Mod 8" },
+        { q:"A feedback loop uses:", opts:["A. Results to continuously refine the process","B. Old data to repeat past errors"], ans:"A", tag:"Mod 8" },
+    ];
+
+    var mockTestAnswers = {};
+
+    function generateAndShowMockTest() {
+        const quizBox = document.getElementById("quiz-9");
+        const container = document.getElementById("mock-test-container");
+        if (!container) return;
+
+        const shuffled = [...dfMockPool].sort(() => Math.random() - 0.5);
+        const selected = shuffled.slice(0, 15);
+
+        mockTestAnswers = {};
+        container.innerHTML = "";
+
+        selected.forEach((item, idx) => {
+            const qKey = "mq" + (idx + 1);
+            mockTestAnswers[qKey] = item.ans;
+            const qNum = idx + 1;
+            const optionsHTML = item.opts.map(opt => {
+                const val = opt.charAt(0);
+                return `<label class="mcq-option"><input type="radio" name="${qKey}" value="${val}"><div class="option-letter">${val}</div><span>${opt.substring(3)}</span></label>`;
+            }).join("");
+            container.innerHTML += `
+                <div class="mcq-question">
+                    <div class="mcq-title">${qNum}. ${item.q} <span style="font-size:0.75rem;color:#64748b;font-weight:400;">(${item.tag})</span></div>
+                    <div class="mcq-options">${optionsHTML}</div>
+                </div>`;
         });
+
+        quizBox.style.display = "block";
     }
 
     function submitMockTest() {
         const form = document.getElementById("quizForm-9");
+        if (!form) return;
+        
         let score = 0;
-        let total = 15;
+        let total = Object.keys(mockTestAnswers).length || 15;
 
         for (let q in mockTestAnswers) {
             const selected = form.querySelector(`input[name="${q}"]:checked`);
@@ -1207,14 +1341,41 @@
         }
 
         const scorePercent = Math.round((score / total) * 100);
-        alert(`Mock Test Score: ${score}/${total} (${scorePercent}%)`);
+        
+        let resultBox = document.querySelector('#quiz-module9 .quiz-result');
+        if (!resultBox) {
+            resultBox = document.createElement("div");
+            resultBox.className = "quiz-result";
+            document.querySelector('#quiz-module9').appendChild(resultBox);
+        }
+        
+        resultBox.innerHTML = `Mock Test Score: ${score}/${total} (${scorePercent}%)`;
 
         // Requires an 80% to officially "pass" and update progress
         if (scorePercent >= 80) {
             markAsDone("qbtn-9");
+            alert(`Amazing! You passed with ${scorePercent}%. Dependencies Unlocked!`);
         } else {
-            alert("You need at least 80% to pass the Mock Test.");
+            alert(`You scored ${scorePercent}%. You need at least 80% to pass. Keep trying!`);
         }
+    }
+
+    function updateProgress() {
+        let completed = 0;
+        const totalItems = document.querySelectorAll('.status-btn').length;
+
+        document.querySelectorAll('.status-btn').forEach(btn => {
+            if (btn.classList.contains('done')) {
+                completed++;
+            }
+        });
+
+        const percent = totalItems > 0 ? Math.floor((completed / totalItems) * 100) : 0;
+        const progressBar = document.getElementById("progressBar");
+        const progressText = document.getElementById("progressText");
+
+        if (progressBar) progressBar.style.width = percent + "%";
+        if (progressText) progressText.innerText = percent + "%";
     }
 </script>
 </body>

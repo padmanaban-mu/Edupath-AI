@@ -636,10 +636,30 @@ async function loadRoadmap() {
             if (!container) return;
             container.innerHTML = data.map(m => {
                 const isUnlocked = checkPrerequisites(m.id);
-                const status = m.progress === 100 ? "Complete" : (isUnlocked ? "Available" : "Locked");
+                
+                // RESTORED: Visually render 90% as "Pending Test"
+                let status = "Locked";
+                let icon = "fa-lock";
+                let iconColor = "#cbd5e1";
+
+                if (m.progress === 100) {
+                    status = "Complete";
+                    icon = "fa-check-circle";
+                    iconColor = m.color;
+                } else if (m.progress === 90) {
+                    status = "Pending Test";
+                    icon = "fa-exclamation-circle";
+                    iconColor = "#f59e0b";
+                } else if (isUnlocked) {
+                    status = "Available";
+                    icon = "fa-play-circle";
+                    iconColor = m.color;
+                }
                 
                 let tooltipText = '';
-                if (m.prereq.length > 0) {
+                if (status === 'Pending Test') {
+                    tooltipText = `<strong>Action Required:</strong><br>• Pass the Final Mock Assessment in this course to reach 100% and unlock dependencies.`;
+                } else if (m.prereq.length > 0) {
                     tooltipText = `Prerequisites needed to unlock:<br>• ${getModuleTitles(m.prereq)}`;
                 } else {
                     tooltipText = `No prerequisites needed.`;
@@ -651,12 +671,12 @@ async function loadRoadmap() {
                         <div class="card-img-box"><img src="${m.img}" alt="${m.title}" onerror="this.src='https://via.placeholder.com/65x65.png?text=Img+Error'"></div>
                         <div>
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                                <span class="status-tag" style="background: ${m.color}20; color: ${m.color};">${status}</span>
-                                <i class="fas ${status === 'Complete' ? 'fa-check-circle' : (status === 'Locked' ? 'fa-lock' : 'fa-play-circle')}" style="color: ${status === 'Locked' ? '#cbd5e1' : m.color}"></i>
+                                <span class="status-tag" style="background: ${status === 'Pending Test' ? '#fef3c7' : m.color + '20'}; color: ${status === 'Pending Test' ? '#d97706' : m.color};">${status}</span>
+                                <i class="fas ${icon}" style="color: ${iconColor}"></i>
                             </div>
                             <h4 style="font-size: 0.95rem; color: var(--dark-blue); margin-bottom: 4px;">${m.title}</h4>
                         </div>
-                        <div class="progress-bar-bg"><div class="progress-fill" style="width: ${m.progress}%; background: ${m.color};"></div></div>
+                        <div class="progress-bar-bg"><div class="progress-fill" style="width: ${m.progress}%; background: ${status === 'Pending Test' ? '#f59e0b' : m.color};"></div></div>
                     </div>`;
             }).join('');
         };

@@ -1,0 +1,6 @@
+{
+  "title": "ALTER TABLE & Foreign Keys",
+  "description": "Use ALTER TABLE on an existing `Employees` table. Add a new column `phone_number` of type VARCHAR(15), and add a FOREIGN KEY constraint linking `department_id` to the `Departments (id)` table.",
+  "input": "Tables: Employees, Departments",
+  "expected_output": "DB structure altered safely."
+}

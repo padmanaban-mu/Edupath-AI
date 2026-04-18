@@ -1,0 +1,6 @@
+{
+  "title": "Tuple Stats",
+  "description": "Write a function `tuple_stats(tup)` that returns a tuple containing `(min, max, length, sum)`. Case: (1, 2, 3, 4).",
+  "input": "",
+  "expected_output": "(1, 4, 4, 10)"
+}

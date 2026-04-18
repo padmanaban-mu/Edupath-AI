@@ -1,0 +1,6 @@
+{
+  "title": "Data-Ink Ratio",
+  "description": "Define a function `calculate_data_ink_ratio(data_ink_bytes, non_data_ink_bytes)` that computes Edward Tufte's Data-Ink ratio mathematically as a percentage.",
+  "input": "50, 50",
+  "expected_output": "50.0%"
+}

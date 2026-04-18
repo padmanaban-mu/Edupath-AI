@@ -1,0 +1,6 @@
+{
+  "title": "Factorial",
+  "description": "Write a recursive function `factorial(n)` that returns the factorial of `n`. Case: n=5.",
+  "input": "",
+  "expected_output": "120"
+}

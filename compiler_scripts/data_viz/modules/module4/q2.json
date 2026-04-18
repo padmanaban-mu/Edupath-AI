@@ -1,0 +1,6 @@
+{
+  "title": "Plotly Pie Chart",
+  "description": "Write a function `plotly_pie_chart(df)` that generates a Plotly pie chart mapping variables values='revenue' and names='region'. Return the Figure.",
+  "input": "df_with_revenue_region",
+  "expected_output": "Figure({ data: [{\"type\": \"pie\"}], ... })"
+}

@@ -1,0 +1,7 @@
+{
+  "title": "Advanced: Logistic Gradient Descent",
+  "description": "Write a function logistic_gradient_descent(X, y, weights, learning_rate, iterations) that updates weights for logistic regression using gradient descent. Return the final weights.",
+  "input": "X = np.array([[1, 0.5], [1, 2.5]]), y = np.array([0, 1]), weights = np.array([0.0, 0.0]), learning_rate = 0.1, iterations = 1",
+  "expected_output": "[-0.05 -0.05]",
+  "hidden_test_cases": "Test over 1000 iterations to check convergence behavior. Ensure the gradient calculation correctly leverages the sigmoid delta."
+}

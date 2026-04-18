@@ -1,0 +1,7 @@
+{
+  "title": "Mock Test: Data Extraction",
+  "description": "Write a function `mock_extract(arr)` that takes a 2D array, extracts the 2nd column, and computes the mean of those values.",
+  "input": "2D Matrix",
+  "expected_output": "Scalar float mean value.",
+  "hidden_test_cases": "Test with negative and floating-point matrices."
+}

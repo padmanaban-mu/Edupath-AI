@@ -1,0 +1,6 @@
+{
+  "title": "Initialize Folium Map",
+  "description": "Write a function `basic_map()` that uses folium to initialize and return a folium.Map object centered precisely at coordinates [40.7128, -74.0060].",
+  "input": "",
+  "expected_output": "<folium.folium.Map object>"
+}

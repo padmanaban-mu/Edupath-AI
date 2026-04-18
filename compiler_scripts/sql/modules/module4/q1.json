@@ -1,0 +1,6 @@
+{
+  "title": "INNER JOIN",
+  "description": "Perform an INNER JOIN between `Customers` and `Orders` on `customer_id`. Select the customer's `name` and the `order_date`.",
+  "input": "Tables: Customers(id, name), Orders(customer_id, order_date)",
+  "expected_output": "Matching records across both tables."
+}

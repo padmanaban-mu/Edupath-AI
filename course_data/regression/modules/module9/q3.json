@@ -1,0 +1,7 @@
+{
+  "title": "Mock Test: Preprocessing",
+  "description": "Write a function `mock_standardize(x)` that takes a 1D array and normalizes it to have a mean of 0 and std of 1.",
+  "input": "x = np.array([10, 20, 30])",
+  "expected_output": "[-1.22474487  0.          1.22474487]",
+  "hidden_test_cases": "Test with negative values and floats."
+}

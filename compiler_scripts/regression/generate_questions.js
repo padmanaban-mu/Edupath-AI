@@ -243,6 +243,36 @@ const curriculum = [
         hidden_test_cases: 'Test over 1000 iterations to check convergence behavior. Ensure the gradient calculation correctly leverages the sigmoid delta.'
       }
     ]
+  },
+  {
+    moduleId: 'module9',
+    name: 'Final Mock Assessment',
+    questions: [
+      {
+        id: 'q1',
+        title: 'Mock Test: Regression Pipeline',
+        description: 'Write a function `mock_predict(X, weights)` that computes the dot product of a feature matrix X and a weight vector to return predicted values.',
+        input: 'X = np.array([[1, 2], [1, 3]]), weights = np.array([0.5, 1.5])',
+        expected_output: '[3.5 5. ]',
+        hidden_test_cases: 'Test with zero weights and negative feature matrices.'
+      },
+      {
+        id: 'q2',
+        title: 'Mock Test: Error Metric',
+        description: 'Write a function `mock_mse(y_true, y_pred)` that strictly calculates the Mean Squared Error between true and predicted arrays using NumPy.',
+        input: 'y_true = np.array([1, 2]), y_pred = np.array([1.5, 1.5])',
+        expected_output: '0.25',
+        hidden_test_cases: 'Test with arrays of length 100 and identical arrays (yielding 0).'
+      },
+      {
+        id: 'q3',
+        title: 'Mock Test: Preprocessing',
+        description: 'Write a function `mock_standardize(x)` that takes a 1D array and normalizes it to have a mean of 0 and std of 1.',
+        input: 'x = np.array([10, 20, 30])',
+        expected_output: '[-1.22474487  0.          1.22474487]',
+        hidden_test_cases: 'Test with negative values and floats.'
+      }
+    ]
   }
 ];
 

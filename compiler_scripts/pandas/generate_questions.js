@@ -334,6 +334,36 @@ const curriculum = [
         hidden_test_cases: "Check `df.dtypes` to ensure specific float64 and int64 conversions were successful."
       }
     ]
+  },
+  {
+    moduleId: 'module13',
+    name: 'Final Mock Assessment',
+    questions: [
+      {
+        id: 'q1',
+        title: 'Mock Test: Clean & Group',
+        description: 'Write a function `mock_clean_group(df)` that drops rows with NaNs, groups by "Region", and calculates the mean of the "Sales" column.',
+        input: 'DataFrame with "Region", "Sales", and NaNs',
+        expected_output: 'Series with mean Sales indexed by Region.',
+        hidden_test_cases: 'Verify NaNs are fully dropped before the mean calculation is executed.'
+      },
+      {
+        id: 'q2',
+        title: 'Mock Test: Merge & Fill',
+        description: 'Write a function `mock_merge_fill(df1, df2)` that performs a left merge on "Emp_ID" and fills any resulting NaNs in the "Bonus" column with 0.',
+        input: 'Two DataFrames sharing "Emp_ID"',
+        expected_output: 'Merged DataFrame with no NaNs in the Bonus column.',
+        hidden_test_cases: 'Test with non-overlapping Emp_IDs to ensure Left Join integrity.'
+      },
+      {
+        id: 'q3',
+        title: 'Mock Test: Time Series Resample',
+        description: 'Write a function `mock_weekly_revenue(df)` that sets "Date" as a datetime index and resamples the data to a weekly frequency ("W"), returning the sum of "Revenue".',
+        input: 'DataFrame with "Date" (strings) and "Revenue"',
+        expected_output: 'Weekly indexed DataFrame with summed Revenue.',
+        hidden_test_cases: 'Check proper handling of string-to-datetime conversion before resampling.'
+      }
+    ]
   }
 ];
 

@@ -1,0 +1,6 @@
+{
+  "title": "Countdown",
+  "description": "Write a function `count_down(n)` that prints numbers from `n` down to 1, followed by \"Blastoff!\". Case: n=3.",
+  "input": "",
+  "expected_output": "3\n2\n1\nBlastoff!"
+}

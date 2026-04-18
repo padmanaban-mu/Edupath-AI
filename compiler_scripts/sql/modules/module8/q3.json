@@ -1,0 +1,6 @@
+{
+  "title": "String Extraction & Aggregation",
+  "description": "Using the string/regex commands available, extract the domain names from the `email` column in the `Leads` table (e.g. from 'user@yahoo.com' extract 'yahoo.com'). Group by those domains and order by count descending.",
+  "input": "Table: Leads (email)",
+  "expected_output": "A frequency list of email domains."
+}

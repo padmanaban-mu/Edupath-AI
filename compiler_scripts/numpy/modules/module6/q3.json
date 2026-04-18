@@ -1,0 +1,7 @@
+{
+  "title": "Advanced: Standardize Data",
+  "description": "Write a function standardize_data(arr) that takes a 1D array and standardizes it (Z-score normalization) by subtracting the mean and dividing by the standard deviation. Use NumPy's mean() and std().",
+  "input": "1D array",
+  "expected_output": "Normalized array mathematically averaging to 0 with standard deviation 1.",
+  "hidden_test_cases": "All identical elements (to test divide by zero on 0 std-dev)."
+}

@@ -1,0 +1,7 @@
+{
+  "title": "Intermediate: Min-Max Scale",
+  "description": "Write a function min_max_scale(x) that scales a 1D array to a strictly 0 to 1 range based on its minimum and maximum values.",
+  "input": "x = np.array([-1, 0, 1])",
+  "expected_output": "[0.  0.5 1. ]",
+  "hidden_test_cases": "Test where all values in the array are identical. Test with large floating-point precision arrays."
+}

@@ -1,0 +1,6 @@
+{
+  "title": "Annotated Heatmap",
+  "description": "Write a function `sns_heatmap(df)` that computes the correlation matrix of df and plots it using seaborn.heatmap() with annotations and 'coolwarm' colormap. Return Axes.",
+  "input": "numeric_df",
+  "expected_output": "<Axes: >"
+}

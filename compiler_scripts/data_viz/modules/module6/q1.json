@@ -1,0 +1,6 @@
+{
+  "title": "Altair Bar Chart",
+  "description": "Write a function `altair_bar(df)` that maps x='Category' and y='Value' using alt.Chart(df).mark_bar(). Return the chart object.",
+  "input": "df_category_value",
+  "expected_output": "vegalite_chart_object"
+}

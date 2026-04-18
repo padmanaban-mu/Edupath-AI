@@ -1,0 +1,7 @@
+{
+  "title": "Advanced: Adjusted R-Squared",
+  "description": "Write a function adjusted_r_squared(r2, n, p) that calculates the Adjusted R-squared given the original R-squared value, the number of samples n, and the number of predictors p.",
+  "input": "r2 = 0.9, n = 100, p = 5",
+  "expected_output": "0.8946808510638297",
+  "hidden_test_cases": "Test where p is very close to n (drastic penalty). Test where R-squared = 1.0 (Adjusted R-squared should also be 1.0)."
+}

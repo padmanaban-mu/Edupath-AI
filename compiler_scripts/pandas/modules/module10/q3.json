@@ -1,0 +1,7 @@
+{
+  "title": "Advanced: Cross-section (xs)",
+  "description": "Write a function `get_q1_data(df)` that uses `.xs()` to select data for \"Q1\" across all years in a MultiIndexed (Year, Quarter) DataFrame.",
+  "input": "df",
+  "expected_output": "Data matching Quarter == 'Q1' for all years.",
+  "hidden_test_cases": "Ensure the 'Quarter' level is successfully bypassed using level=1."
+}

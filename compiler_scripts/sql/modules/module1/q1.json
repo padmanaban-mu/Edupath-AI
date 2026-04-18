@@ -1,0 +1,6 @@
+{
+  "title": "Select All Columns",
+  "description": "Write a SQL query to SELECT all columns (*) from a table named `Employees`.",
+  "input": "Table: Employees",
+  "expected_output": "All records and columns from the Employees table."
+}

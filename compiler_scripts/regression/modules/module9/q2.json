@@ -1,0 +1,7 @@
+{
+  "title": "Mock Test: Error Metric",
+  "description": "Write a function `mock_mse(y_true, y_pred)` that strictly calculates the Mean Squared Error between true and predicted arrays using NumPy.",
+  "input": "y_true = np.array([1, 2]), y_pred = np.array([1.5, 1.5])",
+  "expected_output": "0.25",
+  "hidden_test_cases": "Test with arrays of length 100 and identical arrays (yielding 0)."
+}

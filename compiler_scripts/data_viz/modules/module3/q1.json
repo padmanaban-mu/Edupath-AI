@@ -1,0 +1,6 @@
+{
+  "title": "Distribution Histogram",
+  "description": "Write a function `sns_hist(df)` that uses seaborn.histplot() to plot a distribution graph of the 'Age' column in the provided DataFrame. Return the Axes.",
+  "input": "df_with_age_column",
+  "expected_output": "<Axes: xlabel='Age', ylabel='Count'>"
+}

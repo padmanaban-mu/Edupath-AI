@@ -1,0 +1,6 @@
+{
+  "title": "Interactive Scatter with Hover",
+  "description": "Write a function `plotly_interactive_scatter(df)` that creates an interactive scatter plot. Add hover data showing 'Employee Name' and map 'Department' to marker colors.",
+  "input": "df_with_employees",
+  "expected_output": "Figure({ data: [{\"type\": \"scatter\"}], ... })"
+}

@@ -1,0 +1,7 @@
+{
+  "title": "Basic: Predict Y",
+  "description": "Write a function predict_y(x, m, c) that takes a NumPy array of independent variables x, a slope m, and an intercept c, and returns a NumPy array of predicted values.",
+  "input": "x = np.array([1, 2, 3]), m = 2, c = 1",
+  "expected_output": "[3 5 7]",
+  "hidden_test_cases": "Test with an array of negative x values. Test with m = 0 to ensure it returns an array of constants equal to c."
+}

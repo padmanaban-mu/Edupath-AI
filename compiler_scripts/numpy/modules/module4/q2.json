@@ -1,0 +1,7 @@
+{
+  "title": "Intermediate: Reshape to Matrix",
+  "description": "Write a function reshape_to_matrix(arr) that takes a 1D array of 12 elements and reshapes it into a 3x4 2D matrix using .reshape().",
+  "input": "1D array of 12 elements",
+  "expected_output": "3 rows, 4 columns matrix.",
+  "hidden_test_cases": "Arrays that are not length 12 to check for ValueError."
+}

@@ -1,0 +1,6 @@
+{
+  "title": "Mock Test: Advanced Hover Data",
+  "description": "Write a function `mixed_interactive_dashboard(df)` that generates a Plotly bar chart comparing 'Sales' by 'Region', including a custom hover data tooltip showing 'Profit Margin'. Return Figure.",
+  "input": "df_sales_region_profit",
+  "expected_output": "Figure({ data: [{\"type\": \"bar\"}], ... })"
+}

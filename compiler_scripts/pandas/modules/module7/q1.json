@@ -1,0 +1,7 @@
+{
+  "title": "Basic: Simple GroupBy",
+  "description": "Write a function `average_salary_by_dept(df)` that groups data by \"Department\" and returns the mean of the \"Salary\" column.",
+  "input": "DataFrame with 'Department' and 'Salary'",
+  "expected_output": "Series indexed by Department with mean Salary.",
+  "hidden_test_cases": "Check handling of a department with only one employee."
+}

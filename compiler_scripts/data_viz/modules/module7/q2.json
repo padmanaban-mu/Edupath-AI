@@ -1,0 +1,6 @@
+{
+  "title": "Add Map Markers",
+  "description": "Write a function `add_marker(map_obj)` that adds a folium.Marker at [34.0522, -118.2437] with popup text 'LA', and returns the mutated map object.",
+  "input": "folium_map_instance",
+  "expected_output": "<folium.folium.Map object>"
+}

@@ -1,0 +1,6 @@
+{
+  "title": "Mock Test: Styled Scatter",
+  "description": "Write a function `mixed_basic_plot(df)` that takes a DataFrame and returns a Matplotlib Axes object showing a scatter plot of 'Revenue' vs 'Cost', utilizing a Seaborn default theme.",
+  "input": "df_revenue_cost",
+  "expected_output": "<Axes: >"
+}

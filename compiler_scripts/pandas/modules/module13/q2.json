@@ -1,0 +1,7 @@
+{
+  "title": "Mock Test: Merge & Fill",
+  "description": "Write a function `mock_merge_fill(df1, df2)` that performs a left merge on \"Emp_ID\" and fills any resulting NaNs in the \"Bonus\" column with 0.",
+  "input": "Two DataFrames sharing \"Emp_ID\"",
+  "expected_output": "Merged DataFrame with no NaNs in the Bonus column.",
+  "hidden_test_cases": "Test with non-overlapping Emp_IDs to ensure Left Join integrity."
+}

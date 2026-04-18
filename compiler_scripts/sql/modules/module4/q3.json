@@ -1,0 +1,6 @@
+{
+  "title": "FULL OUTER JOIN",
+  "description": "Perform a FULL OUTER JOIN (or UNION equivalent) between `Students` and `Courses` on `course_id`. Help identify students without courses and courses without students.",
+  "input": "Tables: Students(id, name, course_id), Courses(id, title)",
+  "expected_output": "Complete set including NULL matches on both sides."
+}

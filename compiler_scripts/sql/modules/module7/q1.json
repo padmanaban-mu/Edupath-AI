@@ -1,0 +1,6 @@
+{
+  "title": "CREATE TABLE Basics",
+  "description": "Write a CREATE TABLE statement for `Users` with three columns: `id` (INT), `username` (VARCHAR(50)), and `created_at` (DATE).",
+  "input": "Schema Requirements: id, username, created_at",
+  "expected_output": "Valid schema creation."
+}

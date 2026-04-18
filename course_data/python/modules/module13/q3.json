@@ -1,0 +1,6 @@
+{
+  "title": "Mock Test: Data Structures",
+  "description": "Create a dictionary with keys \"A\" and \"B\" mapping to 10 and 20. Add a key \"C\" with value 30, then print the total sum of all values.",
+  "input": "",
+  "expected_output": "60"
+}

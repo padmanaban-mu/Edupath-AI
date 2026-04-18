@@ -1,0 +1,6 @@
+{
+  "title": "UPDATE Records",
+  "description": "Write an UPDATE statement that sets `status` = 'Shipped' in the `Orders` table for all orders where `order_date` is before '2023-01-01'.",
+  "input": "Table: Orders (status, order_date)",
+  "expected_output": "Successfully updated historical orders."
+}

@@ -1,0 +1,7 @@
+{
+  "title": "Basic: Identify Missing Values",
+  "description": "Write a function `count_missing(df)` that returns a Series containing the total count of NaN values for each column in the DataFrame.",
+  "input": "DataFrame with missing values",
+  "expected_output": "Series with column names as index and integer counts as values.",
+  "hidden_test_cases": "Test with a fully populated DataFrame (all counts should be 0)."
+}

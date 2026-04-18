@@ -1,0 +1,7 @@
+{
+  "title": "Mock Test: Linear Statistics",
+  "description": "Write a function `mock_stats(A, B)` that computes the dot product of two 1D arrays, and then calculates the standard deviation of the resulting scalar (which is always 0.0, but proves pipeline understanding).",
+  "input": "Two 1D arrays",
+  "expected_output": "0.0",
+  "hidden_test_cases": "Verify `np.std()` handles the scalar conversion cleanly."
+}

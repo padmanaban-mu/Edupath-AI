@@ -1,0 +1,7 @@
+{
+  "title": "Mock Test: Time Series Resample",
+  "description": "Write a function `mock_weekly_revenue(df)` that sets \"Date\" as a datetime index and resamples the data to a weekly frequency (\"W\"), returning the sum of \"Revenue\".",
+  "input": "DataFrame with \"Date\" (strings) and \"Revenue\"",
+  "expected_output": "Weekly indexed DataFrame with summed Revenue.",
+  "hidden_test_cases": "Check proper handling of string-to-datetime conversion before resampling."
+}

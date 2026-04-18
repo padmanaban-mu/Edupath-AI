@@ -1,0 +1,6 @@
+{
+  "title": "Bitwise Swap",
+  "description": "Write a function `bitwise_swap(a, b)` that swaps two integers using bitwise XOR (`^`) and returns the swapped tuple `(a, b)`. Case: a=10, b=5.",
+  "input": "",
+  "expected_output": "(5, 10)"
+}

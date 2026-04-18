@@ -1,0 +1,7 @@
+{
+  "title": "Intermediate: Bar Chart",
+  "description": "Write a function `plot_sales_bar(df)` that creates a bar chart specifically for the \"Sales\" column, colored green. Return the Axes object.",
+  "input": "DataFrame",
+  "expected_output": "Axes object representing a green bar chart.",
+  "hidden_test_cases": "Check plot arguments for kind='bar' and color='green'."
+}

@@ -1,0 +1,6 @@
+{
+  "title": "Styled Scatter Plot",
+  "description": "Write a function `plot_scatter()` that makes a scatter plot and explicitly sets the color of the markers to red and marker style to an 'x'. Return the Axes.",
+  "input": "",
+  "expected_output": "<Axes: >"
+}

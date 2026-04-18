@@ -1,0 +1,7 @@
+{
+  "title": "Advanced: Vectorized Math",
+  "description": "Write a function vectorized_math(arr) that takes an array and computes the formula: y = (x**2) + (2*x) - 5 efficiently using NumPy operations natively.",
+  "input": "Array",
+  "expected_output": "Processed computation output.",
+  "hidden_test_cases": "Verify computational speed/efficiency holds over an array of size 1,000,000."
+}

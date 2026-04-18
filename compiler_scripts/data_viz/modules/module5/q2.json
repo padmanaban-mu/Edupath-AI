@@ -1,0 +1,6 @@
+{
+  "title": "Bokeh Vertical Bars",
+  "description": "Write a function `bokeh_bar()` that creates a vertical bar chart using p.vbar(). Set the bar widths to 0.5 and colors to 'green'. Return the figure.",
+  "input": "",
+  "expected_output": "Figure(id=...)"
+}

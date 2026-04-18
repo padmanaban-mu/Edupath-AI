@@ -1,0 +1,6 @@
+{
+  "title": "Mock Test: Advanced Analytics",
+  "description": "Write a query utilizing a CTE to find the average `score` per `class_id`. Then, join this CTE back to the `Students` table to select students whose individual score is higher than their class average.",
+  "input": "Table: Students (id, name, score, class_id)",
+  "expected_output": "Students outperforming their class average."
+}

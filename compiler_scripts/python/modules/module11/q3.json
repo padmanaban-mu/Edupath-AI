@@ -1,0 +1,6 @@
+{
+  "title": "Custom Exception",
+  "description": "Raise `NegativeValueError` if n < 0 in `calculate_square_root(n)`. Return math.sqrt(n) otherwise. Case: n=4.",
+  "input": "",
+  "expected_output": "2.0"
+}

@@ -1,0 +1,7 @@
+{
+  "title": "Advanced: Fill NaNs with Mean",
+  "description": "Write a function `impute_missing(df, col_name)` that fills missing values in the specified numeric column with the mean of that column.",
+  "input": "df, 'Score'",
+  "expected_output": "DataFrame with 'Score' NaNs replaced by the mean score.",
+  "hidden_test_cases": "Ensure the mean calculation ignores existing NaNs during computation."
+}

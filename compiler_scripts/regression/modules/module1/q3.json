@@ -1,0 +1,7 @@
+{
+  "title": "Advanced: Simple Linear Regression",
+  "description": "Write a function simple_linear_regression(x, y) that calculates both the slope and intercept from scratch and returns them as a tuple (slope, intercept).",
+  "input": "x = np.array([1, 2, 3]), y = np.array([2, 4, 5])",
+  "expected_output": "(1.5, 0.6666666666666666)",
+  "hidden_test_cases": "Test with flat horizontal data where y is constant. Test with arrays containing floating-point noise."
+}

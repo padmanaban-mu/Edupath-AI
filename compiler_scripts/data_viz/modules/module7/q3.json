@@ -1,0 +1,6 @@
+{
+  "title": "Map Choropleth",
+  "description": "Write a function `map_choropleth(map_obj, df, geo_json)` that links state-level geographic data to unemployment rates in df, establishing a choropleth layer.",
+  "input": "map_obj, df, geo_json",
+  "expected_output": "<folium.folium.Map object>"
+}

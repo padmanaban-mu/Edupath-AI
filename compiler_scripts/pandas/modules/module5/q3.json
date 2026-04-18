@@ -1,0 +1,7 @@
+{
+  "title": "Advanced: Dictionary Mapping",
+  "description": "Write a function `map_status(df)` that uses `.map()` to replace values in the \"Status_Code\" column based on a dictionary: {1: \"Pending\", 2: \"Approved\", 3: \"Rejected\"}.",
+  "input": "DataFrame with 'Status_Code' [1, 2, 1, 3]",
+  "expected_output": "Column values converted to string representations.",
+  "hidden_test_cases": "Test with unmapped codes to see if they result in NaN as expected."
+}

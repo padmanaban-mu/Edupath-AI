@@ -1,0 +1,6 @@
+{
+  "title": "INSERT Data",
+  "description": "Write an INSERT INTO statement to add a new record to the `Books` table: 'The Hobbit', `author`='J.R.R Tolkien', `year`=1937.",
+  "input": "Table: Books (title, author, year)",
+  "expected_output": "1 row inserted successful state."
+}

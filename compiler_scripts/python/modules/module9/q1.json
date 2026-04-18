@@ -1,0 +1,6 @@
+{
+  "title": "Greet Function",
+  "description": "Write a function `greet(name, greeting=\"Hello\")` that returns \"{greeting}, {name}!\". Case: \"John\".",
+  "input": "",
+  "expected_output": "Hello, John!"
+}

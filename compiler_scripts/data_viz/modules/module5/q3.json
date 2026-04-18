@@ -1,0 +1,6 @@
+{
+  "title": "Bokeh Hover Tool",
+  "description": "Write a function `bokeh_hover()` that constructs a HoverTool, applies it to a new figure, and plots a scatter circle layout. Return the figure.",
+  "input": "",
+  "expected_output": "Figure(id=...)"
+}

@@ -1,0 +1,7 @@
+{
+  "title": "Intermediate: Seeded Random",
+  "description": "Write a function seeded_random() that specifically sets the NumPy random seed to 42, then generates and returns a 1D array of 5 integers between 10 and 50 using np.random.randint().",
+  "input": "",
+  "expected_output": "Expected fixed array because of the seed state.",
+  "hidden_test_cases": "Test execution twice to verify perfectly identical array outputs."
+}

@@ -1,0 +1,6 @@
+{
+  "title": "Common Table Expressions (CTE)",
+  "description": "Write a query using a CTE `WITH Regional_Sales AS (...)` to first calculate total sales per region, then select the max total sales from that CTE.",
+  "input": "Table: Sales (region, amount)",
+  "expected_output": "The single highest regional sales figure."
+}

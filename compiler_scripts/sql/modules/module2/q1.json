@@ -1,0 +1,6 @@
+{
+  "title": "Filter by Exact Match",
+  "description": "Write a query to select all employees from the `Employees` table where `department` = 'Sales'.",
+  "input": "Table: Employees (department)",
+  "expected_output": "Only sales department employees."
+}

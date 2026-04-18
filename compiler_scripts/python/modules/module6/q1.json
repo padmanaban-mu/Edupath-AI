@@ -1,0 +1,6 @@
+{
+  "title": "Sum List",
+  "description": "Write a function `sum_list(lst)` that uses a `for` loop to return the sum of all elements in a list. Case: [1, 2, 3, 4, 5].",
+  "input": "",
+  "expected_output": "15"
+}

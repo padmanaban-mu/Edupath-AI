@@ -1,0 +1,7 @@
+{
+  "title": "Advanced: Boolean Indexing",
+  "description": "Write a function boolean_indexing(arr) that takes a 2D matrix of integers. Return a 1D array of all elements that are strictly greater than 10 and divisible by 2.",
+  "input": "2D array",
+  "expected_output": "Filtered 1D array containing elements like 12, 14, 20.",
+  "hidden_test_cases": "Arrays where no numbers match the criteria (returns empty)."
+}

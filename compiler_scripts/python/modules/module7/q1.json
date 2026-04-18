@@ -1,0 +1,6 @@
+{
+  "title": "Remove Duplicates",
+  "description": "Write a function `remove_duplicates(lst)` that returns a sorted list of unique elements. Case: [3, 1, 2, 1, 3].",
+  "input": "",
+  "expected_output": "[1, 2, 3]"
+}

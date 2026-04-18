@@ -1,0 +1,6 @@
+{
+  "title": "ROC Curve Construction",
+  "description": "Write a function `plot_roc_curve_custom(fpr, tpr)` that plots the ROC curve using Matplotlib. Add a dashed diagonal line (0,0) to (1,1). Return Axes.",
+  "input": "fpr_list, tpr_list",
+  "expected_output": "<Axes: >"
+}

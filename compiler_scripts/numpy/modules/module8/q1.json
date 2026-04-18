@@ -1,0 +1,7 @@
+{
+  "title": "Basic: Dot Product",
+  "description": "Write a function dot_product(a, b) that computes and returns the dot product of two 1D NumPy arrays using np.dot().",
+  "input": "Two 1D arrays",
+  "expected_output": "A scalar result.",
+  "hidden_test_cases": "Orthogonal arrays that should yield exactly 0."
+}

@@ -1,0 +1,6 @@
+{
+  "title": "Variable Types",
+  "description": "Create three variables: an integer `a`, a float `b`, and a string `c`. Assign them the values 10, 20.5, and \"Code\". Print their types using `type()`.",
+  "input": "",
+  "expected_output": "<class 'int'>\n<class 'float'>\n<class 'str'>"
+}

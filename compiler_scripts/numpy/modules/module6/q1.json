@@ -1,0 +1,7 @@
+{
+  "title": "Basic: Array Mean",
+  "description": "Write a function array_mean(arr) that returns the mean (average) of all elements in a given NumPy array.",
+  "input": "Array",
+  "expected_output": "A scalar float value representing the mean.",
+  "hidden_test_cases": "Try with an empty array [] (expected warning/NaN)."
+}

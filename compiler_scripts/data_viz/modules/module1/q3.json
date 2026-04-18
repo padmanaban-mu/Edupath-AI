@@ -1,0 +1,6 @@
+{
+  "title": "Tidy Data Transformation",
+  "description": "Take an un-tidy dataset (wide format) list of dicts, and write a function `tidy_data(wide_data)` to pivot it into a tidy format (long format) suitable for plotting.",
+  "input": "[{'id': 1, 'A': 10, 'B': 20}]",
+  "expected_output": "[{'id': 1, 'variable': 'A', 'value': 10}, {'id': 1, 'variable': 'B', 'value': 20}]"
+}

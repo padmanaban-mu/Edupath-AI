@@ -1,0 +1,7 @@
+{
+  "title": "Intermediate: Select from MultiIndex",
+  "description": "Write a function `get_year_data(df, year)` that uses `.loc` to extract all data for a specific year from a MultiIndexed (Year, Quarter) DataFrame.",
+  "input": "df, 2023",
+  "expected_output": "DataFrame containing only 2023 data (dropping the Year level depending on exact loc usage).",
+  "hidden_test_cases": "Requesting a year that doesn't exist (handle KeyError)."
+}

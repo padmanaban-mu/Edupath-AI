@@ -1,0 +1,6 @@
+{
+  "title": "CASE WHEN Statements",
+  "description": "Write a query utilizing CASE WHEN. In the `Students` table, return `name` and a new column `Grade Type`: 'Pass' if `score` >= 50, else 'Fail'.",
+  "input": "Table: Students (name, score)",
+  "expected_output": "Data categorized logically by row."
+}

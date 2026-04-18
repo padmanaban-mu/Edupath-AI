@@ -1,0 +1,7 @@
+{
+  "title": "Intermediate: Fit Polynomial Degree 2",
+  "description": "Write a function fit_poly_degree2(x, y) that uses np.polyfit() to fit a 2nd-degree polynomial to the data and returns the coefficients.",
+  "input": "x = np.array([0, 1, 2]), y = np.array([1, 3, 7])",
+  "expected_output": "[1. 1. 1.]",
+  "hidden_test_cases": "Test with data that forms a perfect straight line (leading coefficient should be approx 0). Test with inverted parabola data."
+}

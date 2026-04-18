@@ -1,0 +1,6 @@
+{
+  "title": "Count Total Records",
+  "description": "Count the total number of orders in the `Orders` table using the `COUNT()` function and alias it as `Total Orders`.",
+  "input": "Table: Orders",
+  "expected_output": "A single row/column with the count."
+}

@@ -1,0 +1,6 @@
+{
+  "title": "Mock Test: Joins & Aggregates",
+  "description": "Write a query to JOIN `Orders` and `Customers`. Find the total sum of `order_amount` grouped by customer `name`, but only include customers who have placed more than 2 orders.",
+  "input": "Tables: Orders(customer_id, order_amount), Customers(id, name)",
+  "expected_output": "Customer names with their aggregate order sum."
+}

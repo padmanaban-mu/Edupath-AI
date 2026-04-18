@@ -1,0 +1,6 @@
+{
+  "title": "Mock Test: Complex DML",
+  "description": "Write an UPDATE statement to increase the `salary` by 10% in the `Employees` table, but ONLY for those whose `department_id` belongs to a department named 'Engineering' (use a subquery).",
+  "input": "Tables: Employees(salary, department_id), Departments(id, name)",
+  "expected_output": "Engineers receive a 10% salary bump."
+}

@@ -1,0 +1,6 @@
+{
+  "title": "Append Log",
+  "description": "Write a function `append_log(filename, message)` that appends a message. Return \"Appended\".",
+  "input": "",
+  "expected_output": "Appended"
+}

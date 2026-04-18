@@ -1,0 +1,7 @@
+{
+  "title": "Intermediate: Broadcast Multiply",
+  "description": "Write a function broadcast_multiply(arr, scalar) that multiplies every element in arr by the scalar value using broadcasting.",
+  "input": "arr, scalar",
+  "expected_output": "The updated array.",
+  "hidden_test_cases": "Ensure no Python loops (for x in arr) were utilized."
+}

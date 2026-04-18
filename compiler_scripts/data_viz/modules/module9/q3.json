@@ -1,0 +1,6 @@
+{
+  "title": "Mock Test: Proportional Geo-Markers",
+  "description": "Write a function `comprehensive_geo_scatter(df)` that initializes a Folium map, processes coordinates from df, and adds CircleMarkers proportional to the 'Population' column. Return map.",
+  "input": "df_lat_lon_population",
+  "expected_output": "<folium.folium.Map object>"
+}

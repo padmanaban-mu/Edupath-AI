@@ -1,0 +1,7 @@
+{
+  "title": "Intermediate: Shuffle and Split",
+  "description": "Write a function shuffle_and_split(X, y, test_size) that jointly shuffles the feature matrix X and target vector y, then splits them according to test_size. Return X_train, X_test, y_train, y_test.",
+  "input": "X = np.array([[1], [2], [3], [4]]), y = np.array([10, 20, 30, 40]), test_size = 0.5",
+  "expected_output": "Randomized arrays maintaining aligned indices between X and y components.",
+  "hidden_test_cases": "Verify that X and y mappings remain perfectly aligned after shuffling. Test with multidimensional y targets."
+}

@@ -1,0 +1,7 @@
+{
+  "title": "Basic: Make Zeros",
+  "description": "Write a function make_zeros(shape_tuple) that uses np.zeros() to generate an array of zeros with the requested shape.",
+  "input": "(2, 2)",
+  "expected_output": "[[0. 0.]\n [0. 0.]]",
+  "hidden_test_cases": "Try passing a 3D shape (2,3,4)."
+}

@@ -1,0 +1,6 @@
+{
+  "title": "PCA Dimensionality Scatter",
+  "description": "Write a function `plot_pca_features(df)` that reduces a high-dimensional DataFrame to 2 components via PCA, and scatter plots the results using Matplotlib. Return Axes.",
+  "input": "high_dim_df",
+  "expected_output": "<Axes: >"
+}

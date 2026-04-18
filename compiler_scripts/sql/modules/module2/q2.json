@@ -1,0 +1,6 @@
+{
+  "title": "Multiple Conditions (AND/BETWEEN)",
+  "description": "Select all products from `Inventory` where the string `status` is 'In Stock' AND `price` is between 50 and 150.",
+  "input": "Table: Inventory (status, price)",
+  "expected_output": "Relevant filtered products matching both conditions."
+}

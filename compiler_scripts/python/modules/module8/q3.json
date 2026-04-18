@@ -1,0 +1,6 @@
+{
+  "title": "Find Common Elements",
+  "description": "Write a function `find_common_elements(l1, l2, l3)` that returns a sorted list of elements in all three lists. Case: [1,2,3], [2,3,4], [3,4,5].",
+  "input": "",
+  "expected_output": "[3]"
+}

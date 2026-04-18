@@ -1,0 +1,7 @@
+{
+  "title": "Basic: Get Element",
+  "description": "Write a function get_element(arr, row, col) that returns the element situated at (row, col) in a 2D NumPy array.",
+  "input": "arr, 1, 2",
+  "expected_output": "The exact scalar value at the specified coordinate.",
+  "hidden_test_cases": "Requesting out-of-bounds indices (should error naturally or be handled)."
+}

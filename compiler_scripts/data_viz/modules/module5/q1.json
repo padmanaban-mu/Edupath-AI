@@ -1,0 +1,6 @@
+{
+  "title": "Bokeh Line Chart",
+  "description": "Write a function `bokeh_line()` that creates a basic Bokeh figure object and plots a line using p.line() with x=[1,2] and y=[3,4]. Return the figure.",
+  "input": "",
+  "expected_output": "Figure(id=...)"
+}

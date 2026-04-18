@@ -1,0 +1,6 @@
+{
+  "title": "Wildcards and Logical OR",
+  "description": "Write a query on the `Customers` table to find all users whose email ends with '@gmail.com' using the LIKE operator, OR their `status` is marked as 'VIP'.",
+  "input": "Table: Customers (email, status)",
+  "expected_output": "Matching rows based on wildcard search and logical OR."
+}

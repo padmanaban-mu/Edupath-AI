@@ -327,9 +327,35 @@ const curriculum = [
         expected_output: '100'
       }
     ]
+  },
+  {
+    moduleId: 'mock-test',
+    name: 'Final Mock Assessment',
+    questions: [
+      {
+        id: 'q1',
+        title: 'Mock Test: Core Logic',
+        description: 'Write a script that takes a list of integers `[5, 2, 9, 1]`, removes the smallest number, and prints the sum of the rest.',
+        input: '',
+        expected_output: '16'
+      },
+      {
+        id: 'q2',
+        title: 'Mock Test: Functions & Strings',
+        description: 'Write a function `format_title(text)` that takes a string, converts it to title case, and replaces spaces with hyphens. Print the result for "hello python world".',
+        input: '',
+        expected_output: 'Hello-Python-World'
+      },
+      {
+        id: 'q3',
+        title: 'Mock Test: Data Structures',
+        description: 'Create a dictionary with keys "A" and "B" mapping to 10 and 20. Add a key "C" with value 30, then print the total sum of all values.',
+        input: '',
+        expected_output: '60'
+      }
+    ]
   }
 ];
-
 if (!fs.existsSync(modulesDir)) {
   fs.mkdirSync(modulesDir);
 }

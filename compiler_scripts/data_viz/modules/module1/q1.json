@@ -1,0 +1,6 @@
+{
+  "title": "Colorblind Palette",
+  "description": "Write a function `bad_vs_good_colors()` that returns a list of 3 color hex strings that constitute a colorblind-friendly palette.",
+  "input": "",
+  "expected_output": "['#E69F00', '#56B4E9', '#009E73']"
+}

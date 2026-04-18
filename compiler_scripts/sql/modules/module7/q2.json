@@ -1,0 +1,6 @@
+{
+  "title": "Constraints (PK & NOT NULL)",
+  "description": "Write a CREATE TABLE script for `Products` that includes a PRIMARY KEY on `id`, and a NOT NULL constraint on `price`.",
+  "input": "Schema Requirements: id (PK), price (NOT NULL)",
+  "expected_output": "Schema enforcement of constraints."
+}

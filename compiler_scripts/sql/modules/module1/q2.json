@@ -1,0 +1,6 @@
+{
+  "title": "Specific Column Selection",
+  "description": "Write a query to retrieve only the `first_name` and `email` columns from the `Users` table.",
+  "input": "Table: Users",
+  "expected_output": "A result set with exactly 2 columns."
+}

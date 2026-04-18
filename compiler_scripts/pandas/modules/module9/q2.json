@@ -1,0 +1,7 @@
+{
+  "title": "Intermediate: Set Datetime Index",
+  "description": "Write a function `set_time_index(df, col_name)` that sets a datetime column as the index and sorts the index chronologically.",
+  "input": "df, 'Timestamp'",
+  "expected_output": "Time-indexed, sorted DataFrame.",
+  "hidden_test_cases": "Pass an unsorted timeline to verify proper sorting behavior."
+}

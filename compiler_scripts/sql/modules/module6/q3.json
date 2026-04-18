@@ -1,0 +1,6 @@
+{
+  "title": "DELETE with Conditions",
+  "description": "Write a DELETE statement to remove data from the `Sessions` table but ONLY for records where `last_active` < '2022-01-01' AND `is_bot` = True.",
+  "input": "Table: Sessions (last_active, is_bot)",
+  "expected_output": "Specific deletion of matched rows only."
+}

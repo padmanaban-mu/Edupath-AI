@@ -1,0 +1,7 @@
+{
+  "title": "Advanced: Shuffle Rows",
+  "description": "Write a function shuffle_rows(arr) that creates a copy of a 2D array, uses np.random.shuffle() to shuffle its rows intrinsically, and returns the shuffled copy without altering the row contents themselves.",
+  "input": "2D array",
+  "expected_output": "Visually mixed row orderings.",
+  "hidden_test_cases": "Ensure columns didn't detach or distort relative to their rows."
+}

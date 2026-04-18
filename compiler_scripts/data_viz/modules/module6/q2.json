@@ -1,0 +1,6 @@
+{
+  "title": "Altair Colored Scatter",
+  "description": "Write a function `altair_colored_scatter(df)` that plots a scatter plot using mark_circle(), explicitly encoding color to 'Gender'. Return chart.",
+  "input": "df_height_weight_gender",
+  "expected_output": "vegalite_chart_object"
+}

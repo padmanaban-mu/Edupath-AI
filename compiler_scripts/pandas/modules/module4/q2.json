@@ -1,0 +1,7 @@
+{
+  "title": "Intermediate: Conditional Filtering",
+  "description": "Write a function `filter_high_sales(df, threshold)` that returns a DataFrame containing only rows where the \"Sales\" column is strictly greater than the threshold.",
+  "input": "df, 1000",
+  "expected_output": "Filtered DataFrame.",
+  "hidden_test_cases": "Test with thresholds that exclude all rows (returns empty DataFrame)."
+}

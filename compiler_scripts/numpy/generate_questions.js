@@ -243,6 +243,36 @@ const curriculum = [
         hidden_test_cases: 'A singular matrix (determinant of 0) to ensure properly trapped LinAlgError.'
       }
     ]
+  },
+  {
+    moduleId: 'module9',
+    name: 'Final Mock Assessment',
+    questions: [
+      {
+        id: 'q1',
+        title: 'Mock Test: Data Extraction',
+        description: 'Write a function `mock_extract(arr)` that takes a 2D array, extracts the 2nd column, and computes the mean of those values.',
+        input: '2D Matrix',
+        expected_output: 'Scalar float mean value.',
+        hidden_test_cases: 'Test with negative and floating-point matrices.'
+      },
+      {
+        id: 'q2',
+        title: 'Mock Test: Reshape & Broadcast',
+        description: 'Write a function `mock_transform(arr)` that takes a 1D array of 9 elements, reshapes it to 3x3, and multiplies the entire matrix by a scalar of 5.',
+        input: '1D array (len 9)',
+        expected_output: '3x3 matrix multiplied by 5.',
+        hidden_test_cases: 'Test with arrays containing zeroes to check broadcasting accuracy.'
+      },
+      {
+        id: 'q3',
+        title: 'Mock Test: Linear Statistics',
+        description: 'Write a function `mock_stats(A, B)` that computes the dot product of two 1D arrays, and then calculates the standard deviation of the resulting scalar (which is always 0.0, but proves pipeline understanding).',
+        input: 'Two 1D arrays',
+        expected_output: '0.0',
+        hidden_test_cases: 'Verify `np.std()` handles the scalar conversion cleanly.'
+      }
+    ]
   }
 ];
 

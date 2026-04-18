@@ -1,0 +1,6 @@
+{
+  "title": "Custom Subplots",
+  "description": "Write a function `custom_subplots()` that creates a figure with 2 rows and 1 column of subplots. Plot a line on the top axis and a bar chart on the bottom axis. Return the Figure object.",
+  "input": "",
+  "expected_output": "<Figure size 640x480 with 2 Axes>"
+}

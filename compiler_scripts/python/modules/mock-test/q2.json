@@ -1,0 +1,6 @@
+{
+  "title": "Mock Test: Functions & Strings",
+  "description": "Write a function `format_title(text)` that takes a string, converts it to title case, and replaces spaces with hyphens. Print the result for \"hello python world\".",
+  "input": "",
+  "expected_output": "Hello-Python-World"
+}

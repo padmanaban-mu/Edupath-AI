@@ -1,0 +1,6 @@
+{
+  "title": "String Concatenation",
+  "description": "Using the `Products` table, write a single query that returns a custom column via concatenation, formatting output as \"Product: [name] costs $ [price]\", aliasing it as `Product Details`.",
+  "input": "Table: Products (name, price)",
+  "expected_output": "A single column `Product Details` with formatted strings."
+}

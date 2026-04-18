@@ -1,0 +1,7 @@
+{
+  "title": "Basic: Efficient Eval",
+  "description": "Write a function `calculate_speed(df)` that uses `df.eval()` to calculate \"Distance / Time\" and assigns it to a new column \"Speed\".",
+  "input": "DataFrame with 'Distance' and 'Time'",
+  "expected_output": "DataFrame updated using eval for memory efficiency.",
+  "hidden_test_cases": "Check handling of division by zero within eval."
+}

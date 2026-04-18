@@ -1,0 +1,7 @@
+{
+  "title": "Advanced: Scatter Plot",
+  "description": "Write a function `plot_scatter(df)` that plots \"Height\" against \"Weight\" as a scatter plot, using \"Age\" to define the colormap (c=\"Age\", colormap=\"viridis\"). Return the Axes object.",
+  "input": "DataFrame",
+  "expected_output": "Axes object of the scatter plot.",
+  "hidden_test_cases": "Verify plotting variables X and Y are correctly assigned."
+}

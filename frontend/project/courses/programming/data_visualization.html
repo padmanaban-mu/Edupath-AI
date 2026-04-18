@@ -1604,13 +1604,28 @@
                 </div>
             </div>
         </div>
+
+        <div class="section-box locked" id="module-box-9">
+            <div class="section-header active" onclick="toggleSection(this)">
+                <h3>Module 9: Final Mock Assessment</h3>
+                <i class="fas fa-chevron-down toggle-icon"></i>
+            </div>
+            <div class="section-content" style="display:block;">
+                <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
+                <div class="activity-row" onclick="window.location.href='/compiler/dataviz.html?module=mock-test'">
+                    <div class="activity-info"><i class="fas fa-code"></i> <span>Take Final Mock Test</span></div>
+                    <button id="pbtn-9" class="status-btn todo">To do</button>
+                </div>
+            </div>
+        </div>
+
     </main>
 </div>
 
 <script src="https://www.youtube.com/iframe_api"></script>
 
 <script>
-    const totalModules = 8;
+    const totalModules = 9;
 
     // Load saved state on page load
     document.addEventListener("DOMContentLoaded", () => {

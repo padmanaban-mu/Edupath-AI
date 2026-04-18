@@ -1,0 +1,7 @@
+{
+  "title": "Intermediate: Read Specific Columns",
+  "description": "Write a function `load_specific_cols(filepath, cols_list)` that reads only the specified columns from a CSV file to save memory.",
+  "input": "'data.csv', ['Name', 'Salary']",
+  "expected_output": "DataFrame with only 'Name' and 'Salary' columns.",
+  "hidden_test_cases": "Test with columns that do not exist to ensure KeyError is handled or exposed."
+}

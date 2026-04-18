@@ -1,0 +1,6 @@
+{
+  "title": "Word Frequency",
+  "description": "Write a function `word_frequency(text)` that returns a dictionary of word counts. Case: \"apple pie apple\".",
+  "input": "",
+  "expected_output": "{'apple': 2, 'pie': 1}"
+}

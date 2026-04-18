@@ -79,7 +79,8 @@ const MODULE_NAMES = {
     module5: 'Bokeh Visualizations',
     module6: 'Altair & Declarative Visualization',
     module7: 'Geospatial Visualization',
-    module8: 'ML Model Visualizations'
+    module8: 'ML Model Visualizations',
+    module9: 'Final Mock Assessment'
 };
 
 const NUMPY_MODULE_NAMES = {
@@ -90,7 +91,8 @@ const NUMPY_MODULE_NAMES = {
     module5: 'Math Operations',
     module6: 'Matrix Operations',
     module7: 'Statistics',
-    module8: 'Advanced NumPy'
+    module8: 'Advanced NumPy',
+    module9: 'Final Mock Assessment'
 };
 
 const PANDAS_MODULE_NAMES = {
@@ -104,7 +106,8 @@ const PANDAS_MODULE_NAMES = {
     module9: 'Time Series Data',
     module10: 'Multi-indexing',
     module11: 'Data Visualization with Pandas',
-    module12: 'Advanced Operations & Optimization'
+    module12: 'Advanced Operations & Optimization',
+    module13: 'Final Mock Assessment'
 };
 
 const PYTHON_MODULE_NAMES = {
@@ -119,7 +122,8 @@ const PYTHON_MODULE_NAMES = {
     module9: 'Methods and Functions',
     module10: 'File Handling',
     module11: 'Exception Handling',
-    module12: 'OOP Concepts'
+    module12: 'OOP Concepts',
+    module13:'Final Mock Assessment'
 };
 
 // FULLY INTEGRATED REGRESSION METADATA
@@ -131,7 +135,8 @@ const REGRESSION_MODULE_NAMES = {
     module5: 'Support Vector Regression',
     module6: 'Decision Tree Regression',
     module7: 'Random Forest Regression',
-    module8: 'Model Evaluation & Metrics'
+    module8: 'Model Evaluation & Metrics',
+    module9: 'Final Mock Assessment'
 };
 
 const COURSE_MODULE_NAMES = {
@@ -144,7 +149,8 @@ const COURSE_MODULE_NAMES = {
         module5: 'Subqueries & CTEs',
         module6: 'Data Manipulation (DML)',
         module7: 'Table Creation & Structure (DDL)',
-        module8: 'Advanced SQL Concepts'
+        module8: 'Advanced SQL Concepts',
+        module9: 'Final Mock Assessment'
     },
     numpy: NUMPY_MODULE_NAMES,
     pandas: PANDAS_MODULE_NAMES,

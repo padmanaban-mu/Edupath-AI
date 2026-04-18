@@ -1,0 +1,6 @@
+{
+  "title": "LEFT JOIN & Self-Joins",
+  "description": "Write a LEFT JOIN taking all `Employees` and their possible Manager details. Select employee `name` and manager `name`.",
+  "input": "Table: Employees (id, name, manager_id)",
+  "expected_output": "All employees; if no manager, manager name is NULL."
+}

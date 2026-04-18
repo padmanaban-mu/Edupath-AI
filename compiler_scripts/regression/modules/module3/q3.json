@@ -1,0 +1,7 @@
+{
+  "title": "Advanced: Polynomial Predict",
+  "description": "Write a function poly_predict(x, coeffs) that takes an array of values x and an array of polynomial coefficients (from highest degree to lowest) and returns the predicted y values using np.polyval().",
+  "input": "x = np.array([3, 4]), coeffs = np.array([1, 1, 1])",
+  "expected_output": "[13 21]",
+  "hidden_test_cases": "Test with a 5th-degree polynomial coefficient array. Test with an empty array of x values."
+}

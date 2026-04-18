@@ -1,0 +1,7 @@
+{
+  "title": "Mock Test: Reshape & Broadcast",
+  "description": "Write a function `mock_transform(arr)` that takes a 1D array of 9 elements, reshapes it to 3x3, and multiplies the entire matrix by a scalar of 5.",
+  "input": "1D array (len 9)",
+  "expected_output": "3x3 matrix multiplied by 5.",
+  "hidden_test_cases": "Test with arrays containing zeroes to check broadcasting accuracy."
+}

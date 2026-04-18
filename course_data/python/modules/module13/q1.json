@@ -1,0 +1,6 @@
+{
+  "title": "Mock Test: Core Logic",
+  "description": "Write a script that takes a list of integers `[5, 2, 9, 1]`, removes the smallest number, and prints the sum of the rest.",
+  "input": "",
+  "expected_output": "16"
+}

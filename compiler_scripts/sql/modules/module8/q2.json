@@ -1,0 +1,6 @@
+{
+  "title": "Window Functions (RANK)",
+  "description": "Write a window function query using `RANK() OVER (ORDER BY score DESC)`. Return all students and their respective rank based on score.",
+  "input": "Table: Students (name, score)",
+  "expected_output": "Rank sequence appended."
+}

@@ -1,0 +1,6 @@
+{
+  "title": "Collatz Conjecture",
+  "description": "Write a function `collatz_conjecture(n)` that returns the number of steps to reach 1 using the Collatz sequence. Case: n=3.",
+  "input": "",
+  "expected_output": "7"
+}

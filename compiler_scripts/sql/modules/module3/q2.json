@@ -1,0 +1,6 @@
+{
+  "title": "Average Grouped by Column",
+  "description": "Write a query to find the `AVG(salary)` grouped by `department` from the `Employees` table.",
+  "input": "Table: Employees (department, salary)",
+  "expected_output": "Two columns: `department` and `avg_salary`."
+}

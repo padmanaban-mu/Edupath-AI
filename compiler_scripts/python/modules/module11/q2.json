@@ -1,0 +1,6 @@
+{
+  "title": "Parse Integer",
+  "description": "Write `parse_integer(s)` that returns the integer or -1 on `ValueError`. Print \"Execution Complete\" in finally block. Case: \"abc\".",
+  "input": "",
+  "expected_output": "Execution Complete\n-1"
+}

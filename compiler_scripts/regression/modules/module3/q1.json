@@ -1,0 +1,7 @@
+{
+  "title": "Basic: Create Polynomial Features",
+  "description": "Write a function create_poly_features(x) that takes a 1D NumPy array x and returns a 2D array where the first column is x and the second column is x squared.",
+  "input": "x = np.array([2, 3, 4])",
+  "expected_output": "[[ 2  4]\n [ 3  9]\n [ 4 16]]",
+  "hidden_test_cases": "Test with negative values to ensure squares become positive. Test with decimal fractions."
+}

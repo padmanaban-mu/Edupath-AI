@@ -1,0 +1,7 @@
+{
+  "title": "Intermediate: Custom Range",
+  "description": "Write a function custom_range(start, end, step) that uses np.arange() to create an array, and converts its dtype to float32. Return the array.",
+  "input": "0, 5, 2",
+  "expected_output": "[0. 2. 4.]",
+  "hidden_test_cases": "Check negative steps and verify floating-point dtype explicitly."
+}

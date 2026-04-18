@@ -1,0 +1,6 @@
+{
+  "title": "Grouped Boxplot",
+  "description": "Write a function `sns_boxplot(df)` that creates a Seaborn boxplot comparing 'Salary' across different 'Departments'. Return the Axes.",
+  "input": "df_with_salary_and_dept",
+  "expected_output": "<Axes: xlabel='Department', ylabel='Salary'>"
+}

@@ -1,0 +1,7 @@
+{
+  "title": "Advanced: Handle Dates on Load",
+  "description": "Write a function `load_with_dates(filepath, date_col)` that reads a CSV and parses the specified column as datetime objects upon loading.",
+  "input": "'sales.csv', 'Date'",
+  "expected_output": "DataFrame where the 'Date' column is of dtype datetime64[ns].",
+  "hidden_test_cases": "Verify the dtype of the target column is strictly datetime64."
+}

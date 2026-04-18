@@ -1,0 +1,6 @@
+{
+  "title": "Leap Year",
+  "description": "Write a function `leap_year(year)` that returns `True` if it's a leap year and `False` otherwise. Case: 2024.",
+  "input": "",
+  "expected_output": "True"
+}

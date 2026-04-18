@@ -1,0 +1,6 @@
+{
+  "title": "Confusion Matrix Plot",
+  "description": "Write a function `plot_confusion_matrix(y_true, y_pred)` that uses Scikit-Learn ConfusionMatrixDisplay to generate a Matplotlib figure visualizing the matrix.",
+  "input": "y_true, y_pred lists",
+  "expected_output": "<sklearn.metrics._plot.confusion_matrix.ConfusionMatrixDisplay>"
+}

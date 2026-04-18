@@ -1,0 +1,6 @@
+{
+  "title": "Altair Zoom & Pan",
+  "description": "Write a function `altair_interactive(df)` that builds an Altair line chart and appends the .interactive() method to allow zoom and pan functionalities.",
+  "input": "df_time_series",
+  "expected_output": "vegalite_chart_object"
+}

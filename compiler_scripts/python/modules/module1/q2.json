@@ -1,0 +1,6 @@
+{
+  "title": "Welcome User",
+  "description": "Write a script that takes a user's name via `input()` and prints \"Welcome to Python, [Name]!\".",
+  "input": "Alice",
+  "expected_output": "Welcome to Python, Alice!"
+}

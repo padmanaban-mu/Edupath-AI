@@ -1,0 +1,6 @@
+{
+  "title": "Basic Plotly Line",
+  "description": "Write a function `basic_plotly_line()` that uses plotly.express to create a line chart. Return the Plotly Figure object.",
+  "input": "",
+  "expected_output": "Figure({ data: [...], layout: [...] })"
+}

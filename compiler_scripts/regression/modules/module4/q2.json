@@ -1,0 +1,7 @@
+{
+  "title": "Intermediate: Ridge Closed Form",
+  "description": "Write a function ridge_closed_form(X, y, alpha) that computes the weights for Ridge regression using the modified normal equation. Make sure the bias term is not regularized in the identity matrix.",
+  "input": "X = np.array([[1, 1], [1, 2]]), y = np.array([1, 2]), alpha = 1.0",
+  "expected_output": "[0.83333333 0.66666667]",
+  "hidden_test_cases": "Test with extremely high alpha (weights should shrink towards zero). Test with matrices where X transpose X is singular (the alpha should make it invertible)."
+}

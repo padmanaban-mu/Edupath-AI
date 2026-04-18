@@ -1,0 +1,6 @@
+{
+  "title": "Electric Car",
+  "description": "Extend `Car` to `ElectricCar` with `battery_size`. Override `display_info()`. Case: Tesla Model S, 100kWh.",
+  "input": "",
+  "expected_output": "Make: Tesla, Model: Model S, Battery: 100kWh"
+}

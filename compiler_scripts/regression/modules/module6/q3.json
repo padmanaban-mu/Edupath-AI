@@ -1,0 +1,7 @@
+{
+  "title": "Advanced: One-Hot Encode",
+  "description": "Write a function one_hot_encode(categories) that takes a 1D integer array of categorical labels (e.g., 0, 1, 2) and returns a 2D binary matrix representing the one-hot encoded format.",
+  "input": "categories = np.array([0, 2, 1, 0])",
+  "expected_output": "[[1 0 0]\n [0 0 1]\n [0 1 0]\n [1 0 0]]",
+  "hidden_test_cases": "Test with arrays missing a sequential integer (e.g., only 0s and 2s present). Test with a single category throughout the array."
+}

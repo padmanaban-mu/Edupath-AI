@@ -1,0 +1,7 @@
+{
+  "title": "Advanced: Set Custom Index",
+  "description": "Write a function `set_custom_index(df, col_name)` that sets the specified column as the index of the DataFrame without dropping it, and returns the new DataFrame.",
+  "input": "df, 'ID'",
+  "expected_output": "DataFrame indexed by the 'ID' column.",
+  "hidden_test_cases": "Ensure the original DataFrame is not mutated if inplace=False is standard."
+}

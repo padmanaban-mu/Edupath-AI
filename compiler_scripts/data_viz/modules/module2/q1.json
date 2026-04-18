@@ -1,0 +1,6 @@
+{
+  "title": "Basic Line Plot",
+  "description": "Write a function `plot_line()` that uses Matplotlib to plot x=[1,2,3] against y=[4,5,6]. Give it the title 'Growth'. Return the matplotlib.axes.Axes object.",
+  "input": "",
+  "expected_output": "<Axes: title={'center': 'Growth'}>"
+}

@@ -1,0 +1,6 @@
+{
+  "title": "HAVING Clause",
+  "description": "Group `Sales` records by `region`. Calculate the `SUM(revenue)` and only return regions (using HAVING) where the total revenue exceeds 10,000.",
+  "input": "Table: Sales (region, revenue)",
+  "expected_output": "Regions where aggregate sum strictly > 10,000."
+}

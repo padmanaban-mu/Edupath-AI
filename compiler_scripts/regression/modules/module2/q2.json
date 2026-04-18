@@ -1,0 +1,7 @@
+{
+  "title": "Intermediate: Compute MSE",
+  "description": "Write a function compute_mse(y_true, y_pred) that calculates the Mean Squared Error between actual values and predicted values using NumPy operations.",
+  "input": "y_true = np.array([3, -0.5, 2, 7]), y_pred = np.array([2.5, 0.0, 2, 8])",
+  "expected_output": "0.375",
+  "hidden_test_cases": "Test where y_true and y_pred are completely identical (should return 0.0). Test with arrays containing large scale numbers."
+}

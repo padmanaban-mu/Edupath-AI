@@ -1,0 +1,6 @@
+{
+  "title": "Derived Tables (FROM Subquery)",
+  "description": "Take the `Sales` table, calculate total sales per `employee_id` in the subquery, and then filter the outer query for totals > 500.",
+  "input": "Table: Sales (employee_id, amount)",
+  "expected_output": "Specific employees exceeding quota."
+}

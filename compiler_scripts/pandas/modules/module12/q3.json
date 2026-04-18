@@ -1,0 +1,7 @@
+{
+  "title": "Advanced: Memory Downcasting",
+  "description": "Write a function `optimize_memory(df)` that converts all float64 columns to float32, and int64 columns to int32 to optimize memory footprint using `pd.to_numeric(downcast=...)`.",
+  "input": "DataFrame with heavy memory usage",
+  "expected_output": "Optimized DataFrame with reduced memory usage.",
+  "hidden_test_cases": "Check `df.dtypes` to ensure specific float64 and int64 conversions were successful."
+}

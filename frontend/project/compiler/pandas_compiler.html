@@ -82,15 +82,15 @@
         /* ─── CENTER PANE: WORKSPACE ─── */
         .workspace { flex: 1; padding: 30px 40px; display: flex; flex-direction: column; gap: 20px; overflow-y: auto; height: calc(100vh - 70px); }
         
-        /* Top Navigation Bar inside Workspace */
-        .workspace-top-bar { display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
+        /* Bottom Navigation Bar inside Workspace */
+        .workspace-bottom-bar { display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; padding-top: 10px; margin-bottom: 20px;}
         
         .nav-buttons { display: flex; gap: 12px; }
         .btn-nav { background: white; border: 1px solid var(--border-color); color: var(--primary); padding: 10px 20px; border-radius: 8px; font-weight: 600; font-size: 0.9rem; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.02); display: flex; align-items: center; gap: 8px; }
         .btn-nav:hover:not(:disabled) { background: #f8faff; border-color: #cbd5e1; color: var(--secondary); box-shadow: 0 4px 8px rgba(0,0,0,0.05); transform: translateY(-1px); }
         .btn-nav:disabled { opacity: 0.5; cursor: not-allowed; background: #f1f5f9; border-color: #e2e8f0; color: #94a3b8;}
 
-        /* Finish Button moved to Main Workspace */
+        /* Finish Button */
         .btn-finish-main { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border: none; padding: 12px 28px; border-radius: 8px; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3); display: flex; align-items: center; gap: 10px; letter-spacing: 0.5px; }
         .btn-finish-main:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4); }
 
@@ -128,7 +128,7 @@
         .moodle-table pre { margin: 0; white-space: pre-wrap; font-family: inherit; color: #1e293b; font-size: 0.85rem;}
         .error-text { color: #dc2626; font-weight: bold; }
         
-        .output-wrapper { display: flex; flex-direction: column; flex-shrink: 0; margin-bottom: 30px; box-shadow: 0 8px 24px rgba(0,0,0,0.03); border-radius: 12px;}
+        .output-wrapper { display: flex; flex-direction: column; flex-shrink: 0; margin-bottom: 10px; box-shadow: 0 8px 24px rgba(0,0,0,0.03); border-radius: 12px;}
     </style>
 </head>
 <body>
@@ -147,7 +147,7 @@
 
     <div class="layout">
         
-        <div class="sidebar" id="app-sidebar">
+        <div class="sidebar collapsed" id="app-sidebar">
             <div class="sidebar-header"><i class="fas fa-table" style="margin-right: 8px;"></i> Pandas Curriculum</div>
             <div id="accordion-container">
                 <div style="padding: 20px; color: var(--text-muted);">Loading curriculum...</div>
@@ -156,16 +156,6 @@
 
         <div class="workspace" id="workspace" style="display: none;">
             
-            <div class="workspace-top-bar">
-                <div class="nav-buttons">
-                    <button class="btn-nav" id="btn-prev" onclick="prevQuestion()"><i class="fas fa-arrow-left"></i> Previous</button>
-                    <button class="btn-nav" id="btn-next" onclick="nextQuestion()">Next <i class="fas fa-arrow-right"></i></button>
-                </div>
-                <button id="btn-finish-main" class="btn-finish-main" onclick="finishAttempt()" style="display: none;">
-                    <i class="fas fa-flag-checkered"></i> Finish Module
-                </button>
-            </div>
-
             <div class="question-card">
                 <div class="q-title" id="q-title">Loading Question...</div>
                 <div class="q-desc" id="q-desc"></div>
@@ -193,6 +183,16 @@
             <div class="output-wrapper">
                 <div id="validation-banner" class="validation-banner"></div>
                 <div class="terminal-output default-bg" id="terminal-output">Awaiting execution...</div>
+            </div>
+
+            <div class="workspace-bottom-bar">
+                <div class="nav-buttons">
+                    <button class="btn-nav" id="btn-prev" onclick="prevQuestion()"><i class="fas fa-arrow-left"></i> Previous</button>
+                    <button class="btn-nav" id="btn-next" onclick="nextQuestion()">Next <i class="fas fa-arrow-right"></i></button>
+                </div>
+                <button id="btn-finish-main" class="btn-finish-main" onclick="finishAttempt()" style="display: none;">
+                    <i class="fas fa-flag-checkered"></i> Finish Module
+                </button>
             </div>
 
         </div>

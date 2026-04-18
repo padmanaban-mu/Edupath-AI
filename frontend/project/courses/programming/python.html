@@ -56,7 +56,9 @@
         .sidebar.collapsed {
             width: 80px;
         }
-
+.sidebar.collapsed .logo-text { 
+            display: none; 
+        }
         .sidebar.collapsed .nav-menu span,
         .sidebar.collapsed .logo-text,
         .sidebar.collapsed .user-info {
@@ -64,18 +66,26 @@
         }
 
         .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
+          font-family: 'Poppins', sans-serif;
             font-size: 24px;
             font-weight: 700;
             margin-bottom: 50px;
-            padding-left: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            transition: var(--transition);
+            overflow: hidden;
         }
 
         .logo-icon {
-            color: var(--primary-blue);
-            font-size: 28px;
+            color: var(--primary-blue); 
+            font-size: 1.8rem; 
+            flex-shrink: 0; 
+        }
+         .logo-text { 
+            color: white; 
+            white-space: nowrap; 
         }
 
         .logo-text span {
@@ -101,9 +111,7 @@
             display: flex;
             align-items: center;
             gap: 15px;
-            padding: 15px;
             width: 100%;
-            box-sizing: border-box;
         }
 
         .nav-menu li:hover,
@@ -134,7 +142,7 @@
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            flex-shrink: 0;
+          
         }
 
         /* --- Main Content --- */
@@ -478,12 +486,12 @@
             <div class="logo-text">EduPath <span>AI</span></div>
         </div>
         <ul class="nav-menu">
-            <li><a href="/dashboard.html"><i class="fas fa-th-large"></i> <span>Overview</span></a></li>
-            <li><a href="/roadmap.html"><i class="fas fa-map-signs"></i> <span>My Roadmap</span></a></li>
-            <li class="active"><a href="/domain.html"><i class="fas fa-compass"></i> <span>Explore Domain</span></a></li>
-            <li><a href="/chatbot.html"><i class="fas fa-robot"></i> <span>AI ChatBot</span></a></li>
-            <li><a href="/profile.html"><i class="fas fa-cog"></i> <span>Profile Settings</span></a></li>
-            <li style="margin-top: auto;"><a href="/index.html" onclick="logout()"><i class="fas fa-sign-out-alt"></i> <span>Log out</span></a></li>
+            <li><a href="../../dashboard.html"><i class="fas fa-th-large"></i> <span>Overview</span></a></li>
+            <li><a href="../../roadmap.html"><i class="fas fa-map-signs"></i> <span>My Roadmap</span></a></li>
+            <li class="active"><a href="../../domain.html"><i class="fas fa-compass"></i> <span>Explore Domain</span></a></li>
+            <li><a href="../../chatbot.html"><i class="fas fa-robot"></i> <span>AI ChatBot</span></a></li>
+            <li><a href="../../profile.html"><i class="fas fa-cog"></i> <span>Profile Settings</span></a></li>
+            <li style="margin-top: auto;"><a href="../../index.html" onclick="logout()"><i class="fas fa-sign-out-alt"></i> <span>Log out</span></a></li>
         </ul>
         <div class="sidebar-footer">
             <div class="profile-card">
@@ -536,11 +544,11 @@
         </div>
 
         <div class="section-box">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header active" onclick="toggleSection(this)">
                 <h3>Module 1: Introduction to Python</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-            <div class="section-content">
+            <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this)">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Intro, Installation & First Script -
@@ -750,11 +758,11 @@
         </div>
 
         <div class="section-box locked" id="module-box-2">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header active" onclick="toggleSection(this)">
                 <h3>Module 2: Variables and Data Types</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-            <div class="section-content">
+            <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this)">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Integers, Floats, Strings, Booleans -
@@ -966,11 +974,11 @@
         </div>
 
         <div class="section-box locked" id="module-box-3">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header active" onclick="toggleSection(this)">
                 <h3>Module 3: Python Operators</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-            <div class="section-content">
+            <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this)">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Arithmetic & Logical Operators - VIDEO
@@ -1180,11 +1188,11 @@
         </div>
 
         <div class="section-box locked" id="module-box-4">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header active" onclick="toggleSection(this)">
                 <h3>Module 4: Conditional Statements</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-            <div class="section-content">
+            <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this)">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>if/else & nested logic - VIDEO </span>
@@ -1389,12 +1397,12 @@
         </div>
 
         <div class="section-box locked" id="module-box-5">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header active" onclick="toggleSection(this)">
                 <h3>Module 5: Loops – while loop</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
 
-            <div class="section-content">
+            <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
 
                 <div class="activity-row" onclick="toggleVideo(this)">
@@ -1623,12 +1631,12 @@
 
 
         <div class="section-box locked" id="module-box-6">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header active" onclick="toggleSection(this)">
                 <h3>Module 6: Loops – for loop</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
 
-            <div class="section-content">
+            <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
 
                 <div class="activity-row" onclick="toggleVideo(this)">
@@ -1849,12 +1857,12 @@ for i in range(3):
 
 
         <div class="section-box locked" id="module-box-7">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header active" onclick="toggleSection(this)">
                 <h3>Module 7: Data Structures (Lists & Tuples)</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
 
-            <div class="section-content">
+            <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
 
                 <div class="activity-row" onclick="toggleVideo(this)">
@@ -2072,12 +2080,12 @@ for i in range(3):
 
 
         <div class="section-box locked" id="module-box-8">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header active" onclick="toggleSection(this)">
                 <h3>Module 8: Advanced Data Structures (Dictionaries & Sets)</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
 
-            <div class="section-content">
+            <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
 
                 <div class="activity-row" onclick="toggleVideo(this)">
@@ -2289,12 +2297,12 @@ for i in range(3):
 
 
         <div class="section-box locked" id="module-box-9">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header active" onclick="toggleSection(this)">
                 <h3>Module 9: Methods and Functions in Python</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
 
-            <div class="section-content">
+            <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
 
                 <div class="activity-row" onclick="toggleVideo(this)">
@@ -2511,12 +2519,12 @@ for i in range(3):
 
 
         <div class="section-box locked" id="module-box-10">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header active" onclick="toggleSection(this)">
                 <h3>Module 10: File Handling</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
 
-            <div class="section-content">
+            <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
 
                 <div class="activity-row" onclick="toggleVideo(this)">
@@ -2730,12 +2738,12 @@ for i in range(3):
 
 
         <div class="section-box locked" id="module-box-11">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header active" onclick="toggleSection(this)">
                 <h3>Module 11: Exception Handling</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
 
-            <div class="section-content">
+            <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
 
                 <div class="activity-row" onclick="toggleVideo(this)">
@@ -2948,11 +2956,11 @@ for i in range(3):
             </div>
         </div>
         <div class="section-box locked" id="module-box-12">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header active" onclick="toggleSection(this)">
                 <h3>Module 12: OOPs concept</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-            <div class="section-content">
+            <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this)">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Introduction to OOPS - VIDEO</span></div>

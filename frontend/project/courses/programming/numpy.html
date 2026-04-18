@@ -8,7 +8,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Inter:wght@400;500;600;700&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="/css/dashboard.css">
+    <link rel="stylesheet" href="../../css/dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
@@ -64,24 +64,32 @@
         }
 
         .logo {
-            font-family: 'Poppins', sans-serif;
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
+            font-size: 24px; 
+    font-weight: 700; 
+    margin-bottom: 50px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    gap: 12px;
+    transition: var(--transition);
+    overflow: hidden;
         }
         
-        .logo i {
-            font-size: 1.5rem;
+        .logo-icon {
+             color: var(--primary-blue); 
+    font-size: 1.8rem; 
+    flex-shrink: 0;
         }
-
+.logo-text { 
+    color: white; 
+    white-space: nowrap; /* Keeps the name on one single line */
+}
         .logo span {
             color: var(--primary-blue);
         }
-
+.logo-text span { 
+    color: var(--primary-blue); 
+}
         .nav-menu {
             list-style: none;
             flex-grow: 1;
@@ -239,6 +247,10 @@
 
         .fa-code {
             color: #8b5cf6;
+        }
+        .course-progress {
+            margin: 20px auto;
+            width: 60%;
         }
 
         .mcq-option.correct {
@@ -476,32 +488,37 @@
             <div class="logo-text">EduPath <span>AI</span></div>
        </div>
         <ul class="nav-menu">
-            <li><a href="/dashboard.html"><i class="fas fa-th-large"></i> <span>Overview</span></a></li>
-            <li><a href="/roadmap.html"><i class="fas fa-map-signs"></i> <span>My Roadmap</span></a></li>
-            <li class="active"><a href="/domain.html"><i class="fas fa-compass"></i> <span>Explore Domain</span></a></li>
-            <li><a href="/chatbot.html"><i class="fas fa-robot"></i> <span>AI ChatBot</span></a></li>
-            <li><a href="/profile.html"><i class="fas fa-cog"></i> <span>Profile Settings</span></a></li>
-            <li><a href="/index.html"><i class="fas fa-sign-out-alt"></i> <span>Log out</span></a></li>
+            <li><a href="../../dashboard.html"><i class="fas fa-th-large"></i> <span>Overview</span></a></li>
+            <li><a href="../../roadmap.html"><i class="fas fa-map-signs"></i> <span>My Roadmap</span></a></li>
+            <li class="active"><a href="../../domain.html"><i class="fas fa-compass"></i> <span>Explore Domain</span></a></li>
+            <li><a href="../../chatbot.html"><i class="fas fa-robot"></i> <span>AI ChatBot</span></a></li>
+            <li><a href="../../profile.html"><i class="fas fa-cog"></i> <span>Profile Settings</span></a></li>
+            <li><a href="../../index.html"><i class="fas fa-sign-out-alt"></i> <span>Log out</span></a></li>
         </ul>
         <div class="sidebar-footer">
             <div class="profile-card">
                 <div class="avatar">P</div>
                 <div class="user-info">
-                    <p class="name" style="margin:0; font-size:0.9rem;">User Name</p>
-                    <p class="status" style="margin:0; font-size:0.7rem; opacity:0.7;">Pro Member</p>
+                    <p class="name">User Name</p>
+                    <p class="status">Pro Member</p>
                 </div>
             </div>
         </div>
     </aside>
 
     <main class="main-content" id="main-content">
-        <header class="top-nav" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
-            <div class="toggle-btn" id="sidebarToggle" style="cursor: pointer;"><i class="fas fa-bars"></i></div>
-            <div class="search-bar" style="background: white; padding: 8px 20px; border-radius: 25px; width: 40%; display: flex; align-items: center; gap: 10px; border: 1px solid #e2e8f0;">
+        <header class="top-nav">
+            <div class="toggle-btn" id="sidebarToggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            <!-- <div class="search-bar" style="background: white; padding: 8px 20px; border-radius: 25px; width: 40%; display: flex; align-items: center; gap: 10px; border: 1px solid #e2e8f0;">
                 <i class="fas fa-search" style="color: var(--slate-500);"></i>
                 <input type="text" id="moduleSearch" placeholder="Search NumPy topics..." style="border: none; outline: none; width: 100%;">
+            </div> -->
+            <div class="notifications">
+                <i class="far fa-bell"></i>
+                <span class="badge">3</span>
             </div>
-            <div class="user-profile"><i class="far fa-bell" style="color:var(--text-muted)"></i></div>
         </header>
         <div class="course-progress">
             <div class="progress-label">
@@ -653,11 +670,11 @@
         </div>
 
         <div class="section-box locked" id="module-box-2">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header active" onclick="toggleSection(this)">
                 <h3>Module 2: Array Creation</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-            <div class="section-content">
+            <div class="section-content" style="display:block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this)">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Creating Arrays (zeros, ones, arange) - VIDEO</span></div>
@@ -772,11 +789,11 @@
         </div>
 
         <div class="section-box locked" id="module-box-3">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header active" onclick="toggleSection(this)">
                 <h3>Module 3: Indexing & Slicing</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-            <div class="section-content">
+            <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this)">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Accessing & Slicing Elements - VIDEO</span></div>
@@ -891,11 +908,11 @@
         </div>
 
         <div class="section-box locked" id="module-box-4">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header active" onclick="toggleSection(this)">
                 <h3>Module 4: Reshaping & Transposing</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-            <div class="section-content">
+            <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this)">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Changing Array Shape - VIDEO</span></div>
@@ -1010,11 +1027,11 @@
         </div>
 
         <div class="section-box locked" id="module-box-5">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header active" onclick="toggleSection(this)">
                 <h3>Module 5: Numerical Operations</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-            <div class="section-content">
+            <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this)">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Arithmetic & Vectorization - VIDEO</span></div>
@@ -1129,11 +1146,11 @@
         </div>
 
         <div class="section-box locked" id="module-box-6">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header active" onclick="toggleSection(this)">
                 <h3>Module 6: Statistical Functions</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-            <div class="section-content">
+            <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this)">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Aggregations (Sum, Mean, Std) - VIDEO</span></div>
@@ -1248,11 +1265,11 @@
         </div>
 
         <div class="section-box locked" id="module-box-7">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header active" onclick="toggleSection(this)">
                 <h3>Module 7: Random Number Generation</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-            <div class="section-content">
+            <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this)">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Generating Random Data - VIDEO</span></div>
@@ -1367,11 +1384,11 @@
         </div>
 
         <div class="section-box locked" id="module-box-8">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header active" onclick="toggleSection(this)">
                 <h3>Module 8: Linear Algebra</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-            <div class="section-content">
+            <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this)">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Matrix Math & Linalg Submodule - VIDEO</span></div>

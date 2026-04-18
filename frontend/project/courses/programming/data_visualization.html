@@ -8,7 +8,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Inter:wght@400;500;600;700&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="/css/dashboard.css">
+    <link rel="stylesheet" href="../../css/dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
@@ -71,15 +71,28 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 12px;
+            transition: var(--transition);
+            overflow: hidden;
         }
         
-        .logo i {
-            font-size: 1.5rem;
+        .logo-icon { 
+            color: var(--primary-blue); 
+            font-size: 1.8rem; 
+            flex-shrink: 0; 
         }
 
-        .logo span {
+        .logo-text { 
+            color: white; 
+            white-space: nowrap; 
+        }
+
+        .logo-text span {
             color: var(--primary-blue);
+        }
+
+        .sidebar.collapsed .logo-text { 
+            display: none; 
         }
 
         .nav-menu {
@@ -137,9 +150,13 @@
             justify-content: center;
             font-weight: bold;
         }
+        
+        .user-info .name { font-size: 0.9rem; font-weight: 600; margin: 0; }
+        .user-info .status { font-size: 0.7rem; opacity: 0.7; margin: 0; }
 
         /* --- Main Content --- */
         .main-content {
+            flex-grow: 1;
             margin-left: 260px;
             padding: 25px 40px;
             transition: 0.3s ease;
@@ -149,6 +166,59 @@
         .main-content.expanded {
             margin-left: 80px;
             width: calc(100% - 80px);
+        }
+
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .toggle-btn {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--dark-blue);
+        }
+
+        .search-bar {
+            background: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            width: 40%;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .search-bar input {
+            border: none;
+            outline: none;
+            width: 100%;
+        }
+
+        .notifications {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .notifications i {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+        }
+
+        .badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #e74a3b;
+            color: white;
+            font-size: 0.6rem;
+            padding: 2px 5px;
+            border-radius: 50%;
+            font-weight: bold;
         }
 
         /* --- Module Accordion Styles --- */
@@ -239,6 +309,10 @@
 
         .fa-code {
             color: #8b5cf6;
+        }
+         .course-progress {
+            margin: 20px auto;
+            width: 60%;
         }
 
 
@@ -500,41 +574,43 @@
 <div class="dashboard-container">
     <aside class="sidebar" id="sidebar">
        <div class="logo">
-    <i class="fas fa-brain logo-icon"></i>
-    <div class="logo-text">EduPath <span>AI</span></div>
-</div>
+            <i class="fas fa-brain logo-icon"></i>
+            <div class="logo-text">EduPath <span>AI</span></div>
+        </div>
         <ul class="nav-menu">
-            <li><a href="/dashboard.html"><i class="fas fa-th-large"></i> <span>Overview</span></a></li>
-            <li><a href="/roadmap.html"><i class="fas fa-map-signs"></i> <span>My Roadmap</span></a></li>
-            <li class="active"><a href="/domain.html"><i class="fas fa-compass"></i> <span>Explore Domain</span></a>
-            </li>
-            <li><a href="/chatbot.html"><i class="fas fa-robot"></i> <span>AI ChatBot</span></a></li>
-            <li><a href="/profile.html"><i class="fas fa-cog"></i> <span>Profile Settings</span></a></li>
-            <li><a href="/index.html"><i class="fas fa-sign-out-alt"></i> <span>Log out</span></a></li>
+            <li><a href="../../dashboard.html"><i class="fas fa-th-large"></i> <span>Overview</span></a></li>
+            <li><a href="../../roadmap.html"><i class="fas fa-map-signs"></i> <span>My Roadmap</span></a></li>
+            <li class="active"><a href="../../domain.html"><i class="fas fa-compass"></i> <span>Explore Domain</span></a></li>
+            <li><a href="../../chatbot.html"><i class="fas fa-robot"></i> <span>AI ChatBot</span></a></li>
+            <li><a href="../../profile.html"><i class="fas fa-cog"></i> <span>Profile Settings</span></a></li>
+            <li><a href="../../index.html"><i class="fas fa-sign-out-alt"></i> <span>Log out</span></a></li>
         </ul>
         <div class="sidebar-footer">
             <div class="profile-card">
                 <div class="avatar">P</div>
                 <div class="user-info">
-                    <p class="name" style="margin:0; font-size:0.9rem;">User Name</p>
-                    <p class="status" style="margin:0; font-size:0.7rem; opacity:0.7;">Pro Member</p>
+                    <p class="name">User Name</p>
+                    <p class="status">Pro Member</p>
                 </div>
             </div>
         </div>
     </aside>
 
     <main class="main-content" id="main-content">
-        <header class="top-nav"
-            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
-            <div class="toggle-btn" id="sidebarToggle" style="cursor: pointer;"><i class="fas fa-bars"></i></div>
-            <div class="search-bar"
-                style="background: white; padding: 8px 20px; border-radius: 25px; width: 40%; display: flex; align-items: center; gap: 10px; border: 1px solid #e2e8f0;">
-                <i class="fas fa-search" style="color: var(--slate-500);"></i>
-                <input type="text" id="moduleSearch" placeholder="Search visualization topics..."
-                    style="border: none; outline: none; width: 100%;">
+        <header class="top-nav">
+            <div class="toggle-btn" id="sidebarToggle">
+                <i class="fas fa-bars"></i>
             </div>
-            <div class="user-profile"><i class="far fa-bell" style="color:var(--text-muted)"></i></div>
+            <!-- <div class="search-bar">
+                <i class="fas fa-search" style="color: var(--slate-500);"></i>
+                <input type="text" id="moduleSearch" placeholder="Search visualization topics...">
+            </div> -->
+            <div class="notifications">
+                <i class="far fa-bell"></i>
+                <span class="badge">3</span>
+            </div>
         </header>
+
         <div class="course-progress">
             <div class="progress-label">
                 <span>Course Progress</span>
@@ -556,8 +632,8 @@
                 <h3><i class="fas fa-chevron-circle-right" style="color:var(--primary-blue)"></i> General</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-            <div class="section-content">
-                <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
+           <div class="section-content">
+                           <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Course Syllabus & Objectives</span>
                     </div>
@@ -688,11 +764,10 @@
         </div>
 
         <div class="section-box locked" id="module-box-2">
-            <div class="section-header" onclick="toggleSection(this)">
-                <h3>Module 2: Python Visualization - Matplotlib</h3>
+<div class="section-header active" onclick="toggleSection(this)">                <h3>Module 2: Python Visualization - Matplotlib</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-            <div class="section-content">
+          <div class="section-content" style="display:block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this)">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Matplotlib Masterclass - VIDEO</span></div>
@@ -808,11 +883,11 @@
         </div>
 
         <div class="section-box locked" id="module-box-3">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header active" onclick="toggleSection(this)">
                 <h3>Module 3: Python Visualization - Seaborn</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-            <div class="section-content">
+            <div class="section-content" style="display:block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this)">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Seaborn for Statistical Plotting - VIDEO</span></div>
@@ -930,11 +1005,11 @@
         </div>
 
         <div class="section-box locked" id="module-box-4">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header active" onclick="toggleSection(this)">
                 <h3>Module 4: Interactive Plots with Plotly</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-            <div class="section-content">
+            <div class="section-content" style="display:block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this)">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Plotly Express & Figures - VIDEO</span></div>
@@ -1050,11 +1125,11 @@
         </div>
 
         <div class="section-box locked" id="module-box-5">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header active" onclick="toggleSection(this)">
                 <h3>Module 5: Interactive Plots with Bokeh</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-            <div class="section-content">
+            <div class="section-content" style="display:block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this)">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Interactive Web Plots with Bokeh - VIDEO</span></div>
@@ -1170,11 +1245,11 @@
         </div>
 
         <div class="section-box locked" id="module-box-6">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header active" onclick="toggleSection(this)">
                 <h3>Module 6: Declarative Visualization with Altair</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-            <div class="section-content">
+            <div class="section-content" style="display:block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this)">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Altair Charts & Encoding - VIDEO</span></div>
@@ -1290,11 +1365,11 @@
         </div>
 
         <div class="section-box locked" id="module-box-7">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header active" onclick="toggleSection(this)">
                 <h3>Module 7: Geographic Mapping with Folium</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-            <div class="section-content">
+            <div class="section-content" style="display:block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this)">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Interactive Maps with Folium - VIDEO</span></div>
@@ -1410,11 +1485,11 @@
         </div>
 
         <div class="section-box locked" id="module-box-8">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header active" onclick="toggleSection(this)">
                 <h3>Module 8: Visualization for Data Science & ML</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-            <div class="section-content">
+            <div class="section-content" style="display:block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this)">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>ML Visualization with Scikit-Learn - VIDEO</span></div>
@@ -1679,7 +1754,6 @@
 
         if (percent >= 60) {
             markAsDone("qbtn-" + module);
-            // PREMATURE UNLOCK REMOVED HERE. The compiler's "Finish Attempt" button handles unlocking the next module.
         }
     }
 

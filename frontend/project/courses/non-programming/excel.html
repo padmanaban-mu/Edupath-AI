@@ -8,7 +8,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Inter:wght@400;500;600;700&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../../css/dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
@@ -64,12 +64,26 @@
         }
 
         .logo {
+            font-family: 'Poppins', sans-serif;
             font-size: 24px;
             font-weight: 700;
             margin-bottom: 50px;
-            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            transition: var(--transition);
+            overflow: hidden;
         }
-
+ .logo-icon { 
+            color: var(--primary-blue); 
+            font-size: 1.8rem; 
+            flex-shrink: 0; 
+        }
+        .logo-text { 
+            color: white; 
+            white-space: nowrap; 
+        }
         .logo span {
             color: var(--primary-blue);
         }
@@ -500,13 +514,13 @@
     <div class="logo-text">EduPath <span>AI</span></div>
 </div>
         <ul class="nav-menu">
-            <li><a href="../dashboard.html"><i class="fas fa-th-large"></i> <span>Overview</span></a></li>
-            <li><a href="../roadmap.html"><i class="fas fa-map-signs"></i> <span>My Roadmap</span></a></li>
-            <li class="active"><a href="../domain.html"><i class="fas fa-compass"></i> <span>Explore Domain</span></a>
+            <li><a href="../../dashboard.html"><i class="fas fa-th-large"></i> <span>Overview</span></a></li>
+            <li><a href="../../roadmap.html"><i class="fas fa-map-signs"></i> <span>My Roadmap</span></a></li>
+            <li class="active"><a href="../../domain.html"><i class="fas fa-compass"></i> <span>Explore Domain</span></a>
             </li>
-            <li><a href="#"><i class="fas fa-robot"></i> <span>AI ChatBot</span></a></li>
-            <li><a href="../profile.html"><i class="fas fa-cog"></i> <span>Profile Settings</span></a></li>
-            <li><a href="../index.html"><i class="fas fa-sign-out-alt"></i> <span>Log out</span></a></li>
+            <li><a href="../../chatbot.html"><i class="fas fa-robot"></i> <span>AI ChatBot</span></a></li>
+            <li><a href="../../profile.html"><i class="fas fa-cog"></i> <span>Profile Settings</span></a></li>
+            <li><a href="../../index.html"><i class="fas fa-sign-out-alt"></i> <span>Log out</span></a></li>
         </ul>
         <div class="sidebar-footer">
             <div class="profile-card">
@@ -523,12 +537,12 @@
         <header class="top-nav"
             style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
             <div class="toggle-btn" id="sidebarToggle" style="cursor: pointer;"><i class="fas fa-bars"></i></div>
-            <div class="search-bar"
+            <!-- <div class="search-bar"
                 style="background: white; padding: 8px 20px; border-radius: 25px; width: 40%; display: flex; align-items: center; gap: 10px; border: 1px solid #e2e8f0;">
                 <i class="fas fa-search" style="color: var(--slate-500);"></i>
                 <input type="text" id="moduleSearch" placeholder="Search Excel topics..."
                     style="border: none; outline: none; width: 100%;">
-            </div>
+            </div> -->
             <div class="user-profile"><i class="far fa-bell" style="color:var(--text-muted)"></i></div>
         </header>
         <div class="course-progress">
@@ -682,11 +696,11 @@
         </div>
 
         <div class="section-box locked" id="module-box-2">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header active" onclick="toggleSection(this)">
                 <h3>Module 2: Essential Formulas & Functions</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-            <div class="section-content">
+            <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this)">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Basic Math & Statistical Functions - VIDEO</span></div>
@@ -802,11 +816,11 @@
         </div>
 
         <div class="section-box locked" id="module-box-3">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header active" onclick="toggleSection(this)">
                 <h3>Module 3: Logical Functions (IF, AND, OR)</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-            <div class="section-content">
+            <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this)">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Using IF Statements - VIDEO</span></div>
@@ -921,11 +935,11 @@
             </div>
         </div>
         <div class="section-box locked" id="module-box-4">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header active" onclick="toggleSection(this)">
                 <h3>Module 4: Lookup Functions (VLOOKUP, XLOOKUP)</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-            <div class="section-content">
+            <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this)">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Mastering VLOOKUP & XLOOKUP - VIDEO</span></div>
@@ -1034,11 +1048,11 @@
             </div>
         </div>
         <div class="section-box locked" id="module-box-5">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header active" onclick="toggleSection(this)">
                 <h3>Module 5: Data Cleaning & Formatting</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-            <div class="section-content">
+            <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this)">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Cleaning Messy Data - VIDEO</span></div>
@@ -1147,11 +1161,11 @@
             </div>
         </div>
         <div class="section-box locked" id="module-box-6">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header active" onclick="toggleSection(this)">
                 <h3>Module 6: Pivot Tables & Charts</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-            <div class="section-content">
+            <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this)">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Pivot Tables Tutorial - VIDEO</span>
@@ -1263,11 +1277,11 @@
         </div>
 
         <div class="section-box locked" id="module-box-7">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header active" onclick="toggleSection(this)">
                 <h3>Module 7: Advanced Data Analysis</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-            <div class="section-content">
+            <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this)">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>What-If Analysis - VIDEO</span></div>
@@ -1371,11 +1385,11 @@
         </div>
 
         <div class="section-box locked" id="module-box-8">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header active" onclick="toggleSection(this)">
                 <h3>Module 8: Macros & VBA</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-            <div class="section-content">
+            <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this)">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Introduction to Macros - VIDEO</span></div>

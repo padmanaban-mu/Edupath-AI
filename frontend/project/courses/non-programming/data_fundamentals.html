@@ -470,6 +470,10 @@
     <main class="main-content" id="main-content">
         <header class="top-nav">
             <div class="toggle-btn" id="sidebarToggle"><i class="fas fa-bars"></i></div>
+            <!-- <div class="search-bar">
+                <i class="fas fa-search" style="color: var(--slate-500);"></i>
+                <input type="text" placeholder="Search EDA topics..." id="moduleSearch" style="border: none; outline: none; width: 100%;">
+            </div> -->
             <div class="notifications">
                 <i class="far fa-bell" style="font-size: 1.2rem; color: var(--text-muted);"></i>
                 <span class="badge">3</span>
@@ -491,12 +495,26 @@
             <p style="color: var(--slate-500); font-size: 0.9rem;">The non-programming track for data literacy.</p>
         </div>
 
-        <div class="section-box" id="module-box-1">
+        <div class="section-box">
             <div class="section-header" onclick="toggleSection(this)">
+                <h3><i class="fas fa-chevron-circle-right" style="color:var(--primary-blue)"></i> General</h3>
+                <i class="fas fa-chevron-down toggle-icon"></i>
+            </div>
+           <div class="section-content">
+                           <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
+                <div class="activity-row">
+                    <div class="activity-info"><i class="fas fa-link"></i> <span>Course Syllabus & Objectives</span>
+                    </div>
+                    <button class="status-btn done">Done <i class="fas fa-check"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="section-box" id="module-box-1">
+            <div class="section-header active" onclick="toggleSection(this)">
                 <h3>Module 1: Introduction to Data</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-            <div class="section-content">
+            <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this, 'vplayer-1')">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>What is Data? - VIDEO</span></div>
@@ -557,11 +575,11 @@
         </div>
 
         <div class="section-box locked" id="module-box-2">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header active" onclick="toggleSection(this)">
                 <h3>Module 2: Data Lifecycle</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-            <div class="section-content">
+            <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this, 'vplayer-2')">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>The Data Lifecycle - VIDEO</span></div>
@@ -622,11 +640,11 @@
         </div>
 
         <div class="section-box locked" id="module-box-3">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header active" onclick="toggleSection(this)">
                 <h3>Module 3: Data Quality</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-            <div class="section-content">
+            <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this, 'vplayer-3')">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Data Quality & Cleaning - VIDEO</span></div>
@@ -687,11 +705,11 @@
         </div>
 
         <div class="section-box locked" id="module-box-4">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header active" onclick="toggleSection(this)">
                 <h3>Module 4: Statistics Basics</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-            <div class="section-content">
+            <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this, 'vplayer-4')">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Descriptive Statistics - VIDEO</span></div>
@@ -752,11 +770,11 @@
         </div>
 
         <div class="section-box locked" id="module-box-5">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header active" onclick="toggleSection(this)">
                 <h3>Module 5: Data Visualization</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-            <div class="section-content">
+            <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this, 'vplayer-5')">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Visualization Principles - VIDEO</span></div>
@@ -817,11 +835,11 @@
         </div>
 
         <div class="section-box locked" id="module-box-6">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header active" onclick="toggleSection(this)">
                 <h3>Module 6: Ethics & Privacy</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-            <div class="section-content">
+            <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this, 'vplayer-6')">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Data Ethics & Privacy - VIDEO</span></div>
@@ -882,11 +900,11 @@
         </div>
 
         <div class="section-box locked" id="module-box-7">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header active" onclick="toggleSection(this)">
                 <h3>Module 7: Big Data & Cloud</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-            <div class="section-content">
+            <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this, 'vplayer-7')">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Big Data & Cloud - VIDEO</span></div>
@@ -947,11 +965,11 @@
         </div>
 
         <div class="section-box locked" id="module-box-8">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header active" onclick="toggleSection(this)">
                 <h3>Module 8: Decision Making</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-            <div class="section-content">
+            <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this, 'vplayer-8')">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Data-Driven Decision Making - VIDEO</span></div>

@@ -443,7 +443,7 @@
             <li><a href="../../dashboard.html"><i class="fas fa-th-large"></i> <span>Overview</span></a></li>
             <li><a href="../../roadmap.html"><i class="fas fa-map-signs"></i> <span>My Roadmap</span></a></li>
             <li class="active"><a href="../../domain.html"><i class="fas fa-compass"></i> <span>Explore Domain</span></a></li>
-            <li><a href="#"><i class="fas fa-robot"></i> <span>AI ChatBot</span></a></li>
+            <li><a href="../../chatbot.html"><i class="fas fa-robot"></i> <span>AI ChatBot</span></a></li>
             <li><a href="../../profile.html"><i class="fas fa-cog"></i> <span>Profile Settings</span></a></li>
             <li><a href="../../index.html"><i class="fas fa-sign-out-alt"></i> <span>Log out</span></a></li>
         </ul>
@@ -461,10 +461,10 @@
     <main class="main-content" id="main-content">
         <header class="top-nav">
             <div class="toggle-btn" id="sidebarToggle"><i class="fas fa-bars"></i></div>
-            <div class="search-bar">
+            <!-- <div class="search-bar">
                 <i class="fas fa-search" style="color: var(--slate-500);"></i>
                 <input type="text" placeholder="Search Statistics topics..." id="moduleSearch" style="border: none; outline: none; width: 100%;">
-            </div>
+            </div> -->
             <div class="user-profile"><i class="far fa-bell" style="color:var(--text-muted)"></i></div>
         </header>
 
@@ -482,14 +482,28 @@
             <h1>📊 Statistics Fundamentals</h1>
             <p style="color: var(--slate-500); font-size: 0.9rem;">Mastering the language of data for non-programmers.</p>
         </div>
+         <div class="section-box">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h3><i class="fas fa-chevron-circle-right" style="color:var(--primary-blue)"></i> General</h3>
+                <i class="fas fa-chevron-down toggle-icon"></i>
+            </div>
+           <div class="section-content">
+                           <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
+                <div class="activity-row">
+                    <div class="activity-info"><i class="fas fa-link"></i> <span>Course Syllabus & Objectives</span>
+                    </div>
+                    <button class="status-btn done">Done <i class="fas fa-check"></i></button>
+                </div>
+            </div>
+        </div>
 
         <!-- MODULE 1 -->
         <div class="section-box" id="module-box-1">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header active" onclick="toggleSection(this)">
                 <h3>Module 1: Introduction to Statistics</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-            <div class="section-content">
+            <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this, 'vplayer-1')">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>What is Statistics? - VIDEO</span></div>
@@ -551,11 +565,11 @@
 
         <!-- MODULE 2 -->
         <div class="section-box locked" id="module-box-2">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header active" onclick="toggleSection(this)">
                 <h3>Module 2: Measures of Central Tendency</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-            <div class="section-content">
+            <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this, 'vplayer-2')">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Mean, Median, Mode - VIDEO</span></div>
@@ -617,11 +631,11 @@
 
         <!-- MODULE 3 -->
         <div class="section-box locked" id="module-box-3">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header active" onclick="toggleSection(this)">
                 <h3>Module 3: Measures of Dispersion</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-            <div class="section-content">
+            <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this, 'vplayer-3')">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Dispersion - VIDEO</span></div>
@@ -683,11 +697,11 @@
 
         <!-- MODULE 4 -->
         <div class="section-box locked" id="module-box-4">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header active" onclick="toggleSection(this)">
                 <h3>Module 4: Probability Basics</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-            <div class="section-content">
+            <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this, 'vplayer-4')">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Probability Principles - VIDEO</span></div>
@@ -749,11 +763,11 @@
 
         <!-- MODULE 5 -->
         <div class="section-box locked" id="module-box-5">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header active" onclick="toggleSection(this)">
                 <h3>Module 5: Common Distributions</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-            <div class="section-content">
+            <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this, 'vplayer-5')">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Normal Distribution - VIDEO</span></div>
@@ -815,11 +829,11 @@
 
         <!-- MODULE 6 -->
         <div class="section-box locked" id="module-box-6">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header active" onclick="toggleSection(this)">
                 <h3>Module 6: Sampling & Populations</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-            <div class="section-content">
+            <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this, 'vplayer-6')">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Sampling Methods - VIDEO</span></div>
@@ -881,11 +895,11 @@
 
         <!-- MODULE 7 -->
         <div class="section-box locked" id="module-box-7">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header active" onclick="toggleSection(this)">
                 <h3>Module 7: Hypothesis Testing Concepts</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-            <div class="section-content">
+            <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this, 'vplayer-7')">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Intro to Testing - VIDEO</span></div>
@@ -947,11 +961,11 @@
 
         <!-- MODULE 8 -->
         <div class="section-box locked" id="module-box-8">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header active" onclick="toggleSection(this)">
                 <h3>Module 8: Correlation vs Causation</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-            <div class="section-content">
+            <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this, 'vplayer-8')">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Correlation Basics - VIDEO</span></div>

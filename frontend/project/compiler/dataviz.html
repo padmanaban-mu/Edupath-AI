@@ -90,7 +90,7 @@
         .btn-nav:hover:not(:disabled) { background: #f8faff; border-color: #cbd5e1; color: var(--secondary); box-shadow: 0 4px 8px rgba(0,0,0,0.05); transform: translateY(-1px); }
         .btn-nav:disabled { opacity: 0.5; cursor: not-allowed; background: #f1f5f9; border-color: #e2e8f0; color: #94a3b8;}
 
-        /* Finish Button moved to Main Workspace */
+        /* Finish Button */
         .btn-finish-main { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border: none; padding: 12px 28px; border-radius: 8px; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3); display: flex; align-items: center; gap: 10px; letter-spacing: 0.5px; }
         .btn-finish-main:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4); }
 
@@ -142,7 +142,7 @@
                 <div class="logo-subtitle">Dataviz Compiler</div>
             </div>
         </div>
-        <a href="../../project/courses/programming/data_visualization.html"><i class="fas fa-arrow-left"></i> Course Overview</a>
+        <a href="../courses/programming/data_visualization.html"><i class="fas fa-arrow-left"></i> Course Overview</a>
     </div>
 
     <div class="layout">
@@ -207,41 +207,17 @@
             completedKeys: new Set(JSON.parse(localStorage.getItem('edupath_dataviz_progress') || '[]'))
         };
 
-        // --- HARDCODED SYLLABUS MAPPING ---
-       const SYLLABUS_MAP = {
-    "module1": { 
-        title: "Principles of Data Visualization", 
-        task: "Design Theory & Color Scales - CONCEPT" 
-    },
-    "module2": { 
-        title: "Python Visualization - Matplotlib", 
-        task: "Static Plotting & Subplots - PROGRAM" 
-    },
-    "module3": { 
-        title: "Python Visualization - Seaborn", 
-        task: "Statistical Data Exploration - PROGRAM" 
-    },
-    "module4": { 
-        title: "Interactive Plots with Plotly", 
-        task: "Building Interactive Dashboards - PROGRAM" 
-    },
-    "module5": { 
-        title: "Interactive Plots with Bokeh", 
-        task: "Web-Ready Visualizations - PROGRAM" 
-    },
-    "module6": { 
-        title: "Declarative Visualization with Altair", 
-        task: "Grammar of Graphics Task - PROGRAM" 
-    },
-    "module7": { 
-        title: "Geographic Mapping with Folium", 
-        task: "Choropleth & Marker Maps - PROGRAM" 
-    },
-    "module8": { 
-        title: "Visualization for Data Science & ML", 
-        task: "Model Evaluation Plots - PROGRAM" 
-    }
-};
+        // --- SYLLABUS MAPPING ---
+        const SYLLABUS_MAP = {
+            "module1": { title: "Principles of Data Visualization", task: "Design Theory - PROGRAMS" },
+            "module2": { title: "Python Visualization - Matplotlib", task: "Static Plotting - PROGRAMS" },
+            "module3": { title: "Python Visualization - Seaborn", task: "Statistical Data - PROGRAMS" },
+            "module4": { title: "Interactive Plots with Plotly", task: "Interactive Dashboards - PROGRAMS" },
+            "module5": { title: "Interactive Plots with Bokeh", task: "Web Visualizations - PROGRAMS" },
+            "module6": { title: "Declarative Visualization with Altair", task: "Grammar of Graphics - PROGRAMS" },
+            "module7": { title: "Geographic Mapping with Folium", task: "Map Visuals - PROGRAMS" },
+            "module8": { title: "Visualization for DS & ML", task: "Model Evaluation - PROGRAMS" }
+        };
 
         function escapeHTML(str) {
             if (!str) return '';
@@ -270,23 +246,25 @@
 
         async function fetchData() {
             try {
+                // Fetching module data specifically for data_visualization course
                 const res = await fetch('/api/modules?course=data_visualization');
                 const data = await res.json();
                 state.modules = data.modules;
                 
                 state.flatQuestions = [];
                 state.modules.forEach((mod, mIdx) => {
+                    const moduleId = mod.id || mod.module;
                     mod.questions.forEach((q, qIdx) => {
                         state.flatQuestions.push({
                             globalIndex: state.flatQuestions.length,
-                            moduleId: mod.id,
-                            moduleName: SYLLABUS_MAP[mod.id] ? SYLLABUS_MAP[mod.id].title : mod.name,
-                            taskName: SYLLABUS_MAP[mod.id] ? SYLLABUS_MAP[mod.id].task : "Programming Challenge",
-                            questionId: q.id,
-                            questionTitle: q.title,
+                            moduleId: moduleId,
+                            moduleName: SYLLABUS_MAP[moduleId] ? SYLLABUS_MAP[moduleId].title : mod.name,
+                            taskName: SYLLABUS_MAP[moduleId] ? SYLLABUS_MAP[moduleId].task : "Programming Challenge",
+                            questionId: q.id || q,
+                            questionTitle: q.title || `Task ${qIdx + 1}`,
                             moduleIndex: mIdx,
                             questionIndex: qIdx,
-                            key: `${mod.id}-${q.id}`
+                            key: `${moduleId}-${q.id || q}`
                         });
                     });
                 });
@@ -344,7 +322,8 @@
             const activeModIdx = state.flatQuestions[state.currentQIndex]?.moduleIndex || 0;
 
             state.modules.forEach((mod, mIdx) => {
-                const modMappedData = SYLLABUS_MAP[mod.id] || { title: mod.name, task: "Programming Challenge" };
+                const moduleId = mod.id || mod.module;
+                const modMappedData = SYLLABUS_MAP[moduleId] || { title: mod.name || "Module " + (mIdx+1), task: "Programming Challenge" };
 
                 let isModuleUnlocked = (mIdx === 0) || (localStorage.getItem('dataviz_module' + mIdx + '_completed') === 'true');
 
@@ -395,7 +374,7 @@
                         ${iconHTML} 
                         <div class="q-item-text">
                             <span class="q-item-title">${modMappedData.task}</span>
-                            <span class="q-item-subtitle">Task ${qIdx + 1}: ${q.title}</span>
+                            <span class="q-item-subtitle">Task ${qIdx + 1}: ${fq.questionTitle}</span>
                         </div>
                     `;
                     
@@ -454,19 +433,16 @@
             }
         }
 
-        // --- FINISH ATTEMPT ACTION ---
         function finishAttempt() {
-            const activeModIdx = state.flatQuestions[state.currentQIndex].moduleIndex;
-            const actualModNum = activeModIdx + 1;
+            const currentQ = state.flatQuestions[state.currentQIndex];
+            const actualModNum = currentQ.moduleIndex + 1;
 
-            // Save compiler completion
+            // Aligned with dataviz progress tracking
             localStorage.setItem('dataviz_prog_module' + actualModNum, 'done');
-            
-            // UNLOCK the next module on the dashboard officially
             localStorage.setItem('dataviz_module' + actualModNum + '_completed', 'true');
 
-            // Return to the dashboard
-            window.location.href = '/courses/programming/data_visualization.html'; 
+            // CORRECTED PATH HERE
+            window.location.href = '../courses/programming/data_visualization.html'; 
         }
 
         async function loadQuestion(globalIndex) {
@@ -479,12 +455,14 @@
             try {
                 const res = await fetch(`/api/modules/${targetQ.moduleId}/questions/${targetQ.questionId}?course=data_visualization`);
                 const qData = await res.json();
+                const questionDetails = qData.question || qData;
 
                 document.getElementById('workspace').style.display = 'flex';
                 document.getElementById('q-title').innerText = `${targetQ.questionTitle}`;
-                document.getElementById('q-desc').innerHTML = qData.description;
-                document.getElementById('q-input').innerText = qData.input || "No input required";
-                document.getElementById('q-output').innerText = qData.expected_output || "No output provided";
+                document.getElementById('q-desc').innerHTML = questionDetails.description || "No description provided.";
+                
+                document.getElementById('q-input').innerText = questionDetails.input || "No input required";
+                document.getElementById('q-output').innerText = questionDetails.expected_output || "No output provided";
 
                 editor.setValue("# Write your code here...\n# Remember to use print() to output your final answer!\n\n");
                 
@@ -495,6 +473,9 @@
                 term.innerText = "Ready for execution...";
             } catch (err) {
                 console.error("Failed to load question details");
+                document.getElementById('workspace').style.display = 'flex';
+                document.getElementById('q-title').innerText = targetQ.questionTitle;
+                document.getElementById('q-desc').innerHTML = "Could not load question description from server.";
             }
         }
 
@@ -561,7 +542,6 @@
                         state.completedKeys.add(currentQ.key);
                         localStorage.setItem('edupath_dataviz_progress', JSON.stringify([...state.completedKeys]));
                         
-                        // Wait for user to manually click next
                         if (!isLastQuestionInModule) {
                             banner.className = 'validation-banner success';
                             banner.innerHTML = `<i class="fas fa-check-circle"></i> <strong>Passed all tests!</strong> <span style="font-weight:400; font-size:0.95rem; margin-left:10px;">Marks for this submission: 10/10. Click 'Next' above to continue.</span>`;

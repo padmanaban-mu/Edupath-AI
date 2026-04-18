@@ -443,7 +443,7 @@
             <li><a href="../../dashboard.html"><i class="fas fa-th-large"></i> <span>Overview</span></a></li>
             <li><a href="../../roadmap.html"><i class="fas fa-map-signs"></i> <span>My Roadmap</span></a></li>
             <li class="active"><a href="../../domain.html"><i class="fas fa-compass"></i> <span>Explore Domain</span></a></li>
-            <li><a href="#"><i class="fas fa-robot"></i> <span>AI ChatBot</span></a></li>
+            <li><a href="../../chatbot.html"><i class="fas fa-robot"></i> <span>AI ChatBot</span></a></li>
             <li><a href="../../profile.html"><i class="fas fa-cog"></i> <span>Profile Settings</span></a></li>
             <li><a href="../../index.html"><i class="fas fa-sign-out-alt"></i> <span>Log out</span></a></li>
         </ul>
@@ -483,13 +483,27 @@
             <p style="color: var(--slate-500); font-size: 0.9rem;">Uncovering patterns and insights without writing code.</p>
         </div>
 
+         <div class="section-box">
+            <div class="section-header" onclick="toggleSection(this)">
+                <h3><i class="fas fa-chevron-circle-right" style="color:var(--primary-blue)"></i> General</h3>
+                <i class="fas fa-chevron-down toggle-icon"></i>
+            </div>
+           <div class="section-content">
+                           <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
+                <div class="activity-row">
+                    <div class="activity-info"><i class="fas fa-link"></i> <span>Course Syllabus & Objectives</span>
+                    </div>
+                    <button class="status-btn done">Done <i class="fas fa-check"></i></button>
+                </div>
+            </div>
+        </div>
         <!-- MODULE 1 -->
         <div class="section-box" id="module-box-1">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header active" onclick="toggleSection(this)">
                 <h3>Module 1: What is EDA?</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-            <div class="section-content">
+            <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this, 'vplayer-1')">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Intro to EDA - VIDEO</span></div>
@@ -551,11 +565,11 @@
 
         <!-- MODULE 2 -->
         <div class="section-box locked" id="module-box-2">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header active" onclick="toggleSection(this)">
                 <h3>Module 2: Variables & Data Types</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-            <div class="section-content">
+            <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this, 'vplayer-2')">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Data Types in EDA - VIDEO</span></div>
@@ -617,11 +631,11 @@
 
         <!-- MODULE 3 -->
         <div class="section-box locked" id="module-box-3">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header active" onclick="toggleSection(this)">
                 <h3>Module 3: Data Inspection</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-            <div class="section-content">
+            <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this, 'vplayer-3')">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Data Profiling - VIDEO</span></div>
@@ -683,11 +697,11 @@
 
         <!-- MODULE 4 -->
         <div class="section-box locked" id="module-box-4">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header active" onclick="toggleSection(this)">
                 <h3>Module 4: Univariate Analysis</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-            <div class="section-content">
+            <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this, 'vplayer-4')">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Univariate Concepts - VIDEO</span></div>
@@ -749,11 +763,11 @@
 
         <!-- MODULE 5 -->
         <div class="section-box locked" id="module-box-5">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header active" onclick="toggleSection(this)">
                 <h3>Module 5: Bivariate Analysis</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-            <div class="section-content">
+            <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this, 'vplayer-5')">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Bivariate Concepts - VIDEO</span></div>
@@ -815,11 +829,11 @@
 
         <!-- MODULE 6 -->
         <div class="section-box locked" id="module-box-6">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header active" onclick="toggleSection(this)">
                 <h3>Module 6: Identifying Outliers</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-            <div class="section-content">
+            <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this, 'vplayer-6')">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Outlier Concepts - VIDEO</span></div>
@@ -881,11 +895,11 @@
 
         <!-- MODULE 7 -->
         <div class="section-box locked" id="module-box-7">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header active" onclick="toggleSection(this)">
                 <h3>Module 7: Distribution Patterns</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-            <div class="section-content">
+            <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this, 'vplayer-7')">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Identifying Skew - VIDEO</span></div>
@@ -947,11 +961,11 @@
 
         <!-- MODULE 8 -->
         <div class="section-box locked" id="module-box-8">
-            <div class="section-header" onclick="toggleSection(this)">
+            <div class="section-header active" onclick="toggleSection(this)">
                 <h3>Module 8: Feature Relationships</h3>
                 <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-            <div class="section-content">
+            <div class="section-content" style="display: block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until the marked score is obtained in the previous module</span></div>
                 <div class="activity-row" onclick="toggleVideo(this, 'vplayer-8')">
                     <div class="activity-info"><i class="fas fa-link"></i> <span>Correlations & Map - VIDEO</span></div>

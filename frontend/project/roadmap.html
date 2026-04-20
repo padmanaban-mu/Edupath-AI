@@ -554,6 +554,9 @@ async function loadRoadmap() {
                 currentDomain = data.selectedDomain || 'dataAnalyst';
                 roadmapData.dataAnalyst = data.roadmapData.dataAnalyst;
                 roadmapData.aiml = data.roadmapData.aiml;
+                
+                // NEW: Save the deep database schema globally so the roadmap can use it later if needed!
+                window.userCourseProgress = data.courseProgress || {};
 
                 document.getElementById('empty-state').style.display = 'none';
                 document.getElementById('active-content').style.display = 'flex';

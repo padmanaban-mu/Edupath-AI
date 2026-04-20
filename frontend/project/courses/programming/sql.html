@@ -1522,177 +1522,160 @@
 </div>
 
 <script>
+    const API_URL = "http://localhost:3000";
+    const token = localStorage.getItem('token');
+    const COURSE_ID = 'sql_a'; // Exact ID from courseData.js
     const totalModules = 9;
 
-    document.addEventListener("DOMContentLoaded", () => {
-        // 1. Sidebar Logic
-        const sidebarToggle = document.getElementById('sidebarToggle');
-        const sidebar = document.getElementById('sidebar');
-        const mainContent = document.getElementById('main-content');
+    // Global state variables for DB synchronization
+    let dbRoadmapData = null;
+    let dbSelectedDomain = null;
+    let dbCourseProgress = null;
 
+    document.addEventListener("DOMContentLoaded", () => {
+        // Sidebar Logic
+        const sidebarToggle = document.getElementById('sidebarToggle');
         if (sidebarToggle) {
             sidebarToggle.addEventListener('click', () => {
-                sidebar.classList.toggle('collapsed');
-                mainContent.classList.toggle('expanded');
+                document.getElementById('sidebar').classList.toggle('collapsed');
+                document.getElementById('main-content').classList.toggle('expanded');
             });
         }
 
-        // 2. CHATBOT FAST-TRACK LOGIC (Modules 1-8)
-        // Note: The course ID in courseData.js for SQL is "sql_a"
-        if (localStorage.getItem("sql_a_fast_tracked") === "true") {
-            for (let i = 1; i <= 8; i++) {
-                localStorage.setItem("sql_module" + i + "_completed", "true");
-                localStorage.setItem("sql_vbtn-" + i, "done");
-                localStorage.setItem("sql_qbtn-" + i, "done");
-                localStorage.setItem("sql_pbtn-" + i, "done");
-                localStorage.setItem("sql_prog_module" + i, "done");
-            }
-            // Explicitly unlock Module 9 and clear general restriction
-            localStorage.setItem("sql_vbtn-gen", "done"); 
-            const mod9 = document.getElementById("module-box-9");
-            if (mod9) mod9.classList.remove("locked");
-        }
-
-        // 3. NORMAL UNLOCK LOGIC (Cascading)
-        for (let i = 2; i <= totalModules; i++) {
-            if (localStorage.getItem("sql_module" + (i - 1) + "_completed") === "true") {
-                const moduleBox = document.getElementById("module-box-" + i);
-                if (moduleBox) moduleBox.classList.remove("locked");
-            }
-        }
-
-        // 4. RESTORE BUTTON STATES
-        const buttons = document.querySelectorAll('.status-btn');
-        buttons.forEach(btn => {
-            if (btn.id && localStorage.getItem("sql_" + btn.id) === "done") {
-                applyDoneState(btn);
-            }
-        });
-
-        // 5. CHECK COMPILER SYNC FLAGS
-        for (let i = 1; i <= totalModules; i++) {
-            if (localStorage.getItem("sql_prog_module" + i) === "done") {
-                const pbtn = document.getElementById("pbtn-" + i);
-                if (pbtn) applyDoneState(pbtn);
-            }
-        }
-
-        // 6. DB SYNC: MOCK TEST COMPLETION
-        if (localStorage.getItem("sql_prog_mock-test") === "done" || localStorage.getItem("sql_prog_module9") === "done") {
-            const finalBtn = document.getElementById("pbtn-9");
-            if (finalBtn) applyDoneState(finalBtn);
-            syncCourseCompletionToDB("sql_a"); // Passing the exact courseData.js ID for SQL
-        }
-
-        updateProgress();
+        // Initialize Course Data directly from MongoDB
+        loadCourseDataFromDB();
         
-        // 7. Search Functionality
+        // Search Functionality
         const searchInput = document.getElementById('moduleSearch');
         if (searchInput) {
             searchInput.addEventListener('input', function (e) {
                 const term = e.target.value.toLowerCase();
-                const modules = document.querySelectorAll('.section-box');
-                modules.forEach(mod => {
-                    const text = mod.innerText.toLowerCase();
-                    mod.style.display = text.includes(term) ? 'block' : 'none';
+                document.querySelectorAll('.section-box').forEach(mod => {
+                    mod.style.display = mod.innerText.toLowerCase().includes(term) ? 'block' : 'none';
                 });
             });
         }
     });
 
-    async function syncCourseCompletionToDB(courseId) {
-        const token = localStorage.getItem('token');
-        if (!token) return;
-        
-        // Prevent continuous DB spamming if already updated
-        if (localStorage.getItem(courseId + "_db_synced") === "true") {
-            const pbtn9 = document.getElementById("pbtn-9");
-            if(pbtn9) {
-                pbtn9.innerHTML = 'Dependencies Unlocked <i class="fas fa-check-double"></i>';
-                pbtn9.style.backgroundColor = 'var(--success-green)';
-                pbtn9.style.color = 'white';
-            }
-            return;
-        }
+    // ─── MONGODB GATEWAY LOGIC ──────────────────────────────────────────
 
+    async function loadCourseDataFromDB() {
+        if (!token) return;
         try {
-            const res = await fetch('http://localhost:3000/get-roadmap', { headers: { 'Authorization': `Bearer ${token}` } });
+            const res = await fetch(`${API_URL}/get-roadmap`, { headers: { 'Authorization': `Bearer ${token}` } });
             const data = await res.json();
             
-            if (data.roadmapData) {
-                const domain = data.selectedDomain;
-                const roadmap = data.roadmapData;
+            dbRoadmapData = data.roadmapData;
+            dbSelectedDomain = data.selectedDomain;
+            dbCourseProgress = data.courseProgress || {};
+
+            let sqlProg = dbCourseProgress[COURSE_ID];
+            if (!sqlProg || !sqlProg.modules) {
+                console.warn("No DB tracking found. User must initialize via Chatbot first.");
+                return;
+            }
+
+            // Sync UI precisely with the DB Schema
+            let completedItems = 0;
+            let totalItems = 0;
+
+            for (let i = 1; i <= totalModules; i++) {
+                let modState = sqlProg.modules['module' + i];
+                if (!modState) continue;
+
+                const modBox = document.getElementById("module-box-" + i);
                 
-                let course = roadmap[domain].programming.find(c => c.id === courseId);
-                if (!course) course = roadmap[domain].nonProgramming.find(c => c.id === courseId);
+                // 1. Apply Lock/Unlock State
+                if (modState.unlocked) {
+                    if (modBox) modBox.classList.remove('locked');
+                } else {
+                    if (modBox) modBox.classList.add('locked');
+                }
+
+                // 2. Apply Boolean Button States
+                const isLast = (i === totalModules);
                 
-                if (course && course.progress !== 100) {
-                    course.progress = 100;
-                    await fetch('http://localhost:3000/save-roadmap', {
-                        method: 'POST',
-                        headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ hasGeneratedRoadmap: true, selectedDomain: domain, roadmapData: roadmap })
-                    });
-                    
-                    localStorage.setItem(courseId + "_db_synced", "true");
-                    
-                    const pbtn9 = document.getElementById("pbtn-9");
-                    if(pbtn9) {
-                        pbtn9.innerHTML = 'Dependencies Unlocked <i class="fas fa-check-double"></i>';
-                        pbtn9.style.backgroundColor = 'var(--success-green)';
-                        pbtn9.style.color = 'white';
-                    }
+                if (!isLast) {
+                    totalItems += 3; // Video, Quiz, Program
+                    if (modState.video) { applyDoneState(document.getElementById('vbtn-' + i)); completedItems++; }
+                    if (modState.quiz) { applyDoneState(document.getElementById('qbtn-' + i)); completedItems++; }
+                    if (modState.program) { applyDoneState(document.getElementById('pbtn-' + i)); completedItems++; }
+                } else {
+                    totalItems += 1; // Mock Test Program Only
+                    if (modState.program) { applyDoneState(document.getElementById('pbtn-' + i)); completedItems++; }
                 }
             }
+
+            // Update Progress Bar based on completed booleans
+            updateProgressUI(completedItems, totalItems);
+
+        } catch (e) {
+            console.error("Error loading DB course data:", e);
+        }
+    }
+
+    async function syncToDB() {
+        try {
+            await fetch(`${API_URL}/save-roadmap`, {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    hasGeneratedRoadmap: true,
+                    selectedDomain: dbSelectedDomain,
+                    roadmapData: dbRoadmapData,
+                    courseProgress: dbCourseProgress
+                })
+            });
+            loadCourseDataFromDB(); // Refresh UI to show newly unlocked modules
         } catch(e) {
             console.error("DB Sync Failed:", e);
         }
     }
 
-    function openVideo(url, btnId) {
-        window.open(url, '_blank');
-        if(btnId) {
-            markAsDone(btnId);
-        }
-    }
+    function checkModuleGateway(modNum) {
+        let modState = dbCourseProgress[COURSE_ID].modules['module' + modNum];
+        let isLast = (modNum === totalModules);
+        let isComplete = false;
 
-    function markAsDone(btnId) {
-        const btn = document.getElementById(btnId);
-        if (btn) {
-            applyDoneState(btn);
-            localStorage.setItem("sql_" + btnId, "done");
-            
-            const modNum = parseInt(btnId.split('-')[1]);
-            if (!isNaN(modNum)) {
-                localStorage.setItem("sql_module" + modNum + "_completed", "true");
-                
-                if(modNum < totalModules) {
-                    const nextMod = document.getElementById("module-box-" + (modNum + 1));
-                    if(nextMod) nextMod.classList.remove("locked");
-                }
+        // The Gateway Checker: Have they finished all requirements?
+        if (!isLast) {
+            if (modState.video && modState.quiz && modState.program) {
+                isComplete = true;
             }
-            updateProgress();
+        } else {
+            if (modState.program) {
+                isComplete = true; // Mock test passed!
+            }
+        }
+
+        if (isComplete && !modState.completed) {
+            modState.completed = true;
+            
+            // Unlock next module
+            if (!isLast) {
+                let nextMod = dbCourseProgress[COURSE_ID].modules['module' + (modNum + 1)];
+                if (nextMod) nextMod.unlocked = true;
+            } else {
+                // Course is 100% complete! Update high-level tracking.
+                dbCourseProgress[COURSE_ID].progress = 100;
+                let domainTrack = dbRoadmapData[dbSelectedDomain];
+                let course = domainTrack.programming.find(c => c.id === COURSE_ID) || domainTrack.nonProgramming.find(c => c.id === COURSE_ID);
+                if (course) course.progress = 100;
+            }
         }
     }
 
-    function applyDoneState(btn) {
-        btn.classList.remove("todo");
-        btn.classList.add("done");
-        btn.innerHTML = 'Done <i class="fas fa-check"></i>';
-    }
+    // ─── ACTION HANDLERS ────────────────────────────────────────────────
 
-    function toggleSection(header) {
-        header.classList.toggle('active');
-        const content = header.nextElementSibling;
-        content.style.display = (content.style.display === 'block') ? 'none' : 'block';
-    }
-
-    function showQuiz(module) {
-        let quiz = document.getElementById("quiz-module" + module);
-        if (quiz.style.display === "block") {
-            quiz.style.display = "none";
-        } else {
-            quiz.style.display = "block";
+    async function openVideo(url, btnId) {
+        window.open(url, '_blank');
+        const modNum = parseInt(btnId.split('-')[1]);
+        
+        let modState = dbCourseProgress[COURSE_ID].modules['module' + modNum];
+        if (!modState.video) {
+            modState.video = true;
+            checkModuleGateway(modNum);
+            await syncToDB();
         }
     }
 
@@ -1707,16 +1690,14 @@
         8: { q1: "A", q2: "B", q3: "B", q4: "B", q5: "A" }
     };
 
-    function submitQuiz(module) {
+    async function submitQuiz(module) {
         let answers = quizAnswers[module];
         let score = 0;
         let total = Object.keys(answers).length;
 
         for (let q in answers) {
             let selected = document.querySelector(`#quiz-module${module} input[name="${q}"]:checked`);
-            let options = document.querySelectorAll(`#quiz-module${module} input[name="${q}"]`);
-
-            options.forEach(opt => {
+            document.querySelectorAll(`#quiz-module${module} input[name="${q}"]`).forEach(opt => {
                 opt.parentElement.classList.remove("correct", "wrong");
             });
 
@@ -1737,34 +1718,48 @@
 
         let percent = Math.floor((score / total) * 100);
         let resultBox = document.querySelector(`#quiz-module${module} .quiz-result`);
-
         if (!resultBox) {
             resultBox = document.createElement("div");
             resultBox.className = "quiz-result";
             document.querySelector(`#quiz-module${module}`).appendChild(resultBox);
         }
-
         resultBox.innerHTML = `You scored ${score}/${total} (${percent}%)`;
 
+        // If passed, update DB!
         if (percent >= 60) {
-            markAsDone("qbtn-" + module);
+            let modState = dbCourseProgress[COURSE_ID].modules['module' + module];
+            if (!modState.quiz) {
+                modState.quiz = true;
+                checkModuleGateway(module);
+                await syncToDB();
+            }
         }
     }
 
-    function updateProgress() {
-        let completed = 0;
-        const totalItems = document.querySelectorAll('.status-btn').length;
+    // ─── UTILITIES ──────────────────────────────────────────────────────
 
-        document.querySelectorAll('.status-btn').forEach(btn => {
-            if (btn.classList.contains('done')) {
-                completed++;
-            }
-        });
+    function applyDoneState(btn) {
+        if (!btn) return;
+        btn.classList.remove("todo");
+        btn.classList.add("done");
+        btn.innerHTML = 'Done <i class="fas fa-check"></i>';
+    }
 
-        const percent = totalItems > 0 ? Math.floor((completed / totalItems) * 100) : 0;
+    function toggleSection(header) {
+        header.classList.toggle('active');
+        const content = header.nextElementSibling;
+        content.style.display = (content.style.display === 'block') ? 'none' : 'block';
+    }
+
+    function showQuiz(module) {
+        let quiz = document.getElementById("quiz-module" + module);
+        quiz.style.display = (quiz.style.display === "block") ? "none" : "block";
+    }
+
+    function updateProgressUI(completed, total) {
+        const percent = total > 0 ? Math.floor((completed / total) * 100) : 0;
         const progressBar = document.getElementById("progressBar");
         const progressText = document.getElementById("progressText");
-
         if (progressBar) progressBar.style.width = percent + "%";
         if (progressText) progressText.innerText = percent + "%";
     }

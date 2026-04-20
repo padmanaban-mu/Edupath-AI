@@ -445,14 +445,65 @@
             }
         }
 
-        function finishAttempt() {
+       async function finishAttempt() {
             const activeModIdx = state.flatQuestions[state.currentQIndex].moduleIndex;
-            const actualModNum = activeModIdx + 1;
+            const actualModNum = activeModIdx + 1; // Module 1 to 9
+            const token = localStorage.getItem('token');
+            const COURSE_ID = 'sql_a';
+            const API_URL = 'http://localhost:3000';
 
-            localStorage.setItem('sql_prog_module' + actualModNum, 'done');
-            localStorage.setItem('sql_module' + actualModNum + '_completed', 'true');
+            try {
+                // 1. Fetch the exact current DB state
+                const res = await fetch(`${API_URL}/get-roadmap`, { headers: { 'Authorization': `Bearer ${token}` } });
+                const data = await res.json();
+                
+                let dbCourseProgress = data.courseProgress;
+                let modState = dbCourseProgress[COURSE_ID].modules['module' + actualModNum];
 
-            // Explicitly sync the return path with your main course structure
+                // 2. Set the Database 'program' boolean to TRUE
+                modState.program = true;
+
+                // 3. Gateway Checker: Did they finish the module completely?
+                let isLast = (actualModNum === 9);
+                let isComplete = false;
+                
+                if (!isLast) {
+                    if (modState.video && modState.quiz && modState.program) isComplete = true;
+                } else {
+                    if (modState.program) isComplete = true; // Mock test passed
+                }
+
+                if (isComplete && !modState.completed) {
+                    modState.completed = true;
+                    if (!isLast) {
+                        // Unlock next module
+                        let nextMod = dbCourseProgress[COURSE_ID].modules['module' + (actualModNum + 1)];
+                        if (nextMod) nextMod.unlocked = true;
+                    } else {
+                        // 100% Mastery achieved
+                        dbCourseProgress[COURSE_ID].progress = 100;
+                        let course = data.roadmapData[data.selectedDomain].programming.find(c => c.id === COURSE_ID);
+                        if(course) course.progress = 100;
+                    }
+                }
+
+                // 4. Save the finalized schema back to MongoDB
+                await fetch(`${API_URL}/save-roadmap`, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        hasGeneratedRoadmap: true,
+                        selectedDomain: data.selectedDomain,
+                        roadmapData: data.roadmapData,
+                        courseProgress: dbCourseProgress
+                    })
+                });
+
+            } catch (e) {
+                console.error("Failed to sync programming completion with DB:", e);
+            }
+
+            // Redirect back to course page to view newly unlocked modules
             window.location.href = '/courses/programming/sql.html'; 
         }
 

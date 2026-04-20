@@ -59,6 +59,10 @@ nav {
     margin-right: 30px;
 }
 
+.logo-text { 
+    color: white;
+    white-space: nowrap; /* Keeps the name on one single line */
+}
 .nav-links a {
     text-decoration: none;
     color: #555;

@@ -360,11 +360,12 @@
 <script src="js/courseData.js"></script>
 <script src="js/dashboard.js"></script>
 <script>
-    const token = localStorage.getItem('token');
+const token = localStorage.getItem('token');
     const API_URL = "http://localhost:3000";
-    let userSelection = { domain: '' };
+   let userSelection = { domain: '' };
     let userRoadmap = JSON.parse(JSON.stringify(window.roadmapData));
     let isRoadmapGenerated = false;
+    let generatedCourseProgress = {}; // NEW: Holds the deep MongoDB blueprint
 
     // Sidebar Toggle Logic
     const sidebarToggle = document.getElementById('sidebarToggle');
@@ -439,7 +440,6 @@
         
         if (type === 'bot' && typeof marked !== 'undefined') {
             if (text.includes('checklist-form') || text.includes('options-wrapper')) {
-                // If it's your custom HTML forms/buttons, don't parse it
                 msgDiv.innerHTML = text;
             } else {
                 msgDiv.innerHTML = marked.parse(text);
@@ -501,20 +501,15 @@
             if (noneCheckbox.checked) { cb.checked = false; cb.disabled = true; } 
             else { cb.disabled = false; }
         });
-        // Reset select-all badges
         ['programming', 'fundamentals'].forEach(group => syncSelectAll(group));
     };
 
-    // Toggles all courses in a section on/off
     window.toggleSelectAll = (group, wrapLabel) => {
         const cbClass = group === 'programming' ? '.prog-cb input' : '.fund-cb input';
-        const masterCb = document.getElementById(group === 'programming' ? 'prog-select-all' : 'fund-select-all');
         const noneCheck = document.getElementById('check-none');
 
-        // If "beginner" is ticked, do nothing
         if (noneCheck && noneCheck.checked) return;
 
-        // Flip state: if all checked → uncheck all, else check all
         const allBoxes = document.querySelectorAll(cbClass);
         const allChecked = [...allBoxes].every(cb => cb.checked);
         allBoxes.forEach(cb => { cb.checked = !allChecked; });
@@ -522,7 +517,6 @@
         syncSelectAll(group);
     };
 
-    // Keeps the select-all badge in sync when individual boxes are toggled
     window.syncSelectAll = (group) => {
         const cbClass = group === 'programming' ? '.prog-cb input' : '.fund-cb input';
         const masterCb = document.getElementById(group === 'programming' ? 'prog-select-all' : 'fund-select-all');
@@ -547,40 +541,82 @@
 
     window.processChecklist = () => {
         const isNone = document.getElementById('check-none').checked;
-        const checkedCourses = Array.from(document.querySelectorAll('.course-cb input:checked'));
+        const checkedCourseIds = Array.from(document.querySelectorAll('.course-cb input:checked')).map(cb => cb.value);
 
+        let domainData = userRoadmap[userSelection.domain];
+        let allDomainCourses = [...domainData.programming, ...domainData.nonProgramming];
+        let programmingIds = domainData.programming.map(c => c.id);
+        
+        let topicsHTML = "";
+        generatedCourseProgress = {}; // Reset global mapping object
+
+        allDomainCourses.forEach(courseObj => {
+            const isProg = programmingIds.includes(courseObj.id);
+            const isFastTracked = checkedCourseIds.includes(courseObj.id);
+            const totalModules = courseObj.modulesCount || 9; // Fallback to 9
+            let moduleState = {};
+
+            if (isFastTracked) {
+                courseObj.progress = 90; // Roadmap progress
+                if (courseObj.keyTopics && courseObj.keyTopics.length > 0) {
+                    topicsHTML += `* **${courseObj.title}**: ${courseObj.keyTopics.join(', ')}\n`;
+                }
+            } else {
+                courseObj.progress = 0; // Complete Beginner
+            }
+
+            // Loop through all modules to build the exact DB structure
+            for (let i = 1; i <= totalModules; i++) {
+                const isLast = (i === totalModules); // Is this the Mock Test module?
+                
+                let modObj = { 
+                    unlocked: isFastTracked ? true : (i === 1), 
+                    completed: isFastTracked && !isLast 
+                };
+
+                if (isProg) {
+                    // PROGRAMMING: Standard = video, quiz, program. Mock Test = program only.
+                    if (!isLast) {
+                        modObj.video = isFastTracked ? true : false;
+                        modObj.quiz = isFastTracked ? true : false;
+                        modObj.program = isFastTracked ? true : false;
+                    } else {
+                        modObj.program = false; 
+                    }
+                } else {
+                    // NON-PROGRAMMING: Standard = video, quiz. Mock Test = quiz only.
+                    if (!isLast) {
+                        modObj.video = isFastTracked ? true : false;
+                        modObj.quiz = isFastTracked ? true : false;
+                    } else {
+                        modObj.quiz = false; 
+                    }
+                }
+                
+                moduleState[`module${i}`] = modObj;
+            }
+
+            // Save to the payload
+            generatedCourseProgress[courseObj.id] = {
+                progress: courseObj.progress,
+                isFastTracked: isFastTracked,
+                modules: moduleState
+            };
+        });
+
+        // UI Messaging
         if (isNone) {
             appendMsg("I am a beginner.", 'user');
-            
             setTimeout(() => {
-                appendMsg(`Assessment received! Since you are starting fresh, I have mapped out your complete journey from Level 1.\n\nType **'confirm'** below to initialize your roadmap.`);
+                appendMsg(`Assessment received! Since you are starting fresh, I have mapped out your complete journey from Level 1, ensuring every module is structured sequentially.\n\nType **'confirm'** below to initialize your database tracking.`);
                 document.getElementById('chat-footer').style.display = 'block';
             }, 800);
 
-        } else if (checkedCourses.length > 0) {
-            let userTitles = checkedCourses.map(cb => cb.getAttribute('data-title')).join(', ');
+        } else if (checkedCourseIds.length > 0) {
+            let userTitles = Array.from(document.querySelectorAll('.course-cb input:checked')).map(cb => cb.getAttribute('data-title')).join(', ');
             appendMsg(`I have completed: ${userTitles}`, 'user');
             
-            let domainData = userRoadmap[userSelection.domain];
-            let allDomainCourses = [...domainData.programming, ...domainData.nonProgramming];
-            
-            let topicsHTML = "";
-
-            checkedCourses.forEach(cb => {
-                let courseObj = allDomainCourses.find(c => c.id === cb.value);
-                if (courseObj) {
-                    courseObj.progress = 90; // Sets 90% Pending Flag for Roadmap UI
-                    // Create Fast-Track Flag for the specific course page to auto-unlock modules 1-8
-                    localStorage.setItem(courseObj.id + "_fast_tracked", "true");
-                    
-                    // Build Topics Suggestion
-                    if (courseObj.keyTopics && courseObj.keyTopics.length > 0) {
-                        topicsHTML += `* **${courseObj.title}**: ${courseObj.keyTopics.join(', ')}\n`;
-                    }
-                }
-            });
-
-            let finalMsg = `Assessment received! I have fast-tracked your selected courses to **90% completion**.\n\nTo ensure you are fully prepared, I suggest brushing up on these key topics before attending the mock tests:\n${topicsHTML}\n**Remember:** You must pass the **Final Mock Assessment** in each selected course to achieve 100% mastery and unlock your next dependencies.\n\nType **'confirm'** below to initialize your roadmap.`;
+            let finalMsg = `Assessment received! I have configured the database to fast-track your selected courses to **90% completion**.\n\nAll theory, quiz, and programming checkpoints for standard modules are now marked as **TRUE**. To achieve 100% mastery and unlock your next dependencies, you must pass the pending Mock Assessments. Brush up on these topics:\n${topicsHTML}\nType **'confirm'** below to initialize your database tracking.`;
 
             setTimeout(() => {
                 appendMsg(finalMsg);
@@ -589,7 +625,6 @@
         }
     };
 
-    // Allow sending with Enter key
     document.getElementById("confirmInput").addEventListener("keypress", (e) => {
         if (e.key === "Enter") { 
             e.preventDefault(); 
@@ -612,10 +647,11 @@
                     const response = await fetch(`${API_URL}/save-roadmap`, {
                         method: 'POST',
                         headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
+                       body: JSON.stringify({
                             hasGeneratedRoadmap: true,
                             selectedDomain: userSelection.domain,
-                            roadmapData: userRoadmap
+                            roadmapData: userRoadmap,
+                            courseProgress: generatedCourseProgress // <-- CRITICAL: Sends the deep schema to DB!
                         })
                     });
 
@@ -636,7 +672,6 @@
             appendMsg(userText, 'user');
             inputField.value = '';
             
-            // Show Typing Indicator
             const typingDiv = document.createElement('div');
             typingDiv.className = 'typing-indicator';
             typingDiv.id = 'typingIndicator';
@@ -654,7 +689,6 @@
                 });
                 const data = await res.json();
                 
-                // Remove Typing Indicator & Append Response
                 document.getElementById('typingIndicator').remove();
                 appendMsg(data.reply, 'bot');
                 
@@ -669,6 +703,5 @@
 
     checkExistingPath();
 </script>
-
 </body>
 </html>

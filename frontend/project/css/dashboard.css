@@ -72,7 +72,7 @@ body {
 }
 
 .logo-text { 
-    color: #2d6cdf ;
+    color: white;
     white-space: nowrap; /* Keeps the name on one single line */
 }
 

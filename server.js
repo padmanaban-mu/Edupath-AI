@@ -167,16 +167,19 @@ If user asks anything outside this scope, redirect warmly:
  * Builds the full Gemini system instruction for /api/chat.
  * Merges student profile data with the static course knowledge base.
  */
-function buildChatSystemInstruction({ domainName, completionRate, completed, inProgress, pendingMockTest, locked }) {
+function buildChatSystemInstruction({ domainName, completionRate, completed, inProgress, pendingMockTest, locked, programmingProgress, nonProgrammingProgress }) {
     return `
 You are EduPath AI — a specialized educational assistant for the EduPath AI learning platform.
 
 ═══════════════════════════════════════════
-STUDENT PROFILE
+STUDENT PROFILE (DATABASE SYNCED)
 ═══════════════════════════════════════════
 - Chosen Domain: ${domainName}
-- Roadmap Progress: ${completionRate}% Complete
-- Finished Courses: ${completed.length > 0 ? completed.join(', ') : 'None'}
+- Overall Roadmap Progress: ${completionRate}% Complete
+- Programming Track Progress: ${programmingProgress}%
+- Fundamentals Track Progress: ${nonProgrammingProgress}%
+
+- Finished Courses (100%): ${completed.length > 0 ? completed.join(', ') : 'None'}
 - Active Learning (<90%): ${inProgress.length > 0 ? inProgress.join(', ') : 'None'}
 - Pending Mock Tests (Blocked at 90%): ${pendingMockTest.length > 0 ? pendingMockTest.join(', ') : 'None'}
 - Locked / Next in Queue: ${locked.slice(0, 5).join(', ') || 'None'}
@@ -184,13 +187,11 @@ STUDENT PROFILE
 ═══════════════════════════════════════════
 STRICT SCOPE — WHAT YOU CAN ANSWER
 ═══════════════════════════════════════════
-1. Questions about the EduPath AI platform and how it works
-2. The two domains: Data Analyst and AI/ML Engineer
-3. Any course, module, topic, or practice question listed in the COURSE KNOWLEDGE BASE below
-4. Learning path advice — what to study next, prerequisites, roadmap order
-5. Conceptual explanations of topics that appear in the curriculum (e.g. explain DataFrames, SQL JOINs, backpropagation)
-6. The student's personal progress data shown in STUDENT PROFILE above
-7. Study tips and encouragement relevant to their courses
+1. Questions about the EduPath AI platform and how it works.
+2. The selected domain: ${domainName}.
+3. Any course, module, topic, or practice question listed in the COURSE KNOWLEDGE BASE.
+4. Learning path advice based strictly on the user's completed/pending courses. If they ask how to study a specific course, recommend a module-by-module approach based on the syllabus.
+5. Conceptual explanations of topics that appear in the curriculum.
 
 ═══════════════════════════════════════════
 STRICT SCOPE — WHAT YOU MUST NOT ANSWER
@@ -265,7 +266,11 @@ app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname, 'frontend', 'project')));
 
 // ─── Database Connection ─────────────────────────────────────────
-mongoose.connect('mongodb://127.0.0.1:27017/edupath_db');
+// ─── Database Connection ─────────────────────────────────────────
+const DB_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/edupath_db';
+mongoose.connect(DB_URI)
+    .then(() => console.log("Connected to MongoDB successfully"))
+    .catch((err) => console.error("MongoDB connection error:", err));
 
 // ─── User Schema ─────────────────────────────────────────────────
 const User = mongoose.model('User', new mongoose.Schema({
@@ -276,6 +281,7 @@ const User = mongoose.model('User', new mongoose.Schema({
     hasGeneratedRoadmap: { type: Boolean, default: false },
     selectedDomain: { type: String, default: '' },
     roadmapData: { type: Object, default: null },
+    courseProgress: { type: Object, default: {} }, // NEW: Tracks module-level completion per course
     chatHistory: { type: Array, default: [] } 
 }));
 
@@ -626,24 +632,32 @@ app.get("/get-roadmap", authenticateToken, async (req, res) => {
         res.send({
             hasGeneratedRoadmap: user.hasGeneratedRoadmap,
             selectedDomain: user.selectedDomain,
-            roadmapData: user.roadmapData
+            roadmapData: user.roadmapData,
+            courseProgress: user.courseProgress || {} // Send detailed progress to frontend
         });
     } catch (err) {
         res.status(500).send({ error: "Failed to fetch roadmap" });
     }
 });
-
 app.post('/save-roadmap', authenticateToken, async (req, res) => {
     try {
+        // We now extract 'courseProgress' directly from the Chatbot's payload.
+        // This payload contains the deep {video, quiz, program} logic for every specific course.
+        const { hasGeneratedRoadmap, selectedDomain, roadmapData, courseProgress } = req.body;
+        
+        // Update the MongoDB document with the Chatbot's exact, highly-detailed schema
         await User.findByIdAndUpdate(req.userId, {
             $set: {
-                roadmapData: req.body.roadmapData,
-                selectedDomain: req.body.selectedDomain,
-                hasGeneratedRoadmap: true
+                roadmapData: roadmapData,
+                selectedDomain: selectedDomain,
+                hasGeneratedRoadmap: hasGeneratedRoadmap,
+                courseProgress: courseProgress || {} // Saves the deep module gatekeepers
             }
         });
+        
         res.sendStatus(200);
     } catch (err) {
+        console.error("Save Roadmap Error:", err);
         res.status(500).send({ error: "Internal Server Error" });
     }
 });
@@ -997,7 +1011,6 @@ app.get('/api/chat-history', authenticateToken, async (req, res) => {
         res.status(500).send({ error: "Failed to fetch history" });
     }
 });
-
 app.post('/api/chat', authenticateToken, async (req, res) => {
     try {
         const { userMessage } = req.body;
@@ -1010,27 +1023,39 @@ app.post('/api/chat', authenticateToken, async (req, res) => {
         let pendingMockTest = [];
         let inProgress = [];
         let locked = [];
+        let programmingProgress = 0;
+        let nonProgrammingProgress = 0;
 
         if (roadmap && roadmap[domain]) {
-            const all = [...(roadmap[domain].programming || []), ...(roadmap[domain].nonProgramming || [])];
-            completed      = all.filter(c => c.progress === 100).map(c => c.title);
+            const prog = roadmap[domain].programming || [];
+            const nonProg = roadmap[domain].nonProgramming || [];
+            const all = [...prog, ...nonProg];
+            
+            completed       = all.filter(c => c.progress === 100).map(c => c.title);
             pendingMockTest = all.filter(c => c.progress === 90).map(c => c.title);
-            inProgress     = all.filter(c => c.progress > 0 && c.progress < 90).map(c => `${c.title} (${c.progress}%)`);
-            locked         = all.filter(c => c.progress === 0).map(c => c.title);
+            inProgress      = all.filter(c => c.progress > 0 && c.progress < 90).map(c => `${c.title} (${c.progress}%)`);
+            locked          = all.filter(c => c.progress === 0).map(c => c.title);
+
+            // Calculate overall section progresses
+            const calcAvg = arr => arr.length ? Math.round(arr.reduce((acc, curr) => acc + curr.progress, 0) / arr.length) : 0;
+            programmingProgress = calcAvg(prog);
+            nonProgrammingProgress = calcAvg(nonProg);
         }
 
         const domainName = domain === 'aiml' ? "AI/ML Engineer" : "Data Analyst";
         const totalCourses = completed.length + pendingMockTest.length + inProgress.length + locked.length;
         const completionRate = totalCourses > 0 ? Math.round((completed.length / totalCourses) * 100) : 0;
 
-        // Build full system instruction — includes student profile + full EduPath course knowledge base
+        // Pass all detailed DB metrics to the prompt
         const systemInstruction = buildChatSystemInstruction({
             domainName,
             completionRate,
             completed,
             inProgress,
             pendingMockTest,
-            locked
+            locked,
+            programmingProgress,
+            nonProgrammingProgress
         });
 
         const aiModel = genAI.getGenerativeModel({

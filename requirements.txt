@@ -9,5 +9,5 @@ numpy>=2.1.0
 numpy
 scikit-learn
 
-//viz
- pip3 install plotly
+
+plotly

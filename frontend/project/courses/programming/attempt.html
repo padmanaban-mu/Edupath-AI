@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attempt Summary — EduPath AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { 
+            --primary: #1a3a6d; 
+            --secondary: #2d6cdf; 
+            --bg-color: #f8faff; 
+            --border-color: #e2e8f0; 
+            --text-dark: #1e293b; 
+            --text-muted: #64748b; 
+            --success: #059669; 
+            --success-bg: #d1fae5;
+        }
+        
+        body { font-family: 'Inter', sans-serif; background: var(--bg-color); color: var(--text-dark); margin: 0; padding: 0; }
+        
+        .navbar { background: white; padding: 15px 40px; display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-color); box-shadow: 0 2px 10px rgba(0,0,0,0.02);}
+        .logo { font-family: 'Poppins', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--primary); display: flex; align-items: center; gap: 10px;}
+        .logo span { color: var(--secondary); }
+        
+        .container { max-width: 900px; margin: 40px auto; padding: 0 20px; }
+        
+        .page-title { font-family: 'Poppins', sans-serif; font-size: 1.8rem; color: var(--primary); margin: 0 0 15px 0; display: flex; align-items: center; gap: 12px;}
+        
+        .requirements-badges { display: flex; gap: 10px; margin-bottom: 25px; }
+        .badge { background: var(--success-bg); color: var(--success); padding: 6px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; display: flex; align-items: center; gap: 6px; border: 1px solid #a7f3d0;}
+        
+        .btn-attempt { background: var(--primary); color: white; border: none; padding: 12px 28px; border-radius: 6px; font-weight: 600; font-size: 1rem; cursor: pointer; transition: all 0.3s ease; display: inline-block; margin-bottom: 25px;}
+        .btn-attempt:hover { background: #102a52; transform: translateY(-1px); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .btn-attempt.continue { background: var(--secondary); }
+        .btn-attempt.continue:hover { background: #1e5ab8; }
+
+        .grading-info { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 5px; }
+        .highest-grade { font-size: 1.2rem; font-weight: 700; color: var(--text-dark); margin-bottom: 30px; margin-top: 15px;}
+        
+        h3 { font-family: 'Poppins', sans-serif; color: var(--text-dark); margin-bottom: 15px; font-size: 1.2rem;}
+
+        .attempt-table { width: 100%; border-collapse: collapse; background: white; border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.02);}
+        .attempt-table th { background: #f8fafc; text-align: left; padding: 15px 20px; font-weight: 600; color: var(--text-dark); border-bottom: 2px solid var(--border-color); }
+        .attempt-table td { padding: 15px 20px; border-bottom: 1px solid #f1f5f9; color: #334155; font-size: 0.95rem; vertical-align: top;}
+        .attempt-table tr:last-child td { border-bottom: none; }
+        
+        .status-finished { color: var(--success); font-weight: 600; }
+        .status-progress { color: #d97706; font-weight: 600; }
+
+        .btn-review { color: var(--secondary); text-decoration: none; font-weight: 600; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 5px;}
+        .btn-review:hover { text-decoration: underline; }
+        .btn-review.disabled { color: #94a3b8; cursor: not-allowed; text-decoration: none; }
+        
+        .empty-state { padding: 40px; text-align: center; color: var(--text-muted); background: white; border: 1px dashed #cbd5e1; border-radius: 8px; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo"><i class="fas fa-brain"></i> EduPath <span>AI</span></div>
+        <a id="back-link" href="#" style="color: var(--text-muted); text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 8px;"><i class="fas fa-arrow-left"></i> Back to Course</a>
+    </nav>
+
+    <div class="container">
+        <h1 class="page-title"><i class="fas fa-laptop-code" style="color: #ec4899;"></i> <span id="mod-title">Loading Module...</span></h1>
+        
+        <div class="requirements-badges" id="requirements-container" style="display: none;">
+            <div class="badge"><i class="fas fa-check"></i> Done: Receive a grade</div>
+            <div class="badge"><i class="fas fa-check"></i> Done: Receive a passing grade</div>
+        </div>
+
+        <button class="btn-attempt" id="action-btn" onclick="launchCompiler()" style="display: none;">Loading...</button>
+
+        <div class="grading-info">Grading method: Highest grade</div>
+        <div class="grading-info" id="pass-criteria">Grade to pass: 0 out of 100</div>
+        
+        <div class="highest-grade" id="highest-grade-display">Highest grade: -- / 100.</div>
+
+        <h3>Your attempts</h3>
+        <div id="attempts-container">
+            <div class="empty-state">
+                <i class="fas fa-folder-open" style="font-size: 2rem; margin-bottom: 10px; color: #cbd5e1;"></i>
+                <p>No attempts have been made yet.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const courseId = urlParams.get('course') || 'sql_a';
+        const moduleId = urlParams.get('module') || 'module1';
+        
+        // Dynamic extraction based on course ID (e.g., 'data_visualization_a' -> 'data_visualization')
+        let apiPrefix = courseId.split('_').slice(0, -1).join('_');
+        if (!apiPrefix) apiPrefix = courseId; // Fallback if no underscore
+
+        // Universal Compiler Router based on your server.js
+        const COMPILER_MAP = {
+            'sql': 'sql_compiler.html',
+            'python': 'python_compiler.html',
+            'numpy': 'comp_numpy.html',
+            'pandas': 'pandas_compiler.html',
+            'data_visualization': 'dataviz.html',
+            'regression': 'regression_compiler.html',
+            'excel': 'excel_compiler.html'
+        };
+
+        // Set dynamic back link
+        document.getElementById('back-link').href = `../../courses/programming/${apiPrefix}.html`;
+
+        function launchCompiler() {
+            const compilerFile = COMPILER_MAP[apiPrefix] || `${apiPrefix}_compiler.html`;
+            window.location.href = `../../compiler/${compilerFile}?course=${courseId}&module=${moduleId}`;
+        }
+
+        function launchReview(attemptNum) {
+            window.location.href = `/review.html?course=${courseId}&module=${moduleId}&attempt=${attemptNum}`;
+        }
+
+        async function loadAttemptData() {
+            const token = localStorage.getItem('token');
+            if(!token) return;
+
+            try {
+                const dbRes = await fetch('/get-roadmap', { headers: { 'Authorization': `Bearer ${token}` } });
+                const dbData = await dbRes.json();
+                
+                // Fetch dynamic syllabus from server.js (handles all courses natively)
+                const syllabusRes = await fetch(`/api/modules?course=${apiPrefix}`);
+                const syllabusData = await syllabusRes.json();
+
+                const currentModSyllabus = syllabusData.modules.find(m => (m.id || m.module) === moduleId);
+                const totalQuestions = currentModSyllabus ? currentModSyllabus.questions.length : 0;
+                
+                const totalMarks = totalQuestions * 10;
+                const passMarks = Math.floor(totalMarks * 0.6); 
+                
+                // Dynamically set titles from the API
+                document.getElementById('mod-title').innerText = currentModSyllabus ? currentModSyllabus.name : "Programming Challenge";
+                document.getElementById('pass-criteria').innerText = `Grade to pass: ${passMarks > 0 ? passMarks : 60} out of 100`;
+
+                const courseData = dbData.courseProgress ? dbData.courseProgress[courseId] : null;
+                const modData = (courseData && courseData.modules) ? courseData.modules[moduleId] : null;
+
+                const container = document.getElementById('attempts-container');
+                const actionBtn = document.getElementById('action-btn');
+
+                if (!modData || !modData.attempts || modData.attempts === 0) {
+                    document.getElementById('highest-grade-display').innerText = `Highest grade: 0 / 100.`;
+                    actionBtn.innerText = "Attempt now";
+                    actionBtn.className = "btn-attempt";
+                    actionBtn.style.display = "inline-block";
+                    return; 
+                }
+
+                const isFinished = modData.program === true;
+                
+                if (isFinished) {
+                    actionBtn.innerText = "Re-attempt";
+                    actionBtn.className = "btn-attempt";
+                    document.getElementById('requirements-container').style.display = "flex";
+                } else {
+                    actionBtn.innerText = "Continue your attempt";
+                    actionBtn.className = "btn-attempt continue";
+                }
+                actionBtn.style.display = "inline-block";
+
+                let tableHTML = `
+                    <table class="attempt-table">
+                        <thead>
+                            <tr>
+                                <th width="15%">Attempt</th>
+                                <th width="20%">State</th>
+                                <th width="15%">Marks / ${totalMarks}</th>
+                                <th width="20%">Grade / 100</th>
+                                <th width="15%">Review</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+
+                let highestPercentage = 0;
+
+                for(let i = modData.attempts; i >= 1; i--) {
+                    let isLatest = (i === modData.attempts);
+                    
+                    let historyEntry = (modData.attemptHistory && modData.attemptHistory[i.toString()]) 
+                                        ? modData.attemptHistory[i.toString()] 
+                                        : null;
+                    
+                    let attemptDate = historyEntry ? historyEntry.date : 'Unknown Date';
+                    
+                    let statusHTML = '';
+                    if (isLatest) {
+                        statusHTML = isFinished 
+                            ? `<span class="status-finished">Finished<br><span style="font-size:0.8rem; font-weight:400; color:#64748b;">Submitted ${attemptDate}</span></span>` 
+                            : `<span class="status-progress">In Progress<br><span style="font-size:0.8rem; font-weight:400; color:#64748b;">Started ${attemptDate}</span></span>`;
+                    } else {
+                        statusHTML = `<span class="status-finished" style="color:#64748b;">Archived<br><span style="font-size:0.8rem; font-weight:400;">Submitted ${attemptDate}</span></span>`;
+                    }
+
+                    let rowSubmittedCount = 0;
+                    if (historyEntry && historyEntry.code) {
+                        rowSubmittedCount = Object.keys(historyEntry.code).length;
+                    } else if (isLatest && modData.submittedCode) {
+                        rowSubmittedCount = Object.keys(modData.submittedCode).length;
+                    }
+
+                    let rowMarks = rowSubmittedCount * 10;
+                    let rowGrade = totalMarks > 0 ? Math.round((rowMarks / totalMarks) * 100) : 0;
+                    
+                    if (rowGrade > highestPercentage) {
+                        highestPercentage = rowGrade;
+                    }
+
+                    let reviewHTML = `<a href="#" onclick="launchReview(${i})" class="btn-review">Review</a>`;
+
+                    tableHTML += `
+                        <tr>
+                            <td><strong>${i}</strong></td>
+                            <td>${statusHTML}</td>
+                            <td><strong>${rowMarks}</strong></td>
+                            <td><strong>${rowGrade}</strong></td>
+                            <td>${reviewHTML}</td>
+                        </tr>
+                    `;
+                }
+
+                tableHTML += `</tbody></table>`;
+                container.innerHTML = tableHTML;
+                document.getElementById('highest-grade-display').innerText = `Highest grade: ${highestPercentage} / 100.`;
+                
+            } catch(e) { 
+                console.error("Error loading attempts:", e); 
+                document.getElementById('attempts-container').innerHTML = `<div class="empty-state" style="color:red;">Error connecting to server. Please check your connection.</div>`;
+            }
+        }
+
+        loadAttemptData();
+    </script>
+</body>
+</html>

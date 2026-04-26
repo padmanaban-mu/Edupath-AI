@@ -995,196 +995,181 @@
 </div>
 
 <script>
+    const API_URL = "http://localhost:3000";
+    const token = localStorage.getItem('token');
+    const COURSE_ID = 'bi'; // Exact ID for BI Tools
     const totalModules = 9;
 
-    document.addEventListener("DOMContentLoaded", () => {
-        // 1. Sidebar Logic
-        const sidebarToggle = document.getElementById('sidebarToggle');
-        const sidebar = document.getElementById('sidebar');
-        const mainContent = document.getElementById('main-content');
+    // Global state variables for DB synchronization
+    let dbRoadmapData = null;
+    let dbSelectedDomain = null;
+    let dbCourseProgress = null;
 
+    document.addEventListener("DOMContentLoaded", () => {
+        // Sidebar Logic
+        const sidebarToggle = document.getElementById('sidebarToggle');
         if (sidebarToggle) {
             sidebarToggle.addEventListener('click', () => {
-                sidebar.classList.toggle('collapsed');
-                mainContent.classList.toggle('expanded');
+                document.getElementById('sidebar').classList.toggle('collapsed');
+                document.getElementById('main-content').classList.toggle('expanded');
             });
         }
 
-        // 2. CHATBOT FAST-TRACK LOGIC (Modules 1-8)
-        // Course ID in courseData.js for BI Tools is "bi"
-        if (localStorage.getItem("bi_fast_tracked") === "true") {
-            for (let i = 1; i <= 8; i++) {
-                localStorage.setItem("bi_module" + i + "_completed", "true");
-                localStorage.setItem("bi_vbtn-" + i, "done");
-                localStorage.setItem("bi_qbtn-" + i, "done");
-                localStorage.setItem("bi_pbtn-" + i, "done");
-                localStorage.setItem("bi_prog_module" + i, "done");
-            }
-            // Explicitly unlock Module 9 and clear general restriction
-            localStorage.setItem("bi_vbtn-gen", "done"); 
-            const mod9 = document.getElementById("module-box-9");
-            if (mod9) mod9.classList.remove("locked");
-        }
-
-        // 3. NORMAL UNLOCK LOGIC (Cascading)
-        for (let i = 2; i <= totalModules; i++) {
-            if (localStorage.getItem("bi_module" + (i - 1) + "_completed") === "true") {
-                const box = document.getElementById("module-box-" + i);
-                if (box) box.classList.remove("locked");
-            }
-        }
-
-        // 4. RESTORE BUTTON STATES
-        const buttons = document.querySelectorAll('.status-btn');
-        buttons.forEach(btn => {
-            if (btn.id && localStorage.getItem("bi_" + btn.id) === "done") {
-                applyDoneState(btn);
-            }
-        });
-
-        // 5. DB SYNC: MOCK TEST COMPLETION
-        if (localStorage.getItem("bi_qbtn-9") === "done" || localStorage.getItem("bi_pbtn-9") === "done") {
-            const finalBtn = document.getElementById("qbtn-9") || document.getElementById("pbtn-9");
-            if (finalBtn) applyDoneState(finalBtn);
-            syncCourseCompletionToDB("bi"); 
-        }
-
-        updateProgress();
+        // Initialize Course Data directly from MongoDB
+        loadCourseDataFromDB();
         
-        // 6. Search Functionality
+        // Search Functionality
         const searchInput = document.getElementById('moduleSearch');
         if (searchInput) {
             searchInput.addEventListener('input', function (e) {
                 const term = e.target.value.toLowerCase();
-                const modules = document.querySelectorAll('.section-box');
-                modules.forEach(mod => {
-                    const text = mod.innerText.toLowerCase();
-                    mod.style.display = text.includes(term) ? 'block' : 'none';
+                document.querySelectorAll('.section-box').forEach(mod => {
+                    mod.style.display = mod.innerText.toLowerCase().includes(term) ? 'block' : 'none';
                 });
             });
         }
     });
 
-    async function syncCourseCompletionToDB(courseId) {
-        const token = localStorage.getItem('token');
-        if (!token) return;
-        
-        // Prevent continuous DB spamming if already updated
-        if (localStorage.getItem(courseId + "_db_synced") === "true") {
-            const finalBtn = document.getElementById("qbtn-9") || document.getElementById("pbtn-9");
-            if(finalBtn) {
-                finalBtn.innerHTML = 'Dependencies Unlocked <i class="fas fa-check-double"></i>';
-                finalBtn.style.backgroundColor = 'var(--success-green)';
-                finalBtn.style.color = 'white';
-            }
-            return;
-        }
+    // ─── MONGODB GATEWAY LOGIC ──────────────────────────────────────────
 
+    async function loadCourseDataFromDB() {
+        if (!token) return;
         try {
-            const res = await fetch('http://localhost:3000/get-roadmap', { headers: { 'Authorization': `Bearer ${token}` } });
+            const res = await fetch(`${API_URL}/get-roadmap`, { headers: { 'Authorization': `Bearer ${token}` } });
             const data = await res.json();
             
-            if (data.roadmapData) {
-                const domain = data.selectedDomain;
-                const roadmap = data.roadmapData;
+            dbRoadmapData = data.roadmapData;
+            dbSelectedDomain = data.selectedDomain;
+            dbCourseProgress = data.courseProgress || {};
+
+            let biProg = dbCourseProgress[COURSE_ID];
+            if (!biProg || !biProg.modules) {
+                console.warn("No DB tracking found. User must initialize via Chatbot first.");
+                return;
+            }
+
+            // Sync UI precisely with the DB Schema
+            let completedItems = 0;
+            let totalItems = 0;
+
+            for (let i = 1; i <= totalModules; i++) {
+                let modState = biProg.modules['module' + i];
+                if (!modState) continue;
+
+                const modBox = document.getElementById("module-box-" + i);
                 
-                let course = roadmap[domain].programming.find(c => c.id === courseId);
-                if (!course) course = roadmap[domain].nonProgramming.find(c => c.id === courseId);
+                // 1. Apply Lock/Unlock State
+                if (modState.unlocked) {
+                    if (modBox) modBox.classList.remove('locked');
+                } else {
+                    if (modBox) modBox.classList.add('locked');
+                }
+
+                // 2. Apply Boolean Button States
+                const isLast = (i === totalModules);
                 
-                if (course && course.progress !== 100) {
-                    course.progress = 100;
-                    await fetch('http://localhost:3000/save-roadmap', {
-                        method: 'POST',
-                        headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ hasGeneratedRoadmap: true, selectedDomain: domain, roadmapData: roadmap })
-                    });
-                    
-                    localStorage.setItem(courseId + "_db_synced", "true");
-                    
-                    // Quietly update UI
-                    const finalBtn = document.getElementById("qbtn-9") || document.getElementById("pbtn-9");
-                    if(finalBtn) {
-                        finalBtn.innerHTML = 'Dependencies Unlocked <i class="fas fa-check-double"></i>';
-                        finalBtn.style.backgroundColor = 'var(--success-green)';
-                        finalBtn.style.color = 'white';
-                    }
+                if (!isLast) {
+                    totalItems += 2; // Video, Quiz (NO PROGRAMMING)
+                    if (modState.video) { applyDoneState(document.getElementById('vbtn-' + i)); completedItems++; }
+                    if (modState.quiz) { applyDoneState(document.getElementById('qbtn-' + i)); completedItems++; }
+                } else {
+                    totalItems += 1; // Mock Test Quiz Only
+                    if (modState.quiz) { applyDoneState(document.getElementById('qbtn-' + i)); completedItems++; }
                 }
             }
+
+            // Update Progress Bar based on completed booleans
+            updateProgressUI(completedItems, totalItems);
+
+        } catch (e) {
+            console.error("Error loading DB course data:", e);
+        }
+    }
+
+    async function syncToDB() {
+        try {
+            await fetch(`${API_URL}/save-roadmap`, {
+                method: 'POST',
+                headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    hasGeneratedRoadmap: true,
+                    selectedDomain: dbSelectedDomain,
+                    roadmapData: dbRoadmapData,
+                    courseProgress: dbCourseProgress
+                })
+            });
+            loadCourseDataFromDB(); // Refresh UI to show newly unlocked modules
         } catch(e) {
             console.error("DB Sync Failed:", e);
         }
     }
 
-    function openVideo(url, btnId) {
-        window.open(url, '_blank');
-        if(btnId) {
-            markAsDone(btnId);
-        }
-    }
+    function checkModuleGateway(modNum) {
+        let modState = dbCourseProgress[COURSE_ID].modules['module' + modNum];
+        let isLast = (modNum === totalModules);
+        let isComplete = false;
 
-    function markAsDone(btnId) {
-        const btn = document.getElementById(btnId);
-        if (btn) {
-            applyDoneState(btn);
-            localStorage.setItem("bi_" + btnId, "done");
-            
-            const modNumMatch = btnId.match(/-(\d+)/);
-            if (modNumMatch && modNumMatch[1]) {
-                const modNum = parseInt(modNumMatch[1]);
-                localStorage.setItem("bi_module" + modNum + "_completed", "true");
-                
-                if(modNum < totalModules) {
-                    const nextMod = document.getElementById("module-box-" + (modNum + 1));
-                    if(nextMod) nextMod.classList.remove("locked");
-                } else if (modNum === totalModules) {
-                    // Trigger DB Sync instantly when the final mock test is passed
-                    syncCourseCompletionToDB("bi");
-                }
+        // NON-PROGRAMMING RULE: 2/2 for standard, 1/1 (quiz) for Mock Test
+        if (!isLast) {
+            if (modState.video && modState.quiz) {
+                isComplete = true;
             }
-            updateProgress();
+        } else {
+            if (modState.quiz) {
+                isComplete = true; // Mock test passed!
+            }
+        }
+
+        if (isComplete && !modState.completed) {
+            modState.completed = true;
+            
+            // Unlock next module
+            if (!isLast) {
+                let nextMod = dbCourseProgress[COURSE_ID].modules['module' + (modNum + 1)];
+                if (nextMod) nextMod.unlocked = true;
+            } else {
+                // Course is 100% complete! Update high-level tracking.
+                dbCourseProgress[COURSE_ID].progress = 100;
+                let domainTrack = dbRoadmapData[dbSelectedDomain];
+                let course = domainTrack.nonProgramming.find(c => c.id === COURSE_ID);
+                if (course) course.progress = 100;
+            }
         }
     }
 
-    function applyDoneState(btn) {
-        btn.classList.remove("todo");
-        btn.classList.add("done");
-        btn.innerHTML = 'Done <i class="fas fa-check"></i>';
+    // ─── ACTION HANDLERS ────────────────────────────────────────────────
+
+    async function markAsDone(btnId) {
+        const modNum = parseInt(btnId.split('-')[1]);
+        let modState = dbCourseProgress[COURSE_ID].modules['module' + modNum];
+        
+        if (!modState.video) {
+            modState.video = true;
+            applyDoneState(document.getElementById(btnId)); // Instant visual update
+            checkModuleGateway(modNum);
+            await syncToDB();
+        }
     }
 
-    function toggleSection(header) {
-        header.classList.toggle('active');
-        const content = header.nextElementSibling;
-        content.style.display = (content.style.display === 'block') ? 'none' : 'block';
-    }
-
-  function showQuiz(module) {
-    let quiz = document.getElementById("quiz-" + module);
-    if (!quiz) return; // safety check
-    quiz.style.display = (quiz.style.display === "block") ? "none" : "block";
-}
-
-    // Standard Quiz Logic for Modules 1-8
     const quizAnswers = {
-        1: { q1: "B", q2: "B", q3: "A", q4: "B", q5: "A" },
-        2: { q1: "A", q2: "B", q3: "B", q4: "A", q5: "B" },
-        3: { q1: "B", q2: "A", q3: "A", q4: "B", q5: "A" },
-        4: { q1: "A", q2: "C", q3: "B", q4: "A", q5: "B" },
-        5: { q1: "B", q2: "B", q3: "A", q4: "B", q5: "A" },
-        6: { q1: "B", q2: "C", q3: "B", q4: "B", q5: "A" },
-        7: { q1: "B", q2: "B", q3: "B", q4: "A", q5: "B" },
-        8: { q1: "A", q2: "B", q3: "B", q4: "B", q5: "A" }
+        1: { q1: "A", q2: "A", q3: "A", q4: "A", q5: "A" },
+        2: { q1: "A", q2: "A", q3: "A", q4: "A", q5: "A" },
+        3: { q1: "A", q2: "A", q3: "A", q4: "A", q5: "A" },
+        4: { q1: "A", q2: "A", q3: "A", q4: "A", q5: "A" },
+        5: { q1: "A", q2: "A", q3: "A", q4: "A", q5: "A" },
+        6: { q1: "A", q2: "A", q3: "A", q4: "A", q5: "A" },
+        7: { q1: "A", q2: "A", q3: "A", q4: "A", q5: "A" },
+        8: { q1: "A", q2: "A", q3: "A", q4: "A", q5: "A" }
     };
 
-    function submitQuiz(module) {
+    async function submitQuiz(module) {
         let answers = quizAnswers[module];
         let score = 0;
         let total = Object.keys(answers).length;
 
         for (let q in answers) {
-            let selected = document.querySelector(`#quiz-module${module} input[name="${q}"]:checked`);
-            let options = document.querySelectorAll(`#quiz-module${module} input[name="${q}"]`);
-
-            options.forEach(opt => {
+            let selected = document.querySelector(`#quiz-${module} input[name="${q}"]:checked`);
+            document.querySelectorAll(`#quiz-${module} input[name="${q}"]`).forEach(opt => {
                 opt.parentElement.classList.remove("correct", "wrong");
             });
 
@@ -1194,84 +1179,89 @@
                     selected.parentElement.classList.add("correct");
                 } else {
                     selected.parentElement.classList.add("wrong");
-                    let correct = document.querySelector(`#quiz-module${module} input[name="${q}"][value="${answers[q]}"]`);
+                    // Fixed the typo "inp ut" here to "input"
+                    let correct = document.querySelector(`#quiz-${module} input[name="${q}"][value="${answers[q]}"]`);
                     if (correct) correct.parentElement.classList.add("correct");
                 }
             } else {
-                let correct = document.querySelector(`#quiz-module${module} input[name="${q}"][value="${answers[q]}"]`);
+                let correct = document.querySelector(`#quiz-${module} input[name="${q}"][value="${answers[q]}"]`);
                 if(correct) correct.parentElement.classList.add("correct");
             }
         }
 
         let percent = Math.floor((score / total) * 100);
-        let resultBox = document.querySelector(`#quiz-module${module} .quiz-result`);
-
+        let resultBox = document.querySelector(`#quiz-${module} .quiz-result`);
         if (!resultBox) {
             resultBox = document.createElement("div");
             resultBox.className = "quiz-result";
-            document.querySelector(`#quiz-module${module}`).appendChild(resultBox);
+            document.querySelector(`#quiz-${module}`).appendChild(resultBox);
         }
-
         resultBox.innerHTML = `You scored ${score}/${total} (${percent}%)`;
 
+        // If passed, update DB!
         if (percent >= 60) {
-            markAsDone("qbtn-" + module);
+            let modState = dbCourseProgress[COURSE_ID].modules['module' + module];
+            if (!modState.quiz) {
+                modState.quiz = true;
+                applyDoneState(document.getElementById('qbtn-' + module)); // Instant visual update
+                checkModuleGateway(module);
+                await syncToDB();
+            }
         }
     }
 
-    // ── BI Tools Mock Test: Random 15 questions from Modules 1–8 ──
-    // ── BI Tools Mock Test: Random 15 questions from Modules 1–8 ──
+    // ─── MODULE 9: MOCK TEST LOGIC ──────────────────────────────────────
+
     const biMockPool = [
-        { q:"What does 'BI' stand for in the context of data tools?", opts:["A. Binary Index","B. Business Intelligence"], ans:"B", tag:"Mod 1" },
-        { q:"Which of the following is a primary BI tool?", opts:["A. Microsoft Paint","B. Power BI"], ans:"B", tag:"Mod 1" },
-        { q:"BI tools are mainly used to:", opts:["A. Analyze and visualize business data","B. Write programming code"], ans:"A", tag:"Mod 1" },
-        { q:"A data-driven organization makes decisions based on:", opts:["A. Rumors","B. Facts and analysis"], ans:"B", tag:"Mod 1" },
-        { q:"BI tools are primarily used by:", opts:["A. Business analysts and managers","B. The general public only"], ans:"A", tag:"Mod 1" },
-        { q:"Power BI is developed by:", opts:["A. Microsoft","B. Salesforce"], ans:"A", tag:"Mod 2" },
-        { q:"In Power BI Desktop, where do you build visuals?", opts:["A. Report View","B. Model View"], ans:"B", tag:"Mod 2" },
-        { q:"DAX stands for:", opts:["A. Data Analysis Expressions","B. Dynamic Access Exchange"], ans:"B", tag:"Mod 2" },
+        { q:"What does BI stand for?", opts:["A. Business Intelligence","B. Basic Information"], ans:"A", tag:"Mod 1" },
+        { q:"Main goal of Business Intelligence?", opts:["A. Transform raw data into actionable insights","B. Store data for long-term archival only"], ans:"A", tag:"Mod 1" },
+        { q:"BI tools are primarily designed for:", opts:["A. Visualization and reporting","B. Complex mathematical proofs"], ans:"A", tag:"Mod 1" },
+        { q:"A 'Dashboard' in BI is best described as:", opts:["A. A collection of visual reports on one screen","B. A single raw data table"], ans:"A", tag:"Mod 1" },
+        { q:"Who is a primary user of BI insights?", opts:["A. Decision-makers and managers","B. The general public only"], ans:"A", tag:"Mod 1" },
+        { q:"Power BI is a product developed by:", opts:["A. Microsoft","B. Salesforce"], ans:"A", tag:"Mod 2" },
+        { q:"In Power BI Desktop, where do you build visuals?", opts:["A. Report View","B. Model View"], ans:"A", tag:"Mod 2" },
+        { q:"DAX stands for:", opts:["A. Data Analysis Expressions","B. Dynamic Access Exchange"], ans:"A", tag:"Mod 2" },
         { q:"Can you import data from Excel into Power BI?", opts:["A. Yes","B. No"], ans:"A", tag:"Mod 2" },
-        { q:"Power BI Desktop is primarily for:", opts:["A. Authoring reports","B. Running a web server"], ans:"B", tag:"Mod 2" },
-        { q:"Tableau is widely known for its ability to:", opts:["A. Write assembly code","B. Create complex visual analytics quickly"], ans:"B", tag:"Mod 3" },
+        { q:"Power BI Desktop is primarily for:", opts:["A. Authoring reports","B. Running a web server"], ans:"A", tag:"Mod 2" },
+        { q:"Tableau is widely known for its ability to:", opts:["A. Create complex visual analytics quickly","B. Write low-level assembly code"], ans:"A", tag:"Mod 3" },
         { q:"A single chart or graph in Tableau is created in a:", opts:["A. Worksheet","B. Collection"], ans:"A", tag:"Mod 3" },
         { q:"In Tableau, 'Dimensions' are usually:", opts:["A. Qualitative / Categorical fields","B. Numerical / Value fields"], ans:"A", tag:"Mod 3" },
-        { q:"'Measures' in Tableau are usually color-coded as:", opts:["A. Green (Continuous) — correct","B. Blue (Discrete)"], ans:"B", tag:"Mod 3" },
-        { q:"Tableau 'Stories' are used to:", opts:["A. Guide users through a data narrative","B. Automatically clean databases"], ans:"A", tag:"Mod 3" },
+        { q:"'Measures' in Tableau are usually color-coded as:", opts:["A. Green (Continuous)","B. Blue (Discrete)"], ans:"A", tag:"Mod 3" },
+        { q:"Tableau 'Stories' are used to:", opts:["A. Guide users through a data narrative","B. Automatically clean the entire database"], ans:"A", tag:"Mod 3" },
         { q:"Which is NOT a common data source for BI?", opts:["A. MP3 music files","B. SQL Databases"], ans:"A", tag:"Mod 4" },
-        { q:"'Data Transformation' is done to:", opts:["A. Clean and shape data for analysis","B. Encrypt data for hackers"], ans:"A", tag:"Mod 4" },
-        { q:"'Import' mode in BI tools usually:", opts:["A. Loads a snapshot into memory","B. Queries the database live every time"], ans:"B", tag:"Mod 4" },
+        { q:"'Data Transformation' is done to:", opts:["A. Clean and shape data for analysis","B. Encrypt the data for hackers"], ans:"A", tag:"Mod 4" },
+        { q:"'Import' mode in BI tools usually:", opts:["A. Loads a snapshot of data into memory","B. Queries the database live every time"], ans:"A", tag:"Mod 4" },
         { q:"Can BI tools connect to cloud services like Google Sheets?", opts:["A. Yes","B. No"], ans:"A", tag:"Mod 4" },
-        { q:"Data refresh is needed to:", opts:["A. Update reports with the latest data","B. Rename columns randomly"], ans:"B", tag:"Mod 4" },
-        { q:"To create a visual, you usually drag fields to:", opts:["A. The canvas or axis shelf","B. The trash bin"], ans:"B", tag:"Mod 5" },
-        { q:"Best chart for showing trends over time?", opts:["A. Line Chart","B. Treemap"], ans:"B", tag:"Mod 5" },
-        { q:"'Tooltips' are used to:", opts:["A. Show detail data when hovering over a point","B. Lock the chart from editing"], ans:"A", tag:"Mod 5" },
-        { q:"Adding a 'Legend' color-codes the data by:", opts:["A. Specific categories","B. Alphabetical order only"], ans:"B", tag:"Mod 5" },
+        { q:"Data refresh is needed to:", opts:["A. Update the reports with the latest data","B. Rename the columns randomly"], ans:"A", tag:"Mod 4" },
+        { q:"To create a visual, you usually drag fields to:", opts:["A. The canvas or axis shelf","B. The trash bin"], ans:"A", tag:"Mod 5" },
+        { q:"Best chart for showing trends over specific time periods?", opts:["A. Line Chart","B. Treemap"], ans:"A", tag:"Mod 5" },
+        { q:"'Tooltips' are used to:", opts:["A. Show detail data when hovering over a point","B. Locked the chart from editing"], ans:"A", tag:"Mod 5" },
+        { q:"Adding a 'Legend' color-codes the data by:", opts:["A. Specific categories","B. The alphabetical order only"], ans:"A", tag:"Mod 5" },
         { q:"To change a chart type in Power BI, you use the:", opts:["A. Visualizations Pane","B. Search Bar"], ans:"A", tag:"Mod 5" },
-        { q:"A 'Slicer' is:", opts:["A. An on-canvas interactive filter","B. A tool to cut data into files"], ans:"B", tag:"Mod 6" },
+        { q:"A 'Slicer' is:", opts:["A. An on-canvas interactive filter","B. A tool to cut the data into files"], ans:"A", tag:"Mod 6" },
         { q:"'Cross-filtering' occurs when:", opts:["A. Clicking one visual filters others on the same page","B. The report is exported to PDF"], ans:"A", tag:"Mod 6" },
-        { q:"'Drill-down' functionality allows you to:", opts:["A. See more detailed levels of data","B. Summarize all data into one number"], ans:"B", tag:"Mod 6" },
-        { q:"Why is interactivity important in a dashboard?", opts:["A. It allows users to explore data","B. It makes the file size smaller"], ans:"B", tag:"Mod 6" },
+        { q:"'Drill-down' functionality allows you to:", opts:["A. See more detailed levels of data (e.g., Year to Month)","B. Summarize all data into a single number"], ans:"A", tag:"Mod 6" },
+        { q:"Why is interactivity important in a dashboard?", opts:["A. It allows users to explore data and find specific answers","B. It makes the file size significantly smaller"], ans:"A", tag:"Mod 6" },
         { q:"A 'Filter' applied to the 'Entire Report' affects:", opts:["A. All pages in the report","B. Only the current active visual"], ans:"A", tag:"Mod 6" },
-        { q:"Using 'White Space' in dashboard design:", opts:["A. Reduces clutter and improves readability","B. Is a waste of space"], ans:"B", tag:"Mod 7" },
-        { q:"Color should primarily be used to:", opts:["A. Highlight important data or differentiate categories","B. Make every chart a different color"], ans:"B", tag:"Mod 7" },
-        { q:"Correct alignment of visuals:", opts:["A. Creates a logical flow and professional look","B. Doesn't matter as long as numbers are right"], ans:"B", tag:"Mod 7" },
-        { q:"A dashboard title should be:", opts:["A. Clear and descriptive","B. Hidden to save space"], ans:"A", tag:"Mod 7" },
-        { q:"Rule of thumb for chart selection:", opts:["A. Choose the simplest chart that answers the question","B. Always use 3D charts"], ans:"B", tag:"Mod 7" },
+        { q:"Using 'White Space' in a dashboard design:", opts:["A. Reduces clutter and improves readability","B. Is a waste of space that should be filled"], ans:"A", tag:"Mod 7" },
+        { q:"Color should primarily be used to:", opts:["A. Highlight important data or differentiate categories","B. Make every chart a different color for variety"], ans:"A", tag:"Mod 7" },
+        { q:"Correct alignment of visuals:", opts:["A. Creates a logical flow and professional look","B. Doesn't matter as long as the numbers are right"], ans:"A", tag:"Mod 7" },
+        { q:"A dashboard title should be:", opts:["A. Clear and descriptive of the content","B. Hidden to save space"], ans:"A", tag:"Mod 7" },
+        { q:"Rule of thumb for chart selection:", opts:["A. Choose the simplest chart that answers the question","B. Always use 3D charts for better visualization"], ans:"A", tag:"Mod 7" },
         { q:"Publishing a Power BI report allows you to view it in:", opts:["A. Power BI Service (Web browser)","B. A physical paper printout only"], ans:"A", tag:"Mod 8" },
-        { q:"'Workspaces' in BI tools are for:", opts:["A. Shared areas for collaborative authoring","B. Storing personal photos"], ans:"B", tag:"Mod 8" },
-        { q:"Tableau Public is primarily used for:", opts:["A. Sharing public datasets and portfolios","B. Storing sensitive corporate data"], ans:"B", tag:"Mod 8" },
-        { q:"Permissions in BI tools control:", opts:["A. Who can view, edit, or share a report","B. The color of the bars in a chart"], ans:"B", tag:"Mod 8" },
-        { q:"Data-driven collaboration means:", opts:["A. Teams using the same insights for joint decisions","B. Deleting data others have added"], ans:"A", tag:"Mod 8" },
+        { q:"'Workspaces' in BI tools are for:", opts:["A. Shared areas for collaborative authoring","B. Storing personal photos"], ans:"A", tag:"Mod 8" },
+        { q:"Tableau Public is primarily used for:", opts:["A. Sharing public datasets and portfolios","B. Storing sensitive corporate data"], ans:"A", tag:"Mod 8" },
+        { q:"Permissions in BI tools control:", opts:["A. Who can view, edit, or share a report","B. The color of the bars in a chart"], ans:"A", tag:"Mod 8" },
+        { q:"Data-driven collaboration means:", opts:["A. Teams using the same insights to make joint decisions","B. Deleting data that others have added"], ans:"A", tag:"Mod 8" }
     ];
 
-    var mockTestAnswers = {};
+    let mockTestAnswers = {};
 
     function generateAndShowMockTest() {
         const quizBox = document.getElementById("quiz-9");
         const container = document.getElementById("mock-test-container");
         if (!container) return;
 
-        // Shuffle and pick 15 questions
         const shuffled = [...biMockPool].sort(() => Math.random() - 0.5);
         const selected = shuffled.slice(0, 15);
 
@@ -1296,12 +1286,12 @@
         quizBox.style.display = "block";
     }
 
-    function submitMockTest() {
+    async function submitMockTest() {
         const form = document.getElementById("quizForm-9");
         if (!form) return;
         
         let score = 0;
-        let total = Object.keys(mockTestAnswers).length || 15; // Defaults to 15 if dynamic load fails
+        let total = Object.keys(mockTestAnswers).length || 15;
 
         for (let q in mockTestAnswers) {
             const selected = form.querySelector(`input[name="${q}"]:checked`);
@@ -1312,38 +1302,55 @@
 
         const scorePercent = Math.round((score / total) * 100);
         
-        let resultBox = document.querySelector('#quiz-module9 .quiz-result');
+        let resultBox = document.querySelector('#quiz-9 .quiz-result');
         if (!resultBox) {
             resultBox = document.createElement("div");
             resultBox.className = "quiz-result";
-            document.querySelector('#quiz-module9').appendChild(resultBox);
+            document.querySelector('#quiz-9').appendChild(resultBox);
         }
         
         resultBox.innerHTML = `Mock Test Score: ${score}/${total} (${scorePercent}%)`;
 
-        // Requires an 80% to officially "pass" and update progress
+        // Requires an 80% to officially "pass"
         if (scorePercent >= 80) {
-            markAsDone("qbtn-9");
-            alert(`Amazing! You passed with ${scorePercent}%. Dependencies Unlocked!`);
+            let modState = dbCourseProgress[COURSE_ID].modules['module9'];
+            if (!modState.quiz) {
+                modState.quiz = true;
+                applyDoneState(document.getElementById('qbtn-9')); // Instant visual update
+                checkModuleGateway(9);
+                await syncToDB();
+                alert(`Amazing! You passed with ${scorePercent}%. Dependencies Unlocked!`);
+            }
         } else {
             alert(`You scored ${scorePercent}%. You need at least 80% to pass. Keep trying!`);
         }
     }
 
-    function updateProgress() {
-        let completed = 0;
-        const totalItems = document.querySelectorAll('.status-btn').length;
+    // ─── UTILITIES ──────────────────────────────────────────────────────
 
-        document.querySelectorAll('.status-btn').forEach(btn => {
-            if (btn.classList.contains('done')) {
-                completed++;
-            }
-        });
+    function applyDoneState(btn) {
+        if (!btn) return;
+        btn.classList.remove("todo");
+        btn.classList.add("done");
+        btn.innerHTML = 'Done <i class="fas fa-check"></i>';
+    }
 
-        const percent = totalItems > 0 ? Math.floor((completed / totalItems) * 100) : 0;
+    function toggleSection(header) {
+        header.classList.toggle('active');
+        const content = header.nextElementSibling;
+        content.style.display = (content.style.display === 'block') ? 'none' : 'block';
+    }
+
+    function showQuiz(module) {
+        let quiz = document.getElementById("quiz-" + module);
+        if (!quiz) return;
+        quiz.style.display = (quiz.style.display === "block") ? "none" : "block";
+    }
+
+    function updateProgressUI(completed, total) {
+        const percent = total > 0 ? Math.floor((completed / total) * 100) : 0;
         const progressBar = document.getElementById("progressBar");
         const progressText = document.getElementById("progressText");
-
         if (progressBar) progressBar.style.width = percent + "%";
         if (progressText) progressText.innerText = percent + "%";
     }

@@ -208,8 +208,9 @@
         </div>
     </div>
 
-    <script>
+   <script>
         let editor;
+        let dbModulesState = {}; 
         let state = {
             modules: [],
             flatQuestions: [],
@@ -217,7 +218,6 @@
             completedKeys: new Set(JSON.parse(localStorage.getItem('edupath_sql_progress') || '[]'))
         };
 
-        // --- HARDCODED SYLLABUS MAPPING ---
         const SYLLABUS_MAP = {
             "module1": { title: "Introduction to SQL & Databases", task: "SQL Basics & Database Concepts - PROGRAMS" },
             "module2": { title: "Basic SELECT & Filtering", task: "Basic SELECT & Filtering - PROGRAMS" },
@@ -237,10 +237,9 @@
 
         require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs' }});
         require(['vs/editor/editor.main'], function() {
-            // Font loading fix to ensure Monaco's cursor aligns perfectly with custom fonts
             document.fonts.ready.then(() => {
                 editor = monaco.editor.create(document.getElementById('monaco-editor'), {
-                    value: "-- Write your SQL query here...\nSELECT * FROM table_name;\n\n",
+                    value: "-- Loading environment...",
                     language: 'sql',
                     theme: 'vs',
                     automaticLayout: true,
@@ -260,7 +259,15 @@
 
         async function fetchData() {
             try {
-                // Ensure course parameter is explicitly sent
+                const token = localStorage.getItem('token');
+                const COURSE_ID = 'sql_a';
+
+                const dbRes = await fetch('/get-roadmap', { headers: { 'Authorization': `Bearer ${token}` } });
+                const dbData = await dbRes.json();
+                if (dbData.courseProgress && dbData.courseProgress[COURSE_ID]) {
+                    dbModulesState = dbData.courseProgress[COURSE_ID].modules || {};
+                }
+
                 const res = await fetch('/api/modules?course=sql');
                 const data = await res.json();
                 state.modules = data.modules;
@@ -290,25 +297,91 @@
                     if (targetModuleId) {
                         const foundIndex = state.flatQuestions.findIndex(q => q.moduleId === targetModuleId);
                         if (foundIndex !== -1) {
-                            const mIdx = state.flatQuestions[foundIndex].moduleIndex;
-                            let isModuleUnlocked = (mIdx === 0) || (localStorage.getItem('sql_module' + mIdx + '_completed') === 'true');
-                            if (isModuleUnlocked) {
-                                targetIndex = foundIndex;
+                            const actualModNum = state.flatQuestions[foundIndex].moduleIndex + 1;
+                            let isModuleUnlocked = (actualModNum === 1);
+                            if (dbModulesState['module' + actualModNum]) {
+                                isModuleUnlocked = dbModulesState['module' + actualModNum].unlocked;
                             }
+                            if (isModuleUnlocked) targetIndex = foundIndex;
                         }
                     } else {
                         for (let i = 0; i < state.flatQuestions.length; i++) {
                             if (!state.completedKeys.has(state.flatQuestions[i].key)) {
-                                targetIndex = i;
-                                break;
+                                targetIndex = i; break;
                             }
                         }
                     }
+
+                    // 🚨 NEW LOGIC: SILENT SAVE & RE-ATTEMPT HANDLER 🚨
+                    const activeQ = state.flatQuestions[targetIndex];
+                    const actualModNum = activeQ.moduleIndex + 1;
+                    const modKey = 'module' + actualModNum;
+
+                    if (!dbData.courseProgress[COURSE_ID].modules[modKey]) {
+                        dbData.courseProgress[COURSE_ID].modules[modKey] = {};
+                    }
+                    const currentModState = dbData.courseProgress[COURSE_ID].modules[modKey];
+                    let needsSave = false;
+                    
+                    // 1. New Attempt: Lock it in immediately so 'Continue' button works
+                    if (!currentModState.attempts || currentModState.attempts === 0) {
+                        currentModState.attempts = 1;
+                        if (!currentModState.submittedCode) currentModState.submittedCode = {};
+                        
+                        // 🚨 INIT ARCHIVE: Create the history ledger
+                        if (!currentModState.attemptHistory) currentModState.attemptHistory = {};
+                        currentModState.attemptHistory["1"] = { date: new Date().toLocaleString(), code: {} };
+                        
+                        currentModState.lastAttemptDate = new Date().toLocaleString();
+                        needsSave = true;
+                    }
+                    // 2. Re-Attempt: Backup old code, then start fresh!
+                    else if (currentModState.program === true) {
+                        // 🚨 BACKUP: Secure the finished code into the archive before clearing it
+                        if (!currentModState.attemptHistory) currentModState.attemptHistory = {};
+                        currentModState.attemptHistory[currentModState.attempts.toString()] = {
+                            date: currentModState.lastAttemptDate,
+                            code: Object.assign({}, currentModState.submittedCode) // Deep copy
+                        };
+
+                        currentModState.attempts += 1; // Increment attempt counter
+                        currentModState.program = false; // Re-open the module
+                        currentModState.submittedCode = {}; // Clear active draft
+                        
+                        // 🚨 NEW ARCHIVE SLOT: Prep the history ledger for the new attempt
+                        currentModState.attemptHistory[currentModState.attempts.toString()] = {
+                            date: new Date().toLocaleString(),
+                            code: {}
+                        };
+                        currentModState.lastAttemptDate = new Date().toLocaleString();
+                        
+                        // Clear UI checks
+                        const moduleKeys = state.flatQuestions.filter(q => q.moduleIndex === activeQ.moduleIndex).map(q => q.key);
+                        moduleKeys.forEach(k => state.completedKeys.delete(k));
+                        localStorage.setItem('edupath_sql_progress', JSON.stringify([...state.completedKeys]));
+                        needsSave = true;
+                    }
+
+                    if (needsSave) {
+                        fetch('/save-roadmap', {
+                            method: 'POST',
+                            headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                hasGeneratedRoadmap: dbData.hasGeneratedRoadmap,
+                                selectedDomain: dbData.selectedDomain,
+                                roadmapData: dbData.roadmapData,
+                                courseProgress: dbData.courseProgress
+                            })
+                        }).catch(e => console.error("Silent save failed:", e));
+                        dbModulesState = dbData.courseProgress[COURSE_ID].modules; // Update local state
+                    }
+
                     renderSidebar();
                     loadQuestion(targetIndex);
                 }
             } catch (err) {
-                document.getElementById('accordion-container').innerHTML = "<div style='padding:20px; color:red;'>Error connecting to server. Please ensure backend is running.</div>";
+                console.error("Fetch Data Error:", err);
+                document.getElementById('accordion-container').innerHTML = "<div style='padding:20px; color:red;'>Error connecting to server.</div>";
             }
         }
 
@@ -317,14 +390,14 @@
             const q = state.flatQuestions[idx];
             const prevQ = state.flatQuestions[idx - 1];
 
-            let isModuleUnlocked = (q.moduleIndex === 0) || (localStorage.getItem('sql_module' + q.moduleIndex + '_completed') === 'true');
+            const actualModNum = q.moduleIndex + 1;
+            let isModuleUnlocked = (actualModNum === 1);
+            if (dbModulesState['module' + actualModNum]) {
+                isModuleUnlocked = dbModulesState['module' + actualModNum].unlocked;
+            }
             if (!isModuleUnlocked) return false;
 
-            const isFirstQuestionInModule = (q.questionIndex === 0);
-            const prevCompleted = state.completedKeys.has(prevQ.key);
-            const isCompleted = state.completedKeys.has(q.key);
-
-            return isFirstQuestionInModule || prevCompleted || isCompleted;
+            return (q.questionIndex === 0) || state.completedKeys.has(prevQ.key) || state.completedKeys.has(q.key);
         }
 
         function renderSidebar() {
@@ -338,23 +411,24 @@
                 const moduleId = mod.id || mod.module;
                 const modMappedData = SYLLABUS_MAP[moduleId] || { title: mod.name || "Module " + (mIdx+1), task: "Programming Challenge" };
 
-                let isModuleUnlocked = (mIdx === 0) || (localStorage.getItem('sql_module' + mIdx + '_completed') === 'true');
+                const actualModNum = mIdx + 1;
+                let isModuleUnlocked = (actualModNum === 1);
+                if (dbModulesState['module' + actualModNum]) {
+                    isModuleUnlocked = dbModulesState['module' + actualModNum].unlocked;
+                }
 
                 const modDiv = document.createElement('div');
                 modDiv.className = 'module-accordion';
-                
-                if (mIdx === activeModIdx) {
-                    modDiv.classList.add('open');
-                }
+                if (mIdx === activeModIdx) modDiv.classList.add('open');
 
                 const header = document.createElement('div');
                 header.className = 'module-header';
                 
                 if (!isModuleUnlocked) {
-                    header.innerHTML = `<span><i class="fas fa-lock" style="color:#94a3b8; margin-right:8px;"></i> Module ${mIdx + 1}: ${modMappedData.title}</span> <i class="fas fa-chevron-down"></i>`;
+                    header.innerHTML = `<span><i class="fas fa-lock" style="color:#94a3b8; margin-right:8px;"></i> Module ${actualModNum}: ${modMappedData.title}</span> <i class="fas fa-chevron-down"></i>`;
                     header.style.opacity = '0.7';
                 } else {
-                    header.innerHTML = `<span>Module ${mIdx + 1}: ${modMappedData.title}</span> <i class="fas fa-chevron-down"></i>`;
+                    header.innerHTML = `<span>Module ${actualModNum}: ${modMappedData.title}</span> <i class="fas fa-chevron-down"></i>`;
                 }
                 
                 header.onclick = () => modDiv.classList.toggle('open');
@@ -369,7 +443,6 @@
                     
                     const li = document.createElement('li');
                     li.className = 'q-item';
-                    
                     if (globalQCounter === state.currentQIndex) li.classList.add('active');
                     
                     let iconHTML = '';
@@ -390,10 +463,7 @@
                             <span class="q-item-subtitle">Task ${qIdx + 1}: ${fq.questionTitle}</span>
                         </div>
                     `;
-                    
-                    if (isUnlocked) {
-                        li.onclick = () => loadQuestion(fq.globalIndex);
-                    }
+                    if (isUnlocked) li.onclick = () => loadQuestion(fq.globalIndex);
                     
                     qList.appendChild(li);
                     globalQCounter++;
@@ -414,17 +484,12 @@
         }
 
         function updateNavButtons() {
-            const btnPrev = document.getElementById('btn-prev');
-            const btnNext = document.getElementById('btn-next');
-            
-            btnPrev.disabled = state.currentQIndex === 0;
-            btnNext.disabled = state.currentQIndex === state.flatQuestions.length - 1;
+            document.getElementById('btn-prev').disabled = state.currentQIndex === 0;
+            document.getElementById('btn-next').disabled = state.currentQIndex === state.flatQuestions.length - 1;
         }
 
         function prevQuestion() {
-            if (state.currentQIndex > 0) {
-                loadQuestion(state.currentQIndex - 1);
-            }
+            if (state.currentQIndex > 0) loadQuestion(state.currentQIndex - 1);
         }
 
         function nextQuestion() {
@@ -437,58 +502,47 @@
                     banner.className = 'validation-banner fail';
                     banner.innerHTML = `<i class="fas fa-lock"></i> <strong>Task Locked!</strong> <span style="font-weight:400; font-size:0.9rem; margin-left:10px;">Please successfully complete the current task to unlock the next one.</span>`;
                     banner.style.display = 'block';
-                    
-                    setTimeout(() => {
-                        banner.scrollIntoView({ behavior: 'smooth', block: 'end' });
-                    }, 100);
+                    setTimeout(() => banner.scrollIntoView({ behavior: 'smooth', block: 'end' }), 100);
                 }
             }
         }
 
        async function finishAttempt() {
-            const activeModIdx = state.flatQuestions[state.currentQIndex].moduleIndex;
-            const actualModNum = activeModIdx + 1; // Module 1 to 9
+            const actualModNum = state.flatQuestions[state.currentQIndex].moduleIndex + 1;
             const token = localStorage.getItem('token');
             const COURSE_ID = 'sql_a';
-            const API_URL = 'http://localhost:3000';
 
             try {
-                // 1. Fetch the exact current DB state
-                const res = await fetch(`${API_URL}/get-roadmap`, { headers: { 'Authorization': `Bearer ${token}` } });
+                const res = await fetch('http://localhost:3000/get-roadmap', { headers: { 'Authorization': `Bearer ${token}` } });
                 const data = await res.json();
                 
                 let dbCourseProgress = data.courseProgress;
                 let modState = dbCourseProgress[COURSE_ID].modules['module' + actualModNum];
 
-                // 2. Set the Database 'program' boolean to TRUE
                 modState.program = true;
 
-                // 3. Gateway Checker: Did they finish the module completely?
                 let isLast = (actualModNum === 9);
                 let isComplete = false;
                 
                 if (!isLast) {
                     if (modState.video && modState.quiz && modState.program) isComplete = true;
                 } else {
-                    if (modState.program) isComplete = true; // Mock test passed
+                    if (modState.program) isComplete = true; 
                 }
 
                 if (isComplete && !modState.completed) {
                     modState.completed = true;
                     if (!isLast) {
-                        // Unlock next module
                         let nextMod = dbCourseProgress[COURSE_ID].modules['module' + (actualModNum + 1)];
                         if (nextMod) nextMod.unlocked = true;
                     } else {
-                        // 100% Mastery achieved
                         dbCourseProgress[COURSE_ID].progress = 100;
                         let course = data.roadmapData[data.selectedDomain].programming.find(c => c.id === COURSE_ID);
                         if(course) course.progress = 100;
                     }
                 }
 
-                // 4. Save the finalized schema back to MongoDB
-                await fetch(`${API_URL}/save-roadmap`, {
+                await fetch('http://localhost:3000/save-roadmap', {
                     method: 'POST',
                     headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -503,8 +557,9 @@
                 console.error("Failed to sync programming completion with DB:", e);
             }
 
-            // Redirect back to course page to view newly unlocked modules
-            window.location.href = '/courses/programming/sql.html'; 
+            // Send them back to attempt.html where they will see "Re-attempt"
+            // Send them back to attempt.html where they will see "Re-attempt"
+window.location.href = `../courses/programming/attempt.html?course=${COURSE_ID}&module=module${actualModNum}`;
         }
 
         async function loadQuestion(globalIndex) {
@@ -515,7 +570,52 @@
             updateNavButtons();
 
             try {
-                // Ensure course parameter is explicitly sent
+                // 🚨 NEW INJECTION: STRICT DATABASE PREREQUISITE LOCK 🚨
+                const currentModuleId = targetQ.moduleId;
+                if (currentModuleId !== 'module9') { // Skip check for final mock 
+                    const token = localStorage.getItem('token');
+                    const API_URL = 'http://localhost:3000'; 
+                    if(token) {
+                        const dbRes = await fetch(`${API_URL}/get-roadmap`, { headers: { 'Authorization': `Bearer ${token}` } });
+                        if(dbRes.ok) {
+                            const dbData = await dbRes.json();
+                            const modNum = currentModuleId.replace('module', '');
+                            const modState = dbData.courseProgress['sql_a']?.modules['module' + modNum];
+
+                            // Strict Check: Video AND Quiz must be true
+                            if (modState && (!modState.video || !modState.quiz)) {
+                                document.getElementById('workspace').style.display = 'flex';
+                                document.getElementById('q-title').innerText = "Access Denied: Prerequisites Not Met";
+                                document.getElementById('q-desc').innerHTML = `<strong style='color: #ef4444;'><i class="fas fa-lock"></i> You must complete the Video and Quiz for Module ${modNum} in the Course Dashboard before accessing the programming compiler.</strong>`;
+                                document.getElementById('q-input').innerText = "-";
+                                document.getElementById('q-output').innerText = "-";
+                                
+                                // Lock the editor visual and interaction
+                                const editorDiv = document.getElementById('monaco-editor');
+                                editorDiv.style.opacity = '0.3';
+                                editorDiv.style.pointerEvents = 'none';
+                                
+                                document.getElementById('btn-run').disabled = true;
+                                
+                                const banner = document.getElementById('validation-banner');
+                                const term = document.getElementById('terminal-output');
+                                banner.style.display = 'none';
+                                term.className = 'terminal-output default-bg';
+                                term.innerText = "Editor locked. Please complete prerequisites in the dashboard.";
+                                
+                                return; // Halt loading the actual question code
+                            }
+                        }
+                    }
+                }
+                
+                // Restore editor styles just in case they were locked previously
+                const editorDiv = document.getElementById('monaco-editor');
+                editorDiv.style.opacity = '1';
+                editorDiv.style.pointerEvents = 'auto';
+                document.getElementById('btn-run').disabled = false;
+                // 🚨 END NEW INJECTION 🚨
+
                 const res = await fetch(`/api/modules/${targetQ.moduleId}/questions/${targetQ.questionId}?course=sql`);
                 const qData = await res.json();
                 const questionDetails = qData.question || qData;
@@ -525,10 +625,21 @@
                 document.getElementById('q-desc').innerHTML = questionDetails.description || "No description provided.";
                 
                 const sampleIO = questionDetails.sample_io || {};
-                document.getElementById('q-input').innerText = sampleIO.input || "No input required";
-                document.getElementById('q-output').innerText = sampleIO.output || sampleIO.expected_output || "No output provided";
+                document.getElementById('q-input').innerText = sampleIO.input || questionDetails.input || "No input required";
+                document.getElementById('q-output').innerText = sampleIO.output || sampleIO.expected_output || questionDetails.expected_output || "No output provided";
 
-                editor.setValue("-- Write your SQL query here...\nSELECT * FROM table_name;\n\n");
+                // 🚨 LOAD SAVED CODE DRAFT 🚨
+                const actualModNum = targetQ.moduleIndex + 1;
+                let savedCode = "-- Write your SQL query here...\nSELECT * FROM table_name;\n\n";
+
+                if (dbModulesState['module' + actualModNum] && 
+                    dbModulesState['module' + actualModNum].submittedCode && 
+                    dbModulesState['module' + actualModNum].submittedCode[targetQ.questionId]) {
+                    
+                    savedCode = dbModulesState['module' + actualModNum].submittedCode[targetQ.questionId];
+                }
+
+                editor.setValue(savedCode);
                 
                 const banner = document.getElementById('validation-banner');
                 const term = document.getElementById('terminal-output');
@@ -560,7 +671,6 @@
                                            (state.flatQuestions[state.currentQIndex + 1].moduleIndex !== currentQ.moduleIndex);
 
             try {
-                // Explicitly send course: 'sql'
                 const res = await fetch('/api/compile-sql', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -605,16 +715,60 @@
                         state.completedKeys.add(currentQ.key);
                         localStorage.setItem('edupath_sql_progress', JSON.stringify([...state.completedKeys]));
                         
+                        try {
+                            const token = localStorage.getItem('token');
+                            const COURSE_ID = 'sql_a';
+                            const dbRes = await fetch('/get-roadmap', { headers: { 'Authorization': `Bearer ${token}` } });
+                            const dbData = await dbRes.json();
+                            
+                            let courseProg = dbData.courseProgress[COURSE_ID];
+                            let actualModNum = currentQ.moduleIndex + 1;
+                            let modKey = 'module' + actualModNum;
+
+                            if (!courseProg.modules[modKey].submittedCode) {
+                                courseProg.modules[modKey].submittedCode = {};
+                            }
+                            if (!courseProg.modules[modKey].attemptHistory) {
+                                courseProg.modules[modKey].attemptHistory = {};
+                            }
+
+                            let currentAttemptStr = courseProg.modules[modKey].attempts.toString();
+                            if (!courseProg.modules[modKey].attemptHistory[currentAttemptStr]) {
+                                courseProg.modules[modKey].attemptHistory[currentAttemptStr] = { date: new Date().toLocaleString(), code: {} };
+                            }
+
+                            // 1. Update active draft (Keeps attempt.html grading working!)
+                            courseProg.modules[modKey].submittedCode[currentQ.questionId] = code;
+                            
+                            // 2. 🚨 Update historical archive vault 🚨
+                            courseProg.modules[modKey].attemptHistory[currentAttemptStr].code[currentQ.questionId] = code;
+                            courseProg.modules[modKey].attemptHistory[currentAttemptStr].date = new Date().toLocaleString();
+
+                            courseProg.modules[modKey].lastAttemptDate = new Date().toLocaleString();
+
+                            await fetch('/save-roadmap', {
+                                method: 'POST',
+                                headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    hasGeneratedRoadmap: true,
+                                    selectedDomain: dbData.selectedDomain,
+                                    roadmapData: dbData.roadmapData,
+                                    courseProgress: dbData.courseProgress
+                                })
+                            });
+                        } catch (saveErr) {
+                            console.error("Failed to save code to DB:", saveErr);
+                        }
+
                         if (!isLastQuestionInModule) {
                             banner.className = 'validation-banner success';
-                            banner.innerHTML = `<i class="fas fa-check-circle"></i> <strong>Passed all tests!</strong> <span style="font-weight:400; font-size:0.95rem; margin-left:10px;">Marks for this submission: 10/10. Click 'Next' above to continue.</span>`;
+                            banner.innerHTML = `<i class="fas fa-check-circle"></i> <strong>Passed all tests!</strong> <span style="font-weight:400; font-size:0.95rem; margin-left:10px;">Your code was saved. Click 'Next' to continue.</span>`;
                             renderSidebar(); 
                         } else {
                             banner.className = 'validation-banner success';
-                            banner.innerHTML = `<i class="fas fa-check-circle"></i> <strong>Passed all tests!</strong> <span style="font-weight:400; font-size:0.95rem; margin-left:10px;">Module Complete! Click 'Finish Module' above to return to your dashboard.</span>`;
+                            banner.innerHTML = `<i class="fas fa-check-circle"></i> <strong>Passed all tests!</strong> <span style="font-weight:400; font-size:0.95rem; margin-left:10px;">Module Complete! Click 'Finish Module'.</span>`;
                             renderSidebar(); 
                         }
-
                     } else {
                         banner.className = 'validation-banner fail';
                         banner.innerHTML = `<i class="fas fa-times-circle"></i> <strong>Testing was aborted due to error or output mismatch.</strong> <span style="font-weight:400; font-size:0.95rem; margin-left:10px;">Review the table below.</span>`;

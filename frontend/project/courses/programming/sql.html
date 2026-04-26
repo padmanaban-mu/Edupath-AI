@@ -441,6 +441,12 @@
             pointer-events: none;
             opacity: 0.6;
         }
+        .activity-row.locked-task {
+            opacity: 0.5;
+            pointer-events: none;
+            cursor: not-allowed;
+            filter: grayscale(1);
+        }
 
         .restriction-msg {
             display: none;
@@ -567,7 +573,7 @@
                     <div class="activity-info"><i class="fab fa-youtube" style="color: #ff0000;"></i> <span>SQL Basics & Database Concepts - VIDEO</span></div>
                     <button id="vbtn-1" class="status-btn todo" onclick="event.stopPropagation(); markAsDone('vbtn-1')">To do</button>
                 </div>
-                <div class="activity-row" onclick="showQuiz(1)">
+                <div class="activity-row" id="row-q1" onclick="showQuiz(1)">
                     <div class="activity-info"><i class="fas fa-list-alt"></i> <span>SQL Fundamentals - MCQ</span></div>
                     <button id="qbtn-1" class="status-btn todo">To do</button>
                 </div>
@@ -613,7 +619,7 @@
                                 <div class="mcq-title">3. Which of the following is a Relational Database Management
                                     System (RDBMS)?</div>
                                 <div class="mcq-options">
-                                    <label class="mcq-option"><input type="radio" name="q3" value="A">+
+                                    <label class="mcq-option"><input type="radio" name="q3" value="A">
                                         <div class="option-letter">A</div><span>MongoDB</span>
                                     </label>
                                     <label class="mcq-option"><input type="radio" name="q3" value="B">
@@ -666,7 +672,7 @@
                         <button type="button" onclick="submitQuiz(1)" class="quiz-submit">Submit Quiz</button>
                     </form>
                 </div>
-                <div class="activity-row" onclick="window.location.href='/compiler/sql.html?module=module1'">
+                <div class="activity-row" id="row-p1" onclick="window.location.href='attempt.html?course=sql_a&module=module1'">
                     <div class="activity-info"><i class="fas fa-code"></i> <span>SQL Basics & Database Concepts - PROGRAMS</span></div>
                     <button id="pbtn-1" class="status-btn todo">To do</button>
                 </div>
@@ -684,7 +690,7 @@
                     <div class="activity-info"><i class="fab fa-youtube" style="color: #ff0000;"></i> <span>SELECT, WHERE & Logical Operators - VIDEO</span></div>
                     <button id="vbtn-2" class="status-btn todo" onclick="event.stopPropagation(); markAsDone('vbtn-2')">To do</button>
                 </div>
-                <div class="activity-row" onclick="showQuiz(2)">
+                <div class="activity-row" id="row-q2" onclick="showQuiz(2)">
                     <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Data Filtering - MCQ</span></div>
                     <button id="qbtn-2" class="status-btn todo">To do</button>
                 </div>
@@ -785,7 +791,7 @@
                         <button type="button" onclick="submitQuiz(2)" class="quiz-submit">Submit Quiz</button>
                     </form>
                 </div>
-                <div class="activity-row" onclick="window.location.href='/compiler/sql.html?module=module2'">
+                <div class="activity-row" id="row-p2 "onclick="window.location.href='attempt.html?course=sql_a&module=module2'">
                     <div class="activity-info"><i class="fas fa-code"></i> <span>Basic SELECT & Filtering - PROGRAMS</span></div>
                     <button id="pbtn-2" class="status-btn todo">To do</button>
                 </div>
@@ -803,7 +809,7 @@
                     <div class="activity-info"><i class="fab fa-youtube" style="color: #ff0000;"></i> <span>COUNT, SUM, AVG, MIN, MAX - VIDEO</span></div>
                     <button id="vbtn-3" class="status-btn todo" onclick="event.stopPropagation(); markAsDone('vbtn-3')">To do</button>
                 </div>
-                <div class="activity-row" onclick="showQuiz(3)">
+                <div class="activity-row" id="row-q3"onclick="showQuiz(3)">
                     <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Aggregate Functions - MCQ</span>
                     </div>
                     <button id="qbtn-3" class="status-btn todo">To do</button>
@@ -903,7 +909,7 @@
                         <button type="button" onclick="submitQuiz(3)" class="quiz-submit">Submit Quiz</button>
                     </form>
                 </div>
-                <div class="activity-row" onclick="window.location.href='/compiler/sql.html?module=module3'">
+                <div class="activity-row" id="row-p3"onclick="window.location.href='attempt.html?course=sql_a&module=module3'">
                     <div class="activity-info"><i class="fas fa-code"></i> <span>Aggregates & Grouping - PROGRAMS</span></div>
                     <button id="pbtn-3" class="status-btn todo">To do</button>
                 </div>
@@ -921,7 +927,7 @@
                     <div class="activity-info"><i class="fab fa-youtube" style="color: #ff0000;"></i> <span>Inner, Left, Right & Full Joins - VIDEO</span></div>
                     <button id="vbtn-4" class="status-btn todo" onclick="event.stopPropagation(); markAsDone('vbtn-4')">To do</button>
                 </div>
-                <div class="activity-row" onclick="showQuiz(4)">
+                <div class="activity-row" id="row-q4" onclick="showQuiz(4)">
                     <div class="activity-info"><i class="fas fa-list-alt"></i> <span>SQL Joins - MCQ</span></div>
                     <button id="qbtn-4" class="status-btn todo">To do</button>
                 </div>
@@ -1021,7 +1027,7 @@
                         <button type="button" onclick="submitQuiz(4)" class="quiz-submit">Submit Quiz</button>
                     </form>
                 </div>
-                <div class="activity-row" onclick="window.location.href='/compiler/sql.html?module=module4'">
+                <div class="activity-row" id="row-p4"onclick="window.location.href='attempt.html?course=sql_a&module=module4'">
                     <div class="activity-info"><i class="fas fa-code"></i> <span>SQL JOINS - PROGRAMS</span></div>
                     <button id="pbtn-4" class="status-btn todo">To do</button>
                 </div>
@@ -1039,7 +1045,7 @@
                     <div class="activity-info"><i class="fab fa-youtube" style="color: #ff0000;"></i> <span>Queries within Queries & Common Table Expressions - VIDEO</span></div>
                     <button id="vbtn-5" class="status-btn todo" onclick="event.stopPropagation(); markAsDone('vbtn-5')">To do</button>
                 </div>
-                <div class="activity-row" onclick="showQuiz(5)">
+                <div class="activity-row" id="row-q5" onclick="showQuiz(5)">
                     <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Subqueries - MCQ</span></div>
                     <button id="qbtn-5" class="status-btn todo">To do</button>
                 </div>
@@ -1141,7 +1147,7 @@
                         <button type="button" onclick="submitQuiz(5)" class="quiz-submit">Submit Quiz</button>
                     </form>
                 </div>
-                <div class="activity-row" onclick="window.location.href='/compiler/sql.html?module=module5'">
+                <div class="activity-row" id="row-p5"onclick="window.location.href='attempt.html?course=sql_a&module=module5'">
                     <div class="activity-info"><i class="fas fa-code"></i> <span>Subqueries & CTEs - PROGRAMS</span></div>
                     <button id="pbtn-5" class="status-btn todo">To do</button>
                 </div>
@@ -1159,7 +1165,7 @@
                     <div class="activity-info"><i class="fab fa-youtube" style="color: #ff0000;"></i> <span>INSERT, UPDATE, DELETE - VIDEO</span></div>
                     <button id="vbtn-6" class="status-btn todo" onclick="event.stopPropagation(); markAsDone('vbtn-6')">To do</button>
                 </div>
-                <div class="activity-row" onclick="showQuiz(6)">
+                <div class="activity-row" id="row-q6"onclick="showQuiz(6)">
                     <div class="activity-info"><i class="fas fa-list-alt"></i> <span>DML Operations - MCQ</span></div>
                     <button id="qbtn-6" class="status-btn todo">To do</button>
                 </div>
@@ -1262,7 +1268,7 @@
                         <button type="button" onclick="submitQuiz(6)" class="quiz-submit">Submit Quiz</button>
                     </form>
                 </div>
-                <div class="activity-row" onclick="window.location.href='/compiler/sql.html?module=module6'">
+                <div class="activity-row" id="row-p6" onclick="window.location.href='attempt.html?course=sql_a&module=module6'">
                     <div class="activity-info"><i class="fas fa-code"></i> <span>Data Manipulation (DML) - PROGRAMS</span></div>
                     <button id="pbtn-6" class="status-btn todo">To do</button>
                 </div>
@@ -1280,7 +1286,7 @@
                     <div class="activity-info"><i class="fab fa-youtube" style="color: #ff0000;"></i> <span>CREATE, ALTER, DROP - VIDEO</span></div>
                     <button id="vbtn-7" class="status-btn todo" onclick="event.stopPropagation(); markAsDone('vbtn-7')">To do</button>
                 </div>
-                <div class="activity-row" onclick="showQuiz(7)">
+                <div class="activity-row"id="row-q7" onclick="showQuiz(7)">
                     <div class="activity-info"><i class="fas fa-list-alt"></i> <span>DDL Operations - MCQ</span></div>
                     <button id="qbtn-7" class="status-btn todo">To do</button>
                 </div>
@@ -1381,7 +1387,7 @@
                         <button type="button" onclick="submitQuiz(7)" class="quiz-submit">Submit Quiz</button>
                     </form>
                 </div>
-                <div class="activity-row" onclick="window.location.href='/compiler/sql.html?module=module7'">
+                <div class="activity-row" id="row-p7" onclick="window.location.href='attempt.html?course=sql_a&module=module7'">
                     <div class="activity-info"><i class="fas fa-code"></i> <span>Table Creation & Structure (DDL) - PROGRAMS</span></div>
                     <button id="pbtn-7" class="status-btn todo">To do</button>
                 </div>
@@ -1399,7 +1405,7 @@
                     <div class="activity-info"><i class="fab fa-youtube" style="color: #ff0000;"></i> <span>Indexing & Transactions - VIDEO</span></div>
                     <button id="vbtn-8" class="status-btn todo" onclick="event.stopPropagation(); markAsDone('vbtn-8')">To do</button>
                 </div>
-                <div class="activity-row" onclick="showQuiz(8)">
+                <div class="activity-row"id="row-q8" onclick="showQuiz(8)">
                     <div class="activity-info"><i class="fas fa-list-alt"></i> <span>Advanced SQL - MCQ</span></div>
                     <button id="qbtn-8" class="status-btn todo">To do</button>
                 </div>
@@ -1499,7 +1505,7 @@
                         <button type="button" onclick="submitQuiz(8)" class="quiz-submit">Submit Quiz</button>
                     </form>
                 </div>
-                <div class="activity-row" onclick="window.location.href='/compiler/sql.html?module=module8'">
+                <div class="activity-row" id="row-p8"onclick="window.location.href='attempt.html?course=sql_a&module=module8'">
                     <div class="activity-info"><i class="fas fa-code"></i> <span>Advanced SQL Concepts - PROGRAMS</span></div>
                     <button id="pbtn-8" class="status-btn todo">To do</button>
                 </div>
@@ -1512,7 +1518,7 @@
             </div>
             <div class="section-content" style="display:block;">
                 <div class="restriction-msg"><i class="fas fa-lock"></i> <span>locked until all previous modules are completed</span></div>
-                <div class="activity-row" onclick="window.location.href='/compiler/sql.html?module=mocdule9'">
+               <div class="activity-row" id="row-p9" onclick="window.location.href='attempt.html?course=sql_a&module=module9'">
                     <div class="activity-info"><i class="fas fa-edit"></i> <span>Take Final Mock Test</span></div>
                     <button id="pbtn-9" class="status-btn todo">To do</button>
                 </div>
@@ -1585,21 +1591,51 @@
 
                 const modBox = document.getElementById("module-box-" + i);
                 
-                // 1. Apply Lock/Unlock State
+                // 1. Apply Module-Level Lock/Unlock State
                 if (modState.unlocked) {
                     if (modBox) modBox.classList.remove('locked');
                 } else {
                     if (modBox) modBox.classList.add('locked');
                 }
 
-                // 2. Apply Boolean Button States
+                // 2. Apply Strict Task-Level Sequence (Video -> Quiz -> Program)
                 const isLast = (i === totalModules);
                 
                 if (!isLast) {
                     totalItems += 3; // Video, Quiz, Program
-                    if (modState.video) { applyDoneState(document.getElementById('vbtn-' + i)); completedItems++; }
-                    if (modState.quiz) { applyDoneState(document.getElementById('qbtn-' + i)); completedItems++; }
-                    if (modState.program) { applyDoneState(document.getElementById('pbtn-' + i)); completedItems++; }
+                    
+                    let vBtn = document.getElementById('vbtn-' + i);
+                    let qBtn = document.getElementById('qbtn-' + i);
+                    let pBtn = document.getElementById('pbtn-' + i);
+                    let qRow = document.getElementById('row-q' + i);
+                    let pRow = document.getElementById('row-p' + i);
+
+                    // Check Video
+                    if (modState.video) {
+                        applyDoneState(vBtn);
+                        completedItems++;
+                        if (qRow) qRow.classList.remove('locked-task'); // Unlock Quiz
+                    } else {
+                        if (qRow) qRow.classList.add('locked-task'); // Lock Quiz
+                    }
+
+                    // Check Quiz
+                    if (modState.quiz) {
+                        applyDoneState(qBtn);
+                        completedItems++;
+                    }
+
+                    // Check Program (Needs BOTH Video and Quiz done)
+                    if (modState.video && modState.quiz) {
+                        if (pRow) pRow.classList.remove('locked-task'); // Unlock Program
+                        if (modState.program) {
+                            applyDoneState(pBtn);
+                            completedItems++;
+                        }
+                    } else {
+                        if (pRow) pRow.classList.add('locked-task'); // Lock Program
+                    }
+
                 } else {
                     totalItems += 1; // Mock Test Program Only
                     if (modState.program) { applyDoneState(document.getElementById('pbtn-' + i)); completedItems++; }

@@ -1,19 +1,50 @@
-# Environment variables
+# ==========================================
+# EduPath AI - Comprehensive .gitignore
+# ==========================================
+
+# Environment variables & secrets
 .env
 .env.*
 *.local
+!.env.example
 
-# Dependencies
+# Dependency directories
 node_modules/
+jspm_packages/
 
-# Build and Temporary files
-dist/
-dist-ssr/
+# Python cache & bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
 build/
-.tmp/
-.cache/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+.pytest_cache/
+.mypy_cache/
 
-# Logs
+# Python Virtual Environments
+venv/
+.venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Logs & Runtime
 logs/
 *.log
 npm-debug.log*
@@ -22,22 +53,47 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-# OS Junk
-.DS_Store
-Thumbs.db
+# Build and Temporary Output
+dist/
+dist-ssr/
+build/
+.tmp/
+.cache/
+tmp/
+temp/
 
-# Editor-specific files
+# OS Artifacts & System Junk
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Editor & IDE configurations
 .idea/
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
-
-# VS Code specific
-# Ignore the whole folder but allow the extensions.json configuration
+*.swo
+*.swp
+*~
 .vscode/*
 !.vscode/extensions.json
 
-# Archives
+# Scratch notes, drafts & temporary text files
+New Text Document*.txt
+OUR PROJECTS'S WHOLE IDEA IS TO EXP.txt
+*.tmp
+*.bak
+*.orig
+
+# Archives & Compressed Files
 *.zip
+*.tar.gz
+*.rar
+*.7z
